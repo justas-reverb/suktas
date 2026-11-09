@@ -8,7 +8,7 @@
  *   npm run build && node tools/test-gates.mjs --browser   also shoot.mjs in Chrome: the
  *       runtime probe (pixels read back, storage), the request log and the sideways-scroll check,
  *       textscale-check.mjs (text past the edge at 1.5x system text) and find-e2e.mjs
- *       (22 breakages of the built search, run --workers N at a time, default 6)
+ *       (22 breakages of the built search) and game-check.mjs (breakages of the game frame), run --workers N at a time, default 6
  *
  * Exits 1 if any mutant survives or the clean copy fails.
  */
@@ -264,23 +264,50 @@ try {
       ['the sheet wider than a phone', cssAll('.find__dlg{min-width:420px}'), 'fits the screen'],
       ['the page scrolls behind it', cssAll('html:has(.find__dlg[open]){overflow:visible!important}'), 'does not scroll'],
     ];
+    /* game-check.mjs: the built game frame broken the same way. */
+    const gameJs = async (d) => `_astro/${(await readdir(path.join(d, '_astro'))).find((n) => n.endsWith('.js') && readFileSync(path.join(d, '_astro', n), 'utf8').includes('data-gs-title'))}`;
+    const gameHtml = () => 'treniruote/diena-su-telefonu/index.html';
+    const gsub = (re, to) => sub(re, to, gameJs);
+    const gadd = (s) => async (d) => { const rel = await gameJs(d); await writeFile(path.join(d, rel), (await readFile(path.join(d, rel), 'utf8')) + s); };
+    const GAME = [
+      ['a second choice charged again', gsub(/!\w\.picks\.has\(\w\)&&\(/, '('), 'a second choice in the step costs nothing'],
+      ['the middle ending too generous', gsub(/\*2>=/, '*9>='), 'under half left is the last ending'],
+      ['next shown before a choice', gsub(/(\w)\.hidden=!0,(\w)\.classList\.remove\(`is-live`\)/, '$1.hidden=!1,$2.classList.remove(`is-live`)'), 'no next button before a choice'],
+      ['next not guarded', gsub(/function (\w)\(\)\{\w\.picks\.has\(\w\[\w\]\.dataset\.step\)&&\(/, 'function $1(){('), 'cannot be skipped'],
+      ['two history entries on open', gsub(/history\.pushState\(\{gameShell:1\},``\)/, 'history.pushState({gameShell:1},``),history.pushState({gameShell:2},``)'), 'one history entry'],
+      ['popstate does not close it', gsub(/addEventListener\(`popstate`,/, 'addEventListener(`popstate_`,'), 'Esc closes'],
+      ["the page's score counts the frame", gsub(/\w\.hasAttribute\(`data-round`\)&&/, '!1&&'), "the page's score does not count"],
+      ['focus left behind on a new step', gsub(/,\w\.focus\(\{preventScroll:!0\}\)\}function (\w)\(\w,\w\)/, '}function $1(e,n)'), 'focus returns to the new step heading'],
+      ['the sheet cannot fold', gsub(/(\w)\.classList\.toggle\(`is-folded`\)/, '$1.classList.contains(`is-folded`)'), 'the sheet folds'],
+      ['something stored', gadd(';localStorage.setItem("x","1")'), 'nothing stored'],
+      ['the opener drawn with no showModal check', gsub(/&&typeof \w\.showModal==`function`/, ''), 'no showModal'],
+      ['the opener drawn with JavaScript off', sub(/data-game-start hidden/, 'data-game-start', gameHtml), 'JavaScript off: no opener'],
+      ['a field in the frame', sub(/<header class="gs__bar"/, '<input><header class="gs__bar"', gameHtml), 'nothing typed'],
+      ['a green choice', cssAll('.gs .opt{background:#2e9e4f}'), 'no red or green'],
+      ['the stamp gone', cssAll('.gs .stamp{display:none}'), 'is stamped'],
+      ['wider than a phone', cssAll('.gs__dock{min-width:700px}'), 'nothing runs sideways at 320x640'],
+      ['the page scrolls behind it', cssAll('html:has(.gs[open]){overflow:visible!important}'), 'does not scroll'],
+      ['motion under reduced motion', cssAll('@media (prefers-reduced-motion:reduce){.gs__side[data-live]{animation:gs-rise 5s!important}}'), 'reduced motion: the sheet'],
+      ['the move below the sheet', cssAll('@media (max-width:49rem){.gs__sidebody{max-height:6rem}}'), 'the move is in sight'],
+    ];
     const findRoot = path.join(TMP, 'find');
-    const runE2E = (dir) => new Promise((ok) => {
-      const p = spawn(process.execPath, [path.join(HERE, 'find-e2e.mjs'), '--root', dir], { stdio: ['ignore', 'pipe', 'pipe'] });
+    const runE2E = (dir, script) => new Promise((ok) => {
+      const p = spawn(process.execPath, [path.join(HERE, script), '--root', dir], { stdio: ['ignore', 'pipe', 'pipe'] });
       let out = '';
       p.stdout.on('data', (b) => { out += b; }); p.stderr.on('data', (b) => { out += b; });
       const kill = setTimeout(() => p.kill(), 240000);
       p.on('close', (code) => { clearTimeout(kill); ok({ code, out }); });
     });
-    const jobs = [['clean copy', null, null], ...FIND].map(([name, breakIt, expect], i) => async () => {
-      const d = path.join(findRoot, `f${i}`);
+    const e2eJobs = (script, list) => [['clean copy', null, null], ...list].map(([name, breakIt, expect], i) => async () => {
+      const d = path.join(findRoot, `${script}-${i}`);
       await cp(DIST, d, { recursive: true });
-      try { if (breakIt) await breakIt(d); } catch (e) { return say(false, `find-e2e.mjs catches: ${name} (${e.message})`); }
-      const { code, out } = await runE2E(d);
-      if (!breakIt) return say(code === 0, `find-e2e.mjs passes: the clean copy${code === 0 ? '' : ` (${out.split('\n').filter((l) => /^FAIL|Error/.test(l)).slice(0, 3).join(' / ')})`}`);
+      try { if (breakIt) await breakIt(d); } catch (e) { return say(false, `${script} catches: ${name} (${e.message})`); }
+      const { code, out } = await runE2E(d, script);
+      if (!breakIt) return say(code === 0, `${script} passes: the clean copy${code === 0 ? '' : ` (${out.split('\n').filter((l) => /^FAIL|Error/.test(l)).slice(0, 3).join(' / ')})`}`);
       const caught = code === 1 && out.split('\n').some((l) => l.startsWith('FAIL') && l.includes(expect));
-      say(caught, `find-e2e.mjs catches: ${name}${caught ? '' : ` (exit ${code}; ${out.split('\n').filter((l) => /^FAIL|Error/.test(l)).slice(0, 3).join(' / ') || 'nothing failed'})`}`);
+      say(caught, `${script} catches: ${name}${caught ? '' : ` (exit ${code}; ${out.split('\n').filter((l) => /^FAIL|Error/.test(l)).slice(0, 3).join(' / ') || 'nothing failed'})`}`);
     });
+    const jobs = [...e2eJobs('find-e2e.mjs', FIND), ...e2eJobs('game-check.mjs', GAME)];
     const width = Math.max(1, Number(process.argv[process.argv.indexOf('--workers') + 1]) || 6);
     await Promise.all(Array.from({ length: width }, async () => { while (jobs.length) await jobs.shift()(); }));
   }

@@ -13,7 +13,15 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 
 Naujausi viršuje. Čia užrašome kiekvieną pataisymą ir naują puslapį, kad matytum, kas ir kodėl pakeista. <!-- pažadas --> Kiekvienas įrašas turi datą, trumpą pavadinimą, ką pakeitėme, kodėl ir kuriuos puslapius palietė. <!-- pažadas --> Radai klaidą ar pasenusį faktą? Kaip mums parašyti, rasi puslapyje [Apie](/apie/#kaip-pataisyti-mus). <!-- pažadas -->
 
-## 2026-11-09 – netikri DI įrankiai ir ką atnaujinti {#naujausias}
+## 2026-11-09 – trečiasis žaidimas Treniruotėje {#naujausias}
+
+**Kas pasikeitė.** Naujas žaidimas „Viena diena su telefonu: kur laukia sukčius?“: rytas, pietūs, popietė ir vakaras, keturios apgaulės iš eilės. Žaidi per visą ekraną, o rezultatas – kiek pinigų tau liko. Į jį veda Treniruotė ir Turinys.
+
+**Kodėl.** Tikroje dienoje apgaulės ateina tarp kitų reikalų, o ne po vieną straipsnyje; treniruotėje tai pabandai be rizikos. <!-- M -->
+
+**Puslapiai:** [Viena diena su telefonu: kur laukia sukčius?](/treniruote/diena-su-telefonu/), [Treniruotė](/treniruote/), [Turinys](/turinys/).
+
+## 2026-11-09 – netikri DI įrankiai ir ką atnaujinti
 
 **Kas pasikeitė.** Naujas scenarijus „Netikras DI įrankis“, du žodyno puslapiai (DI programėlės prenumerata ir programėlė iš mažo pardavėjo), vadovas „Spragos ir atnaujinimai“ su trimis dalimis (telefonas ir kompiuteris, svetainė, serveris) ir keturi nauji žodyno terminai. <!-- M -->
 

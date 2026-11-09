@@ -1,0 +1,174 @@
+---
+/**
+ * Treniruotė: Viena diena su telefonu. The copy is docs/copy/treniruote/diena-su-telefonu.md, word for word.
+ * This page alone is the whole game with JavaScript off: every choice is a button that opens a native popover.
+ * Everything is invented (the number, Rūta Pavyzdienė, PAVYZDYS-PARK, its address kept as plain text); nothing can
+ * be typed. With JavaScript, GameShell reads these steps and plays them full-screen; data-cost is the invented sum.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import TrainScore from '../../../components/TrainScore.astro';
+import GameShell from '../../../components/GameShell.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import '../../../styles/treniruote.css';
+
+const catch_ = '<span class="pop__catch">Pagavau!</span><span class="pop__dash"> –</span><span class="pop__sub"> taip dabar pagalvotų sukčius.</span>';
+const SAFE = 'Taip ir daryk.';
+const steps = [
+  {
+    id: 'rytas', title: 'Rytas: praleistas skambutis', scenario: '/scenarijai/praleistas-skambutis/',
+    say: '8:12. Telefonas suskambo vieną kartą ir nutilo. Numeris prasideda ne +370, o šalies kodo nepažįsti. Ką darai?',
+    cap: 'Telefono maketas', stamp: 'Tai ne tikras telefonas', next: ['Toliau: pietūs', '#pietus'],
+    choices: [
+      { label: 'Perskambinu: gal kam nors reikia pagalbos', cost: 30, head: catch_, text: 'Taip nutinka bet kam: smalsu, kas ieškojo, o neperskambinti atrodo nemandagu. Skambino programa: ji renka atsitiktinius numerius ir padeda ragelį po vieno ar dviejų signalų, kad perskambintum. Dabar moki tu: vien sujungimo mokestis gali siekti nuo kelių iki kelių dešimčių eurų, o dalį šio mokesčio paprastai gauna jis. Kas atsilieps, stengsis tave išlaikyti ryšyje kuo ilgiau, nes pokalbis skaičiuojamas už minutę.', move: 'padėk ragelį ir nežinomam užsienio numeriui daugiau neperskambink. Vėliau pasitikrink sąskaitą: jei atsirado mokestis ir su juo nesutinki, argumentuotai kreipkis į savo ryšio operatorių.' },
+      { label: 'Perskambinu, jei šalis netoli', cost: 15, head: catch_, text: 'Tokie skambučiai ateina ne tik iš tolimų šalių: 2020 m. pavasarį Lietuvą pasiekė ir iš Moldovos. Mokestis priklauso nuo šalies, bet moki bet kuriuo atveju.', move: 'nežinomam užsienio numeriui neperskambink, kad ir iš kur jis būtų.' },
+      { label: 'Neperskambinu', cost: 0, safe: true, head: SAFE, text: 'Neperskambinti nežinomam užsienio numeriui pataria ir RRT, ir „Telia“. Be tavo skambučio jis nieko neuždirba. Jei tas pats numeris skambins vėl, užblokuok jį telefone. Jei laukei skambučio iš užsienio, parašyk tam žmogui ten, kur jau bendraujate.' },
+    ],
+  },
+  {
+    id: 'pietus', title: 'Pietūs: draugės žinutė', scenario: '/scenarijai/draugas-praso-pinigu/',
+    say: '12:40. „Facebook“ rašo draugė Rūta: jos vardas, jos nuotrauka. Ji niekada neprašė paskolinti, o dabar skubiai prašo pinigų. Ką darai?',
+    cap: 'Pokalbio maketas', stamp: 'Tai ne tikras pokalbis', next: ['Toliau: popietė', '#popiete'],
+    choices: [
+      { label: 'Pervedu: Rūta juk draugė', cost: 1000, head: catch_, text: 'Rašė ne Rūta: jos paskyrą perėmė sukčiai ir iš jos rašo draugams. Taip nutinka bet kam: pasitikėjimas, kurį jauti draugei, atitenka jam. Prašymas skubus, neįprastas ir miglotas – „nepaprasta situacija“, bet nesakoma kokia. Tai ženklai, kuriuos įvardija policija.', move: 'paskambink Rūtai arba parašyk jai SMS žinutę, ne tame pačiame pokalbyje. Kol Rūta pati nepatvirtins, nesiųsk nei pinigų, nei kodų. Jei pinigus jau išsiuntei, pirmiausia skambink bankui, išsaugok susirašinėjimą ir pranešk policijai: <a href="/jei-apgavo/#pinigai">ką daryti pirmiausia</a>.' },
+      { label: 'Klausiu čia pat: „Ar tikrai tu?“', cost: 100, risky: true, head: 'Gerai, kad suabejojai.', text: 'Bet atsakys tas pats, kas rašo: jis mato jūsų ankstesnius pokalbius ir gali atsakyti įtikinamai. Rūtos telefonu jis greičiausiai neatsilieps.', move: 'paskambink Rūtai arba parašyk jai SMS žinutę. Jei Rūta neatsiliepia, pinigų nesiųsk, kol ji pati nepaskambins.' },
+      { label: 'Skambinu Rūtai telefonu', cost: 0, safe: true, head: SAFE, text: 'Paskambinti ar parašyti SMS žinutę – būtent taip pataria policija, kai draugas staiga prašo pinigų. Jei paaiškės, kad rašė ne Rūta, pasakyk jai, kad jos paskyrą perėmė sukčiai: tegul atsidaro facebook.com/hacked, jei gali, iš įrenginio, kuriuo jau jungėsi. O savo telefono numerio ir kodų, kurie tau ateina SMS žinute, per socialinius tinklus niekam nesiųsk, net draugui.' },
+    ],
+  },
+  {
+    id: 'popiete', title: 'Popietė: SMS apie stovėjimą', scenario: '/scenarijai/sms-apie-bauda/',
+    say: '15:05. Ateina SMS apie nesumokėtą stovėjimą, su nuoroda sumokėti. Vakar tikrai statei automobilį mieste. Ką darai?',
+    cap: 'Žinutės maketas', stamp: 'Tai ne tikra žinutė', next: ['Toliau: vakaras', '#vakaras'],
+    choices: [
+      { label: 'Spaudžiu nuorodą ir sumoku', cost: 600, head: catch_, text: 'Nuoroda veda į jo puslapį, kuris prašo kortelės ar banko prisijungimo duomenų, ir jie atitenka jam. „Bauda“ tėra priedanga, kad mokėjimas atrodytų privalomas ir skubus. Taip nutinka bet kam: skola už stovėjimą yra tikras dalykas, todėl žinutė atrodo tikėtina. „Unipark“ sako, kad nesiunčia SMS su aktyviomis mokėjimo nuorodomis, o policija – kad nesiunčia SMS su nuorodomis prisijungti prie banko dėl baudos.', move: 'įvedei kortelės duomenis? Iškart užblokuok kortelę banko programėlėje ar paskambink bankui numeriu iš oficialios banko svetainės. Įvedei banko prisijungimo duomenis? Skambink bankui ir paprašyk užblokuoti prieigą prie interneto banko: <a href="/jei-apgavo/#kortele">ką daryti pirmiausia</a>. Pasakyk ir apie mokėjimus, kurių nedarei: blokavimas jau atliktų mokėjimų neatšaukia. Dingo pinigai – pranešk policijai per epolicija.lt.' },
+      { label: 'Spaudžiu nuorodą, tik pažiūrėti', cost: 100, risky: true, head: 'Čia ir sustok.', text: 'Tas puslapis sukurtas vienam tikslui: kad įvestum kortelės ar banko prisijungimo duomenis. Uždaryk jį ir nieko jame neįvesk. Apie žinutę pranešk NKSC formoje „Pranešti apie žinutę / skambutį“.', move: 'ar tikrai turi ką nors sumokėti, tikrink oficialioje programėlėje ar svetainėje, kurią atsidarai tu.' },
+      { label: 'Pasitikrinu parkavimo programėlėje', cost: 0, safe: true, head: SAFE, text: 'Skolą tikrink oficialioje programėlėje ar svetainėje, kurią atsidarai tu, o ne per nuorodą žinutėje. „Unipark“ sako, kad besikreipiantys klientai programėlėje dažniausiai jokios skolos nemato. Sukčius nežino, kad vakar statei automobilį: jam užtenka, kad kuris nors gavėjas neseniai statė. Patikrinti užtrunka kelias minutes, o tikra skola per tą laiką niekur nedings.' },
+    ],
+  },
+  {
+    id: 'vakaras', title: 'Vakaras: QR lipdukas', scenario: '/scenarijai/netikras-qr-kodas/',
+    say: '18:30. Pastatai automobilį prie kino teatro. Ant parkomato užklijuotas QR kodas siūlo sumokėti telefonu. Ką darai?',
+    cap: 'Parkomato maketas', stamp: 'Tai ne tikras parkomatas',
+    choices: [
+      { label: 'Nuskenuoju lipduką ir sumoku', cost: 400, head: catch_, text: 'Lipduką užklijavo jis: kodas veda į suklastotą mokėjimo puslapį, o suvedus kortelės duomenis pinigai atitenka sukčiams. Taip nutinka bet kam: lipdukas ant tikro parkomato atrodo kaip įrenginio dalis. Vilniaus „JUDU“ sako, kad niekada neprašo per QR kodą suvesti duomenų ar sumokėti.', move: 'užklijuoto QR kodo neskenuok, mokėk oficialioje programėlėje. Jei jau įvedei kortelės duomenis, užblokuok kortelę banko programėlėje ar interneto banke ir pasakyk bankui apie mokėjimus, kurių nedarei: blokavimas jau atliktų mokėjimų neatšaukia. <a href="/jei-apgavo/#kortele">Ką daryti pirmiausia</a>.' },
+      { label: 'Moku parkavimo programėle savo telefone', cost: 0, safe: true, head: SAFE, text: 'Už stovėjimą mokėk oficialioje programėlėje, kurią atsidarai tu; Vilniuje – ir SMS žinute konkrečiu numeriu. Lipdukas laukia bet ko, kas skubės sumokėti, o tavęs nesulaukė. Jei matai, kaip kas nors klijuoja lipdukus, ir tai saugu, nufotografuok ar nufilmuok ir skambink 112. Apie patį lipduką pranešk: Vilniuje – „JUDU“.' },
+    ],
+  },
+];
+---
+<Page
+  title="Viena diena su telefonu: kur laukia sukčius? Treniruotė – Suktas"
+  description="Saugi treniruotė: viena diena ir keturi sukčių triukai – praleistas skambutis, draugės žinutė, SMS apie stovėjimą ir QR lipdukas. Rinkis, ką darytum iš tikrųjų."
+  current=""
+>
+  <article class="scn tr">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/treniruote/">Treniruotė</a></p>
+        <h1>{nb('Viena diena su telefonu: kur laukia sukčius?')}</h1>
+        <p class="tr-lead" set:html={nbHtml('Rytas, pietūs, popietė ir vakaras: keturi kartai, kai tavęs ko nors prašo skambutis, žinutė ar lipdukas. Rinkis, ką darytum iš tikrųjų: iššoks paaiškinimas, ką tuo metu daro sukčius ir kaip jį sustabdyti.')} />
+        <p class="tr-promise" set:html={nbHtml('<strong>Tai mokomasis pavyzdys.</strong> Numeriai, vardai, paslaugos ir adresai išgalvoti, o mygtukai nieko nepriima: tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma. Skaitiklis sužino tik tiek, kad puslapis atidarytas ir jame kas nors paspausta (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
+        <p class="tr-rule" data-score-hint hidden set:html={nbHtml('Skaičiuojamas pirmas pasirinkimas kiekviename žingsnyje. Visur rinkis saugų kelią – ir laimėsi.')} />
+        <GameShell name="Viena diena su telefonu" start={2400} nextHref="/treniruote/banko-paieska/" />
+      </div>
+    </header>
+
+    {steps.map((s) => (
+      <section class="wrap tr-scene" id={s.id} aria-labelledby={`h-${s.id}`} data-step={s.id} data-scenario={s.scenario}>
+        <h2 id={`h-${s.id}`}>{nb(s.title)}</h2>
+        <p class="tr-say" set:html={nbHtml(s.say)} />
+        <figure class="mock">
+          <figcaption class="mock__cap">{s.cap}</figcaption>
+          <div class="mock__frame">
+            <div class="mock__inner">
+              <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>{s.stamp}</span></p>
+              <div class="ph">
+                {s.id === 'rytas' && (
+                  <p class="call"><span class="call__st">Praleistas skambutis</span> · <span class="call__who">+000 0000 0000</span> · <span class="call__st">Nežinoma šalis</span> · <span class="call__st">8:12</span></p>
+                )}
+                {s.id === 'pietus' && (
+                  <Fragment>
+                    <p class="call"><span class="call__who">Rūta Pavyzdienė</span> · <span class="call__st">12:40</span></p>
+                    <p class="say" set:html={nbHtml('„Labas, gal gali truputį pagelbėt?“')} />
+                    <p class="say" set:html={nbHtml('„Atsitiko nepaprasta situacija. Gal gali paskolinti 1000 €? Vakare grąžinsiu.“')} />
+                  </Fragment>
+                )}
+                {s.id === 'popiete' && (
+                  <Fragment>
+                    <p class="call"><span class="call__who">PAVYZDYS-PARK</span> · <span class="call__st">15:05</span></p>
+                    <p class="say" set:html={nbHtml('„Galutinis pranešimas apie nesumokėtus parkavimo mokesčius. Nesumokėjus prasidės administracinis patikrinimas. Mokėti: pavyzdys-parkavimas.com“')} />
+                  </Fragment>
+                )}
+                {s.id === 'vakaras' && (
+                  <Fragment>
+                    <p class="call"><span class="call__who">{nb('Pavyzdžio miesto rinkliavos zona')}</span> · <span class="call__st">{nb('Mokėk programėle arba SMS žinute')}</span></p>
+                    <div class="sticker">
+                      <span class="qr" aria-hidden="true"></span>
+                      <p class="sticker__txt"><span class="sticker__k">Lipdukas:</span> <strong>{nb('Greitas mokėjimas – nuskenuok QR')}</strong></p>
+                    </div>
+                  </Fragment>
+                )}
+                <div class="opts">
+                  {s.choices.map((c, i) => (
+                    <button type="button" class="rq__b opt" popovertarget={`p-${s.id}-${i}`} data-round={s.id} data-safe={c.safe || undefined} data-risky={c.risky || undefined} data-cost={c.cost}>{nb(c.label)}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </figure>
+
+        <div class="answers">
+          {s.choices.map((c, i) => (
+            <section class="pop" id={`p-${s.id}-${i}`} popover aria-labelledby={`h-${s.id}-${i}`}>
+              <h3 id={`h-${s.id}-${i}`} class:list={['pop__h', { 'pop__h--catch': c.head === catch_ }]} set:html={nbHtml(c.head)} />
+              <p set:html={nbHtml(c.text)} />
+              {c.move && <p class="pop__move" set:html={nbHtml(`<strong>Tavo ėjimas:</strong> ${c.move}`)} />}
+              <div class="pop__actions">
+                {c.safe && s.next && <a class="btn" href={s.next[1]}>{nb(s.next[0])}</a>}
+                <button type="button" class="btn btn--second pop__close" popovertarget={`p-${s.id}-${i}`} popovertargetaction="hide" autofocus>Uždaryti</button>
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="wrap tr-end" aria-labelledby="ejimas">
+      <TrainScore rounds={4} />
+      <div class="move">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Kai skambutis, žinutė ar lipdukas tavęs ko nors prašo, o pradėjai ne tu, neik siūlomu keliu: neperskambink, nespausk nuorodos, neskenuok lipduko. Pasitikrink savo keliu: paskambink žmogui, atsidaryk programėlę.')} />
+        <div class="cta">
+          <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+          <a class="btn btn--second" href="/sustok/">Kitos kortelės</a>
+        </div>
+      </div>
+
+      <div class="tr-nope">
+        <h3>Ko čia nerasi</h3>
+        <p set:html={nbHtml('Šis puslapis – ne šablonas: numeriai, vardai ir paslaugos išgalvoti, mygtukai nieko nepriima, todėl įvesti čia nieko neįmanoma. Tai mūsų <a href="/misija/#riba">riba</a>.')} />
+      </div>
+
+      <div class="tr-src">
+        <h2>Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-30–2026-11-01. Faktai – iš keturių scenarijų, visi su datomis <a href="/saltiniai/">Šaltiniuose</a>:')} />
+        <ul>
+          <li><a href="/scenarijai/praleistas-skambutis/">Praleistas skambutis iš užsienio</a></li>
+          <li><a href="/scenarijai/draugas-praso-pinigu/">„Draugas“ prašo pinigų</a></li>
+          <li><a href="/scenarijai/sms-apie-bauda/">SMS apie baudą</a></li>
+          <li><a href="/scenarijai/netikras-qr-kodas/">Netikras QR kodas</a></li>
+        </ul>
+      </div>
+    </section>
+  </article>
+</Page>
+
+<script>
+  // Without this the link jumps to the next step and leaves the open answer card over it; with it the card closes first.
+  document.querySelectorAll<HTMLAnchorElement>('.pop a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', () => a.closest<HTMLElement>('.pop')?.hidePopover());
+  });
+</script>

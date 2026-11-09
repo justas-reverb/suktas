@@ -96,6 +96,7 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 - [Treniruotė](/treniruote/)
 - [Ar atskirsi netikrą banko reklamą?](/treniruote/banko-paieska/)
 - [Ką iš tikrųjų tvirtini per „Smart-ID“?](/treniruote/smart-id/)
+- [Viena diena su telefonu: kur laukia sukčius?](/treniruote/diena-su-telefonu/)
 
 ## Šeimai ir įrankiai
 

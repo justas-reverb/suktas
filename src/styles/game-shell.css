@@ -1,0 +1,358 @@
+/* ------------------------------------------------------------------------------------
+   The full-screen frame (components/GameShell.astro). Daylight is the reader's side: the bar, the question,
+   the framed mock-up and the choices. The stage (indigo, lit from inside, a dot-matrix grain) is his side and
+   appears only as "Ką tuo metu daro jis" and the money he took. Mint is the reader's move (the next button).
+   No coral anywhere: a loss is a sum. A button keeps its colours: hover and focus add an edge light only.
+   Wide screens: mock-up left, his side right. Narrow: one column and the panel is a sheet from the bottom.
+   ------------------------------------------------------------------------------------ */
+
+.gs-start[hidden], .gs-open[hidden], .gs [hidden] { display: none !important; }
+
+/* ---- The opener, on the page ---- */
+.gs-start { max-width: 36rem; margin-top: 1.1rem; }
+.gs-open {
+  position: relative;
+  min-height: 3.25rem;
+  padding: 0.6rem 1.5rem 0.6rem 2.1rem;
+  border: 2px solid var(--indigo);
+  border-radius: var(--radius);
+  background: var(--indigo) repeating-linear-gradient(135deg, rgb(255 255 255 / 0.3) 0 0.28rem, transparent 0.28rem 0.56rem) left / 0.9rem 100% no-repeat;
+  color: #fff;
+  font: 700 1.0625rem / 1.2 var(--font-text);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+}
+.gs-start__note { margin-top: 0.7rem; font-size: var(--small); line-height: 1.5; }
+
+/* ---- The dialog ---- */
+.gs {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--day);
+  color: var(--ink);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.12s ease-out, transform 0.12s ease-out, overlay 0.12s allow-discrete, display 0.12s allow-discrete;
+}
+.gs[open] {
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+@starting-style { .gs[open] { opacity: 0; transform: translateY(0.75rem); } }
+.gs:not([open]) { opacity: 0; transform: translateY(0.75rem); }
+.gs::backdrop { background: rgb(25 19 79 / 0.5); }
+html:has(.gs[open]) { overflow: hidden; }
+.gs :focus-visible { outline: 3px solid var(--indigo-2); outline-offset: 3px; }
+.gs h2, .gs h3, .gs h4 { margin-block: 0; }
+.gs button { font-family: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; cursor: pointer; }
+
+/* ---- The top bar ---- */
+.gs__bar {
+  flex: none;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'name name x' 'step . acct' 'ticks ticks ticks';
+  align-items: center;
+  gap: 0.1rem 1rem;
+  padding: 0.35rem var(--pad) 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--day);
+}
+.gs__bar p { margin: 0; }
+.gs__name { grid-area: name; font: 400 1.15rem / 1.15 var(--font-display); letter-spacing: -0.01em; }
+.gs__step { grid-area: step; white-space: nowrap; font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gs__acct { grid-area: acct; display: flex; flex-direction: column; align-items: flex-end; justify-self: end; line-height: 1.15; }
+.gs__acctl { color: var(--ink-2); }
+.gs__sum { font: 400 1.5rem / 1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.gs__sum.is-new { animation: gs-settle 0.22s ease-out; }
+.gs__x {
+  grid-area: x;
+  justify-self: end;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.3rem 0.95rem;
+  border: 2px solid var(--ink-2);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1em;
+  transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+}
+.gs__ticks { grid-area: ticks; display: flex; gap: 0.3rem; height: 0.5rem; margin-top: 0.35rem; }
+.gs__ticks i { flex: 1; border-radius: 0.1rem; background: var(--day-3); }
+.gs__ticks i.is-done { background: var(--indigo); }
+.gs__ticks i.is-now { background: repeating-linear-gradient(135deg, var(--indigo) 0 0.28rem, var(--day-3) 0.28rem 0.56rem); }
+
+/* ---- The body: question and mock-up, the choices, his side ---- */
+.gs__body { flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; }
+.gs.is-live.is-folded .gs__body { padding-bottom: var(--gs-room, 7.25rem); } /* --gs-room: the folded sheet's measured height */
+.gs__play { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.gs { --col: 44rem; }
+.gs__main { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 0.9rem 0 1rem; }
+.gs__main, .gs__dock { padding-inline: max(var(--pad), calc((100% - var(--col)) / 2)); }
+.gs .gs__main > *, .gs .gs__dock > * { max-width: none; margin-inline: 0; }
+.gs__title { font: 400 clamp(1.5rem, 1.2rem + 1.3vw, 2.4rem) / 1.1 var(--font-display); letter-spacing: -0.01em; }
+.gs__say { margin-top: 0.5rem; font-size: 1.1875rem; line-height: 1.4; }
+.gs .mock { max-width: none; margin-top: 0.9rem; }
+.gs .mock__inner { overflow: clip; }
+.gs .stamp { position: sticky; top: 0; z-index: 1; font-size: 1em; }
+.gs .call__st, .gs .sticker__k { font-size: 1em; }
+.gs .say { font-size: 1.0625em; }
+.gs .mock__cap { font-size: 1em; }
+
+.gs__dock {
+  flex: none;
+  display: grid;
+  gap: 0.45rem;
+  padding-block: 0.6rem calc(0.8rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--day-2);
+}
+.gs .opt {
+  position: relative;
+  display: block;
+  min-height: 3.25rem;
+  padding: 0.55rem 0.9rem 0.55rem 1.75rem;
+  border: 2px solid var(--indigo);
+  border-radius: 0.5rem;
+  background: #fff;
+  color: var(--ink);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+  transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+}
+.gs .opt::before {
+  content: '';
+  position: absolute;
+  inset: 0.4rem auto 0.4rem 0.4rem;
+  width: 0.65rem;
+  border-radius: 0.1rem;
+  background: repeating-linear-gradient(135deg, var(--indigo) 0 0.25rem, var(--day-3) 0.25rem 0.5rem);
+}
+.gs .opt[aria-current] { box-shadow: 0 0 0 3px var(--indigo-2); }
+.gs .opt[aria-current]::before { background: var(--indigo); }
+
+/* ---- His side ---- */
+.gs__side {
+  display: none;
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 5;
+  max-height: 72%;
+  flex-direction: column;
+  border-radius: 1rem 1rem 0 0;
+  background: var(--stage) radial-gradient(rgb(238 235 255 / 0.1) 1px, transparent 1.4px) 0 0 / 12px 12px;
+  color: var(--on-stage);
+  box-shadow: 0 -1rem 2rem -0.5rem rgb(25 19 79 / 0.45);
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow: hidden;
+}
+.gs__side[data-live] { display: flex; animation: gs-rise 0.24s cubic-bezier(0.23, 1, 0.32, 1); }
+.gs__side::before {
+  content: '';
+  flex: none;
+  height: 0.45rem;
+  background: repeating-linear-gradient(135deg, rgb(238 235 255 / 0.55) 0 0.28rem, transparent 0.28rem 0.56rem);
+}
+.gs__sideh { flex: none; font: inherit; }
+.gs__handle {
+  position: relative;
+  display: block;
+  width: calc(100% - 2 * var(--pad));
+  min-height: 3rem;
+  margin: 0.4rem var(--pad);
+  padding: 0.5rem 3rem 0.5rem 0.9rem;
+  border: 2px solid rgb(238 235 255 / 0.6);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--on-stage);
+  font: 400 1.35rem / 1.15 var(--font-display);
+  text-align: left;
+  letter-spacing: -0.01em;
+}
+.gs__handle::after {
+  content: '';
+  position: absolute;
+  right: 1.1rem;
+  top: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 3px solid var(--mint-lt);
+  border-bottom: 3px solid var(--mint-lt);
+  transform: translateY(-75%) rotate(45deg);
+}
+.gs__handle[aria-expanded='false']::after { transform: translateY(-25%) rotate(225deg); }
+.gs__handle:disabled { color: var(--on-stage); cursor: default; }
+.gs__handle:disabled::after { display: none; }
+.gs.is-folded .gs__side { box-shadow: none; }
+.gs__side :focus-visible { outline-color: var(--mint-lt); }
+.gs.is-folded .gs__sidebody { display: none; }
+.gs__sidebody { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 0.5rem var(--pad) 1rem; }
+.gs__side p { margin: 0; }
+.gs__empty { padding-top: 0.5rem; color: var(--on-stage-2); }
+@media (min-width: 50rem) { .gs__empty { padding-top: 0.75rem; max-width: 20ch; font: 400 clamp(1.7rem, 1.2rem + 1.2vw, 3rem) / 1.2 var(--font-display); } }
+.gs__taken { font: 400 clamp(2.2rem, 1.6rem + 2.4vw, 3.2rem) / 1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.gs__taken--none { font: 700 1.2em / 1.3 var(--font-text); color: var(--mint-lt); }
+.gs__risk, .gs__again { margin-top: 0.6rem !important; color: var(--on-stage-2); font-weight: 700; line-height: 1.4; }
+.gs__text { margin-top: 0.6rem; }
+.gs__text p { max-width: 62ch; margin-top: 0.75rem; line-height: 1.55; font-size: 1em; }
+.gs__text .pop__h { color: var(--on-stage); font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.1rem); }
+.gs__text .pop__h--catch { font: 700 1.1em / 1.3 var(--font-text); }
+.gs__text .pop__catch { color: var(--mint-lt); }
+.gs__text .pop__move { border-left-color: var(--mint-lt); background: rgb(111 227 184 / 0.12); }
+.gs__text .pop__move strong { color: var(--mint-lt); }
+.gs__text a { color: var(--mint-lt); font-weight: 700; }
+.gs__next .gs-go { max-width: 62ch; }
+.gs__next { flex: none; padding: 0.6rem var(--pad) 0.8rem; border-top: 1px solid var(--line-stage); }
+
+/* The mint button: the reader's move. Its face never changes; an edge light answers. */
+.gs-go {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.6rem 1.25rem;
+  border: 2px solid var(--mint);
+  border-radius: 0.5rem;
+  background: var(--mint-lt);
+  color: var(--stage-deep);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gs .rq__b.opt:hover { color: var(--ink); border-color: var(--indigo); }
+  .gs-open:hover, .gs__x:hover, .gs .opt:hover, .gs-go:hover, .gs__nextgame:hover { box-shadow: 0 0 0 3px rgb(66 55 214 / 0.28); }
+  .gs__side .gs-go:hover { box-shadow: 0 0 0 3px rgb(111 227 184 / 0.4); }
+}
+.gs-open:active, .gs__x:active, .gs .opt:active, .gs-go:active { transform: scale(0.98); }
+
+/* ---- The end screen ---- */
+.gs__end { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 1.5rem var(--pad) calc(2rem + env(safe-area-inset-bottom)); }
+.gs__endin { max-width: 40rem; margin-inline: auto; display: grid; gap: 1rem; justify-items: start; }
+.gs__endin h2 { font: 400 clamp(1.8rem, 1.3rem + 2vw, 3rem) / 1.08 var(--font-display); }
+.gs__endsum {
+  margin: 0;
+  padding: 0.1em 0.5em;
+  border: 0.45rem solid transparent;
+  border-radius: 0.5rem;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(135deg, var(--indigo) 0 0.55rem, var(--day-3) 0.55rem 1.1rem) border-box;
+  font: 400 clamp(3rem, 1.8rem + 6vw, 6rem) / 1.1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--indigo);
+}
+.gs__verdict { margin: 0; font-size: 1.25em; font-weight: 700; line-height: 1.4; max-width: 34rem; }
+.gs__lost { width: 100%; padding: 1rem 1.1rem; border-radius: var(--radius); background: var(--stage) radial-gradient(rgb(238 235 255 / 0.1) 1px, transparent 1.4px) 0 0 / 12px 12px; color: var(--on-stage); }
+.gs__lost h3 { font: 400 1.5rem / 1.15 var(--font-display); }
+.gs__lost ul { margin-top: 0.5rem; }
+.gs__lost li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.1rem 1rem; padding: 0.7rem 0; border-top: 1px solid var(--line-stage); }
+.gs__lm { font: 400 1.5rem / 1.1 var(--font-display); font-variant-numeric: tabular-nums; text-align: right; }
+.gs__lost li a { grid-column: 1 / -1; color: var(--mint-lt); font-weight: 700; min-height: 2.75rem; display: inline-flex; align-items: center; }
+.gs__lost :focus-visible { outline-color: var(--mint-lt); }
+.gs__endact { display: grid; gap: 0.7rem; width: 100%; max-width: 28rem; }
+.gs__nextgame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0.6rem 1.25rem;
+  border: 2px solid var(--indigo);
+  border-radius: 0.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.15s ease-out;
+}
+
+/* Phone: the move comes right after the heading, so it is in sight before the explanation; smaller sum and heading */
+@media (max-width: 49.99rem) {
+  .gs__text { display: flex; flex-direction: column; }
+  .gs__text > * { order: 2; }
+  .gs__text > .pop__h { order: 0; }
+  .gs__text > .pop__move { order: 1; }
+  .gs__taken { font-size: 2rem; }
+  .gs__text .pop__catch { font-size: 2.1rem; }
+  .gs__text .pop__h:not(.pop__h--catch) { font-size: 1.5rem; }
+}
+
+/* ---- Motion ---- */
+@keyframes gs-rise { from { transform: translateY(100%); } }
+@keyframes gs-settle { from { opacity: 0.3; transform: translateY(-0.35rem); } }
+
+/* ---- Two columns from 50rem: mock-up left, his side right from the start ---- */
+@media (min-width: 50rem) {
+  .gs { font-size: clamp(1.125rem, 0.95rem + 0.3vw, 1.5rem); }
+  .gs__bar { grid-template-columns: minmax(0, 1fr) auto auto auto; grid-template-areas: 'name step acct x' 'ticks ticks ticks ticks'; gap: 0.1rem 2rem; }
+  .gs__sum { font-size: 1.7rem; }
+  .gs__acct { flex-direction: row; align-items: baseline; gap: 0.6rem; }
+  .gs__body, .gs.is-live .gs__body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); padding-bottom: 0; }
+  .gs__side { display: flex; position: static; max-height: none; border-radius: 0; box-shadow: none; animation: none; }
+  .gs__side[data-live] { animation: none; }
+  .gs__side::before { display: none; }
+  .gs__handle { width: 100%; margin: 0; border: 0; border-radius: 0; padding: 1.25rem clamp(1.25rem, 3vw, 3rem) 0.5rem; font-size: clamp(1.6rem, 1.2rem + 1vw, 2.4rem); }
+  .gs__sidebody { flex: 0 1 auto; padding-inline: clamp(1.25rem, 3vw, 3rem); padding-bottom: 1rem; }
+  .gs__next { padding-inline: clamp(1.25rem, 3vw, 3rem); }
+  .gs.is-folded .gs__sidebody { display: block; }
+  .gs__say { font-size: var(--lead); }
+}
+@media (min-width: 90rem) {
+  .gs .opt { min-height: 4.25rem; }
+  .gs { --col: 56rem; }
+  .gs__mock { zoom: 1.25; }
+}
+@media (min-width: 130rem) {
+  .gs .opt { min-height: 5rem; }
+  .gs { --col: 66rem; }
+  .gs__mock { zoom: 1.5; }
+}
+
+/* The left column scrolls as one (choices follow the mock-up) on a desk, on a small phone and on a short screen; only a tall phone pins the choices to the thumb */
+@media (min-width: 50rem), (max-width: 49.99rem) and (max-height: 48rem), (max-height: 32rem) {
+  .gs__play { overflow: auto; overscroll-behavior: contain; display: block; }
+  .gs__main { overflow: visible; }
+  .gs__dock { border-top: 0; background: transparent; padding-top: 0; }
+}
+@media (min-width: 50rem) { .gs__main { padding-top: clamp(1.5rem, 4vh, 3.5rem); } }
+@media (max-height: 32rem) {
+  .gs__main { padding-block: 0.6rem; }
+  .gs__taken { font-size: 1.9rem; }
+  .gs__text .pop__catch { font-size: 2rem; }
+  .gs .stamp { padding-block: 0.35rem; }
+  .gs__title { font-size: 1.4rem; }
+  .gs__say { font-size: 1.0625rem; margin-top: 0.3rem; }
+  .gs__bar { padding-top: 0.3rem; }
+  .gs__ticks { margin-top: 0.3rem; }
+  .gs__name { font-size: 1.15rem; }
+  .gs .mock { margin-top: 0.6rem; }
+}
+@media (max-height: 32rem) and (max-width: 49.99rem) { .gs__side { max-height: 85%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gs, .gs[open] { transition: none; }
+  @starting-style { .gs[open] { opacity: 1; transform: none; } }
+  .gs:not([open]) { transform: none; }
+  .gs__side[data-live], .gs__sum.is-new { animation: none; }
+  .gs-open, .gs__x, .gs .opt, .gs-go, .gs__nextgame { transition: none; }
+  .gs-open:active, .gs__x:active, .gs .opt:active, .gs-go:active { transform: none; }
+}

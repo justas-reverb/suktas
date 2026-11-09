@@ -1,0 +1,286 @@
+---
+/**
+ * The full-screen frame for a Treniruotė game: a native <dialog> opened with showModal() from a button.
+ * Game-agnostic: it reads the page's own steps (section[data-step] with h2, .tr-say, figure.mock, .opts .opt and
+ * the .answers .pop cards, in the same order) and plays them with gameScore.js. Every word of the frame stands here as
+ * text, in the closed dialog; script only writes numbers and moves these words around. Without JavaScript, or
+ * without showModal, the opener stays hidden and the page is the popover version. Nothing is stored; the one
+ * history entry is pushed on open and popped on close. Words: the last block of the game's copy file
+ * (docs/copy/treniruote/diena-su-telefonu.md). Look: design/games-round-1/NOTES.md.
+ */
+import { nb } from '../lib/typo.js';
+import { euros } from '../lib/gameScore.js';
+import '../styles/game-shell.css';
+
+interface Props { name: string; start: number; nextHref: string; }
+const { name, start, nextHref } = Astro.props;
+---
+<div class="gs-start" data-game-start hidden>
+  <button type="button" class="gs-open" data-game-open hidden>Žaisk per visą ekraną</button>
+  <p class="gs-start__note" set:html={nb(`Sąskaita ir sumos išgalvotos. Pradedi su ${euros(start)}, o sukčius kiekviename žingsnyje bando dalį pasiimti.`)} />
+</div>
+
+<dialog class="gs" data-game-shell data-start={start} aria-labelledby="gs-name">
+  <header class="gs__bar">
+    <p class="gs__name" id="gs-name">{nb(name)}</p>
+    <p class="gs__step">Žingsnis <span data-gs-n>1</span> iš <span data-gs-total>1</span></p>
+    <p class="gs__acct"><span class="gs__acctl" data-gs-acctl>Išgalvotoje sąskaitoje</span> <strong class="gs__sum" data-gs-sum>{euros(start)}</strong></p>
+    <button type="button" class="gs__x" data-gs-close>Uždaryk</button>
+    <div class="gs__ticks" data-gs-ticks aria-hidden="true"></div>
+  </header>
+
+  <div class="gs__body" data-gs-body>
+    <div class="gs__play">
+    <div class="gs__main" data-gs-main>
+      <h2 class="gs__title" tabindex="-1" data-gs-title></h2>
+      <p class="gs__say" data-gs-say></p>
+      <div class="gs__mock" data-gs-mock></div>
+    </div>
+    <div class="gs__dock" data-gs-dock></div>
+    </div>
+
+    <aside class="gs__side" data-gs-side aria-labelledby="gs-side-h">
+      <h3 class="gs__sideh" id="gs-side-h"><button type="button" class="gs__handle" data-gs-handle aria-expanded="true">{nb('Ką tuo metu daro jis')}</button></h3>
+      <div class="gs__sidebody" data-gs-sidebody>
+        <p class="gs__empty" data-gs-empty>{nb('Rinkis, ką darytum iš tikrųjų, ir čia pamatysi, ką tuo metu daro sukčius.')}</p>
+        <div class="gs__ans" data-gs-ans hidden>
+          <p class="gs__taken" data-gs-taken-lost hidden><span data-gs-amt></span></p>
+          <p class="gs__taken gs__taken--none" data-gs-taken-none hidden>Sąskaita nepaliesta.</p>
+          <p class="gs__risk" data-gs-risk hidden>{nb('Jis dar nieko negavo, bet už riziką žaidimas atima 100 €.')}</p>
+          <p class="gs__again" data-gs-nochange hidden>{nb('Šis pasirinkimas jau nieko nekeičia: skaičiuojamas pirmas.')}</p>
+          <div class="gs__text" data-gs-text></div>
+        </div>
+      </div>
+      <div class="gs__next" data-gs-nextbar hidden>
+        <button type="button" class="gs-go" data-gs-next></button>
+        <span data-gs-final hidden>Žiūrėk, kiek liko</span>
+      </div>
+    </aside>
+  </div>
+
+  <section class="gs__end" data-gs-end hidden aria-labelledby="gs-end-h">
+    <div class="gs__endin">
+      <h2 id="gs-end-h" tabindex="-1" data-gs-endh>Vakare sąskaitoje liko</h2>
+      <p class="gs__endsum" data-gs-endsum></p>
+      <p class="gs__verdict" data-verdict="all" hidden>Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.</p>
+      <p class="gs__verdict" data-verdict="some" hidden>Sukčiui pavyko ne viskas. Pažiūrėk, kur dingo pinigai: ten jis lauks ir kitą kartą.</p>
+      <p class="gs__verdict" data-verdict="little" hidden>{nb('Šiandien sukčiui sekėsi. Taip nutinka bet kam, todėl ir treniruojamės čia, kur pinigai išgalvoti.')}</p>
+      <div class="gs__lost" data-gs-lost hidden>
+        <h3>Kur dingo pinigai</h3>
+        <ul data-gs-lostlist></ul>
+      </div>
+      <a class="gs__scn" data-gs-scn hidden>Visas scenarijus <span class="vh" data-gs-newtab>(atsidaro naujame lange)</span></a>
+      <div class="gs__endact">
+        <button type="button" class="gs-go" data-gs-again>Žaisk dar kartą</button>
+        <a class="gs__nextgame" href={nextHref}>{nb('Kitas žaidimas: Ar atskirsi netikrą banko reklamą?')}</a>
+      </div>
+    </div>
+  </section>
+
+  <p class="vh" role="status" data-gs-live></p>
+</dialog>
+
+<script>
+  import { newRun, choose, ending, euros } from '../lib/gameScore.js';
+
+  const dlg = document.querySelector<HTMLDialogElement>('dialog[data-game-shell]');
+  const opener = document.querySelector<HTMLButtonElement>('[data-game-open]');
+  const steps = [...document.querySelectorAll<HTMLElement>('section[data-step]')];
+  if (dlg && opener && typeof dlg.showModal === 'function' && steps.length) init(dlg, opener);
+
+  function init(dlg: HTMLDialogElement, opener: HTMLButtonElement) {
+    const $ = <T extends HTMLElement>(s: string) => dlg.querySelector<T>(`[${s}]`)!;
+    const start = Number(dlg.dataset.start);
+    const N = steps.length;
+    let run = newRun(start);
+    let idx = 0;
+    let pushed = false;
+
+    const body = $('data-gs-body'), end = $('data-gs-end');
+    const title = $('data-gs-title'), say = $('data-gs-say'), mock = $('data-gs-mock'), dock = $('data-gs-dock');
+    const side = $('data-gs-side'), handle = $<HTMLButtonElement>('data-gs-handle'), sidebody = $('data-gs-sidebody');
+    const empty = $('data-gs-empty'), ans = $('data-gs-ans'), text = $('data-gs-text');
+    const lost = $('data-gs-taken-lost'), amt = $('data-gs-amt'), none = $('data-gs-taken-none');
+    const risk = $('data-gs-risk'), nochange = $('data-gs-nochange');
+    const nextBar = $('data-gs-nextbar'), nextBtn = $<HTMLButtonElement>('data-gs-next'), finalLbl = $('data-gs-final');
+    const sum = $('data-gs-sum'), acctl = $('data-gs-acctl'), live = $('data-gs-live');
+    const ticks = $('data-gs-ticks');
+    const newTab = $('data-gs-newtab'); // the hidden words that say a link opens a new tab, cloned onto each such link
+    $('data-gs-n').textContent = '1';
+    $('data-gs-total').textContent = String(N);
+
+    // The two-column layout (mock-up left, his side right) from a landscape-sized screen; below it the panel is a sheet.
+    const wide = matchMedia('(min-width: 50rem)');
+    const layout = () => {
+      handle.disabled = wide.matches;
+      if (wide.matches) handle.removeAttribute('aria-expanded');
+      else handle.setAttribute('aria-expanded', String(!dlg.classList.contains('is-folded')));
+    };
+    // The room the folded sheet takes is its measured height, so no choice is ever left under it (also at large text).
+    const room = () => dlg.style.setProperty('--gs-room', dlg.classList.contains('is-folded') ? `${side.offsetHeight}px` : '0px');
+    new ResizeObserver(room).observe(side);
+    wide.addEventListener('change', () => { if (wide.matches) dlg.classList.remove('is-folded'); layout(); room(); });
+
+    // A copy for the dialog: no ids, no popover wiring, no autofocus, and nothing the page's TrainScore would count.
+    const clean = <T extends Element>(el: T): T => {
+      for (const n of [el, ...el.querySelectorAll('*')]) {
+        n.removeAttribute('id');
+        n.removeAttribute('popovertarget');
+        n.removeAttribute('popovertargetaction');
+        n.removeAttribute('autofocus');
+        if (n.hasAttribute('data-round')) { n.setAttribute('data-gsround', n.getAttribute('data-round')!); n.removeAttribute('data-round'); }
+      }
+      return el;
+    };
+
+    const setSum = (n: number, flash = false) => {
+      sum.textContent = euros(n);
+      if (flash) { sum.classList.remove('is-new'); void sum.offsetWidth; sum.classList.add('is-new'); }
+    };
+
+    const renderTicks = () => {
+      ticks.textContent = '';
+      for (let i = 0; i < N; i++) {
+        const t = document.createElement('i');
+        t.className = i < idx ? 'is-done' : i === idx ? 'is-now' : '';
+        ticks.append(t);
+      }
+    };
+
+    function showStep(i: number) {
+      idx = i;
+      const s = steps[i];
+      const stepId = s.dataset.step!;
+      end.hidden = true; body.hidden = false;
+      $('data-gs-n').textContent = String(i + 1);
+      renderTicks();
+      title.innerHTML = s.querySelector('h2')!.innerHTML;
+      say.innerHTML = s.querySelector('.tr-say')!.innerHTML;
+      const fig = clean(s.querySelector<HTMLElement>('figure.mock')!.cloneNode(true) as HTMLElement);
+      fig.querySelectorAll('.opts').forEach((o) => o.remove());
+      mock.replaceChildren(fig);
+      dock.replaceChildren();
+      s.querySelectorAll<HTMLElement>('.opts .opt').forEach((b, k) => {
+        const c = clean(b.cloneNode(true) as HTMLButtonElement);
+        c.addEventListener('click', () => pick(k, c));
+        dock.append(c);
+      });
+      // The panel starts empty; on a phone it is not drawn until the first choice.
+      side.removeAttribute('data-live'); dlg.classList.remove('is-folded');
+      ans.hidden = true; empty.hidden = false; nextBar.hidden = true;
+      dlg.classList.remove('is-live');
+      layout();
+      room();
+      dlg.querySelector('.gs__play')!.scrollTop = 0; dlg.querySelector('.gs__main')!.scrollTop = 0;
+      title.focus({ preventScroll: true });
+    }
+
+    function pick(k: number, btn: HTMLElement) {
+      const s = steps[idx];
+      const stepId = s.dataset.step!;
+      const cost = Number(btn.dataset.cost);
+      const first = choose(run, stepId, cost);
+      const pop = s.querySelectorAll<HTMLElement>('.answers .pop')[k];
+      dock.querySelectorAll('.opt').forEach((o, j) => { if (j === k) o.setAttribute('aria-current', 'true'); else o.removeAttribute('aria-current'); });
+
+      // The sum taken (a true minus) or the untouched account, and the note when this was not the counted choice.
+      lost.hidden = none.hidden = risk.hidden = nochange.hidden = true;
+      if (first) {
+        if (cost > 0) { lost.hidden = false; amt.textContent = `−${euros(cost)}`; } else none.hidden = false;
+        if (btn.hasAttribute('data-risky')) risk.hidden = false;
+        setSum(run.left, cost > 0);
+        live.textContent = `${acctl.textContent} ${euros(run.left)}`;
+      } else {
+        nochange.hidden = false;
+      }
+      text.replaceChildren(...[...pop.children].filter((c) => !c.classList.contains('pop__actions')).map((c) => {
+        const copy = clean(c.cloneNode(true) as HTMLElement);
+        if (copy.tagName === 'H3') { const h = document.createElement('h4'); h.className = copy.className; h.innerHTML = copy.innerHTML; h.tabIndex = -1; h.dataset.gsAnsh = ''; return h; }
+        copy.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => { a.target = '_blank'; a.rel = 'noopener'; a.append(' ', newTab.cloneNode(true)); });
+        return copy;
+      }));
+      empty.hidden = true; ans.hidden = false;
+      side.setAttribute('data-live', '');
+      dlg.classList.remove('is-folded');
+      dlg.classList.add('is-live');
+      layout();
+      room();
+
+      // The next button appears only once the step has been answered, with the step's own label.
+      const link = pop.querySelector<HTMLAnchorElement>('.pop__actions a[href^="#"]') ?? s.querySelector<HTMLAnchorElement>('.pop__actions a[href^="#"]');
+      const last = idx === N - 1;
+      nextBtn.textContent = last ? finalLbl.textContent : link?.textContent ?? finalLbl.textContent;
+      nextBar.hidden = !run.picks.has(stepId);
+
+      sidebody.scrollTop = 0;
+      text.querySelector<HTMLElement>('[data-gs-ansh]')?.focus({ preventScroll: true });
+    }
+
+    function next() {
+      if (!run.picks.has(steps[idx].dataset.step!)) return;
+      if (idx < N - 1) showStep(idx + 1); else showEnd();
+    }
+
+    function showEnd() {
+      body.hidden = true; end.hidden = false;
+      ticks.querySelectorAll('i').forEach((t) => { t.className = 'is-done'; });
+      $('data-gs-endsum').textContent = euros(run.left);
+      const verdict = ending(run);
+      dlg.querySelectorAll<HTMLElement>('[data-verdict]').forEach((p) => { p.hidden = p.dataset.verdict !== verdict; });
+      const list = $('data-gs-lostlist'), box = $('data-gs-lost'), proto = $<HTMLAnchorElement>('data-gs-scn');
+      list.replaceChildren();
+      for (const s of steps) {
+        const cost = run.picks.get(s.dataset.step!) ?? 0;
+        if (cost <= 0) continue;
+        const li = document.createElement('li');
+        const t = document.createElement('span'); t.className = 'gs__lt'; t.textContent = s.querySelector('h2')!.textContent;
+        const m = document.createElement('strong'); m.className = 'gs__lm'; m.textContent = `−${euros(cost)}`;
+        const a = proto.cloneNode(true) as HTMLAnchorElement;
+        a.removeAttribute('data-gs-scn'); a.hidden = false; a.href = s.dataset.scenario!; a.target = '_blank'; a.rel = 'noopener';
+        li.append(t, m, a);
+        list.append(li);
+      }
+      box.hidden = list.children.length === 0;
+      end.scrollTop = 0;
+      $('data-gs-endh').focus({ preventScroll: true });
+    }
+
+    function again() {
+      run = newRun(start);
+      setSum(start);
+      showStep(0);
+    }
+
+    // Open and close: one history entry, so Back closes and never needs two presses.
+    function open() {
+      if (dlg.open) return;
+      dlg.showModal();
+      history.pushState({ gameShell: 1 }, '');
+      pushed = true;
+      if (!end.hidden) $('data-gs-endh').focus({ preventScroll: true });
+      else (text.querySelector<HTMLElement>('[data-gs-ansh]') ?? title).focus({ preventScroll: true });
+    }
+    function close() {
+      if (!dlg.open) return;
+      if (pushed) history.back(); else dlg.close(); // popstate then closes it
+    }
+    addEventListener('popstate', () => { pushed = false; if (dlg.open) dlg.close(); });
+    dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+    dlg.addEventListener('close', () => { if (pushed) { pushed = false; history.back(); } });
+
+    opener.addEventListener('click', open);
+    $('data-gs-close').addEventListener('click', close);
+    nextBtn.addEventListener('click', next);
+    $('data-gs-again').addEventListener('click', again);
+    handle.addEventListener('click', () => {
+      if (wide.matches) return;
+      const folded = dlg.classList.toggle('is-folded');
+      handle.setAttribute('aria-expanded', String(!folded));
+      room();
+    });
+
+    showStep(0);
+    opener.hidden = false;
+    document.querySelector<HTMLElement>('[data-game-start]')!.hidden = false;
+  }
+</script>

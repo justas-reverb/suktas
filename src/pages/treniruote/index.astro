@@ -1,7 +1,7 @@
 ---
 /**
  * Treniruotė: the shelf of safe scam games. The copy is docs/copy/treniruote/index.md, word for word.
- * Two games; the header has no item for them yet.
+ * Three games; the header has no item for them yet.
  */
 import Page from '../../layouts/Page.astro';
 import ArtBand from '../../components/ArtBand.astro';
@@ -42,6 +42,13 @@ import '../../styles/treniruote.css';
         <div class="game__text">
           <h3><a href="/treniruote/smart-id/">{nb('Ką iš tikrųjų tvirtini per „Smart-ID“?')}</a></h3>
           <p set:html={nbHtml('skambutis iš „banko“ ir trys patvirtinimo užklausos: prisijungimas, mokėjimas ir „pinigams gauti“.')} />
+        </div>
+      </li>
+      <li class="game">
+        <div class="game__thumb" aria-hidden="true"><div><i class="game__call"></i><i></i><i class="game__q"></i></div></div>
+        <div class="game__text">
+          <h3><a href="/treniruote/diena-su-telefonu/">{nb('Viena diena su telefonu: kur laukia sukčius?')}</a></h3>
+          <p set:html={nbHtml('rytas, pietūs, popietė ir vakaras: praleistas skambutis, draugės žinutė, SMS apie stovėjimą ir QR lipdukas.')} />
         </div>
       </li>
     </ul>
