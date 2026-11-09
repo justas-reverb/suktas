@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>paint the snake</title>
+<style>
+  html, body { margin: 0; background: transparent; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  /* The mark: a snake bent into an S, its tongue out, in navy and black. Painted by one fragment shader,
+     at the size it is shown at, with the site's light (a low sun from the upper right, here a pale,
+     cool rim and glints on the scales, and a periwinkle bounce from the snow on the underside), so it
+     is a sibling of the print and the hero. Never loaded by the site: tools/paint-art.mjs opens this page, calls
+     window.paintSnake(job) twice (colour, then opacity), and joins the two screenshots into one PNG.
+
+     Everything is in pixels of the target picture, y down. The body is a chain of round cones
+     (a polyline with a radius at each point, the head and the tail included), so the same
+     distance gives the outline and the tube's normal. Each size gets its own numbers (job.hint):
+     stroke width, head size, how long the tongue is and how wide it is, so the S, the head and the
+     tongue are whole pixels at 24 and 32 and are not a big picture made small. */
+
+  const VERT = `#version 300 es
+  void main() {
+    vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
+    gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+  }`;
+
+  const FRAG = `#version 300 es
+  precision highp float;
+  precision highp int;
+  const int MAXN = 120;
+  uniform vec2  uRes;
+  uniform vec3  uSp[MAXN];     // x, y (px, y down), radius (px); head first, tail last
+  uniform int   uN;
+  uniform vec4  uTg;           // tongue: base x, base y, direction (rad), length (px)
+  uniform vec4  uTg2;          // fork starts at (fraction of the length), prong spread (rad), half width (px), bend (rad)
+  uniform vec4  uEye;          // centre x, y (px), radius (px), lid (0 none .. 1 half shut)
+  uniform vec4  uSty;          // detail 0..1, twist amount, rim light, gloss
+  uniform vec4  uPal;          // how far up the navy ramp the diffuse light may take the skin (0..1), the sheen's and glints' strength, scale size (1 = default), scale contrast (1 = default)
+  uniform vec4  uGroundA;      // opaque ground, top colour (sRGB), a = 1 when there is one
+  uniform vec3  uGroundB;      // its bottom colour
+  uniform float uOut;          // 0: colour, 1: opacity as grey
+  uniform float uSS;           // samples per side
+  uniform float uLen;          // length of the whole chain (px)
+  uniform vec4  uMouth;        // mouth line: on (0/1), unused, unused, unused
+  uniform vec3  uTongueCol;    // the tongue's colour (sRGB)
+  uniform vec4  uHalo;         // a pale halo outside the silhouette, for dark grounds: width (px), falloff exponent, opacity at the edge, unused
+  uniform vec3  uHaloCol;      // its colour (sRGB)
+  out vec4 o;
+
+  float hash12(vec2 p) {
+    vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.x + p3.y) * p3.z);
+  }
+  vec3 srgb(vec3 c) { return mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(0.0031308, c)); }
+
+  // the body: nearest point on the chain of round cones
+  float bodyAt(vec2 p, out float s, out float r, out vec2 c, out float side) {
+    float best = 1e9;
+    s = 0.0; r = 1.0; c = p; side = 1.0;
+    for (int i = 0; i < MAXN - 1; i++) {
+      if (i >= uN - 1) break;
+      vec3 a = uSp[i];
+      vec3 b = uSp[i + 1];
+      vec2 pa = p - a.xy;
+      vec2 ba = b.xy - a.xy;
+      float h = clamp(dot(pa, ba) / max(dot(ba, ba), 1e-6), 0.0, 1.0);
+      vec2 q = a.xy + ba * h;
+      float rr = mix(a.z, b.z, h);
+      float d = length(p - q) - rr;
+      if (d < best) {
+        best = d;
+        s = (float(i) + h) / float(uN - 1);
+        r = rr;
+        c = q;
+        side = sign(ba.x * pa.y - ba.y * pa.x);
+      }
+    }
+    return best;
+  }
+
+  float capsule(vec2 p, vec2 a, vec2 b, float ra, float rb) {
+    vec2 pa = p - a, ba = b - a;
+    float h = clamp(dot(pa, ba) / max(dot(ba, ba), 1e-6), 0.0, 1.0);
+    return length(pa - ba * h) - mix(ra, rb, h);
+  }
+
+  // the forked tongue: a stalk and two prongs, a little curved
+  float tongueAt(vec2 p, out float along) {
+    float L = uTg.w;
+    float ang = uTg.z;
+    vec2 dir = vec2(cos(ang), sin(ang));
+    float Ls = L * uTg2.x;
+    float w = uTg2.z;
+    vec2 base = uTg.xy;
+    vec2 fork = base + dir * Ls;
+    float d = capsule(p, base, fork, w, w * 0.92);
+    float Lp = L - Ls;
+    float sp = uTg2.y;
+    float bend = uTg2.w;
+    vec2 d1 = vec2(cos(ang - sp + bend), sin(ang - sp + bend));
+    vec2 d2 = vec2(cos(ang + sp + bend), sin(ang + sp + bend));
+    float t1 = capsule(p, fork, fork + d1 * Lp, w * 0.92, w * 0.55);
+    float t2 = capsule(p, fork, fork + d2 * Lp, w * 0.92, w * 0.55);
+    along = clamp(dot(p - base, dir) / L, 0.0, 1.0);
+    return min(d, min(t1, t2));
+  }
+
+  // palette: navy and black. Diffuse light only takes the skin up to a bright navy; everything paler
+  // (the rim, the glints, the eye) is light on the surface, added below
+  vec3 ramp(float I) {
+    vec3 c0 = vec3(0.007, 0.009, 0.026);    // black, with a blue cast
+    vec3 c1 = vec3(0.016, 0.024, 0.078);    // deep navy-black
+    vec3 c2 = vec3(0.036, 0.058, 0.185);    // dark navy
+    vec3 c3 = vec3(0.070, 0.112, 0.320);    // navy
+    vec3 c4 = vec3(0.110, 0.170, 0.440);    // lit navy: the most the diffuse light reaches
+    vec3 c = mix(c0, c1, smoothstep(0.00, 0.30, I));
+    c = mix(c, c2, smoothstep(0.26, 0.58, I));
+    c = mix(c, c3, smoothstep(0.54, 0.84, I));
+    c = mix(c, c4, smoothstep(0.82, 1.00, I));
+    return c;
+  }
+
+  // one sample: rgb and coverage (0 or 1)
+  vec4 sampleAt(vec2 p) {
+    float s, r, side; vec2 c;
+    float db = bodyAt(p, s, r, c, side);
+    float along;
+    float dt = tongueAt(p, along);
+    float detail = uSty.x;
+    if (db < 0.0) {
+      vec2 off = p - c;
+      float m = length(off);
+      float u = clamp(m / max(r, 1e-3), 0.0, 1.0);
+      vec2 dir = m > 1e-4 ? off / m : vec2(0.0, -1.0);
+      vec3 n = vec3(dir * u, sqrt(max(0.0, 1.0 - u * u)));
+      vec3 L = normalize(vec3(0.46, -0.60, 0.66));
+      float ndl = dot(n, L);
+      float I = clamp((ndl + 0.30) / 1.30, 0.0, 1.0);
+      // a twisted look: bands that wind round the tube like the strands of a rope, and scales that
+      // overlap towards the tail; each only where there are pixels to carry it
+      float th = asin(clamp(u * side, -1.0, 1.0));
+      float sArc = s * uLen;
+      float tw = uSty.y;
+      // scales only where the body is wide enough to carry them: the tail's last stretch stays smooth
+      float scaleAmt = clamp((detail - 0.55) * 2.2, 0.0, 1.0) * smoothstep(2.6, 5.5, r);
+      float band = 0.0;
+      if (tw > 0.0) {
+        float q = sArc / uSty.w + th * 0.55;
+        band = smoothstep(0.30, 0.70, abs(fract(q) - 0.5) * 2.0);
+        I = clamp(I - tw * band * 0.20, 0.0, 1.0);
+      }
+      float specMod = 1.0;
+      if (scaleAmt > 0.0) {
+        float cellL = max(r * 0.62, 2.0) * uPal.z;
+        float cellW = max(r * 0.52, 2.0) * uPal.z;
+        vec2 sc = vec2(sArc / cellL, th * r / cellW);
+        float row = floor(sc.x);
+        vec2 f = vec2(fract(sc.x), fract(sc.y + 0.5 * mod(row, 2.0)));
+        // each scale is a rounded tip pointing to the tail, tucked under the one before it
+        float tip = length(vec2((f.y - 0.5) * 1.8, f.x - 0.30));
+        float inside = 1.0 - smoothstep(0.54, 0.68, tip);
+        float tucked = mix(0.74, 1.0, smoothstep(0.0, 0.42, f.x));
+        float lit = mix(0.78, 1.0, inside) * tucked * (1.0 + 0.10 * (1.0 - tip));
+        I = clamp(I * mix(1.0, lit, scaleAmt * uPal.w), 0.0, 1.0);
+        // the shine breaks up along the scales: each catches it on its own
+        specMod = mix(1.0, mix(0.25, 1.0, inside) * tucked, scaleAmt * uPal.w);
+      }
+      I = min(I, uPal.x);
+      vec3 col = ramp(I);
+      // bounce from the snow, on the shaded underside
+      vec3 B = normalize(vec3(-0.50, 0.62, 0.38));
+      float bounce = pow(clamp(dot(n, B), 0.0, 1.0), 1.5) * (1.0 - n.z) * uSty.z;
+      col += vec3(0.30, 0.38, 0.80) * bounce * 0.60;
+      // the sun's rim on the lit edge
+      float rim = pow(1.0 - n.z, 2.6) * clamp(dot(normalize(n.xy + 1e-5), L.xy / length(L.xy)), 0.0, 1.0);
+      col += vec3(0.66, 0.78, 1.00) * rim * 1.50 * uSty.z;
+      // gloss
+      vec3 H = normalize(L + vec3(0.0, 0.0, 1.0));
+      float sp = pow(clamp(dot(n, H), 0.0, 1.0), 34.0);
+      // a periwinkle sheen on the smooth sizes, so it reads as lit navy and not as a gap in the stroke; ice-white glints on the scales
+      vec3 specCol = mix(vec3(0.50, 0.64, 1.00), vec3(0.86, 0.93, 1.00), clamp(scaleAmt * 1.5, 0.0, 1.0));
+      col += specCol * sp * 1.20 * uSty.z * uPal.y * specMod;
+      // the eye catches the light: where there are few pixels, a pale dot (with a dark slit once it is big
+      // enough to hold one); where there are many, a pale iris with a slit pupil under a half-closed lid
+      float ed = length(p - uEye.xy);
+      float er = uEye.z;
+      if (er > 0.0 && ed < er) {
+        if (er < 3.6) {
+          col = vec3(0.90, 0.94, 1.00);
+          if (er >= 2.2) {
+            float slit = (1.0 - smoothstep(er * 0.10, er * 0.22, abs(p.x - uEye.x))) * (1.0 - smoothstep(er * 0.55, er * 0.80, abs(p.y - uEye.y)));
+            col = mix(col, vec3(0.02, 0.03, 0.09), slit * 0.9);
+          }
+        } else {
+          vec3 skin = col;
+          vec3 iris = vec3(0.78, 0.86, 1.00);
+          float pupil = smoothstep(er * 0.46, er * 0.34, abs(p.x - uEye.x) * 1.9 + abs(p.y - uEye.y) * 0.22);
+          col = mix(iris, vec3(0.02, 0.03, 0.09), pupil);
+          float lid = uEye.w;
+          if (lid > 0.0 && (p.y - uEye.y) < -er * (1.0 - 2.0 * lid) + (p.x - uEye.x) * 0.22 * lid) col = skin * vec3(0.60, 0.62, 0.75);
+          if (ed > er * 0.78) col = mix(col, vec3(0.03, 0.04, 0.12), 0.70);
+        }
+      }
+      return vec4(col, 1.0);
+    }
+    if (dt < 0.0) return vec4(uTongueCol, 1.0);
+    // outside: nothing, or a pale halo that lets the dark figure be read on a dark ground
+    if (uHalo.z > 0.0) {
+      float d = min(db, dt);
+      float a = uHalo.z * pow(clamp(1.0 - d / uHalo.x, 0.0, 1.0), uHalo.y);
+      if (a > 0.0) return vec4(uHaloCol, a);
+    }
+    return vec4(0.0);
+  }
+
+  void main() {
+    vec2 frag = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);
+    vec4 acc = vec4(0.0);
+    float n = uSS;
+    for (int j = 0; j < 8; j++) {
+      for (int i = 0; i < 8; i++) {
+        if (float(i) >= n || float(j) >= n) continue;
+        vec2 p = frag + (vec2(float(i), float(j)) + 0.5) / n;
+        vec4 sm = sampleAt(p);
+        acc += vec4(sm.rgb * sm.a, sm.a);
+      }
+    }
+    float cov = acc.a / (n * n);
+    vec3 col = acc.a > 0.0 ? acc.rgb / acc.a : vec3(0.0);
+    if (uGroundA.a > 0.5) {
+      vec3 g = mix(uGroundA.rgb, uGroundB, clamp(frag.y / uRes.y, 0.0, 1.0));
+      col = mix(g, col, cov);
+      cov = 1.0;
+    }
+    if (uOut > 0.5) { o = vec4(vec3(cov), 1.0); return; }
+    float gr = hash12(gl_FragCoord.xy) - 0.5;
+    col = clamp(col + gr * 0.006 * uSty.x, 0.0, 1.0);
+    o = vec4(col, 1.0);
+  }`;
+
+  /* ---- geometry, in pixels -------------------------------------------------------------- */
+
+  // centripetal Catmull-Rom through the control points, resampled at equal arc length
+  function spline(pts, count) {
+    const P = [pts[0].map((v, i) => 2 * v - pts[1][i]), ...pts, pts[pts.length - 1].map((v, i) => 2 * v - pts[pts.length - 2][i])];
+    const dense = [];
+    for (let i = 1; i < P.length - 2; i++) {
+      const [p0, p1, p2, p3] = [P[i - 1], P[i], P[i + 1], P[i + 2]];
+      const d = (a, b) => Math.pow(Math.hypot(a[0] - b[0], a[1] - b[1]), 0.5);
+      const t0 = 0, t1 = t0 + d(p0, p1), t2 = t1 + d(p1, p2), t3 = t2 + d(p2, p3);
+      for (let k = 0; k < 40; k++) {
+        const t = t1 + ((t2 - t1) * k) / 40;
+        const A1 = p0.map((v, j) => ((t1 - t) / (t1 - t0)) * v + ((t - t0) / (t1 - t0)) * p1[j]);
+        const A2 = p1.map((v, j) => ((t2 - t) / (t2 - t1)) * v + ((t - t1) / (t2 - t1)) * p2[j]);
+        const A3 = p2.map((v, j) => ((t3 - t) / (t3 - t2)) * v + ((t - t2) / (t3 - t2)) * p3[j]);
+        const B1 = A1.map((v, j) => ((t2 - t) / (t2 - t0)) * v + ((t - t0) / (t2 - t0)) * A2[j]);
+        const B2 = A2.map((v, j) => ((t3 - t) / (t3 - t1)) * v + ((t - t1) / (t3 - t1)) * A3[j]);
+        dense.push(B1.map((v, j) => ((t2 - t) / (t2 - t1)) * v + ((t - t1) / (t2 - t1)) * B2[j]));
+      }
+    }
+    dense.push(pts[pts.length - 1]);
+    const len = [0];
+    for (let i = 1; i < dense.length; i++) len.push(len[i - 1] + Math.hypot(dense[i][0] - dense[i - 1][0], dense[i][1] - dense[i - 1][1]));
+    const total = len[len.length - 1];
+    const out = [];
+    let j = 0;
+    for (let k = 0; k < count; k++) {
+      const target = (total * k) / (count - 1);
+      while (j < len.length - 2 && len[j + 1] < target) j++;
+      const f = (target - len[j]) / Math.max(1e-9, len[j + 1] - len[j]);
+      out.push([dense[j][0] + (dense[j + 1][0] - dense[j][0]) * f, dense[j][1] + (dense[j + 1][1] - dense[j][1]) * f]);
+    }
+    return { pts: out, length: total };
+  }
+
+  // a smooth curve through the keyframes (monotone cubic, so it has no plateaus and no overshoot)
+  const keyframes = (kf, x) => {
+    const n = kf.length;
+    if (x <= kf[0][0]) return kf[0][1];
+    if (x >= kf[n - 1][0]) return kf[n - 1][1];
+    const dx = [], dy = [], m = [];
+    for (let i = 0; i < n - 1; i++) { dx.push(kf[i + 1][0] - kf[i][0]); dy.push((kf[i + 1][1] - kf[i][1]) / dx[i]); }
+    m.push(dy[0]);
+    for (let i = 1; i < n - 1; i++) m.push(dy[i - 1] * dy[i] <= 0 ? 0 : (dy[i - 1] + dy[i]) / 2);
+    m.push(dy[n - 2]);
+    for (let i = 0; i < n - 1; i++) {
+      if (dy[i] === 0) { m[i] = 0; m[i + 1] = 0; continue; }
+      const a = m[i] / dy[i], b = m[i + 1] / dy[i], h = Math.hypot(a, b);
+      if (h > 3) { m[i] = (3 * a * dy[i]) / h; m[i + 1] = (3 * b * dy[i]) / h; }
+    }
+    let i = 0;
+    while (x > kf[i + 1][0]) i++;
+    const t = (x - kf[i][0]) / dx[i], t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * kf[i][1] + (t3 - 2 * t2 + t) * dx[i] * m[i] + (-2 * t3 + 3 * t2) * kf[i + 1][1] + (t3 - t2) * dx[i] * m[i + 1];
+  };
+
+  /* job.geo: the unit S (control points from the neck to the tail, x right, y down, the S spanning
+     y in -1..1) and the numbers that place it: sc (px per unit), cx, cy (px), R (the body's
+     half width, px), head (length in R), jaw (width of the head in R), neck, taper, lift (head
+     angle, rad), tongue: [length in R, stalk fraction, spread rad, half width px, tilt rad],
+     eye: [along the head in R, off the axis in R, radius px, lid]. */
+  function build(job) {
+    const g = job.geo;
+    const sc = g.sc;
+    const ctrl = g.pts.map(([x, y]) => [g.cx + x * sc, g.cy + y * sc]);
+    const body = spline(ctrl, 84);
+    const R = g.R;
+    // the head grows out of the neck end, along the spine's tangent there, turned by `lift`
+    const n0 = body.pts[0], n1 = body.pts[3];
+    let hx = n0[0] - n1[0], hy = n0[1] - n1[1];
+    const hl = Math.hypot(hx, hy);
+    hx /= hl; hy /= hl;
+    const lift = g.lift || 0;
+    const hdx = hx * Math.cos(lift) - hy * Math.sin(lift);
+    const hdy = hx * Math.sin(lift) + hy * Math.cos(lift);
+    const headLen = g.head * R;
+    const headPts = [];
+    const HP = 22;
+    for (let k = HP; k >= 1; k--) {
+      const f = k / HP;
+      // the head's axis eases from the neck's direction into the lifted one
+      const e = f * f * (3 - 2 * f);
+      const dx = hx + (hdx - hx) * e, dy = hy + (hdy - hy) * e;
+      const dl = Math.hypot(dx, dy);
+      headPts.push([n0[0] + (dx / dl) * headLen * f, n0[1] + (dy / dl) * headLen * f]);
+    }
+    const all = [...headPts, ...body.pts];
+    // distance from the snout, for the radius profile
+    const dist = [0];
+    for (let i = 1; i < all.length; i++) dist.push(dist[i - 1] + Math.hypot(all[i][0] - all[i - 1][0], all[i][1] - all[i - 1][1]));
+    const total = dist[dist.length - 1];
+    const jaw = g.jaw, neck = g.neck, taper = g.taper;
+    const prof = [
+      [0, 0.50],
+      [headLen * 0.28, 0.80],
+      [headLen * 0.62, 0.5 * (1.0 + jaw)],
+      [headLen * 0.86, jaw],
+      [headLen * 1.00, neck],
+      [headLen + 3.5 * R, neck * 0.5 + 0.5],
+      [headLen + 7 * R, 1.0],
+      [total * 0.62, 1.0],
+      [total * 0.86, 0.5],
+      [total, taper],
+    ];
+    const sp = all.map((p, i) => [p[0], p[1], R * keyframes(prof, dist[i])]);
+    // head.dx, head.dy: the way the snout points (from the neck to the nose)
+    return { sp, total, head: { x: all[0][0], y: all[0][1], dx: all[0][0] - all[1][0], dy: all[0][1] - all[1][1] }, headLen, R, dist, all };
+  }
+
+  // the box that holds the snake, the head and the tongue's prongs, for one set of numbers
+  function extent(job) {
+    const m = build(job);
+    const t = job.geo.tongue;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    const add = (x, y, r) => { x0 = Math.min(x0, x - r); x1 = Math.max(x1, x + r); y0 = Math.min(y0, y - r); y1 = Math.max(y1, y + r); };
+    for (const p of m.sp) add(p[0], p[1], p[2]);
+    const hd = Math.atan2(m.head.dy, m.head.dx);
+    const tip = [m.head.x + Math.cos(hd) * m.R * 0.45, m.head.y + Math.sin(hd) * m.R * 0.45];
+    const base = [tip[0] - Math.cos(hd) * m.R * 0.5, tip[1] - Math.sin(hd) * m.R * 0.5];
+    const L = t[0] * m.R + m.R * 0.5, ang = hd + t[4], Ls = L * t[1], Lp = L - Ls, w = t[3];
+    const fork = [base[0] + Math.cos(ang) * Ls, base[1] + Math.sin(ang) * Ls];
+    for (const sg of [-1, 1]) add(fork[0] + Math.cos(ang + sg * t[2] + (t[5] || 0)) * Lp, fork[1] + Math.sin(ang + sg * t[2] + (t[5] || 0)) * Lp, w * 0.55);
+    return { x0, y0, x1, y1 };
+  }
+
+  // Place the S so that the whole figure fills the picture, less a margin, centred. The numbers
+  // that stay as they are (the stroke, the head, the tongue) are in pixels; only the spine's size
+  // is solved for, because every extent is a straight line of it.
+  function fit(job) {
+    const f = job.fit;
+    const trial = (sc) => extent({ ...job, geo: { ...job.geo, sc, cx: 0, cy: 0 } });
+    const a = trial(100), b = trial(200);
+    const W = job.w - 2 * f.margin - (f.padX || 0), H = job.h - 2 * f.margin - (f.padY || 0);
+    const wa = a.x1 - a.x0, wb = b.x1 - b.x0, ha = a.y1 - a.y0, hb = b.y1 - b.y0;
+    const bw = (wb - wa) / 100, bh = (hb - ha) / 100;
+    const sc = Math.min((W - (wa - bw * 100)) / bw, (H - (ha - bh * 100)) / bh);
+    const e = trial(sc);
+    const cx = job.w / 2 - (e.x0 + e.x1) / 2 + (f.dx || 0);
+    const cy = job.h / 2 - (e.y0 + e.y1) / 2 + (f.dy || 0);
+    return { ...job, geo: { ...job.geo, sc, cx, cy } };
+  }
+
+  function mk(gl, type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+
+  let gl = null, prog = null, loc = {};
+  function ensure(c) {
+    if (gl) return;
+    gl = c.getContext('webgl2', { alpha: false, antialias: false, preserveDrawingBuffer: false });
+    if (!gl) throw new Error('no webgl2');
+    prog = gl.createProgram();
+    gl.attachShader(prog, mk(gl, gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, mk(gl, gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+    gl.bindVertexArray(gl.createVertexArray());
+    for (const n of ['uRes', 'uSp', 'uN', 'uTg', 'uTg2', 'uEye', 'uSty', 'uPal', 'uGroundA', 'uGroundB', 'uOut', 'uSS', 'uMouth', 'uLen', 'uTongueCol', 'uHalo', 'uHaloCol']) loc[n] = gl.getUniformLocation(prog, n);
+  }
+
+  const lin = (hex) => { const n = parseInt(hex.slice(1), 16); return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]; };
+
+  window.paintSnake = (job0) => {
+    const job = job0.fit ? fit(job0) : job0;
+    const c = document.getElementById('c');
+    c.width = job.w;
+    c.height = job.h;
+    ensure(c);
+    gl.viewport(0, 0, job.w, job.h);
+    const m = build(job);
+    const g = job.geo;
+    const flat = new Float32Array(120 * 3);
+    m.sp.forEach((p, i) => flat.set(p, i * 3));
+    gl.uniform2f(loc.uRes, job.w, job.h);
+    gl.uniform3fv(loc.uSp, flat);
+    gl.uniform1i(loc.uN, m.sp.length);
+    // the tongue starts at the snout tip and leaves along the head's axis, tilted up
+    const hd = Math.atan2(m.head.dy, m.head.dx);
+    const t = g.tongue;
+    const tipX = m.head.x + Math.cos(hd) * m.R * 0.45;
+    const tipY = m.head.y + Math.sin(hd) * m.R * 0.45;
+    gl.uniform4f(loc.uTg, tipX - Math.cos(hd) * m.R * 0.5, tipY - Math.sin(hd) * m.R * 0.5, hd + t[4], t[0] * m.R + m.R * 0.5);
+    gl.uniform4f(loc.uTg2, t[1], t[2], t[3], t[5] || 0);
+    // the eye sits on the upper side of the head
+    const e = g.eye;
+    const nx = -Math.sin(hd), ny = Math.cos(hd);
+    const sgn = ny < 0 ? 1 : -1;
+    const ex = m.head.x - Math.cos(hd) * e[0] * m.R + nx * sgn * e[1] * m.R;
+    const ey = m.head.y - Math.sin(hd) * e[0] * m.R + ny * sgn * e[1] * m.R;
+    gl.uniform4f(loc.uEye, ex, ey, e[2], e[3]);
+    const s = job.style || {};
+    gl.uniform4f(loc.uSty, s.detail ?? 0, s.twist ?? 0, s.rim ?? 1, s.pitch ?? (m.R * 3.2));
+    gl.uniform4f(loc.uPal, s.hi ?? 1, s.gloss ?? 1, s.scale ?? 1, s.scaleAmp ?? 1);
+    gl.uniform4f(loc.uMouth, 0, 0, 0, 0);
+    const tc = lin(job.tongueCol || '#0b1233');
+    gl.uniform3f(loc.uTongueCol, tc[0], tc[1], tc[2]);
+    const hl = job.halo;
+    const hc = lin(hl ? hl.col : '#dce5ff');
+    gl.uniform4f(loc.uHalo, hl ? hl.w : 1, hl ? hl.k ?? 1.5 : 1, hl ? hl.a : 0, 0);
+    gl.uniform3f(loc.uHaloCol, hc[0], hc[1], hc[2]);
+    const ga = job.ground ? lin(job.ground[0]) : [0, 0, 0];
+    const gb = job.ground ? lin(job.ground[1] || job.ground[0]) : [0, 0, 0];
+    gl.uniform4f(loc.uGroundA, ga[0], ga[1], ga[2], job.ground ? 1 : 0);
+    gl.uniform3f(loc.uGroundB, gb[0], gb[1], gb[2]);
+    gl.uniform1f(loc.uOut, job.out ? 1 : 0);
+    gl.uniform1f(loc.uSS, job.ss ?? 4);
+    gl.uniform1f(loc.uLen, m.total);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.finish();
+    const ext = extent(job);
+    return { ok: true, head: m.head, tongueTip: [tipX, tipY], eye: [ex, ey], points: m.sp.length, sc: g.sc, bbox: ext };
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

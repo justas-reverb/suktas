@@ -1,0 +1,71 @@
+---
+/**
+ * Įpročiai: the six Sustok cards. The copy is docs/copy/sustok/index.md, word for word; the source
+ * tags stay as comments and the build strips them. Every card is a move of yours (mint).
+ */
+import Page from '../../layouts/Page.astro';
+import ArtBand from '../../components/ArtBand.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+
+const cards = [
+  ['Padėk ragelį ir skambink oficialiu numeriu', '/sustok/padek-ragely/', 'kai skambina „bankas“ ar „policija“ ir kalba apie pavojų tavo pinigams. <!-- F23 -->'],
+  ['Kodų ir PIN niekam nesakyk', '/sustok/kodai-ir-pin/', 'kai kas nors prašo kodo, PIN ar „patvirtinti“ tai, ko nepradėjai tu. <!-- F25 F26 F41 -->'],
+  ['Nespausk nuorodos – atsidaryk programėlę ar svetainę', '/sustok/nuoroda-ne-is-zinutes/', 'kai žinutėje su nuoroda sakoma, kad reikia sumokėti „mokestį“ ar kad „paskyra bus užblokuota“. <!-- F24 F26 F44 -->'],
+  ['Neskenuok QR lipduko – atsidaryk oficialią programėlę', '/sustok/qr-ne-is-lipduko/', 'kai ant parkavimo automato ar panašaus viešo daikto prilipdytas QR kodas kviečia sumokėti. <!-- F101 -->'],
+  ['Sustok dešimčiai sekundžių', '/sustok/desimt-sekundziu/', 'kai kas nors sako „dabar“ ar „skubiai“. <!-- F24 -->'],
+  ['Susitarkite šeimoje dėl žodžio', '/sustok/seimos-zodis/', 'kai artimas žmogus „skubiai“ prašo pinigų ar pagalbos. <!-- F81 -->'],
+];
+
+const start = [
+  ['Padėk ragelį:', '<a href="/scenarijai/skambutis-is-banko/">Skambutis iš „banko“</a>, <a href="/scenarijai/skambutis-is-policijos/">Skambutis iš „policijos“</a>, <a href="/scenarijai/skambutis-is-vmi/">Skambutis iš „VMI“</a> ir <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.'],
+  ['Kodų ir PIN niekam nesakyk:', '<a href="/scenarijai/zinute-su-kodu/">Žinutė su kodu</a> ir <a href="/scenarijai/smart-id-patvirtinimas/">„Patvirtink per „Smart-ID““</a>.'],
+  ['Nespausk nuorodos:', '<a href="/scenarijai/zinute-su-nuoroda/">Žinutė su nuoroda</a>, <a href="/scenarijai/sms-apie-bauda/">SMS apie baudą</a> ir <a href="/scenarijai/pirkejas-skelbime/">„Pirkėjas“ skelbime</a>.'],
+  ['QR lipdukas:', '<a href="/scenarijai/netikras-qr-kodas/">Netikras QR kodas</a>.'],
+  ['Sustok dešimčiai sekundžių:', 'tinka prie bet kurio scenarijaus; pradėk nuo <a href="/scenarijai/skambutis-is-banko/">Skambučio iš „banko“</a>, o trumpiausias – <a href="/scenarijai/praleistas-skambutis/">Praleistas skambutis iš užsienio</a>.'],
+  ['Šeimos žodis:', '<a href="/scenarijai/draugas-praso-pinigu/">„Draugas“ prašo pinigų</a>.'],
+];
+---
+<Page
+  title="Kai skubina: šešios Sustok kortelės prieš sukčius – Suktas"
+  description="Šešios kortelės, kiekviena – vienas ėjimas tuo metu, kai kas nors skubina."
+  current="sustok"
+>
+  <section class="shead" aria-labelledby="h1">
+    <ArtBand mood="day" class="shead__art" sizes="(min-width: 60rem) 115vw, 120vw" eager />
+    <div class="wrap shead__body">
+      <h1 id="h1">{nb('Įpročiai')}</h1>
+      <p class="kicker kicker--mint">{nb('Sustok kortelės')}</p>
+      <p class="shead__lead" set:html={nbHtml('Šeši ėjimai, kiekvienas ant vienos kortelės. Kortelė sako, kada ją atsidaryti, ką daryti ir kodėl tai sugriauna sukčiaus planą. <!-- pažadas -->')} />
+      <div class="shead__actions">
+        <a class="btn" href="/sustok/padek-ragely/">{nb('Atidaryk pirmąją kortelę')}</a>
+        <a class="btn btn--sos" href="/jei-apgavo/">{nb('Jei tave ką tik apgavo')}</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="shelf wrap">
+    <section aria-labelledby="sesios">
+      <h2 id="sesios" class="vh">{nb('Šešios kortelės')}</h2>
+      <ol class="hgrid" role="list">
+        {cards.map(([title, href, moment]) => (
+          <li class="hcard">
+            <h3><a href={href}>{nb(title)}</a></h3>
+            <p set:html={nbHtml(moment)} />
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="pradeti">
+      <h2 id="pradeti" class="sec">{nb('Nuo kurio scenarijaus pradėti')}</h2>
+      <ul class="path" role="list">
+        {start.map(([label, text]) => (
+          <li><strong set:html={nbHtml(label)} /><span set:html={nbHtml(text)} /></li>
+        ))}
+      </ul>
+    </section>
+
+    <p class="print-note" set:html={nbHtml('Spausdink iš naršyklės: kiekviena kortelė telpa į vieną lapą. <!-- pažadas -->')} />
+  </div>
+</Page>

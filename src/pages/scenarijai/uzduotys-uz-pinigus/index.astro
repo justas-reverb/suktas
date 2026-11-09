@@ -1,0 +1,202 @@
+---
+/**
+ * Scenarijus: užduotys už pinigus – „darbas“, kuris prašo tavo pinigų. The copy is
+ * docs/copy/scenarijai/uzduotys-uz-pinigus.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Užduotys už pinigus');
+const meta = [
+  ['Kanalas', 'SMS, „Telegram“, „WhatsApp“, nuoroda socialiniame tinkle'],
+  ['Ko jis nori', 'tavo pinigų ir tavo sąskaitos'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Darbas be jokių reikalavimų, o moka už paspaudimą.', '„Jeigu per socialinius tinklus pradeda lyti pinigais, tai turi kelti įtarimą“, – sako Pinigų plovimo prevencijos kompetencijų centro ekspertė. <!-- F422 --> LRT rašo, kad melaginguose darbo pasiūlymuose paprastai nenurodomi konkretūs reikalavimai darbuotojams. <!-- F422 -->'],
+  ['Kviečia persikelti į „Telegram“ ar kitą programėlę.', 'Sukčiai dažnai prašo perkelti pokalbį į „Telegram“ ir aiškina, kad taip bus privačiau; išgirdus tokį prašymą, patariama pokalbio nebetęsti. <!-- F422 F425 -->'],
+  ['Prašo sumokėti tau: už registraciją, „narystę“, „geresnes užduotis“ ar „neigiamą balansą“.', '<!-- F418 F417 F414 F420 --> Policija primena: „Už „papildomą darbą“ patys neturite niekam susimokėti.“ <!-- F419 -->'],
+];
+
+const steps = [
+  '<strong>Iškart skambink savo bankui</strong> numeriu iš banko programėlės arba iš svetainės, kurios adresą įvedi ranka. Ypač skubiai – jei parduotuvėje suvedei kortelės duomenis. <!-- F416 F418 F13 F414 --> Pranešk policijai per epolicija.lt arba skambink 112. <!-- F419 F2 --> Išsisaugok susirašinėjimą ir „darbdavio“ kontaktus, tada nutrauk pokalbį. <!-- F418 -->',
+  '<strong>Daugiau nemokėk.</strong> Sumokėjus jie nustoja atsakinėti arba prašo dar, neva užduotis atlikta neteisingai. <!-- F417 F418 -->',
+  '<strong>Jei gavai „atlygį“ ir prašoma dalį pervesti kitiems, pasakyk bankui ir nieko su tais pinigais nedaryk, kol bankas išsiaiškins: juos reikia grąžinti teisėtam savininkui.</strong> <!-- F416 F423 F424 --> Dažniausiai tai kitų aukų pavogti pinigai, o juos persiuntus galima tapti <a href="/zodynas/pinigu-mulas/">pinigų mulu</a> ir sulaukti teisinės atsakomybės. <!-- F415 --> Jei jau persiuntei, vis tiek iškart pasakyk bankui ir policijai: į tokias schemas žmonės įtraukiami patys to nesuprasdami. <!-- F416 F415 -->',
+  '<strong>Papasakok artimiesiems.</strong> <!-- M --> Jei paskui kas nors siūlys už mokestį susigrąžinti prarastus pinigus, perskaityk <a href="/scenarijai/susigrazinti-pinigus/">šį scenarijų</a>. <!-- M -->',
+];
+
+const levers = [
+  ['Nauda.', 'Pirmi keli eurai tikrai ateina, todėl kitas žingsnis atrodo kaip darbas, ne kaip rizika. <!-- F415 F417 M -->'],
+  ['Autoritetas.', 'Jis prisistato „Instagram“ atstovu ar išmokas tvarkančiu vadybininku, o grupėje kiti „dalyviai“ rodo savo „mokėjimus“. <!-- F414 F417 M -->'],
+  ['Skuba.', 'Jis ragina užduotis atlikti kuo greičiau, kad nespėtum pagalvoti. <!-- F414 M -->'],
+  ['Gėda.', 'Kai jau sumokėta, norisi susigrąžinti, o ne pripažinti apgaulę, todėl naujas mokestis atrodo kaip vienintelė išeitis. <!-- F417 M -->'],
+];
+
+const sides = [
+  ['Žinutė iš nepažįstamo numerio: nuotolinis darbas, atlygis „nuo 50 iki 300 eurų“, tereikia paspausti nuorodą', 'Nespausk ir neatrašyk. Patikimi darbo pasiūlymai tokia forma nepateikiami. <!-- F422 F417 -->'],
+  ['„Tęskime „Telegram“, taip privačiau“', 'Čia ir sustok: pokalbio toliau netęsk. <!-- F422 F425 -->'],
+  ['Grupė, kurioje kiti „dalyviai“ rodo savo uždarbį', 'Tai jo dekoracija, ne įrodymas. <!-- F414 M -->'],
+  ['Pirmi keli eurai tikrai ateina į sąskaitą', 'Jie ateina iš skirtingų privačių asmenų sąskaitų, ne iš įmonės, ir dažniausiai yra kitų aukų pavogti pinigai. Nieko su jais nedaryk ir pasakyk bankui. <!-- F417 F415 F423 -->'],
+  ['„Persiųsk dalį pinigų kitiems, likusius pasilik sau“', 'Nepervesk ir neišgrynink – taip tampama <a href="/zodynas/pinigu-mulas/">pinigų mulu</a>. Pasakyk bankui. <!-- F415 F423 F424 -->'],
+  ['„Sumokėk narystės mokestį – gausi geriau apmokamas užduotis“', 'Už darbą nemoka darbuotojas. Nutrauk pokalbį. <!-- F417 F418 F419 -->'],
+  ['„Tavo balansas neigiamas, padenk jį“', 'Nedengk. Tai ne darbo užmokestis, o tavo pinigai jam. <!-- F420 M -->'],
+  ['„Užduotis atlikta neteisingai, reikia sumokėti dar“', 'Daugiau nemokėk ir skambink bankui. <!-- F417 F416 -->'],
+  ['„Užduotis: užsisakyk prekę šioje parduotuvėje“', 'Nepirk ir nevesk kortelės duomenų: parduotuvė – jo. <!-- F414 -->'],
+];
+
+const sources = [
+  'SEB (2025-10-24): „Telegram“ grupės, 3–9 eurai už veiksmą, mokestis už geresnes užduotis, pirmas atlygis iš kitų aukų pinigų, ką daryti. <!-- F414 F415 F416 -->',
+  '„Swedbank“ (2024-01-11; 2022-08-24; tarpininkų straipsnis be datos): žinutės atsitiktiniais numeriais, narystės mokestis iki 1–5 tūkst. eurų, kas nutinka sumokėjus, svetimų pinigų grąžinimas. <!-- F417 F423 F424 -->',
+  '„Luminor“ (alkas.lt, 2024-04-22): registracijos ir narystės mokesčiai, ką išsisaugoti. <!-- F418 -->',
+  'Policija (tv3.lt, 2026-06-25): atvejis „TikTok“, 1 690 eurų; už papildomą darbą nemokama. <!-- F419 -->',
+  'Lietuvos bankas (ginčo sprendimas, 2026-03-18): „neigiamas balansas“, 19 594,5 euro. <!-- F420 -->',
+  'LRT.lt (2025-12-30): žinutė su darbo pasiūlymu, perėjimas į „Telegram“, keli šimtai atvejų per metus. <!-- F422 -->',
+  'ESET (be datos): prašymas pereiti į „Telegram“ – ženklas sustoti. <!-- F425 -->',
+  'Lietuvos bankas: su banku susisiek oficialiais kanalais. <!-- F13 -->',
+  'Policija: pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="Užduotys už pinigus: kai darbas prašo tavo pinigų – Suktas"
+  description="Žinutė siūlo kelis eurus už „patiktuką“, o paskui prašo susimokėti už „geresnes užduotis“? Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-02</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Žinutė iš nepažįstamo numerio ar nuoroda „TikTok“ siūlo lengvą uždarbį: pamėgti „Instagram“ paskyras ar „YouTube“ vaizdo įrašus ir už kiekvieną gauti po kelis eurus. <!-- F414 F417 F419 --> Pokalbis persikelia į „Telegram“, dažnai į grupę, kur kiti „dalyviai“ rodo savo „uždarbį“. <!-- F414 F417 --> Pirmos užduotys tikrai apmokamos – keli ar keliasdešimt eurų. <!-- F415 F417 --> Tada prašoma susimokėti už „geriau apmokamas užduotis“, padengti „neigiamą balansą“ savo pinigais arba ką nors nupirkti nurodytoje el. parduotuvėje. <!-- F414 F417 F420 --> Kai sumoki, „darbdavys“ nustoja atsakinėti arba sugalvoja naują mokestį. <!-- F417 F418 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Už darbą moka darbdavys, ne tu. Kai tik „darbdavys“ paprašo tavo pinigų, nutrauk pokalbį. <!-- F419 F417 M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau sumokėjai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam, o policija ragina nebijoti pranešti. <!-- M F422 --> Lietuvos bankas nagrinėjo atvejį, kai žmogus per šešias dienas „užduotims“ pervedė 19 594,5 euro. <!-- F420 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo pinigų: narystės mokesčio, kuris, pasak „Swedbank“, gali siekti 1–5 tūkst. eurų, vis naujų „neigiamo balanso“ papildymų arba kortelės duomenų jo parduotuvėje. <!-- F417 F420 F414 --> Kartais ir tavo sąskaitos: per ją jis gali persiųsti kitų aukų pinigus. <!-- F415 --> <strong class="stop">Sustabdymo vieta:</strong> pirmas prašymas sumokėti pačiam. <!-- F419 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko. Žinutės siunčiamos atsitiktiniais numeriais, o nuorodos platinamos socialiniuose tinkluose: jam reikia tik tų, kurie atsilieps. <!-- F417 F419 M --> <strong class="stop">Sustabdymo vieta:</strong> tai, kad tau parašė, nereiškia, kad tave išsirinko. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('LRT 2025 m. gruodį rašė: policijos duomenimis, per metus užfiksuojama apie kelis šimtus atvejų, kai žmonės įkliūva į sukčių pinkles per darbo skelbimus, – ne vien per užduotis. <!-- F422 --> 2026 m. birželį policija pranešė apie moterį, kuri „TikTok“ rado nuorodą į papildomą uždarbį ir neteko 1 690 eurų. <!-- F419 -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> tikras darbdavys moka tau, o ne prašo tavo pinigų. <!-- F419 F417 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/netikra-parduotuve/">{nb('Netikra el. parduotuvė')}</a>, <a href="/scenarijai/zinute-su-nuoroda/">{nb('Žinutė su nuoroda')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a>, <a href="/scenarijai/investicijos-telegram/">{nb('Reklama kviečia į „Telegram“, o ten auga „pelnas“')}</a>, <a href="/scenarijai/paskola-tavo-vardu/">{nb('Paskola tavo vardu, kurios neėmei')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/pinigu-mulas/">{nb('Pinigų mulas')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-02. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

@@ -1,0 +1,195 @@
+/* ------------------------------------------------------------------------------------
+   /jei-apgavo/: a page read in a hurry, by someone frightened, often on a phone.
+   One column, one eye path (title, one line, four steps, the chooser, the six cases). No art,
+   no second face: the display face is pointed at the text face, so Young Serif is never fetched.
+   Coral is the emergency colour and this is the one page that is wholly emergency.
+   ------------------------------------------------------------------------------------ */
+
+:root { --font-display: var(--font-text); }
+
+.sos { --col: 44rem; padding-bottom: 1rem; }
+/* the column is narrower than the wrap and sits on the logo's edge, so the eye has one line to follow */
+.sos .wrap > * { max-width: var(--col); }
+
+.sos h1, .sos h2, .sos h3 { font-weight: 800; letter-spacing: -0.015em; }
+
+/* ---- Title and the one line ---- */
+
+.sos__head { padding-top: clamp(1.75rem, 5vw, 3.5rem); }
+.sos__head h1 { font-size: clamp(2.6rem, 1.6rem + 4.4vw, 4.6rem); line-height: 1.02; }
+.sos__line { margin-top: 0.7rem; font-size: var(--lead); font-weight: 600; line-height: 1.35; color: var(--ink); }
+
+/* ---- The first ten minutes ---- */
+
+.sos__first { margin-top: clamp(1.5rem, 4vw, 2.5rem); }
+.label {
+  margin-bottom: 0.7rem;
+  color: var(--coral-deep);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.first { counter-reset: first; display: grid; gap: 0.75rem; }
+.first li {
+  counter-increment: first;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 0 0.9rem;
+  padding: 1rem 1rem 1.1rem;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: var(--text);
+  line-height: 1.5;
+}
+.first li::before {
+  content: counter(first);
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font: 800 1.35rem / 1 var(--font-text);
+}
+.first li > * { grid-column: 2; }
+.first strong { font-weight: 800; }
+.first li:first-child {
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  padding: clamp(1.15rem, 3vw, 1.75rem);
+  border-color: var(--coral);
+  background: var(--coral-wash);
+}
+.first li:first-child::before { width: 3.5rem; height: 3.5rem; background: var(--coral-deep); font-size: 1.9rem; }
+.first li:first-child strong { display: block; margin-bottom: 0.4rem; font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.15rem); line-height: 1.15; letter-spacing: -0.01em; }
+.first li:first-child span { font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3rem); }
+.first a { font-weight: 700; }
+
+/* ---- Kas nutiko? The chooser ---- */
+
+.sos__choose { margin-top: clamp(2.25rem, 5vw, 3.5rem); scroll-margin-top: 1rem; }
+.sos__choose h2, .sos__block h2 { font-size: clamp(1.7rem, 1.35rem + 1.3vw, 2.3rem); line-height: 1.15; }
+.choose { display: grid; gap: 0.6rem; margin-top: 1rem; }
+.choose a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.75rem;
+  padding: 0.6rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+}
+.choose a::after {
+  content: '';
+  flex: none;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+.choose a:hover { background: var(--ink); color: #fff; }
+@media (min-width: 40rem) { .choose { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---- The six cases ---- */
+
+.sos__cases { display: grid; gap: 1rem; margin-top: 1.75rem; }
+.case {
+  scroll-margin-top: 1rem;
+  padding: 1.25rem clamp(1rem, 3vw, 1.6rem) 1.4rem;
+  border: 2px solid var(--line);
+  border-left: 0.5rem solid var(--ink-2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: #fff;
+}
+.case:target { border-color: var(--coral); background: var(--coral-wash); }
+.case h3 { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem); line-height: 1.2; }
+.steps { counter-reset: step; display: grid; gap: 0.85rem; margin-top: 1rem; }
+.steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0 0.8rem;
+  line-height: 1.5;
+}
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0.1rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font: 800 1.0625rem / 1 var(--font-text);
+}
+.steps a { font-weight: 700; }
+.case__back { margin-top: 1rem; }
+.case__back a { display: inline-block; padding: 0.6rem 0; font-weight: 700; }
+
+/* ---- Ko nedaryti, Kam pranešti, Kai nurimsi ---- */
+
+.sos__block { margin-top: clamp(2.5rem, 6vw, 4rem); }
+.sos__block ul { display: grid; gap: 0.9rem; margin-top: 1rem; }
+.sos__block li { max-width: 40rem; line-height: 1.55; }
+.sos__dont li { padding: 0.15rem 0 0.15rem 1rem; border-left: 0.35rem solid var(--coral); }
+.sos__who li { padding: 1rem clamp(1rem, 3vw, 1.4rem); border-radius: var(--radius); background: var(--day-2); }
+.sos__who a { font-weight: 700; }
+.sos__calm li { padding-left: 1rem; border-left: 0.35rem solid var(--mint); }
+
+.sos__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: clamp(2rem, 5vw, 3rem); }
+.sos__cta .btn { flex: 1 1 15rem; max-width: 22rem; }
+
+.sos__end { margin-top: 2.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--ink-2); font-size: var(--small); }
+.sos__end p + p { margin-top: 0.3rem; }
+
+/* ---- On paper: ink only, the numerals as outlines, every link's address spelled out ---- */
+
+@media print {
+  .sos { padding: 0; }
+  .sos .wrap > * { max-width: none; }
+  .sos .wrap { padding-inline: 0; }
+  .sos__head { padding-top: 0; }
+  .sos__head h1 { font-size: 26pt; }
+  .sos__line { font-size: 14pt; }
+  .label { color: #000; }
+  .first li, .first li:first-child, .case, .case:target, .sos__who li { background: #fff; border: 1.5px solid #000; border-radius: 0; break-inside: avoid; }
+  .first li:first-child { border-width: 3px; }
+  .first li::before, .first li:first-child::before, .steps li::before { background: #fff; color: #000; border: 1.5px solid #000; }
+  .first li:first-child strong { font-size: 18pt; }
+  .choose { grid-template-columns: repeat(2, 1fr); }
+  .choose a { border: 1px solid #000; min-height: 0; color: #000; }
+  .choose a::after { display: none; }
+  .case { border-left-width: 5px; margin-bottom: 0.2cm; }
+  .case__back { display: none; }
+  .sos__cases { gap: 0; }
+  .sos__dont li, .sos__calm li { border-left-color: #000; }
+  .sos__block { margin-top: 0.8cm; }
+  .sos__choose { margin-top: 0.8cm; break-after: avoid; }
+  .sos__end { border-top-color: #000; color: #000; }
+  .sos main a[href^='https']::after, .sos-page a[href^='https']::after { content: ' (' attr(href) ')'; font-size: 0.82em; color: #333; }
+  .sos-page a[href^='#']::after, .sos-page a[href^='tel:']::after { content: none; }
+}
+
+@media (max-width: 39.99rem) {
+  .first li:first-child { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0 0.8rem; }
+  .first li:first-child::before { width: 2.75rem; height: 2.75rem; font-size: 1.5rem; grid-row: 1; }
+  /* the numeral sits beside the title only; the body runs the full card width */
+  .first li:first-child > span { grid-column: 1 / -1; margin-top: 0.6rem; }
+}
+
+/* the 404's first button is the emergency one, in the emergency colour */
+.sos__cta .btn--sos { border-color: var(--coral-deep); background: var(--coral-deep); }
+.sos__cta .btn--sos:hover { border-color: var(--ink); background: var(--ink); }

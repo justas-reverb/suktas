@@ -1,0 +1,181 @@
+/* ------------------------------------------------------------------------------------
+   Syntax colouring of the copy (scheme B, "Rašalas", chosen 2026-11-02).
+
+   The words are plain prose. Underneath, what a reader must not miss is wrapped
+   <span class="tk tk--KIND"> (src/lib/typo.js, nbHtml): money, num (a percentage), date, code
+   (PIN1, PIN2, PUK), mail, web, phone (112), term (the word "phishing") and str (anything in
+   „quotes“, by far the most frequent, so the quietest). The first PIN1, PIN2 or "phishing" on a
+   page is also a link, <a class="tk-term"> (tools/term-links.mjs, added to the built page only).
+
+   Ink only: no chips. Colour, weight and a different mark per kind. Colours are custom properties
+   set on :root (the day page, the mint and coral washes) and re-set on the dark bands (.stage, the
+   attacker's side; .think on the home page and .key on /temos/, painted the same), and back to day
+   on the table's answer cell inside .stage. Every colour reaches 4.5:1 on the
+   background it sits on; the numbers are in the designer's report.
+
+   Colour meanings of the site stay: coral marks 112 and nothing else; indigo is ink and links;
+   mint is the reader's move and is never a token colour. No image, SVG or inline style; nothing
+   loads from another server.
+   ------------------------------------------------------------------------------------ */
+
+:root,
+.sides td:last-child {
+  --tk-money: #7d1659; --tk-money-hl: rgb(224 53 159 / 0.28);
+  --tk-num:   #0b4f78;
+  --tk-date:  #4e5500;
+  --tk-code:  #4f1ca0;
+  --tk-mail:  #07585c;
+  --tk-web:   #25379f;
+  --tk-phone: #a81f32;
+  --tk-term:  #2d24b0;
+  --tk-str:   #3b3590;
+  --sg-fg: #2d24b0;
+}
+.stage,
+.think,
+.key {
+  --tk-money: #ffa6e3; --tk-money-hl: rgb(255 111 208 / 0.3);
+  --tk-num:   #8fd6ff;
+  --tk-date:  #d8ea84;
+  --tk-code:  #c7b6ff;
+  --tk-mail:  #7ae6e2;
+  --tk-web:   #a8b8ff;
+  --tk-phone: #ffa3ae;
+  --tk-term:  #cfcaff;
+  --tk-str:   #d8d3ff;
+  --sg-fg: #d8d3ff;
+}
+
+.tk--money { --k: var(--tk-money); }
+.tk--num   { --k: var(--tk-num); }
+.tk--date  { --k: var(--tk-date); }
+.tk--code  { --k: var(--tk-code); }
+.tk--mail  { --k: var(--tk-mail); }
+.tk--web   { --k: var(--tk-web); }
+.tk--phone { --k: var(--tk-phone); }
+.tk--term  { --k: var(--tk-term); }
+.tk--str   { --k: var(--tk-str); }
+
+.tk { color: var(--k) !important; } /* !important: a page rule such as .beats li:last-child span would otherwise recolour a token inside it */
+.tk--num,
+.tk--date { font-weight: 700; }
+/* a quoted label inside a link is the link's own: one colour, the link's */
+a:not(.tk-term) .tk--str { color: inherit !important; }
+.tk--mail,
+.tk--web { overflow-wrap: anywhere; }
+
+/* money: a highlighter stripe under the lower half of the line */
+.tk--money {
+  padding-inline: 0.14em;
+  margin-inline: -0.04em;
+  background: linear-gradient(transparent 52%, var(--tk-money-hl) 52%, var(--tk-money-hl) 92%, transparent 92%);
+  font-weight: 700;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* codes: heavy, spaced, pencilled underneath */
+.tk--code {
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-decoration: underline solid color-mix(in srgb, var(--k) 55%, transparent);
+  text-decoration-thickness: 0.16em;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.2em;
+}
+/* addresses: a thin dashed underline, the mark of "this is a place" */
+.tk--mail,
+.tk--web {
+  font-weight: 600;
+  text-decoration: underline dashed color-mix(in srgb, var(--k) 70%, transparent);
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.22em;
+}
+/* the emergency number: heavy coral and a firm rule */
+.tk--phone {
+  font-weight: 800;
+  text-decoration: underline solid var(--k);
+  text-decoration-thickness: 0.17em;
+  text-underline-offset: 0.2em;
+  text-decoration-skip-ink: none;
+}
+/* a word with an entry of its own: italic (it is a loan word), a thin dotted rule */
+.tk--term {
+  font-style: italic;
+  font-weight: 600;
+  text-decoration: underline dotted color-mix(in srgb, var(--k) 70%, transparent);
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.22em;
+}
+
+/* the first mention is a link to that entry: the same mark made thick, solid under the pointer */
+a.tk-term {
+  text-decoration: underline dotted var(--tk-code);
+  text-decoration-thickness: 0.2em;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+a.tk-term:has(.tk--term) { text-decoration-color: var(--tk-term); }
+a.tk-term .tk { text-decoration: none; }
+a.tk-term:hover { text-decoration-style: solid; }
+
+/* the sign number: a thin ring, the number inked inside; ol. outranks scenario.css's plain number in any bundle order */
+ol.signs li::before {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-top: 0.1rem;
+  border: 2px solid var(--sg-fg);
+  border-radius: 50%;
+  color: var(--sg-fg);
+  font: 400 1.4rem / 1 var(--font-display);
+  font-variant-numeric: lining-nums; /* Young Serif's default figures drop 3, 4, 5 and 7 below the ring */
+}
+
+/* ---- The training's specimens (the mock-up frame, the phone, the call screen) are an invented bank's
+   and an invented app's, and are not ours to mark up: their words stay as drawn, and a highlight there
+   would also point at the very sign the game asks the reader to find. A <time> is already drawn as a
+   date stamp (Kas pasikeitė). ---- */
+
+:is(.mock__inner, .ph, .call, time) .tk {
+  all: unset;
+  color: inherit !important;
+}
+:is(.mock__inner, .ph, .call, time) .tk--date { white-space: nowrap; }
+
+/* ---- Paper: ink only ---- */
+
+@media print {
+  .tk {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    color: #000 !important;
+    font-weight: inherit !important;
+    letter-spacing: normal !important;
+    text-decoration: none !important;
+  }
+  .tk--term { font-style: italic !important; }
+  a.tk-term { text-decoration: underline !important; }
+  .signs li::before {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #000 !important;
+    font: 400 2.6rem / 0.95 var(--font-display) !important;
+  }
+}
+
+/* ---- Forced colours: the system's own; weight and a rule carry the difference ---- */
+
+@media (forced-colors: active) {
+  .tk { background: none !important; }
+  .tk--money, .tk--code, .tk--phone { font-weight: 700 !important; }
+  .tk--phone { text-decoration: underline !important; }
+  a.tk-term { text-decoration: underline dotted !important; }
+  .signs li::before { border: 2px solid CanvasText !important; }
+}

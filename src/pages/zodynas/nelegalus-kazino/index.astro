@@ -1,0 +1,236 @@
+---
+/**
+ * Žodynas: Kas yra nelegalus kazino, the third glossary entry with a page of its own. The copy is
+ * docs/copy/zodynas/nelegalus-kazino.md, word for word; the source tags stay as comments and the build
+ * strips them. It wears the scenario template, as /zodynas/pinigu-mulas/ does.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'illegal online casino'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Svetainės nėra tarp LPT licencijuotų.', ' Tai vienintelis patikimas ženklas, ir jį gali patikrinti kiekvienas (žr. žemiau). <!-- F728 M -->'],
+  ['Lietuvoje svetainė neatsidaro arba rodo LPT blokavimo puslapį.', ' Tokios svetainės blokuojamos todėl, kad neturi LPT licencijos. <!-- F725 F727 -->'],
+  ['„Turime licenciją“, bet ne Lietuvos.', ' Kitos šalies licencija neleidžia organizuoti lošimų Lietuvoje, ir LPT tokiu atveju tavęs apginti negali. <!-- F721 F723 -->'],
+  ['Lietuviška kortelė neveikia.', ' LPT nurodo bankams stabdyti mokėjimus nelegaliems organizatoriams, bet ne visi sustabdomi. <!-- F725 F730 M --> Jei mokėjimas nepraeina, tai ženklas, o ne kliūtis, kurią reikia apeiti; jei praeina, tai dar nieko neįrodo. <!-- M -->'],
+];
+
+const risks = [
+  ['Įmokėtais pinigais.', ' LPT perspėja, kad lošiantys nelegaliose svetainėse rizikuoja savo įmokėtais pinigais. <!-- F721 -->'],
+  ['Lietuvos institucijos neapgins.', ' Jei laimėjimo neišmoka, LPT neturi galimybių taikyti poveikio priemonių ir apginti tavo interesų; ji siūlo kreiptis į instituciją, išdavusią svetainei užsienio licenciją. <!-- F723 -->'],
+  ['Išmokos gali neateiti.', ' Didžiosios Britanijos lošimų komisija rašo, kad Didžiojoje Britanijoje kai kurios nelegalios svetainės blokuoja išmokas arba nustato tokias išmokėjimo ribas, kurių neįmanoma pasiekti. <!-- F733 -->'],
+  ['Pinigus iš nelegalaus lošimo gali konfiskuoti.', ' 2022 m. LPT paskelbė apie FNTT ikiteisminį tyrimą: teismas pripažino, kad daugiau nei 422 tūkst. eurų gauti iš nelegalių azartinių lošimų, ir jie bus pervesti į valstybės biudžetą. <!-- F722 -->'],
+  ['Prašymas neleisti lošti skirtas licencijuotiems organizatoriams.', ' Prašymą neleisti lošti privalo vykdyti Lietuvos lošimų organizatoriai. <!-- F729 --> Kad jį tikrintų nelegali svetainė, nė vienas šaltinis nesako. <!-- F729 M -->'],
+  ['Lošimų paskyra gali tapti pinigų plovimo įrankiu.', ' FNTT rašo, kad pinigų mulais tampama ir per nuotolinių lošimų paskyras. <!-- F384 --> Kas prašo leisti naudotis tavo lošimų paskyra ar per ją pervesti svetimus pinigus, siūlo tau tapti <a href="/zodynas/pinigu-mulas/">pinigų mulu</a>. <!-- F384 M -->'],
+];
+
+const steps = [
+  '<strong>Daugiau neįnešk.</strong> Kuo daugiau pinigų svetainėje, tuo daugiau rizikuoji. <!-- F721 M -->',
+  '<strong>Pinigai liko užblokuotoje svetainėje?</strong> LPT rekomenduoja dėl išmokėjimo rašyti el. pašto adresu, kuris nurodytas šalia tos svetainės <a href="https://lpt.lrv.lt/lt/nelegalios-losimu-veiklos-vykdytojai/nelegalios-losimu-veiklos-vykdytoju-sarasas">nelegalios lošimų veiklos vykdytojų sąraše</a>. <!-- F724 --> Ar išmokės, niekas negarantuoja. <!-- F721 M -->',
+  '<strong>Kas nors siūlo už mokestį susigrąžinti pinigus?</strong> Tai dar viena apgaulė. <!-- F14 F15 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.',
+  '<strong>Lošimas nebėra žaidimas</strong> tau ar artimam žmogui? LPT nemokamai konsultuoja ir lošiančius, ir jų artimuosius: <span class="nw">+370 5 233 62 41</span>. <!-- F720 --> Artimiesiems LPT rengia paramos grupę. <!-- F731 -->',
+  '<strong>Nori, kad Lietuvos lošimų organizatoriai tavęs neleistų lošti?</strong> Prašymą neleisti lošti gali pateikti per „Elektroninius valdžios vartus“, lošimų vietoje arba atvykus į LPT. <!-- F729 --> Kad jį paisytų nelegalios svetainės, nė vienas šaltinis nesako. <!-- F729 M -->',
+];
+
+const levers = [
+  ['Nauda.', 'Rodomas laimėjimas, bet ne tai, kiek pralošta. <!-- M -->'],
+  ['Autoritetas.', 'Žmogus, kurį seki ir kuriuo pasitiki, sako, kad čia verta. <!-- M -->'],
+  ['Gėda.', 'Pralošus sunku sustoti ir dar sunkiau apie tai kam nors pasakyti. <!-- M --> LPT konsultuoja nemokamai: <span class="nw">+370 5 233 62 41</span>. <!-- F720 -->'],
+];
+
+const sides = [
+  ['Laimėjimas transliacijoje su nuoroda ar kodu', 'Patikrink, ar svetainė yra tarp LPT licencijuotų. <!-- F728 -->'],
+  ['„Turime licenciją“ (kitos šalies)', 'Lietuvoje galioja tik LPT licencija. <!-- F721 F723 -->'],
+  ['Svetainė Lietuvoje užblokuota', 'Ji blokuojama, nes neturi licencijos. Neieškok, kaip ją apeiti. <!-- F725 M -->'],
+  ['Neišmoka laimėjimo', 'LPT čia padėti negali; rašyk adresu iš LPT sąrašo ir daugiau neįnešk. <!-- F723 F724 M -->'],
+  ['Prašo per tavo paskyrą pervesti svetimus pinigus', 'Atsisakyk: taip tampama pinigų mulu. <!-- F384 -->'],
+];
+
+const sources = [
+  'Lošimų priežiūros tarnyba (2022-01-28): rizika įmokėtiems pinigams, valstybės institucijos negina, licencija, FNTT tyrimas. <!-- F721 F722 -->',
+  'Lošimų priežiūros tarnyba, „Dažniausiai užduodami klausimai“ (atnaujinta 2026-01-30): neišmokėti laimėjimai, pinigai užblokuotoje svetainėje, kodėl svetainės blokuojamos. <!-- F723 F724 F725 -->',
+  'Lošimų priežiūros tarnyba, blokavimo puslapis (be datos, skaityta 2026-11-07). <!-- F727 -->',
+  'Lošimų priežiūros tarnyba, „Patikrinkite, ar lošimų svetainė Lietuvoje veikia legaliai“ (atnaujinta 2026-05-14). <!-- F728 -->',
+  'Lošimų priežiūros tarnyba, prašymai neleisti lošti (atnaujinta 2026-08-05), artimųjų paramos grupė (atnaujinta 2026-11-03), konsultavimas (atnaujinta 2026-02-18). <!-- F729 F731 F720 -->',
+  'Lošimų priežiūros tarnyba (2021-05-05): nuomonės formuotojams draudžiama raginti lošti. <!-- F718 -->',
+  'Finansų ministerija (2025-01-14) ir LPT (2026-07-24): mokėjimų blokavimas. <!-- F730 -->',
+  'LRT (2024-11-12, 2025-07-01): reklamos draudimas iki 2028 m. <!-- F732 -->',
+  'Didžiosios Britanijos lošimų komisija (2025-10-21): ką ji mato nelegaliose svetainėse Didžiojoje Britanijoje. <!-- F733 -->',
+  'Finansinių nusikaltimų tyrimo tarnyba (atnaujinta 2023-10-04): lošimų paskyros ir pinigų mulai. <!-- F384 -->',
+  'Lietuvos bankas (2020-02-12, 2024-10-28): nemokėk siūlantiems susigrąžinti pinigus. <!-- F14 F15 -->',
+  'Policija (2026-02-05, atnaujinta 2026-04-23): pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="Nelegalus kazino: kas tai ir kuo rizikuoji – Suktas"
+  description="Nuomonės formuotojas rodo didelį laimėjimą ir nuorodą į kazino? Kaip patikrinti, ar svetainė legali, kuo rizikuoji nelegaliame kazino ir kur kreiptis."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Kas yra nelegalus kazino')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Lietuvoje azartinius lošimus galima organizuoti tik turint Lošimų priežiūros tarnybos (LPT) licenciją. <!-- F721 --> Kazino ar lažybų svetainė be jos Lietuvoje veikia nelegaliai, net jei turi kitos šalies licenciją. <!-- F721 F723 --> LPT rašo, kad tokiose svetainėse lošiantys rizikuoja įmokėtais pinigais, o kilus ginčui jų teisių Lietuvos valstybės institucijos negina. <!-- F721 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Nuomonės formuotojas ar transliuotojas rodo didelį laimėjimą, pasakoja, kur lošia, ir palieka nuorodą ar kodą. <!-- M --> Lošimų reklama Lietuvoje ribojama, o visiškas jos draudimas įsigalios 2028 m. <!-- F732 -->')} />
+          <p set:html={nbHtml('Lietuvoje atvejo, kai nuomonės formuotojas būtų nubaustas už nelegalaus kazino reklamą, oficialiuose šaltiniuose neradome. <!-- M --> Didžiosios Britanijos lošimų komisija rašo, kad ten nelegalūs organizatoriai žmones pasiekia ir per socialinius tinklus. <!-- F733 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            {signs.map(([head, text]) => (
+              <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš įnešant pinigų, patikrink svetainę LPT puslapyje <a href="https://lpt.lrv.lt/lt/patikrinkite-ar-losimu-svetaine-lietuvoje-veikia-legaliai/">„Patikrinkite, ar lošimų svetainė Lietuvoje veikia legaliai“</a>. Jei LPT nepatvirtina, kad ji veikia legaliai, neįnešk. <!-- F728 M -->')} />
+        <p set:html={nbHtml('Nuoroda ar kodas iš įrašo nieko neįrodo: tikrink pačią svetainę. <!-- M -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            {risks.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="losei">
+        <h2 id="losei">Jei jau loši ar lošei</h2>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Jei manai, kad tave apgavo, pranešk policijai per epolicija.lt. <!-- F2 --> Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. „Jis“ čia – nelegalus lošimų organizatorius. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo įnašų – be Lietuvos taisyklių, kurių privalo laikytis licencijuoti organizatoriai. <!-- F721 F729 M --> Kai kilus ginčui Lietuvos institucijos tavęs negina, sąlygas diktuoja jis. <!-- F721 F723 M --> <strong class="stop">Sustabdymo vieta:</strong> svetainės nėra tarp LPT licencijuotų – pinigų neįnešk. <!-- F728 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, ką parodai: kad žiūri lošimų transliacijas, paspaudei nuorodą, užsiregistravai, o įnešus – ir tavo duomenis bei kortelę. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nuoroda iš įrašo veda ten, kur nori reklamuotojas, o ne ten, kur saugu. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> dešimt sekundžių ir vienas klausimas – ar ši svetainė yra tarp LPT licencijuotų? <!-- F728 M --> <a href="/sustok/desimt-sekundziu/">Kortelė</a>.')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>O tas, kuris jį reklamuoja?</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Laimėjimą rodantis nuomonės formuotojas pats ne visada yra organizatorius. <!-- M --> Bet LPT jau 2021 m. išaiškino, kad nuomonės formuotojams draudžiama raginti lošti ir skelbti laimėjimus nurodant konkretų organizatorių. <!-- F718 --> <strong class="stop">Sustabdymo vieta:</strong> jei kas nors rodo laimėjimą su nuoroda, tikrink svetainę, o ne laimėjimą. <!-- F728 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></li>
+          <li><strong>Scenarijai:</strong> <a href="/scenarijai/prekybos-kursai-ir-signalai/">{nb('Prekybos kursai ir signalai už pinigus')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/pinigu-mulas/">{nb('Kas yra pinigų mulas')}</a>, <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a>, <a href="/zodynas/lazybu-prognozes/">{nb('Kas yra mokamos lažybų prognozės')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

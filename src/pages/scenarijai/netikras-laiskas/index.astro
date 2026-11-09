@@ -1,0 +1,206 @@
+---
+/**
+ * Scenarijus: netikras laiškas iš „Sodros“, banko ar „Telia“. The copy is
+ * docs/copy/scenarijai/netikras-laiskas.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Netikras laiškas iš „Sodros“, banko ar „Telia“');
+const meta = [
+  ['Kanalas', 'el. paštas'],
+  ['Ko jis nori', 'tavo banko, kortelės ar elektroninio parašo duomenų arba tavo pavedimo'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Laiške yra nuoroda ar mygtukas prisijungti, „gauti“ pinigus ar patvirtinti tapatybę.', ' „Sodra“ nesiunčia pranešimų, kviečiančių per nuorodą atsiimti išmoką, o „Swedbank“ sako, kad laiškų apie „saugumo sistemą“ nesiunčia. <!-- F318 F321 --> Nei „Sodra“, nei finansų įstaigos laiškais neprašo suvesti PIN kodų, mokėjimų saugos ar kortelės duomenų. <!-- F320 F251 F254 -->'],
+  ['Siuntėjo adresas tik panašus į tikrą.', ' Tikrink visą adresą, ne tik rodomą vardą. Tikri „Sodros“ adresai baigiasi @sodra.lt, o „Telia“ sąskaitas siunčia iš noreply@telia.lt; sukčių adresai dažnai skiriasi viena raide, papildomu simboliu ar kita galūne. <!-- F318 F323 --> Net „Sodros“ pavadinimas nuorodoje nereiškia, kad ji veda į tikrą svetainę. <!-- F318 --> Bet ir tikru atrodantis adresas nėra leidimas spausti nuorodą. <!-- M -->'],
+  ['Laiškas skubina.', ' Žada pinigus „per kelias minutes“, grasina apriboti paslaugą ar ragina sumokėti kuo greičiau. Atsargiai ir tada, kai sąskaitoje nurodyta nauja, anksčiau nematyta banko sąskaita. <!-- F317 F323 --> Logotipas, tvarkingas dizainas ar „sprendimo numeris“ laiško tikru nepadaro. <!-- F319 F326 -->'],
+];
+
+const steps = [
+  '<strong>Suvedei banko prisijungimo duomenis ar elektroninio parašo PIN kodus? Iškart skambink bankui</strong> numeriu iš oficialios svetainės ar programėlės, ne iš laiško, ir paprašyk užblokuoti prieigą prie interneto banko. <!-- F322 F6 F13 F254 --> Netvirtink jokios „Smart-ID“ ar kitos užklausos, kurios nepradėjai. Paskui pakeisk slaptažodžius. <!-- F322 F30 F328 -->',
+  '<strong>Įvedei kortelės duomenis? Užblokuok kortelę</strong> banko programėlėje ar interneto banke arba paskambink bankui. Bankui pranešk ir apie mokėjimus, kurių nedarei: blokavimas jau atliktų mokėjimų neatšaukia. <!-- F7 F13 F6 -->',
+  '<strong>Sumokėjai pagal netikrą sąskaitą? Iškart kreipkis į savo banką</strong> dėl pervedimo: kai kuriais atvejais bankas dar gali jį sustabdyti. Pranešk policijai ir įmonei, kurios vardu atėjo laiškas. Išsaugok laiškus, sąskaitos kopiją ir mokėjimo duomenis. <!-- F323 F252 M -->',
+  '<strong>Atidarei priedą?</strong> Iš to kompiuterio nesijunk prie interneto banko: atjunk jį nuo interneto ir parodyk specialistui. <!-- F253 -->',
+  '<strong>Dingo pinigai – pranešk policijai</strong> per epolicija.lt. Jei pinigai nedingo, apie laišką pranešk NKSC el. paštu cert@nksc.lt. <!-- F2 F259 -->',
+];
+
+const levers = [
+  ['Autoritetas.', '„Sodros“, banko ar „Telia“ vardas ir logotipas, tvarkingas dizainas, „sprendimo numeris“. <!-- F319 F323 F326 -->'],
+  ['Nauda.', '412,80 euro išmoka ar pinigai už du kartus apmokėtą sąskaitą atrodo jau tavo. <!-- F317 F324 M -->'],
+  ['Baimė.', 'Skola, apribota paslauga ar neva atnaujinta „saugumo sistema“, kurią reikia patvirtinti. <!-- F321 F323 F327 M -->'],
+  ['Skuba.', 'Pinigai „per kelias minutes“, mokėti raginama kuo greičiau. <!-- F317 F323 -->'],
+];
+
+const sides = [
+  ['„Sodros“ laiškas: 412,80 euro išmoka ir mygtukas „Gauti išmoką“', '„Sodra“ nesiunčia pranešimų, kviečiančių per nuorodą atsiimti išmoką; išmokas ir permokas tikrink prisijungus prie savo „Sodros“ paskyros. <!-- F318 F319 -->'],
+  ['Netikra „Sodros“ paskyra prašo PIN1, o paskui PIN2', '„Sodra“ niekada nesiunčia pranešimų, kuriuose prašoma suvesti PIN kodus ar patvirtinti banko operacijas. <!-- F320 --> „Smart-ID“ PIN kodus vesk tik pačioje „Smart-ID“ programėlėje. <!-- F31 -->'],
+  ['„Swedbank“ laiškas apie atnaujintą „saugumo sistemą“', '„Swedbank“ tokių laiškų nesiunčia; banko adresą naršyklėje įvesk ranka arba atsidaryk programėlę. <!-- F321 -->'],
+  ['Banko laiškas: „atnaujink sutikimą“ ar „privaloma patvirtinimo procedūra“', 'Patikrink siuntėjo adresą, nepasitikėk vien logotipu, o prie interneto banko junkis per pilną oficialų adresą, kurį įvedi ranka. <!-- F326 F325 -->'],
+  ['„Telia“ sąskaita su nauja banko sąskaita', 'Tikras „Telia“ sąskaitas siunčia noreply@telia.lt; nauja ar anksčiau nematyta banko sąskaita turi kelti įtarimą, o pačią sąskaitą tikrink savitarnoje. <!-- F323 -->'],
+  ['„Telia“: sumokėjai du kartus, grąžinsime, tik suvesk kortelę', 'Nei „Telia“, nei kita įmonė ar valstybės institucija tokiu atveju kortelės duomenų niekada nereikalauja. <!-- F324 -->'],
+  ['„Ignitis“ skola su nuoroda greitai sumokėti', 'Skolą tikrink mano.ignitis.lt savitarnoje; „Ignitis“ neragina klientų skubiai mokėti. <!-- F327 -->'],
+  ['Laiške – kontaktai „pasitikrinti“', 'Jų nenaudok; kontaktus susirask oficialioje svetainėje. <!-- F321 F254 -->'],
+  ['Tas pats laiškas pasiekia daug žmonių', 'Pranešk NKSC el. paštu cert@nksc.lt. <!-- F259 -->'],
+];
+
+const sources = [
+  '„Sodra“ (sodra.lt, 2026-10-05): 412,80 euro „išmokos“ laiškas; nuorodų išmokai atsiimti nesiunčia; adresai baigiasi @sodra.lt; pranešimai matomi paskyroje. <!-- F317 F318 -->',
+  'Klaipėdos apskrities policija (tv3.lt, 2026-10-05): dizainas ir „sprendimo numeris“ neįrodo, kad svetainė tikra; tikrinti „Sodros“ paskyroje. <!-- F319 -->',
+  '„Sodra“ (sodra.lt, 2026-07-13): PIN1 ir PIN2 atvejis; ko „Sodra“ niekada neprašo. <!-- F320 -->',
+  '„Swedbank“ (LRT, 2026-10-27): laiškas apie „saugumo sistemą“; ką daryti paspaudus nuorodą. <!-- F321 F322 -->',
+  '„Telia“ (LRT, 2026-09-01; „Telia“ tinklaraštis, 2024-07-25): netikros sąskaitos, adresas noreply@telia.lt, ką daryti sumokėjus; „grąžinimo“ laiškas. <!-- F323 F324 -->',
+  'Policija (atviraklaipeda.lt, 2026-04-02): įmonės nuostolis po laiško „Paysera“ vardu. <!-- F325 -->',
+  '„Artea“ (LRT, 2026-08-04), „Ignitis“ (LRT, 2025-01-13) ir „Luminor“ (tv3.lt, 2026-09-02): siuntėjo adresas, savitarna, slaptažodžių keitimas. <!-- F326 F327 F328 -->',
+  'Lietuvos bankas: finansų įstaigos nesiunčia nuorodų mokėjimų saugos duomenims; ką daryti, jei apgavo. <!-- F251 F252 -->',
+  '„Swedbank“ (2020): atidarytas priedas; kontaktų ieškoti savarankiškai. <!-- F253 F254 -->',
+  'SEB ir Lietuvos bankas: kortelę ir prieigą užblokuoti, banką pasiekti per oficialią programėlę ar svetainę. <!-- F7 F13 F6 -->',
+  '„Smart-ID“: netvirtinti operacijos, kurios nepradėjai; PIN kodai tik programėlėje. <!-- F30 F31 -->',
+  'Policija ir NKSC: pranešti per epolicija.lt; laišką – NKSC adresu cert@nksc.lt. <!-- F2 F259 -->',
+];
+---
+<Page
+  title="Netikras laiškas iš „Sodros“, banko ar „Telia“ – Suktas"
+  description="Gavai laišką apie „Sodros“ išmoką, banko „saugumo sistemą“ ar „Telia“ sąskaitą su nuoroda? Taip sukčiai vilioja banko ir kortelės duomenis. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-01</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Į el. paštą ateina laiškas „Sodros“ vardu: tau skirta 412,80 euro išmoka, mokėjimas jau patvirtintas, o pinigai sąskaitą pasieks per kelias minutes, kai tik patvirtinsi tapatybę. Tereikia paspausti mygtuką „Gauti išmoką“. <!-- F317 --> Kitas laiškas ateina „Swedbank“ vardu: esą atnaujinta „saugumo sistema“, todėl reikia prisijungti per nuorodą. <!-- F321 --> Dar kitas atrodo kaip „Telia“ sąskaita su logotipu, tik banko rekvizitai joje priklauso sukčiams. <!-- F323 --> Nuoroda veda į puslapį, kuris prašo banko prisijungimo, kortelės ar elektroninio parašo kodų. <!-- F320 F321 F324 --> „Sodra“ aprašė atvejį, kai moteris per laišką su nuoroda į netikrą „Sodros“ paskyrą suvedė elektroninio parašo PIN1, o po pranešimo apie „neteisingą kodą“ ir PIN2; netrukus iš jos banko sąskaitos buvo nurašyta didelė pinigų suma. <!-- F320 --> 2026 m. kovą Klaipėdos įmonė gavo laišką „Paysera“ vardu; paspaudus nuorodą ir suvedus prisijungimo duomenis, iš jos sąskaitos nurašyti 84 936 eurai. <!-- F325 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Nespausk nuorodos laiške. Prisijunk savarankiškai: „Sodros“ paskyroje, banko programėlėje ar „Telia“ savitarnoje, kurias atsidarai ne iš laiško.')} />
+        <p set:html={nbHtml('<!-- F319 F321 F323 --> Tikri „Sodros“ pranešimai matomi ir tavo „Sodros“ paskyroje, o „Telia“ sako, kad sąskaitą patikimiausia tikrinti prisijungus prie savitarnos. <!-- F318 F320 F323 --> Banko adresą naršyklėje įvesk ranka arba atsidaryk banko programėlę. <!-- F321 F326 --> Kortelė: <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- F252 --> „Sodra“, bankai ir „Telia“ tikrai siunčia laiškus, todėl netikras atrodo kaip tikras. <!-- F318 M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kodai">Jei tave apgavo: pasakiau ar įvedžiau kodą</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>, <a href="/jei-apgavo/#pinigai">išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo banko prisijungimo, kortelės ar elektroninio parašo duomenų, kuriuos suvesi jo puslapyje, <!-- F320 F321 F325 --> arba tavo pavedimo į jo sąskaitą, kai laiškas apsimeta sąskaita ar skola. <!-- F323 F327 --> Išmoka, skola ar „saugumo sistema“ tėra priedanga. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nuoroda laiške. Jos nespaudi, o prisijungi savarankiškai. <!-- F318 F321 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Dažniausiai tik tavo el. pašto adresą. <!-- M --> Jam užtenka, kad daugelis gavėjų tikrai gauna „Sodros“ išmokas, tikrai yra „Swedbank“ klientai ar tikrai moka „Telia“ sąskaitas. <!-- M --> Tą dieną, kai „Swedbank“ apie tokius laiškus perspėjo, bankas sulaukė daug pranešimų apie juos. <!-- F321 --> <strong class="stop">Sustabdymo vieta:</strong> tavo paskyra, programėlė ar savitarna. Jei išmoka ar skola tikra, ten ją ir rasi. <!-- F318 F319 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> prisijungti savarankiškai užtrunka minutę, o tikra išmoka ar sąskaita per tą laiką niekur nedings. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/zinute-su-nuoroda/">{nb('Žinutė su nuoroda')}</a>, <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a>, <a href="/scenarijai/netikra-banko-reklama/">{nb('Netikra banko reklama')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-01. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

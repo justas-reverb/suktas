@@ -1,0 +1,186 @@
+---
+/**
+ * Treniruotė: Ką iš tikrųjų tvirtini per „Smart-ID“? The copy is docs/copy/treniruote/smart-id.md, word for word.
+ * The confirmation app is invented ("Pavyzdžio ID") and looks like no real one: a plain slate card with an
+ * invented tile, no PIN pad. Nothing can be typed: every control is a button, there is no form, nothing is
+ * sent or stored. The answers are native popovers (no script needed); a browser without them shows them in place.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import TrainScore from '../../../components/TrainScore.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import '../../../styles/treniruote.css';
+
+const catch_ = '<span class="pop__catch">Pagavau!</span><span class="pop__dash"> –</span><span class="pop__sub"> taip dabar pagalvotų sukčius.</span>';
+const cards = [
+  { id: 'login', lead: 'Jungiesi prie banko.', rest: 'Adresą įvedei ranka, o banko puslapyje rodomas saugos kodas 4821.', what: 'Prisijungimas', code: true, pin: 'PIN1' },
+  { id: 'search', lead: 'Banką radai paieškoje.', rest: 'Įvedei prisijungimo duomenis ir patvirtinai prisijungimą PIN1, o puslapis vis kraunasi.', what: 'Mokėjimas', amt: '2 350,00 €', pin: 'PIN2' },
+  { id: 'buyer', lead: 'Parduodi dviratį skelbimų portale.', rest: '„Pirkėjas“ atsiuntė nuorodą: pinigams gauti reikia patvirtinti.', what: 'Mokėjimas', amt: '1 150,00 €', pin: 'PIN2' },
+];
+---
+<Page
+  title="Ką iš tikrųjų tvirtini per „Smart-ID“? Treniruotė – Suktas"
+  description="Saugi treniruotė: skambutis iš „banko“ ir trys patvirtinimo užklausos. Spausk, ką spaustum iš tikrųjų, ir pamatyk, ką tuo metu daro sukčius."
+  current=""
+>
+  <article class="scn tr">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/treniruote/">Treniruotė</a></p>
+        <h1>{nb('Ką iš tikrųjų tvirtini per „Smart-ID“?')}</h1>
+        <p class="tr-lead" set:html={nbHtml('Skambutis iš „banko“ ir trys užklausos telefone. Spausk, ką spaustum iš tikrųjų: iššoks paaiškinimas, ką tuo metu daro sukčius ir kaip jį sustabdyti. Tikrąją „Smart-ID“ programėlę čia pakeičia išgalvota „Pavyzdžio ID“, bet kaip ir tikrojoje, užklausos lange parašyta, ką tvirtini.')} />
+        <p class="tr-promise" set:html={nbHtml('<strong>Tai mokomasis pavyzdys.</strong> Bankas, programėlė, vardai ir sumos išgalvoti, o mygtukai nieko nepriima: tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma. Skaitiklis sužino tik tiek, kad puslapis atidarytas ir jame kas nors paspausta (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
+        <p class="tr-rule" data-score-hint hidden set:html={nbHtml('Skaičiuojamas pirmas pasirinkimas kiekviename žingsnyje. Visur rinkis saugų kelią – ir laimėsi.')} />
+      </div>
+    </header>
+
+    <section class="wrap tr-scene" aria-labelledby="situacija">
+      <h2 id="situacija">Situacija</h2>
+      <p class="tr-say" set:html={nbHtml('Skambina „Pavyzdžio banko saugos tarnyba“: iš tavo sąskaitos esą bandoma pervesti pinigus, ir kad mokėjimą atšauktų, reikia patvirtinti užklausą. Telefone ji jau pasirodė. Ką darai?')} />
+
+      <figure class="mock">
+        <figcaption class="mock__cap">Skambučio ir užklausos maketas</figcaption>
+        <div class="mock__frame">
+          <div class="mock__inner">
+            <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>Tai ne tikra programėlė</span></p>
+            <div class="ph">
+              <p class="call"><span class="call__st">Vyksta pokalbis</span> · <span class="call__who" set:html={nbHtml('„Pavyzdžio banko saugos tarnyba“')} /></p>
+              <p class="say" set:html={nbHtml('„Matome įtartiną mokėjimą. Kad jį atšauktume, patvirtinkite užklausą.“')} />
+              <div class="rq">
+                <p class="rq__app"><span class="rq__tile" aria-hidden="true"></span><span class="rq__who"><strong>Pavyzdžio ID</strong><span class="rq__bank">Pavyzdžio bankas</span></span></p>
+                <p class="rq__what">Mokėjimas</p>
+                <p class="rq__amt">{nb('1 480,00 €')}</p>
+                <p class="rq__to"><span class="rq__k">Gavėjas:</span> J. Pavyzdys</p>
+                <div class="rq__btns">
+                  <button type="button" class="rq__b rq__b--go" popovertarget="p-pin2-skambutis" data-round="call">Įvesti PIN2</button>
+                  <button type="button" class="rq__b" popovertarget="p-atsaukti-skambutis" data-round="call" data-safe>Atšaukti</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-baigiu" data-round="call" data-safe>Baigiu pokalbį ir skambinu bankui</button></p>
+
+      <div class="answers">
+        <section class="pop" id="p-pin2-skambutis" popover aria-labelledby="h-pin2-skambutis">
+          <h3 id="h-pin2-skambutis" class="pop__h pop__h--catch" set:html={nbHtml(catch_)} />
+          <p set:html={nbHtml('Patvirtinai ne atšaukimą, o pervedimą: užklausoje buvo parašyta „Mokėjimas“, suma ir gavėjas. Taip nutinka bet kam: skambinantis gąsdina ir skubina, kad lango neperskaitytum. Įtartinas mokėjimas buvo tik pasakojimas: pervedimą pradėjo jis pats, o tavo PIN2 jam buvo paskutinis trūkstamas žingsnis.')} />
+          <p class="pop__move" set:html={nbHtml('<strong>Tavo ėjimas:</strong> jei skambinantis prašo ką nors patvirtinti, baik pokalbį ir paskambink bankui numeriu iš banko programėlės. Jei tai jau nutiko iš tikrųjų: <a href="/jei-apgavo/#kodai">ką daryti pirmiausia</a>.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-pin2-skambutis" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+
+        <section class="pop" id="p-atsaukti-skambutis" popover aria-labelledby="h-atsaukti-skambutis">
+          <h3 id="h-atsaukti-skambutis" class="pop__h">{nb('Gerai, kad perskaitei.')}</h3>
+          <p set:html={nbHtml('Užklausa sako „Mokėjimas“, o tu nieko nepradėjai, todėl „Atšaukti“ – teisingas mygtukas. Bet sukčius vis dar kalba ir gali bandyti dar kartą. Jei užklausos vis kartojasi, tai aiškus ženklas, kad gali vykti apgaulė.')} />
+          <p class="pop__move" set:html={nbHtml('<strong>Tavo ėjimas:</strong> baik pokalbį ir susisiek su banku numeriu iš banko programėlės.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-atsaukti-skambutis" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+
+        <section class="pop" id="p-baigiu" popover aria-labelledby="h-baigiu">
+          <h3 id="h-baigiu" class="pop__h">{nb('Taip ir daryk.')}</h3>
+          <p set:html={nbHtml('Baigti pokalbį ir savarankiškai susisiekti su banku – būtent taip pataria Lietuvos bankas ir „Luminor“ specialistas, kai skambinantis prašo ką nors patvirtinti. Užklausą telefone atšauk arba palik: po kelių minučių ji baigsis pati. Be pokalbio sukčius nebeturi kuo tavęs skubinti.')} />
+          <div class="pop__actions">
+            <a class="btn" href="#uzklausos">Kurią užklausą tvirtintum?</a>
+            <button type="button" class="btn btn--second pop__close" popovertarget="p-baigiu" popovertargetaction="hide" autofocus>Uždaryti</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="wrap tr-scene tr-scene--wide" id="uzklausos" aria-labelledby="h-uzklausos">
+      <h2 id="h-uzklausos">Kurią užklausą tvirtintum?</h2>
+      <p class="tr-say" set:html={nbHtml('Trys užklausos, kiekviena atėjusi kitu metu. Prie kiekvienos parašyta, ką tuo metu darei.')} />
+
+      <p class="mock__cap rq-cap">Užklausų maketas</p>
+      <div class="rq-grid">
+        {cards.map((c) => (
+          <div class="rq-item">
+            <figure class="mock">
+              <figcaption class="rq-ctx"><strong set:html={nbHtml(c.lead)} /> <Fragment set:html={nbHtml(c.rest)} /></figcaption>
+              <div class="mock__frame">
+                <div class="mock__inner">
+                  <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>Tai ne tikra programėlė</span></p>
+                  <div class="ph">
+                    <div class="rq">
+                      <p class="rq__app"><span class="rq__tile" aria-hidden="true"></span><span class="rq__who"><strong>Pavyzdžio ID</strong><span class="rq__bank">Pavyzdžio bankas</span></span></p>
+                      <p class="rq__what">{c.what}</p>
+                      {c.amt && <p class="rq__amt">{nb(c.amt)}</p>}
+                      {c.amt && <p class="rq__to"><span class="rq__k">Gavėjas:</span> J. Pavyzdys</p>}
+                      {c.code && <p class="rq__to"><span class="rq__k">Saugos kodas</span> <strong class="rq__code">4821</strong></p>}
+                      <div class="rq__btns">
+                        <button type="button" class="rq__b rq__b--go" popovertarget={`p-${c.id}`} data-round={c.id} data-safe={c.id === 'login' || undefined}>Įvesti {c.pin}</button>
+                        <button type="button" class="rq__b" popovertarget="p-atsaukti" data-round={c.id} data-safe>Atšaukti</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </figure>
+          </div>
+        ))}
+      </div>
+
+      <div class="answers">
+        <section class="pop" id="p-login" popover aria-labelledby="h-login">
+          <h3 id="h-login" class="pop__h">{nb('Šią gali patvirtinti.')}</h3>
+          <p set:html={nbHtml('Prisijungimą pradėjai tu, užklausa sako „Prisijungimas“, o saugos kodas sutampa su rodomu banko puslapyje. Taip verta tikrinti kiekvieną užklausą: kas ją pradėjo, koks veiksmas ir koks kodas. Sukčiaus čia nėra: kelią į banką pasirinkai tu.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-login" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+
+        <section class="pop" id="p-search" popover aria-labelledby="h-search">
+          <h3 id="h-search" class="pop__h pop__h--catch" set:html={nbHtml(catch_)} />
+          <p set:html={nbHtml('Tu jungiesi, o užklausa rodo mokėjimą ir prašo PIN2: tvirtintum pinigų pervedimą. Prisijungiant reikia tik PIN1. Kol puslapis „kraunasi“, sukčius su tavo PIN1 patvirtinimu jau prisijungė prie tikro banko ir pradėjo pervedimą.')} />
+          <p class="pop__move" set:html={nbHtml('<strong>Tavo ėjimas:</strong> spausk „Atšaukti“, uždaryk puslapį ir skambink bankui numeriu iš banko programėlės: kartais dalį pervedimų dar pavyksta sustabdyti. <a href="/jei-apgavo/#kodai">Ką daryti pirmiausia</a>.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-search" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+
+        <section class="pop" id="p-buyer" popover aria-labelledby="h-buyer">
+          <h3 id="h-buyer" class="pop__h pop__h--catch" set:html={nbHtml(catch_)} />
+          <p set:html={nbHtml('Pinigams gauti PIN2 nereikia: juo tvirtinami pervedimai ir parašai, todėl šia užklausa pinigus siųstum tu. Lietuvos bankas viename ginče nusprendė, kad bankas neprivalo grąžinti 4 720 eurų žmogui, kuris „pinigams gauti“ PIN2 kodu patvirtino mokėjimus.')} />
+          <p class="pop__move" set:html={nbHtml('<strong>Tavo ėjimas:</strong> pinigams gauti nieko netvirtink ir pirkėjo nuorodos nespausk. Jei per tą nuorodą jau įvedei banko duomenis, iškart skambink bankui numeriu iš banko programėlės: kartais dalį pervedimų dar pavyksta sustabdyti. <a href="/jei-apgavo/#kodai">Ką daryti pirmiausia</a>.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-buyer" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+
+        <section class="pop" id="p-atsaukti" popover aria-labelledby="h-atsaukti">
+          <h3 id="h-atsaukti" class="pop__h">{nb('Atšaukti nieko nepakenks.')}</h3>
+          <p set:html={nbHtml('Užklausą, kurios nepradėjai, atšauk mygtuku „Atšaukti“ arba palik: po kelių minučių ji baigsis pati. Bet jei užklausa atėjo po to, kai duomenis įvedei per paieškos ar kieno nors atsiųstą nuorodą, sukčius gali būti jau prisijungęs ir bandys dar kartą: uždaryk tą puslapį ir skambink bankui numeriu iš banko programėlės. Jei prisijungimą pradėjai tu, ranka įvestu adresu ar banko programėle, pradėk iš naujo ten pat. Jei tokių užklausų vis gauni, nors nieko nepradedi, kreipkis į „Smart-ID“.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-atsaukti" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="wrap tr-end" aria-labelledby="ejimas">
+      <TrainScore rounds={4} />
+      <div class="move">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš įvedant PIN, perskaityk, ką tvirtini: koks veiksmas, kokia suma, koks gavėjas. Jei to nepradėjai tu, spausk „Atšaukti“.')} />
+        <div class="cta">
+          <a class="btn" href="/sustok/kodai-ir-pin/">Atidaryk kortelę</a>
+          <a class="btn btn--second" href="/scenarijai/smart-id-patvirtinimas/">Visas scenarijus</a>
+        </div>
+      </div>
+
+      <div class="tr-nope">
+        <h3>Ko čia nerasi</h3>
+        <p set:html={nbHtml('Šis puslapis – ne šablonas: bankas ir programėlė išgalvoti, mygtukai nieko nepriima, todėl įvesti čia nieko neįmanoma. Tai mūsų <a href="/misija/#riba">riba</a>.')} />
+      </div>
+
+      <div class="tr-src">
+        <h2>Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-31. Faktai – iš scenarijaus <a href="/scenarijai/smart-id-patvirtinimas/">„Patvirtink per „Smart-ID““</a>, visi su datomis <a href="/saltiniai/">Šaltiniuose</a>.')} />
+      </div>
+    </section>
+  </article>
+</Page>
+
+<script>
+  // Without this the link jumps to the next scene and leaves the open answer card over it; with it the card closes first.
+  // No script: the card stays until Esc, "Uždaryti" or a tap outside, which is fine.
+  document.querySelectorAll<HTMLAnchorElement>('.pop a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', () => a.closest<HTMLElement>('.pop')?.hidePopover());
+  });
+</script>

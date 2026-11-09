@@ -1,0 +1,169 @@
+---
+/**
+ * Jei tave apgavo. The copy is docs/copy/jei-apgavo.md, word for word; the source tags stay as
+ * comments and the build strips them. Pure HTML and CSS: the layout loads no script, there is no
+ * art, and the only face is the text face. The two [tikrinti] sentences stay off the page.
+ */
+import Emergency from '../../layouts/Emergency.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+
+const first = [
+  ['Paskambink savo bankui.', 'Jei dar kalbi su skambinusiuoju, pirmiausia padėk ragelį. Skambink numeriu iš oficialios banko programėlės ar svetainės, o ne tuo, kurį tau davė skambinęs ar rašęs žmogus. <!-- F13 --> Paprašyk užblokuoti kortelę, o jei atskleidei prisijungimo duomenis – ir prieigą prie internetinės bankininkystės. <!-- F6 --> Blokavimas neatšaukia jau atliktų mokėjimų, todėl papasakok bankui ir apie juos. <!-- F6 -->'],
+  ['Nustok bendrauti su sukčiais ir išsaugok susirašinėjimą.', 'Žinučių, skambučių įrašų ir ekrano nuotraukų netrink. <!-- F4 -->'],
+  ['Pranešk policijai.', 'Jei jau patyrei nuostolį, pranešk per epolicija.lt. <!-- F2 --> Jei sukčiavimas vyksta dabar arba jį įtari, jei vis dar kalbi su netikru pareigūnu ar reikia skubios pagalbos – iškart skambink <a href="tel:112">112</a>. <!-- F1 F4 F96 -->'],
+  ['Pasakyk artimam žmogui, kas nutiko,', 'ir paprašyk pabūti šalia.'],
+];
+
+const choose = [
+  ['Išsiunčiau pinigus', 'pinigai'],
+  ['Pasakiau kortelės duomenis', 'kortele'],
+  ['Pasakiau ar įvedžiau kodą', 'kodai'],
+  ['Įdiegiau programą ar leidau valdyti telefoną', 'nuotolinis'],
+  ['Kažkas perėmė mano paskyrą', 'paskyra'],
+  ['Apgavo artimą žmogų', 'artimas'],
+];
+
+const cases = [
+  ['pinigai', 'Išsiunčiau pinigus', [
+    'Skambink bankui dabar numeriu iš oficialios programėlės ar svetainės. <!-- F13 -->',
+    'Pasakyk, kokias operacijas atlikai ir kokius duomenis atskleidei. <!-- F7 -->',
+    'Užblokuok kortelę, o jei davei prisijungimo duomenis – ir prieigą prie internetinės bankininkystės. <!-- F6 -->',
+    'Pranešk policijai per epolicija.lt. <!-- F2 F20 -->',
+    '<strong>Daugiau nieko nemokėk, kad ir ką tau žadėtų.</strong> Jei po pervedimo prašoma dar vieno mokesčio („komisinių“, mokesčio pinigams atsiimti ar grąžinti, net „Mokesčių inspekcijai“), kad atgautum pinigus ar pagaliau gautum „pelną“, tai ne paskutinis žingsnis, o ta pati apgaulė. <!-- F348 F349 F355 --> Tokį mokestį sumokėjus, pinigai negrįžta – tik prarandi daugiau. <!-- F353 F351 F355 --> Jei jis vėl skambina ar rašo – neatsakyk. <!-- F351 F355 -->',
+    'Jei prieš pervedimą bankas parodė, kad gavėjo pavadinimas sutampa ar beveik sutampa, o pinigai pateko ne tam gavėjui, kurį rodė patikra, paslaugos teikėjas juos grąžina; paklausk apie tai savo banko. <!-- F98 --> Tai taikoma tik tada, kai patikra suklaidino, o ne po kiekvieno apgavimo. <!-- F98 M -->',
+    'Jei mokėjai kortele netikroje el. parduotuvėje, paprašyk banko užginčyti operaciją. Kaip tai padaryti: <a href="/scenarijai/netikra-parduotuve/">Netikra el. parduotuvė</a>. <!-- F206 F207 -->',
+    'Jei pervedei pinigus pardavėjui skelbime, o daikto negavai, žiūrėk <a href="/scenarijai/netikras-pardavejas/">„Pardavėjas“ prašo avanso</a>.',
+    'Jei bilietą pirkai iš nepažįstamo žmogaus ir jo negavai arba jis negalioja, žiūrėk <a href="/scenarijai/bilietas-i-koncerta/">Bilietas į koncertą iš nepažįstamo žmogaus</a>.',
+    'Jei pinigus, kortelę ar auksą atidavei „pareigūnui“ ar „kurjeriui“ prie durų, žiūrėk <a href="/scenarijai/pareigunas-prie-duru/">„Pareigūnas“ prie durų</a>.',
+    'Jei mokėjai būrėjai ar ekstrasensui ir prašoma vis daugiau, žiūrėk <a href="/scenarijai/bureja-praso-dar/">Būrėja prašo vis daugiau pinigų</a>.',
+    'Jei kas nors siūlo pinigus susigrąžinti už mokestį, tai kitas apgaulės veiksmas. Skaityk „Ko nedaryti“ žemiau. <!-- F14 F15 F16 -->',
+  ]],
+  ['kortele', 'Pasakiau kortelės duomenis', [
+    'Užblokuok kortelę dabar banko programėlėje ar internetiniame banke arba paskambink bankui. <!-- F7 F8 -->',
+    'Pasakyk bankui, kokius duomenis atskleidei. <!-- F7 -->',
+    'Jei atskleidei ir prisijungimo duomenis, užblokuok ir prieigą prie internetinės bankininkystės. <!-- F6 -->',
+    'Pranešk policijai per epolicija.lt. <!-- F2 -->',
+    'Jei kortelės duomenis įvedei netikroje el. parduotuvėje, žiūrėk <a href="/scenarijai/netikra-parduotuve/">Netikra el. parduotuvė</a>.',
+    'Jei kortelės duomenis įvedei puslapyje, į kurį nuvedė QR kodas, žiūrėk <a href="/scenarijai/netikras-qr-kodas/">Netikras QR kodas</a>.',
+  ]],
+  ['kodai', 'Pasakiau ar įvedžiau kodą', [
+    'Jei kodas ar PIN buvo skirtas bankui ar „Smart-ID“, skambink bankui numeriu iš oficialios programėlės ar svetainės ir pasakyk, ką atskleidei. <!-- F13 F7 -->',
+    'Jei „Smart-ID“ PIN kodu patvirtinai operaciją, kurios nepradėjai, pasakyk tai bankui. <!-- F30 F7 -->',
+    'Jei kodas buvo skirtas pokalbių programėlės paskyrai (SMS kodas, programėlės PIN ar atkūrimo raktas), patikrink susietus įrenginius ir pašalink tuos, kurių neatpažįsti. <!-- F42 --> „Signal“ programėlėje įjunk registracijos užraktą. <!-- F42 -->',
+    'Jei tai buvo „WhatsApp“ kodas ir paskyrą perėmė kažkas kitas, prisijunk iš naujo savo numeriu su 6 skaitmenų kodu, kurį gausi SMS žinute ar skambučiu: tada visi kiti įrenginiai atjungiami. <!-- F43 --> Perspėk šeimą ir draugus, kad tas žmogus gali apsimesti tavimi pokalbiuose ir grupėse. <!-- F43 -->',
+    'Pranešk policijai per epolicija.lt, jei patyrei nuostolį. <!-- F2 -->',
+    'Jei bijai, kad tavo kodais paimta paskola, žiūrėk <a href="/scenarijai/paskola-tavo-vardu/#jau-paimta">Paskola tavo vardu, kurios neėmei</a>.',
+  ]],
+  ['nuotolinis', 'Įdiegiau programą ar leidau valdyti telefoną', [
+    'Nutrauk pokalbį. Jei programai leidai valdyti telefoną ar kompiuterį, išjunk „Wi-Fi“ ir mobiliuosius duomenis, o bankui skambink iš kito, saugaus įrenginio. <!-- F305 -->',
+    'Pasakyk bankui, kad įdiegei skambinusiojo paprašytą programą. <!-- F7 --> Bankų asociacija sako, kad tokios programos dažnai skirtos nuotoliniu būdu prisijungti prie kito žmogaus kompiuterio. <!-- F51 -->',
+    'Neprisijunk prie bankininkystės kartu su skambinančiuoju: sukčiai gali to prašyti. <!-- F51 -->',
+    'Pašalink programą, kurią įdiegei skambinusiojo prašymu. <!-- F305 --> Jei turi antivirusinę programą, paleisk išsamią patikrą. <!-- F117 -->',
+    'Pranešk policijai per epolicija.lt. <!-- F2 -->',
+    'Jei programą įdiegei iš nuorodos ar reklamos, žiūrėk <a href="/scenarijai/programele-is-nuorodos/">Programėlė iš nuorodos ar reklamos</a>.',
+    'Jei programą įdiegei per skambutį, žiūrėk <a href="/scenarijai/parodyk-ekrana/">„Parodyk ekraną“</a>.',
+  ]],
+  ['paskyra', 'Kažkas perėmė mano paskyrą', [
+    'Jei tai pokalbių programėlė, patikrink susietus įrenginius ir pašalink tuos, kurių neatpažįsti. <!-- F42 --> „Signal“ programėlėje įjunk registracijos užraktą. <!-- F42 -->',
+    'Jei tai „Facebook“ paskyra, eik į facebook.com/hacked, jei gali – iš įrenginio, kuriuo jau jungeisi prie „Facebook“. <!-- F160 -->',
+    'Jei dar gali prisijungti, pakeisk tos paskyros slaptažodį. <!-- F57 --> Jei tą patį slaptažodį naudojai ir kitur, pakeisk jį ir ten, pirmiausia svarbiausiose paskyrose. <!-- F71 -->',
+    'Pasakyk artimiesiems, kad kol kas netikėtų žinutėmis iš tavo paskyros: užpuolikas gali apsimesti pažįstamu. <!-- F41 -->',
+    'Jei per paskyrą ar kortelę prarasta pinigų, žiūrėk <a href="#pinigai">„Išsiunčiau pinigus“</a>.',
+  ]],
+  ['artimas', 'Apgavo artimą žmogų', [
+    'Pirmiausia pasakyk: tai gali nutikti bet kam. Nekaltink.',
+    'Padėk paskambinti bankui numeriu iš oficialios programėlės ar svetainės. <!-- F13 -->',
+    'Pranešti policijai per epolicija.lt galite kartu. <!-- F2 -->',
+    'Išsaugokite susirašinėjimą. <!-- F4 -->',
+    'Perspėk, kad gali paskambinti „gelbėtojai“, siūlantys susigrąžinti pinigus už mokestį. <!-- F14 F15 F16 -->',
+  ]],
+];
+
+const dont = [
+  '<strong>Nemokėk „paskutinio mokesčio“, kad atgautum, ką jau sumokėjai.</strong> Lietuvos bankas įspėja: sukčiai papildomą mokestį pateikia kaip paskutinį žingsnį ir dažnai skubina sumokėti šiandien. Tai kartojasi visose investicinėse apgaulėse. <!-- F348 F349 --> Kiekvienas naujas pervedimas – ne kelias atgauti, o tik didesnis nuostolis. <!-- F351 F352 F353 --> Taip nutiko moteriai, kuri nesulaukė užsakytų malkų: ji dar sumokėjo „mokestį“ neva Mokesčių inspekcijai, kad atgautų pinigus, ir iš viso prarado beveik 850 eurų. Sukčiui skirta vienų metų laisvės atėmimo bausmė, ir 2026 m. spalį apeliacinis teismas ją paliko galioti. <!-- F355 -->',
+  '<strong>Nemokėk niekam už „pinigų susigrąžinimą“.</strong> Lietuvos bankas įspėja: teisininkais ar „gelbėtojais“ apsimetę sukčiai prašo 10–50 % sumos, o taip galima būti apgautam dar kartą. <!-- F14 F15 --> Bankų asociacija rašo, kad vėliau skambina ir „institucijomis“ apsimetę žmonės su tokiu pačiu pasiūlymu. <!-- F16 --> Kaip tai atrodo: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.',
+  '<strong>Neskambink numeriu, kurį tau davė skambinęs ar rašęs žmogus.</strong> <!-- F13 -->',
+  '<strong>Netrink žinučių ir ekrano nuotraukų.</strong> <!-- F4 -->',
+  '<strong>Nesiųsk daugiau pinigų ir nesakyk daugiau kodų</strong> – nei „bankininkui“, nei „pareigūnui“. <!-- F25 F30 -->',
+  '<strong>Nekaltink savęs.</strong> Tai ne tavo kaltė.',
+];
+
+const who = [
+  '<strong>Bankui.</strong> Kortelę užblokuoji programėlėje, internetiniame banke ar telefonu. <!-- F7 F8 --> SEB ir „Swedbank“ savo puslapiuose nurodo, kad su jais galima susisiekti visą parą. <!-- F7 F8 --> „Citadele“ programėlėje yra mygtukas „Užblokuoti kortelę“. <!-- F9 --> Kito banko kontaktų ieškok jo paties programėlėje ar svetainėje. <!-- F13 -->',
+  '<strong>Policijai.</strong> Jei jau patyrei nuostolį: <a href="https://epolicija.lt">epolicija.lt</a>. <!-- F2 --> Skubiai pagalbai ir kai sukčiavimas vyksta dabar – <a href="tel:112">112</a>. <!-- F1 F96 -->',
+  '<strong>NKSC</strong> – kai tai buvo tik bandymas. Apie svetainę: forma <a href="https://www.nksc.lt/pranesti-svetaine.html">„Pranešti apie svetainę“</a>. <!-- F17 --> Apie skambutį ar SMS: forma <a href="https://www.nksc.lt/pranesti-zinute.html">„Pranešti apie žinutę / skambutį“</a>; NKSC tokius pranešimus perduoda RRT. <!-- F18 --> Kas jau nukentėjo nuo sukčiavimo, kreipiasi į policiją, ne į NKSC. <!-- F19 --> NKSC teigia, kad greitesnis pranešimas leidžia anksčiau užblokuoti sukčių svetainę. <!-- F21 -->',
+];
+---
+<Emergency
+  title="Jei tave apgavo sukčiai: ką daryti pirmiausia – Suktas"
+  description="Pirmos dešimt minučių ir žingsniai pagal tai, kas nutiko: bankas, policija, kodai, programos, paskyra, artimas žmogus."
+>
+  <article class="sos">
+    <header class="wrap sos__head">
+      <h1>{nb('Jei tave apgavo')}</h1>
+      <p class="sos__line">{nb('Tai ne tavo kaltė. Laikas svarbus.')}</p>
+    </header>
+
+    <section class="wrap sos__first" aria-labelledby="pirmos">
+      <h2 id="pirmos" class="label">{nb('Pirmos dešimt minučių')}</h2>
+      <ol class="first" role="list">
+        {first.map(([head, text]) => (
+          <li><strong set:html={nbHtml(head)} /> <span set:html={nbHtml(text)} /></li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="wrap sos__choose" id="kas-nutiko" aria-labelledby="kas">
+      <h2 id="kas">{nb('Kas nutiko?')}</h2>
+      <ul class="choose" role="list">
+        {choose.map(([label, id]) => <li><a href={`#${id}`}>{nb(label)}</a></li>)}
+      </ul>
+    </section>
+
+    <div class="wrap sos__cases">
+      {cases.map(([id, title, steps]) => (
+        <section class="case" id={id} aria-labelledby={`${id}-h`}>
+          <h3 id={`${id}-h`}>{nb(title)}</h3>
+          <ol class="steps" role="list">
+            {steps.map((s) => <li><span set:html={nbHtml(s)} /></li>)}
+          </ol>
+          <p class="case__back"><a href="#kas-nutiko">{nb('Atgal į sąrašą')}</a></p>
+        </section>
+      ))}
+    </div>
+
+    <section class="wrap sos__block sos__dont" aria-labelledby="nedaryti">
+      <h2 id="nedaryti">{nb('Ko nedaryti')}</h2>
+      <ul role="list">
+        {dont.map((s) => <li set:html={nbHtml(s)} />)}
+      </ul>
+    </section>
+
+    <section class="wrap sos__block sos__who" aria-labelledby="pranesti">
+      <h2 id="pranesti">{nb('Kam pranešti')}</h2>
+      <ul role="list">
+        {who.map((s) => <li set:html={nbHtml(s)} />)}
+      </ul>
+    </section>
+
+    <section class="wrap sos__block sos__calm" aria-labelledby="nurimsi">
+      <h2 id="nurimsi">{nb('Kai nurimsi')}</h2>
+      <ul role="list">
+        <li set:html={nbHtml('Perskaityk, kaip toks triukas veikia iš kitos pusės: <a href="/scenarijai/skambutis-is-banko/">Skambutis iš „banko“</a>, <a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>.')} />
+        <li set:html={nbHtml('Pasitikrink: <a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>.')} />
+        <li set:html={nbHtml('Faktai ir jų datos: <a href="/saltiniai/">Šaltiniai</a>.')} />
+        <li set:html={nbHtml('Kai nurimsi, parodyk mums, kas nutiko, kad perspėtume kitus be vardų ir numerių: <a href="/pranesk/">Pranešk</a>. <!-- pažadas -->')} />
+      </ul>
+    </section>
+
+    <div class="wrap sos__cta noprint">
+      <a class="btn" href="#kas-nutiko">{nb('Kas nutiko?')}</a>
+      <a class="btn btn--second" href="/scenarijai/">{nb('Kai nurimsi: kas čia nutiko')}</a>
+    </div>
+
+    <footer class="wrap sos__end">
+      <p class="noprint" set:html={nbHtml('Spausdink iš naršyklės. Šis puslapis nieko neįkelia iš kitų serverių ir nieko nesaugo. <!-- pažadas -->')} />
+      <p set:html={nbHtml('Patikrinta: 2026-11-02')} />
+    </footer>
+  </article>
+</Emergency>

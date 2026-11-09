@@ -1,0 +1,17 @@
+---
+/* One painted band (a level, the snow, the foot of the page). A phone held upright gets a painting
+   made for its own shape, 3:2, so the scene is not a thin strip; every other screen gets the 3:1
+   one, which the page crops from the top and the foot (site.css, which has the same condition).
+   Both are painted by tools/paint-art.mjs. */
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+const wide = [1200, 2400, 3840];
+const phone = [780, 1200, 1560];
+const set = (list: number[], kind: string) => list.map((w) => `/art/vista-${name}${kind}-${w}.webp ${w}w`).join(', ');
+---
+<picture>
+  <source media="(max-width: 39.99em) and (orientation: portrait)" type="image/webp" srcset={set(phone, '-phone')} sizes="100vw" />
+  <img src={`/art/vista-${name}-1200.webp`} srcset={set(wide, '')} sizes="100vw" width="1200" height="400" alt="" loading="lazy" decoding="async" />
+</picture>

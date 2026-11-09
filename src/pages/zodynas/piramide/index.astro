@@ -1,0 +1,233 @@
+---
+/**
+ * Žodynas: Kas yra finansinė piramidė, the fourth glossary entry with a page of its own. The copy is
+ * docs/copy/zodynas/piramide.md, word for word; the source tags stay as comments and the build
+ * strips them. It wears the scenario template, as /zodynas/nelegalus-kazino/ does.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'pyramid scheme, Ponzi scheme'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Žada, kad uždirbsi pirmiausia už tai, kad pritrauksi kitus.', ' ES teisė draudžia sistemas, kuriose atlygis mokamas visų pirma už kitų įtraukimą, o ne už produktų pardavimą ar naudojimą. <!-- F757 --> Ar tai tinklinė prekyba, ar piramidė, rodo vienas klausimas: už ką mokamas atlygis – už parduotus produktus ar už naujus narius. <!-- F757 M -->'],
+  ['Neaišku, iš ko atsiranda pelnas.', ' Kauno apskrities policija 2025 m. perspėjo, kad tokiose schemose pajamos negaunamos iš jokios realios veiklos – jos remiasi naujų dalyvių pinigais. <!-- F719 -->'],
+  ['Žada greitą, nuolat augantį pelną be rizikos.', ' Lietuvos bankas pataria vengti pasiūlymų, žadančių „greitą praturtėjimą“ ir „jokios rizikos“. <!-- F738 --> Banko žodžiais, investavimas be jokios rizikos neegzistuoja, o normalus uždarbis dažnai svyruoja nuo 5 iki 10 proc. per metus. Tai gairė, ne pažadas. <!-- F473 -->'],
+  ['Tas, kuris ima tavo pinigus, neturi licencijos.', ' Lietuvos bankas ragina prieš patikint kam nors pinigus įsitikinti, ar tas asmuo turi licenciją. <!-- F734 --> 2012–2013 m. bankas rašė, kad priimti indėlius ir kitas grąžintinas lėšas iš gyventojų gali tik bankai ir kredito unijos. <!-- F735 -->'],
+];
+
+const risks = [
+  ['Visais įneštais pinigais.', ' Kai naujų dalyvių nebelieka, sistema žlunga ir palieka žmones be jų pinigų. <!-- F719 --> 2012 m. Lietuvos banko valdybos pirmininkas sakė, kad finansinės piramidės nesukuria jokios vertės ir visų jų pabaiga tokia pati – didžiuliai žmonių nuostoliai. <!-- F737 -->'],
+  ['Skolomis.', ' Lietuvos bankas perspėja: investuojant į tai, ko nesupranti, galima ne tik prarasti santaupas, bet ir įlįsti į skolas. <!-- F738 --> Skolintų pinigų neinvestuok niekada. <!-- F473 -->'],
+  ['Draugų ir artimųjų pinigais.', ' Piramidė auga per pažįstamų rekomendacijas. <!-- F719 --> Jei pakvieti kitus, rizikuoja ir jų pinigai. <!-- M -->'],
+  ['Antra apgaule.', ' 2018 m. Generalinė prokuratūra perspėjo, kad vienos piramidės nukentėjusiesiems buvo siūloma pinigus susigrąžinti toliau „investuojant“ į abejotinas sistemas. <!-- F739 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.'],
+];
+
+const steps = [
+  '<strong>Daugiau nepervesk nė vieno euro</strong>, kad ir ką žadėtų ar aiškintų. <!-- F466 -->',
+  '<strong>Nekviesk naujų žmonių.</strong> Piramidė laikosi tik tol, kol ateina nauji pinigai, ir kiekvienas naujas dalyvis rizikuoja savaisiais. <!-- F719 M -->',
+  '<strong>Išsaugok susirašinėjimą</strong>, pervedimų išrašus ir nuorodas. <!-- F4 M -->',
+  '<strong>Pranešk policijai per epolicija.lt.</strong> <!-- F2 -->',
+  '<strong>Kas nors siūlo už mokestį ar naują „investiciją“ susigrąžinti pinigus?</strong> Tai dar viena apgaulė. <!-- F14 F15 F739 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Reguliarios, nuolat augančios pajamos, o pirmosios išmokos tarsi įrodo, kad tai veikia. <!-- F734 F719 M -->'],
+  ['Autoritetas.', 'Kviečia ne nepažįstamasis, o draugas, kuriuo pasitiki. <!-- F719 M -->'],
+  ['Gėda.', 'Pripažinti, kad įnešei pinigų į piramidę ir pakvietei kitus, sunku, todėl lengviau tylėti ir laukti. <!-- M --> Tai gali nutikti bet kam. <!-- M -->'],
+];
+
+const sides = [
+  ['Žada reguliarias, nuolat augančias pajamas', 'Paklausk, iš ko atsiranda pelnas. <!-- F719 F734 -->'],
+  ['Daugiau uždirbsi, jei pritrauksi kitų', 'Tai piramidės ženklas, ES teisė tokias sistemas draudžia. Neįnešk. <!-- F757 M -->'],
+  ['Pirmosios išmokos ateina', 'Jos mokamos iš naujų dalyvių pinigų ir nieko neįrodo. <!-- F719 -->'],
+  ['Kviečia draugas ar pažįstamas', 'Draugo žodis – ne licencija: patikrink Lietuvos banko sąraše. <!-- F118 M -->'],
+  ['Siūlo „investuoti“, kad atgautum, ką praradai', 'Tai dar viena apgaulė. <!-- F739 F15 -->'],
+];
+
+const sources = [
+  'Kauno apskrities policija, per LRT (2025-07-04): kaip veikia „Ponzi“ schema, sukčių įrankiai, ką pasitikrinti. <!-- F719 -->',
+  'Lietuvos bankas (2012-09-10, 2013-05-30): ką žada piramidė, kas gali priimti indėlius, patikrinti licenciją. <!-- F734 F735 F736 -->',
+  'Lietuvos bankas (2012-03-16): piramidės nesukuria vertės. <!-- F737 -->',
+  'Lietuvos bankas (2025-04-24): platforma, reklamuota socialiniuose tinkluose; kaip patikrinti licenciją. <!-- F738 -->',
+  'Lietuvos bankas, finansų rinkos dalyvių sąrašas. <!-- F118 -->',
+  'Lietuvos bankas (2024-10-28, 2020-02-12): normali grąža, neinvestuoti skolintų pinigų, nemokėti siūlantiems susigrąžinti pinigus. <!-- F473 F14 F15 -->',
+  'Generalinė prokuratūra, per tv3.lt (2018-01-30, 2019-05-22): pasiūlymai „susigrąžinti“ pinigus, teismo nuosprendis. <!-- F739 F756 -->',
+  'ES direktyva 2005/29/EB, I priedo 14 punktas: piramidės pobūdžio sistemos draudžiamos. <!-- F757 -->',
+  'Živilė Kielienė, Pinigų plovimo prevencijos kompetencijų centras, per 15min (2026-09-10): sustok ir nebepervesk nė vieno euro. <!-- F466 -->',
+  'Policija (2026-02-05, atnaujinta 2026-04-23): pranešti per epolicija.lt. <!-- F2 -->',
+  'Kampanija „Padėk ragelį“ (LRT, policija, Lietuvos bankų asociacija, Lietuvos paštas): išsaugoti susirašinėjimą. <!-- F4 -->',
+];
+---
+<Page
+  title="Finansinė piramidė: kaip atpažinti ir ką daryti – Suktas"
+  description="Kviečia į sistemą, kurioje uždirbsi už tai, kad pritrauksi kitus? Kaip atpažinti finansinę piramidę, ką patikrinti prieš įnešant pinigų ir ką daryti, jei jau įsitraukei."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Kas yra finansinė piramidė')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Finansinė piramidė (dar vadinama Ponzi schema) žada pelną, bet pati nieko nesukuria: pirmiesiems dalyviams „pelnas“ mokamas iš vėliau prisijungusiųjų įnašų. <!-- F719 F737 --> Todėl ji laikosi tik tol, kol ateina nauji žmonės su pinigais, o kai jų nebelieka, žlunga ir palieka žmones be jų pinigų. <!-- F719 --> ES teisė visais atvejais draudžia sistemas, kuriose atlygis mokamas visų pirma už naujų dalyvių įtraukimą. <!-- F757 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Kviečia draugas, pažįstamas ar įrašas socialiniuose tinkluose: investicinis klubas, platforma ar verslo galimybė. <!-- F719 F738 M --> Pirmiausia reikia įnešti pinigų, o pajamos, kaip žadama, bus reguliarios, nuolat augs ir dažnai priklausys nuo to, kiek naujų žmonių pritrauksi. <!-- F734 F736 --> Rodomos tariamos sėkmės istorijos, o pirmieji dalyviai iš tiesų kurį laiką gauna išmokas, todėl viskas atrodo patikima. <!-- F719 -->')} />
+          <p set:html={nbHtml('2025 m. Lietuvos bankas perspėjo apie socialiniuose tinkluose reklamuotą kriptoturto platformą, kuri neturėjo leidimo teikti paslaugų ir, pasak banko, galimai turi finansinės piramidės požymių. <!-- F738 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            {signs.map(([head, text]) => (
+              <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš įnešant pinigų, patikrink, ar tas, kuris ima tavo pinigus, yra <a href="https://www.lb.lt/lt/finansu-rinku-dalyviai">Lietuvos banko finansų rinkos dalyvių sąraše</a>. Jei nėra, neįnešk. <!-- F734 F118 M -->')} />
+        <p set:html={nbHtml('Įmonės pavadinimas turi tiksliai sutapti su nurodytu Lietuvos banko svetainėje. <!-- F738 --> Dar paklausk, iš ko atsiranda pelnas: jei iš naujų dalyvių pinigų, tai piramidė. <!-- F719 M --> Prieš mokant pasitark su specialistu ar žmogumi, kuriuo pasitiki, o ne su tuo, kuris tave kviečia. <!-- F719 F466 M -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            {risks.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="isitraukei">
+        <h2 id="isitraukei">Jei jau įsitraukei</h2>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. „Jis“ čia – piramidės organizatorius. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kuo daugiau naujų įnašų. <!-- F719 --> Iš jų jis moka „pelną“ pirmiesiems dalyviams, kad šie patikėtų ir kviestų kitus. <!-- F719 M --> Licencijos jis neturi, todėl Lietuvos bankas jo veiklos neprižiūri. <!-- F734 F736 --> 2019 m. teismas devynis žmones, kurie viliojo kitus investuoti į vieną tokią sistemą ir žadėjo didžiules palūkanas, pripažino kaltais dėl vertimosi neteisėta finansine veikla. <!-- F756 --> <strong class="stop">Sustabdymo vieta:</strong> nėra Lietuvos banko sąraše – pinigų neįnešk. <!-- F118 F734 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jam nereikia tavęs pažinti: kvietimą atneša pažįstamas, kuriuo pasitiki. <!-- F719 M --> Jis sužino tik tai, ką parodai pats: kad nori papildomų pajamų, kiek gali įnešti, kas tavo draugai. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kvietimas iš pažįstamo neįrodo, kad sistema tikra. <!-- F719 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> dešimt sekundžių ir vienas klausimas – iš ko atsiranda pelnas? <!-- F719 M --> <a href="/sustok/desimt-sekundziu/">Kortelė</a>.')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>O tas, kuris tave pakvietė?</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Dažnai tai draugas ar giminaitis, kuris pats įnešė pinigų ir tiki, kad uždirbs. <!-- M --> Ar už tai atsako paprastas dalyvis, pakvietęs draugų, oficialiuose šaltiniuose atsakymo neradome. <!-- M --> Pranešti policijai apie piramidę vis tiek verta. <!-- F2 M --> <strong class="stop">Sustabdymo vieta:</strong> jei kviečia draugas, paklausk jo paties: iš ko atsiranda pelnas ir ar yra licencija? <!-- F734 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></li>
+          <li><strong>Scenarijai:</strong> <a href="/scenarijai/netikras-brokeris/">{nb('Užpildei formą, o skambina „brokeris“')}</a>, <a href="/scenarijai/prekybos-kursai-ir-signalai/">{nb('Prekybos kursai ir signalai už pinigus')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/greito-uzdarbio-kursai/">{nb('Kas yra greito uždarbio kursai')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

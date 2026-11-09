@@ -1,0 +1,138 @@
+/* ------------------------------------------------------------------------------------
+   The hero's three directions (HeroFx.astro). A is daylight, B and C are a dark ground (indigo, jade).
+   The ground colour of each is the shader's own (src/art/hero/*.frag.glsl), so the still fades into it.
+   Wide: the art is the section's backdrop, at most 100rem, centred on the page, with the text on the faded
+   left and the reel on the right. Phone: the art is a 3:2 band above the text and the reel sits under it.
+   ------------------------------------------------------------------------------------ */
+
+.hfx { --hfx-ground: var(--day); position: relative; isolation: isolate; overflow: clip; }
+.hfx--b { --hfx-ground: #1b1470; }
+.hfx--c { --hfx-ground: #09262c; }
+.hfx--dark { background: var(--hfx-ground); color: var(--on-stage); }
+.hfx--dark :focus-visible { outline-color: var(--mint-lt); }
+
+.hfx__art { position: relative; aspect-ratio: auto; height: 7.5rem; margin-bottom: -1.5rem; overflow: hidden; pointer-events: none; }
+.hfx__art img,
+.hfx__art canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; display: block; }
+.hfx__art canvas { opacity: 0; transition: opacity 0.7s ease-out; }
+.hfx.is-live .hfx__art canvas { opacity: 1; }
+.hfx__art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--hfx-ground) 0, transparent 42%); }
+/* a phone: the art is a strip (the dialling number), so the question and its answer start on the first screen */
+@media (max-width: 59.99rem) and (orientation: landscape) and (max-height: 32rem) { .hfx__art { height: 6rem; margin-bottom: 0; } }
+
+.hfx__body { position: relative; display: grid; gap: 1.25rem; padding-block: 1.25rem clamp(1.75rem, 5vw, 3.5rem); }
+
+/* ---- the card: the question's box and the answer's box, one box once the answer has joined it ---- */
+.hfx { --hfx-r: 1.1rem; --hfx-box: rgb(27 20 112 / 0.84); --hfx-edge: rgb(238 235 255 / 0.3); }
+.hfx__card { min-width: 0; display: grid; align-content: start; }
+.hfx__q {
+  position: relative;
+  padding: clamp(1.1rem, 2.4vw, 1.9rem) clamp(1.2rem, 3vw, 2.4rem) clamp(1rem, 2vw, 1.5rem);
+  border: 1px solid var(--hfx-edge);
+  border-bottom: 0;
+  border-radius: var(--hfx-r) var(--hfx-r) 0 0;
+  background: var(--hfx-box);
+  transition: border-radius 0.45s ease-out;
+}
+.hfx__a {
+  position: relative;
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(1.2rem, 3vw, 2.4rem) clamp(1.2rem, 2.4vw, 1.9rem);
+  border: 1px solid var(--hfx-edge);
+  border-top: 0;
+  border-radius: 0 0 var(--hfx-r) var(--hfx-r);
+  background: var(--hfx-box);
+}
+/* the seam: a hairline that stops short of the edges, so the two read as one sheet with a fold in it */
+.hfx__a::before { content: ''; position: absolute; top: 0; left: clamp(1.2rem, 3vw, 2.4rem); right: clamp(1.2rem, 3vw, 2.4rem); height: 1px; background: var(--line-stage); }
+.hfx__ink { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hfx h1 { max-width: 9ch; font-size: clamp(2.9rem, 1.2rem + 6vw, 5.6rem); }
+.hfx .hero__lead { margin-top: 0; }
+
+/* the arrival's start state: only where script runs and motion is allowed (a reader who asked for none gets the page at once).
+   A CSS timer reveals it if the script never comes (heroarrive.js decides once), and a second one backs up the running timeline. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .hfx:not(.hfx--run):not(.hfx--done) :is(.hfx__q h1, .hfx__a, .hfx__stage) { animation: hfx-late 0.01s 1.8s both; }
+  .hfx:not(.hfx--run):not(.hfx--done) .hfx__q { animation: hfx-seam 0.01s 1.8s both; }
+  .hfx--run:not(.hfx--done) :is(.hfx__q h1, .hfx__a, .hfx__stage) { opacity: 0; animation: hfx-rescue 0.01s 4.4s forwards; }
+  .hfx--run:not(.hfx--joined):not(.hfx--done) .hfx__q { border-radius: var(--hfx-r); border-bottom: 1px solid var(--hfx-edge); animation: hfx-rescue-seam 0.01s 4.4s forwards; }
+}
+/* the running timeline's backstop has only a `to`, so it changes nothing until its time (an animation would otherwise outrank the script's own opacity) */
+@keyframes hfx-rescue { to { opacity: 1; } }
+@keyframes hfx-rescue-seam { to { border-radius: var(--hfx-r) var(--hfx-r) 0 0; border-bottom-width: 0; } }
+@keyframes hfx-late { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hfx-seam { from { border-radius: var(--hfx-r); border-bottom-width: 1px; } to { border-radius: var(--hfx-r) var(--hfx-r) 0 0; border-bottom-width: 0; } }
+
+.hfx--dark h1 { color: var(--on-stage); }
+.hfx--dark .hero__lead,
+.hfx--dark .hero__sub { color: var(--on-stage-2); }
+.hfx--dark .btn--big { background: var(--on-stage); border-color: var(--on-stage); color: var(--stage-deep); }
+.hfx--dark .btn--big:hover { background: var(--mint-lt); border-color: var(--mint-lt); color: var(--stage-deep); }
+
+.hfx__line {
+  margin: 1.5rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--text);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.hfx--dark .hfx__line { border-top-color: var(--line-stage); color: var(--on-stage-2); }
+
+/* ---- the stage: the reel with its caption, in a box of its own, with the snake on its edge ---- */
+.hfx__stage {
+  position: relative;
+  justify-self: start;
+  margin-top: 3.6rem;
+  width: min(17rem, 100%);
+  padding: 0.7rem 0.7rem 0.8rem;
+  border: 1px solid var(--hfx-edge);
+  border-radius: var(--hfx-r);
+  background: var(--hfx-box);
+}
+.hfx { --sw: 5.4rem; }
+.hfx__snake { position: absolute; right: 1.1rem; bottom: calc(100% - 0.55rem); width: var(--sw); aspect-ratio: 366 / 373; pointer-events: none; }
+.hfx__snake img, .hfx__snake canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hfx__snake.is-live img { visibility: hidden; }
+.hfx__reel { margin: 0; }
+.hfx__reel video,
+.hfx__reel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: calc(var(--hfx-r) - 0.35rem);
+  background: var(--stage-deep);
+}
+.hfx__reel figcaption { margin-top: 0.7rem; display: grid; gap: 0.5rem; padding: 0 0.25rem; }
+.hfx__cap { font-size: var(--text); line-height: 1.45; color: var(--ink-2); }
+.hfx__more { font-size: var(--text); line-height: 1.4; font-weight: 700; color: var(--indigo); text-underline-offset: 0.2em; }
+.hfx--dark .hfx__cap { color: var(--on-stage-2); }
+.hfx--dark .hfx__more { color: var(--mint-lt); }
+
+@media (max-width: 39.99rem) { .hfx .btn--big { align-self: stretch; justify-content: center; text-align: center; } }
+
+@media (min-width: 60rem) {
+  .hfx__art { position: absolute; inset: 0 auto 2px 50%; width: 100%; max-width: 100rem; height: auto; aspect-ratio: auto; margin: 0; transform: translateX(-50%); }
+  .hfx__art::after { background: linear-gradient(to right, var(--hfx-ground) 0, transparent 14%), linear-gradient(to left, var(--hfx-ground) 0, transparent 14%), linear-gradient(to top, var(--hfx-ground) 0, transparent 14%); }
+  .hfx__body { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); padding-block: clamp(1.5rem, 2.6vw, 3rem) clamp(1.5rem, 2.6vw, 2.5rem); }
+  /* the stage shares the card's foot; its top margin is the snake's overhang, so the head always has room under the panel's top */
+  .hfx__stage { justify-self: end; align-self: end; margin-top: calc(var(--sw) * 1.02 - 0.55rem + 0.75rem); width: clamp(13rem, 17vw, 16rem); }
+  .hfx__card { align-self: end; max-width: 44rem; }
+  .hero__cta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
+  .hfx .hero__sub { order: 2; flex: 1 0 100%; max-width: 28rem; margin: 0.5rem 0 0; padding-right: 0; }
+  .hfx + .ask { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+}
+
+/* a very large window: the card, its type and the reel grow with it instead of floating in empty ground */
+@media (min-width: 100rem) {
+  .hfx .hfx__body { max-width: 100rem; padding-top: 3rem; }
+  .hfx__card { max-width: 60rem; }
+  .hfx h1 { font-size: 7.6rem; }
+  .hfx .hero__lead { font-size: 1.55rem; max-width: 40rem; }
+  .hfx .hero__sub, .hfx__line { font-size: 1.15rem; }
+  .hfx__stage { width: 23rem; }
+  .hfx { --sw: 7.4rem; }
+}
+
+@media print { .hfx h1, .hfx__a, .hfx__stage { opacity: 1 !important; animation: none !important; } .hfx__art, .hfx__reel { display: none !important; } .hfx--dark { background: none; color: #000; } .hfx__ink, .hfx__snake { display: none !important; } .hfx--dark h1, .hfx--dark .hero__lead, .hfx--dark .hero__sub, .hfx--dark .hfx__line { color: #000; } }

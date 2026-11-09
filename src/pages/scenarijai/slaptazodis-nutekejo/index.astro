@@ -1,0 +1,182 @@
+---
+/**
+ * Scenarijus: Tavo slaptažodis nutekėjo, the one technical scenario. The copy is
+ * docs/copy/scenarijai/slaptazodis-nutekejo.md, word for word. It has no Sustok card at launch, so
+ * the move links to the pillar and the audit, and its layer 2 is a chain instead of levers.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Tavo slaptažodis nutekėjo');
+const meta = [
+  ['Kanalas', 'paskyra'],
+  ['Ko jis nori', 'prieigos'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Tavo adresas rastas nutekėjimuose.', 'Tai galima patikrinti nemokamai. <!-- F69 F71 -->'],
+  ['Tą patį slaptažodį naudoji daugiau nei vienoje paskyroje.', 'Jei jis nutekėjo, pirmiausia keisk jį svarbiausiose paskyrose. <!-- F71 -->'],
+  ['Slaptažodis trumpas ar labai paplitęs.', 'NIST reikalauja, kad paslaugos tikrintų naujus slaptažodžius pagal dažnų ir nutekėjusių sąrašą, o slaptažodis, kuris vienas saugo paskyrą, būtų bent 15 ženklų. <!-- F55 F58 -->'],
+];
+
+const chain = [
+  ['Nutekėjimas.', 'Tai nutinka paslaugai, ne tau; svetainė parodo, ar tavo adresas buvo tarp nutekėjusių. <!-- F69 --> Jo tikslas čia – gauti sąrašą. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nutekėjimo tu sustabdyti negali, bet gali padaryti taip, kad nutekėjęs slaptažodis niekur kitur neatidarytų durų. <!-- F71 -->'],
+  ['Pakartotinis naudojimas.', 'Jo tikslas – rasti žmogų, kuris tą patį slaptažodį naudoja ir kitur. <!-- M --> Vienas raktas, daug durų. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> skirtingas slaptažodis kiekvienai paskyrai; NKSC pataria naudoti patikimus slaptažodžių valdymo įrankius. <!-- F71 -->'],
+  ['Perėmimas.', 'Jo tikslas – paskyra, kuri atveria daugiausia: ypač el. paštas, nes per jį galima atkurti kitų paskyrų slaptažodžius. <!-- F83 --> <strong class="stop">Sustabdymo vieta:</strong> antras prisijungimo žingsnis, geriausia ne SMS, nes SMS kodas nėra atsparus apgaulei, o SIM kortelės pakeitimas yra vienas iš būdų jį apeiti. <!-- F64 F65 F66 F67 -->'],
+  ['Kita paskyra.', 'Jo tikslas – pereiti nuo vienos paskyros prie kitos. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> prieigos raktas – jis susietas su tikra svetaine, todėl netikra svetainė jo neišvilios. <!-- F60 F61 F62 -->'],
+];
+
+const sides = [
+  ['Tas pats slaptažodis visur', 'Skirtingas kiekvienai paskyrai, ilgas; bent 15 ženklų, jei slaptažodis vienas saugo paskyrą. <!-- F55 F71 -->'],
+  ['Nuspėjamas slaptažodis', 'NIST nebereikalauja simbolių mišinio; svarbu ilgis ir kad slaptažodis nebūtų dažnai naudojamas ar nutekėjęs. <!-- F55 F56 F58 -->'],
+  ['Senas, po nutekėjimo nepakeistas slaptažodis', 'Keisk, kai yra požymių, kad jis nutekėjo; kitaip kas kelis mėnesius keisti nereikia. <!-- F57 -->'],
+  ['Silpnas antras žingsnis (SMS)', 'Prieigos raktas ar fizinis raktas; jei jų nėra – programėlė. Programėlės kodą irgi galima išvilioti, todėl jo niekam nesakyk. <!-- F60 F64 F66 -->'],
+  ['Slaptažodis, kurį reikia atsiminti', 'Slaptažodžių tvarkyklė; NIST reikalauja, kad paslaugos jas leistų. <!-- F59 F72 -->'],
+];
+
+const sources = [
+  'Have I Been Pwned: nemokama svetainė, rodanti, ar adresas buvo tarp nutekėjusių duomenų. <!-- F69 -->',
+  'NKSC, 2025-06-20: patikra, pakartotinai naudoto slaptažodžio keitimas pirmiausia svarbiose paskyrose, slaptažodžių valdymo įrankiai. <!-- F71 -->',
+  'NIST SP 800-63B-4: ilgis, jokių sudėties taisyklių, jokių periodinių keitimų. <!-- F55 F56 F57 F58 F59 -->',
+  'CISA: SMS nėra atsparus apgaulei, SIM keitimas; atsparus tik FIDO. <!-- F64 F65 F66 -->',
+  '„Google“ ir „Microsoft“ lietuviški puslapiai: „prieigos raktas“ ir „slaptažodžių tvarkyklė“. <!-- F61 F62 F72 -->',
+];
+---
+<Page
+  title="Tavo slaptažodis nutekėjo: ką daryti – Suktas"
+  description="Kas nutinka, kai nutekėjęs slaptažodis išbandomas kitur: grandinė iš jo pusės ir vienas ėjimas, kuris ją nutraukia."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-24</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Čia gali neskambėti joks telefonas. Apie nutekėjimą gali pranešti pati paslauga, o gali būti, kad jį pamatai tada, kai patikrini savo el. pašto adresą svetainėje haveibeenpwned.com. <!-- F69 --> Ekrane – tavo adresas tarp nutekėjusių. Ir kyla klausimas: ar tą patį slaptažodį naudoji dar kur nors?')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Kiekvienai paskyrai – ilgas, skirtingas slaptažodis, o visus juos įsimena slaptažodžių tvarkyklė.')} />
+        <p set:html={nbHtml('<!-- F55 F71 F72 --> Nutekėjusį slaptažodį pakeisk ten, kur jį naudojai, pirmiausia svarbiausiose paskyrose. <!-- F71 --> Keisti reikia tada, kai yra požymių, kad slaptažodis nutekėjo; kas kelis mėnesius keisti nereikia. <!-- F57 --> Daugiau: <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>, <a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Jei paskyrą jau perėmė kažkas kitas, žiūrėk <a href="/jei-apgavo/#paskyra">Jei tave apgavo: kažkas perėmė mano paskyrą</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/patikra/15-minuciu/">Pradėk patikrą</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – grandinė ir jo tikslas kiekvienoje grandyje, bet ne jo techniniai žingsniai. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Prieigos. Jam svarbu ne tu, o tai, ką paskyra atveria: pinigus, kontaktus, kitas paskyras. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kuo mažiau vienoje paskyroje, tuo mažiau jam atsiveria.')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, kas nutekėjo: pavyzdžiui, el. pašto adresą ar paskyrą, kuri pateko tarp nutekėjusių duomenų. <!-- F69 --> Tavęs jis nepažįsta ir nežino, ką naudoji kitur. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> tikrink savo adresą anksčiau, nei jis tuo pasinaudos. <!-- F71 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Veikia viena grandinė ir jai užtenka vienos silpnos grandies. <!-- M -->')} />
+            <ol class="signs" role="list">
+              {chain.map(([head, text]) => (
+                <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Ko jis ieško</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Ko jis ieško" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Taip pat nerasi, kaip nutekėjimas išnaudojamas ar kaip slaptažodžiai išbandomi. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Tema:</strong> <a href="/temos/slaptazodziai/">{nb('Slaptažodžiai ir prieigos raktai')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a> {nb('(grandinės dalis)')}</li>
+          <li><strong>Patikra:</strong> <a href="/patikra/15-minuciu/">{nb('Patikra per 15 minučių')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/zinute-su-kodu/">{nb('Žinutė su kodu')}</a>, <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a>, <a href="/scenarijai/paskola-tavo-vardu/">{nb('Paskola tavo vardu, kurios neėmei')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-24. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

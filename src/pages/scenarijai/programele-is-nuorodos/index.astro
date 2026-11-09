@@ -1,0 +1,200 @@
+---
+/**
+ * Scenarijus: Programėlė iš nuorodos ar reklamos. The copy is docs/copy/scenarijai/programele-is-nuorodos.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Programėlė iš nuorodos ar reklamos');
+const meta = [
+  ['Kanalas', 'reklama, žinutė ar skambutis'],
+  ['Ko jis nori', 'tavo telefono, o per telefoną – banko'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Programėlę siūlo reklama, žinutė ar skambutis, o ne oficiali parduotuvė.', ' Ypač jei žada išskirtinį ar ribojamą (pvz., tik suaugusiesiems) turinį: „Luminor“ sako, kad smalsumas dažnai tampa pagrindiniu sukčių ginklu. <!-- F225 F226 -->'],
+  ['Telefonas siūlo įjungti „Leisti iš šio šaltinio“.', ' Taip telefonas parodo, kad programa ateina ne iš parduotuvės. <!-- F229 F134 M --> Jei „Google Play Protect“ perspėja ar neleidžia įdiegti, neapeik jos. <!-- F228 M -->'],
+  ['Programėlė prašo prieinamumo funkcijų, SMS ar įrenginio administratoriaus teisių', ', nors jos darbui jų nereikia. Programai iš nuorodos ar reklamos jų neduok, o jei ji liepia įjungti „Leisti apribotus nustatymus“, neįjunk. <!-- F225 F227 M --> Su prieinamumo funkcijomis („Google“ jas vadina pritaikomumo) programa gali skaityti, kas rodoma ekrane, ir veikti tavo vardu. <!-- F227 F224 -->'],
+];
+
+const steps = [
+  '<strong>Iškart skambink savo bankui</strong> numeriu iš oficialios banko svetainės ir pasakyk, kokią programą įdiegei ir kokius leidimus jai davei: bankas gali užblokuoti kortelę ir interneto banką. <!-- F225 F7 F13 F220 -->',
+  '<strong>Pašalink programėlę.</strong> <!-- F230 --> Jei ji neleidžia savęs pašalinti, pirmiausia reikia atimti jai įrenginio administratoriaus teises; jei nežinai kaip, kreipkis į telefono gamintoją. <!-- F234 F230 --> Jei ir tada nepavyksta arba telefonas vis dar elgiasi keistai, gali tekti jį atkurti į gamyklinius nustatymus. <!-- F230 --> Įsitikink, kad „Google Play Protect“ įjungta: ji tikrina, ar telefone nėra žalingų programų, ir iš kitų šaltinių. <!-- F228 F230 --> „iPhone“ atveju pašalink konfigūracijos profilį, kurio nepažįsti. <!-- F232 -->',
+  '<strong>Pakeisk slaptažodžius ir PIN kodus kitame įrenginyje</strong>: programėlė galėjo matyti viską, ką rašei telefone. <!-- F231 F224 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, jei dingo pinigai. <!-- F2 -->',
+];
+
+const levers = [
+  ['Nauda.', '„TikTok 18+“ ar kitas išskirtinis turinys žadina smalsumą, o smalsumas, anot „Luminor“, dažnai tampa pagrindiniu sukčių ginklu. <!-- F224 F225 M -->'],
+  ['Autoritetas.', 'Jis prisistato banko apsaugos specialistu, techninės pagalbos ar siuntų tarnybos atstovu, o pati programa gali apsimesti „Google Play Services“ dalimi. <!-- F226 F224 -->'],
+];
+
+const sides = [
+  ['Reklama siūlo „TikTok 18+“ ar kitą programėlę ne iš parduotuvės', 'Nespausk; programėlės ieškok „Google Play“ ar „App Store“. <!-- F225 F224 -->'],
+  ['Žinutė apie praleistą siuntą su nuoroda', 'Nieko nediek; siuntą tikrink oficialioje siuntų tarnybos svetainėje. <!-- F227 F226 -->'],
+  ['„Banko apsaugos specialistas“ liepia įsidiegti programą', 'Padėk ragelį ir skambink bankui numeriu iš oficialios svetainės. <!-- F226 F233 F13 -->'],
+  ['Telefonas siūlo įjungti „Leisti iš šio šaltinio“', 'Neįjunk. <!-- F229 M -->'],
+  ['„Google Play Protect“ perspėja ar neleidžia įdiegti', 'Neapeik perspėjimo. <!-- F228 M -->'],
+  ['Programėlė prašo prieinamumo funkcijų, SMS ar administratoriaus teisių', 'Nesutik ir ją pašalink. <!-- F225 F227 F230 -->'],
+  ['Telefone netikėtai atsirado programa ar keisti pranešimai', 'Kreipkis į banką ir patikrink telefoną. <!-- F225 -->'],
+  ['„iPhone“ prašo įdiegti konfigūracijos profilį', 'Nediek: profilis gali valdyti įrenginį. <!-- F232 -->'],
+];
+
+const sources = [
+  '„Luminor“ (alkas.lt, 2026-07-11; LRT, 2026-07-09): netikra „TikTok 18+“ programėlė, ką ji gali, „Google Play Services“ kaukė, programėlės tik iš oficialių parduotuvių, jokių perteklinių leidimų. <!-- F224 F225 F133 -->',
+  '„Google“ „Android“ pagalba: aferistai apsimeta banku, pagalbos ar pristatymo tarnybomis; apriboti nustatymai ir pritaikomumo funkcijos; „Leisti iš šio šaltinio“; „Google Play Protect“; kaip pašalinti žalingą programą (perskaityta 2026-11-01). <!-- F226 F227 F228 F229 F230 -->',
+  '„Samsung“ pagalba (2025-09-16): slaptažodžius ir PIN kodus keisti kitame įrenginyje. <!-- F231 -->',
+  '„Apple“ pagalba (2026-06-21): konfigūracijos profiliai, galintys valdyti įrenginį. <!-- F232 -->',
+  '„Android Developers“ (anglų k.): administratoriaus teisės atimamos prieš šalinant programą. <!-- F234 -->',
+  'Policija (LRT, 2026-06-26): Šiaulių atvejis. <!-- F233 -->',
+  'Policija (policija.lrv.lt, atnaujinta 2026-04-23): pranešti per epolicija.lt. <!-- F2 -->',
+  'SEB: pasakyti bankui apie įdiegtą programą, kortelę užblokuoti programėlėje ar telefonu. „Citadele“: bankas užblokuos kortelę ir interneto banką. <!-- F7 F220 -->',
+  'Lietuvos bankas: banką pasiekti per oficialią programėlę ar svetainę. <!-- F13 -->',
+];
+---
+<Page
+  title="Netikra programėlė iš nuorodos ar reklamos (APK) – Suktas"
+  description="Reklama ar žinutė siūlo įsidiegti programėlę ne iš „Google Play“? Ji gali perimti tavo telefoną ir prieigą prie banko. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-01</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Socialinio tinklo reklama siūlo „TikTok 18+“ ar kitą programėlę, kurios nėra „Google Play“ parduotuvėje. <!-- F224 F225 --> Kitąkart nuorodą atsiunčia „siuntų tarnyba“ ar „banko apsaugos specialistas“. <!-- F226 F227 --> Paspaudi, telefonas parodo, kad diegti iš šio šaltinio neleidžiama, ir siūlo tai įjungti nustatymuose. Įjungi. <!-- F229 --> Įdiegta programėlė prašo įjungti prieinamumo funkcijas ar leisti skaityti SMS žinutes. <!-- F224 F225 F227 --> Jei leidi, sukčius mato viską, kas vyksta tavo telefone, ir gali gauti banko prisijungimo duomenis bei „Smart-ID“ PIN kodus. <!-- F133 F224 --> Kai kurios tokios programos apsimeta „Google Play Services“ dalimi, todėl atrodo, lyg telefone vyktų įprasti procesai. <!-- F224 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Programėles diek tik iš „Google Play“ ar „App Store“: atsidaryk parduotuvę ir susirask programėlę joje. Niekada – per nuorodą iš reklamos, žinutės ar skambinančiojo.')} />
+        <p set:html={nbHtml('Jei telefonas siūlo įjungti „Leisti iš šio šaltinio“, neįjunk. <!-- F229 M --> „iPhone“ atveju tas pats galioja konfigūracijos profiliams: juos įdiegus, įrenginį gali valdyti kažkas kitas. <!-- F232 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau įdiegei</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: programa apsimeta tuo, ko lauki ar kas tave sudomino, todėl ją įsileisti lengva. <!-- F224 M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#nuotolinis">Jei tave apgavo: įdiegiau programą ar leidau valdyti telefoną</a>, <a href="/jei-apgavo/#pinigai">išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo telefono. <!-- M --> Gavusi prieigą prie prieinamumo funkcijų ir SMS žinučių, programa gali fiksuoti ekrano vaizdą, klavišų paspaudimus, SMS žinutes ir pranešimus, todėl banko prisijungimo duomenys ir kodai patenka ir pas jį. <!-- F224 F227 --> Tada jis gali ir mokėti tavo vardu. <!-- F133 --> <strong class="stop">Sustabdymo vieta:</strong> leidimas, kurio prašo programėlė iš nuorodos ar reklamos. Nesutik. <!-- F225 F227 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko, ir jam nereikia. <!-- M --> Reklama ar žinutė pasiekia daugybę žmonių, o programėlę įsidiegia tie, kurie patiki pažadu ar žinia apie praleistą siuntą. <!-- F225 F227 M --> Kartais jis paskambina: policijos duomenimis, 2026 m. birželį „banko darbuotojais“ prisistatę skambintojai įkalbėjo šiaulietį telefone įdiegti nuotolinio prisijungimo programėlę ir atiduoti banko korteles, o iš jo sąskaitos buvo pasisavinta 131,8 tūkst. eurų. <!-- F233 --> <strong class="stop">Sustabdymo vieta:</strong> jei kas nors liepia įsidiegti programą, tai jau ženklas. Banką, siuntų tarnybą ar techninę pagalbą pasiek tik per jų oficialią svetainę ar programėlę. <!-- F226 F13 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> kelią iki programėlės renkiesi tu – oficiali parduotuvė, o ne nuoroda. <!-- F225 M -->')} />
+            <p set:html={nbHtml('„Luminor“ apie netikrą „TikTok“ programėlę „Android“ telefonams įspėjo 2026 m. liepą. <!-- F224 --> „Google Play Protect“ gali neleisti įdiegti tokios programos, bet tai ne pažadas: „Google“ rašo „gali“, nežinome, ar ši apsauga Lietuvoje įjungta, o ją pačią galima išjungti. Jei kas nors liepia ją išjungti, tai jis. <!-- F228 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/irenginiai/">{nb('Įrenginiai ir tinklas')}</a>, <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a>, <a href="/scenarijai/netikra-banko-reklama/">{nb('Netikra banko reklama')}</a>, <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-01. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

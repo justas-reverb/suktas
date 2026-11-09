@@ -1,0 +1,210 @@
+---
+/**
+ * Scenarijus: nuoma, kuri neegzistuoja – butas, atostogos, „Booking.com“, „Airbnb“. The copy is
+ * docs/copy/scenarijai/netikra-nuoma.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Nuoma, kuri neegzistuoja');
+const meta = [
+  ['Kanalas', 'skelbimas, „Booking.com“, „Airbnb“, „WhatsApp“'],
+  ['Ko jis nori', 'tavo pinigų už būstą, kurio nėra arba kuris ne jo, ar už tikrą tavo rezervaciją'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Už butą prašo pinigų, kol jo nematei.', 'Policija sako, kad tokie „nuomotojai“ vengia susitikti gyvai ar parodyti patalpas. <!-- F451 --> „Aruodas.lt“ atstovė 2020 m. sakė, kad įprastai nuomotojai neprašo pervesti pinigų dar prieš apžiūrint butą. <!-- F455 -->'],
+  ['Kaina gerokai mažesnė nei panašių būstų.', 'Tai įspėjamasis ženklas ir policijai, ir „Booking.com“. <!-- F450 F451 F440 -->'],
+  ['Prašo mokėti ar kalbėtis ne per platformą.', 'Pavedimu tiesiai į sąskaitą, per atsiųstą nuorodą, per „WhatsApp“. <!-- F445 F448 F447 --> Tikras būstas gali prašyti išankstinio mokėjimo ar mokesčio vietoje, bet tai iš anksto parašyta užsakymo sąlygose ir patvirtinime. <!-- F439 F442 F445 --> „Booking.com“ sako: jei prašoma sumokėti už tai, ko sąlygose nėra, nemokėk. <!-- F438 -->'],
+];
+
+const steps = [
+  '<strong>Skambink savo bankui</strong> numeriu iš oficialios programėlės ar svetainės ir prašyk sustabdyti pavedimą. <!-- F4 F13 F203 --> Pavedimą atšaukti sunku ir garantijų nėra, bet kuo greičiau veiki, tuo didesnė tikimybė pinigus atgauti. <!-- F442 F203 --> Mokėjai kortele? Paklausk banko, ar pinigus galima susigrąžinti: tam tikrais atvejais kortelių asociacijos tai leidžia. <!-- F456 -->',
+  '<strong>Suvedei kortelės duomenis nuorodoje?</strong> Pasakyk tai bankui tame pačiame skambutyje ir paprašyk užblokuoti kortelę. <!-- F441 F448 -->',
+  '<strong>Prisijungei per žinutės nuorodą?</strong> Pakeisk platformos paskyros slaptažodį, įjunk patvirtinimą dviem veiksmais ir parašyk platformos klientų aptarnavimui. <!-- F441 -->',
+  '<strong>Išsaugok</strong> skelbimą, „nuomotojo“ kontaktus ir visą susirašinėjimą. <!-- F453 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, net jei suma nedidelė, o jei reikia skubios pagalbos, skambink 112. <!-- F2 F261 F453 -->',
+  '<strong>Pranešk platformai</strong>, kurioje radai skelbimą. <!-- F438 F441 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Pigus būstas priverčia skaičiuoti, kiek sutaupysi, o ne abejoti. <!-- F450 F451 M -->'],
+  ['Skuba.', '„Kažkas kitas gali pervesti greičiau“ arba „per 24 valandas“ – ir tikrinti nebelieka laiko. <!-- F450 F438 M -->'],
+  ['Autoritetas.', 'Žinomos platformos vardas, tikro būsto nuotraukos, net pasirašyta sutartis atrodo kaip įrodymas. <!-- F442 F448 F453 M -->'],
+];
+
+const sides = [
+  ['„Apžiūrėti dabar neįmanoma, bet norinčių daug, pervesk avansą“', 'Nepervesk. Pirma apžiūra, tada pinigai. <!-- F450 F452 F455 -->'],
+  ['Būstas gerokai pigesnis už panašius toje pačioje vietovėje', 'Palygink kainas ir nemokėk aklai. <!-- F440 F451 -->'],
+  ['Butą parodo, siūlo tuoj pat pasirašyti ir pervesti avansą', 'Neskubėk. Paprašyk parodyti nuosavybės ir asmens dokumentą: įsitikink, kad nuomoti gali būtent šis žmogus. <!-- F453 F455 M -->'],
+  ['Gražios nuotraukos skelbime', 'Atsidaryk „Google Maps“ ar „Street View“ ir pažiūrėk, ar nurodytu adresu toks pastatas yra. Tai dar neįrodo, kad būstas priklauso tam, kuris prašo pinigų. <!-- F448 F451 F453 M -->'],
+  ['Platformoje: „Tęskime per WhatsApp“', 'Kalbėkis tik platformos pokalbyje. „Airbnb“ taisyklės to reikalauja iki užsakymo. <!-- F440 F445 F448 -->'],
+  ['Platformoje: „Sumokėk pavedimu tiesiai man“', 'Nemokėk, jei to nėra užsakymo patvirtinime. „Airbnb“ sako, kad toks prašymas be išankstinio įspėjimo gali būti apgaulė, o jei sumoki ne per „Airbnb“, netenki „AirCover“ apsaugos. <!-- F437 F445 F446 -->'],
+  ['„Atšaukėme tavo rezervaciją, štai kitas būstas, mokėk į šią sąskaitą“', 'Nemokėk. Lietuvos bankų asociacija 2023 m. pranešė apie tokį bandymą per „Airbnb“. Užsakymą tikrink platformoje. <!-- F447 F442 -->'],
+  ['„Viešbutis“: „Patvirtink per 24 valandas, kitaip atšauksime“', 'Nespausk nuorodos ir nesidalink duomenimis. Pažiūrėk užsakymą platformoje ir kreipkis į jos klientų aptarnavimą. <!-- F438 F442 -->'],
+  ['„Mokėjimas nepavyko, sumokėk dar kartą“', '„Booking.com“ sako, kad patikimos platformos dvigubo mokėjimo neprašo. Patikrink užsakymo būseną programėlėje ar svetainėje. <!-- F442 -->'],
+  ['Žinutė žino tavo vardą, datas ir užsakymo numerį', 'Tai neįrodo, kad rašo viešbutis. Pažiūrėk užsakymą platformoje. <!-- F443 F444 F442 M -->'],
+];
+
+const sources = [
+  '„Booking.com“ saugumo puslapiai (be datos): ko ji neprašo, 24 valandų žinutė, tikras išankstinis mokėjimas patvirtinime, netikros įstaigos, ką daryti. <!-- F437 F438 F439 F440 F441 F442 -->',
+  '„Booking.com“ atstovas (LBC, 2026-04-16) ir tv3.lt (2026-04-16): kokie duomenys pasiekti. <!-- F443 -->',
+  'tv3.lt (2026-06-13): keliautojų pasakojimai apie „viešbučio“ žinutę; vienas jų apie viešbutį Japonijoje. <!-- F444 -->',
+  '„Airbnb“ pagalba (be datos): pokalbiai ir mokėjimai platformoje, „AirCover“. <!-- F445 F446 -->',
+  'Lietuvos bankų asociacija (LRT, 2023-10-25): du atvejai Lietuvoje. <!-- F447 -->',
+  '„Telia“ (AINA, 2025-12-07) ir „Tele2“ (alkas.lt, 2024-08-10): netikri skelbimai, Biržai, kurortai, kaip patikrinti. <!-- F448 F449 -->',
+  'Policija (2026-06-05, 2026-07-23, 2026-08-05, 2026-10-05, 2026-10-19): atvejai Klaipėdoje, Tauragės rajone ir Vilniuje, ženklai, studentai, ką patikrinti ir išsaugoti. <!-- F450 F451 F452 F453 F454 -->',
+  '„Aruodas.lt“ (tv3.lt, 2020-09-12): ko prašyti apžiūrint butą. <!-- F455 -->',
+  'Lietuvos bankas: mokėjimas kortele (be datos); su banku susisiek oficialiais kanalais (2021-07-09). <!-- F456 F13 -->',
+  'Europos Komisija (tv3.lt, 2026-10-21): pradėta procedūra dėl „Booking.com“. <!-- F457 -->',
+  'Kampanija „Padėk ragelį“, policija ir „Luminor“ (LRT, 2025-11-02): bankui iškart, policijai per epolicija.lt, net ir dėl mažos sumos. <!-- F4 F2 F203 F261 -->',
+];
+---
+<Page
+  title="Nuoma, kuri neegzistuoja: butas, Booking, Airbnb – Suktas"
+  description="Butas pigiai, apžiūrėti negalima, o avansą reikia pervesti dabar? Ar „viešbutis“ duoda 24 valandas sumokėti? Trys ženklai ir vienas ėjimas."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-03</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Socialiniame tinkle ar skelbimų portale randi skelbimą: butas ar poilsio namelis pigiau nei kitur. <!-- F450 F451 F452 --> „Nuomotojas“ sako, kad greitai apžiūrėti neįmanoma, o norinčių daug, tad avansą reikia pervesti nedelsiant. <!-- F450 --> Pervedi, ir nei buto, nei pinigų. <!-- F450 F452 -->')} />
+          <p set:html={nbHtml('Atostogų būstą jis siūlo ir „Booking.com“ ar „Airbnb“ platformoje: netikras skelbimas su svetimomis nuotraukomis, pokalbis persikelia į „WhatsApp“, o mokėti prašoma tiesiai į sąskaitą. <!-- F440 F442 F447 F448 --> Būna ir taip, kad rezervacija tikra, o žinutė ne. Keliautojai, tarp jų ir lietuviai, pasakoja gavę „viešbučio“ žinutes su raginimu skubiai sumokėti: viena žinojo vardą, datas ir užsakymo numerį, kita davė 24 valandas patvirtinti kelionę. <!-- F444 --> „Booking.com“ įspėja, kad sukčiai gali sakyti, jog mokėjimas nepavyko. <!-- F442 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Pirma patikrink, paskui mokėk: butą – gyvai ir pagal dokumentus, rezervaciją – pačioje platformoje. <!-- F452 F453 F455 F442 M -->')} />
+        <p set:html={nbHtml('Butą apžiūrėk, įsitikink, kad žmogus turi teisę jį nuomoti, sudaryk sutartį ir tik tada mokėk: taip pataria policija, ir ji ragina neskubėti. <!-- F452 F453 --> „Aruodas.lt“ atstovė 2020 m. sakė, kad apžiūrėjus butą galima prašyti parodyti nuosavybės dokumentą ir asmens dokumentą. <!-- F455 --> Vardai turi sutapti; jei nesutampa, nemokėk, kol neišsiaiškinsi kodėl. <!-- M --> Vien apžiūros neužtenka: 2026 m. spalį Vilniaus rajono policija pranešė apie žmones, kurie butą apžiūrėjo, pasirašė sutartį, sumokėjo avansą, o „nuomotoja“ dingo. <!-- F453 -->')} />
+        <p set:html={nbHtml('Poilsio namelio iš skelbimo iš anksto apžiūrėti dažnai nepavyks. Tada patikrink, ar toks pastatas yra, ar nuotraukos nepavogtos, paskaityk atsiliepimus ir nemokėk visos sumos aklai. <!-- F451 F448 M -->')} />
+        <p set:html={nbHtml('Jei gauni žinutę dėl rezervacijos, nespausk jos nuorodos: atsidaryk platformos programėlę ar svetainę ir pažiūrėk užsakymą ten. <!-- F442 --> Iš anksto mokėk tik tai ir tik taip, kaip parašyta užsakymo patvirtinime. <!-- F437 F438 F439 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau sumokėjai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: 2026 m. policija pranešė apie žmones, kurie už butą prarado 300, 443 ir 500 eurų. <!-- F450 F451 F452 --> Veik iškart:')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/jei-apgavo/#pinigai">Jei jau sumokėjai</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo pinigų: avanso už būstą, kurio nėra arba kuris ne jo, arba mokėjimo už tikrą tavo rezervaciją. <!-- F440 F453 F442 F443 M --> Kartais – ir kortelės duomenų netikroje svetainėje. <!-- F447 --> 2026 m. birželio 27 d. vyras į „nuomotojo“ nurodytą sąskaitą pervedė 500 eurų avansą už butą iš socialinio tinklo skelbimo: buto negavo, pinigai negrąžinti. <!-- F450 --> Liepos 31 d. tokį skelbimą radusi Tauragės rajono gyventoja neteko 300 eurų. <!-- F452 --> <strong class="stop">Sustabdymo vieta:</strong> pavedimas. Kol nepatikrinai, pinigai lieka tavo sąskaitoje. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Iš skelbimo – nieko: jis laukia, kas parašys, ir žino tik tai, kad tau reikia būsto. <!-- M --> Policija ypač įspėja studentus prieš mokslo metus ir užsienio šalių piliečius. <!-- F450 F453 F454 -->')} />
+            <p set:html={nbHtml('Dėl rezervacijos jis gali žinoti daug. 2026 m. balandį „Booking.com“ pranešė, kad pašaliniai galėjo pasiekti dalies svečių užsakymų informaciją, vardus, el. pašto adresus ir telefono numerius, bet ne finansinius duomenis. <!-- F443 --> Ar konkreti žinutė kilo iš šio įvykio, nežinome. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> tavo užsakymo numeris žinutėje nieko neįrodo, net jei žinutė atėjo platformos pokalbyje: keliautojai pasakoja sukčių žinutes gavę ir ten. Tikėk tik užsakymo būsena ir patvirtinimu pačioje platformoje. <!-- F442 F444 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> nei platformos vardas, nei nuotrauka, nei sutartis neįrodo, kad būstas yra ir kad jį nuomoti gali būtent tas žmogus, kuris prašo pinigų. <!-- F453 M -->')} />
+            <p set:html={nbHtml('Tai vyksta ir Lietuvoje: „Tele2“ atstovas 2024 m. sakė, kad tokių atvejų aptinkama Lietuvos kurortuose, o 2025 m. straipsnyje su „Telia“ atstovo patarimais minimas neegzistuojantis butas Biržuose. <!-- F449 F448 --> 2026 m. spalį Europos Komisija pradėjo oficialią procedūrą dėl sukčiavimo rizikos „Booking.com“ platformoje, be kita ko, dėl skelbimų apie neegzistuojantį būstą; tai tyrimas, ne išvada. <!-- F457 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/netikras-pardavejas/">{nb('„Pardavėjas“ prašo avanso')}</a>, <a href="/scenarijai/netikra-parduotuve/">{nb('Netikra el. parduotuvė')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-03. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

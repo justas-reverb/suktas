@@ -1,0 +1,21 @@
+---
+/** His list against your answer: the table of the scenario pages, with its two column names given. */
+import { nbHtml } from '../lib/typo.js';
+const { heads, rows } = Astro.props;
+---
+<section class="sides" aria-labelledby="sustoti">
+  <h3 id="sustoti">Kur jį sustabdyti</h3>
+  <table>
+    <thead>
+      <tr><th scope="col">{heads[0]}</th><th scope="col">{heads[1]}</th></tr>
+    </thead>
+    <tbody>
+      {rows.map(([his, yours]) => (
+        <tr>
+          <td data-label={heads[0]} set:html={nbHtml(his)} />
+          <td data-label={heads[1]} set:html={nbHtml(yours)} />
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>

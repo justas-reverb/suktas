@@ -1,0 +1,196 @@
+---
+/**
+ * Scenarijus: „Tavo sūnus pateko į avariją“. The copy is docs/copy/scenarijai/artimojo-avarija.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('„Tavo sūnus pateko į avariją“');
+const meta = [
+  ['Kanalas', 'skambutis, gali būti ir gyvai'],
+  ['Ko jis nori', 'kad iš baimės dėl artimojo grynuosius ar kortelę atiduotum nepažįstamam žmogui'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Bloga žinia ir prašymas mokėti ateina kartu, ir viską reikia nuspręsti dabar.', 'Policija įspėja: sukčiai skubina ir spaudžia priimti sprendimą iš karto. <!-- F492 -->'],
+  ['Pinigus ar kortelę reikia atiduoti nepažįstamam žmogui.', 'Atvažiuos „vairuotojas“ ar „pareigūnas“. <!-- F497 F502 --> Policija sako: pareigūnai pinigų žmonių namuose nerenka, o grynųjų nepažįstamiems perduoti nereikia. <!-- F277 F492 -->'],
+  ['Liepia nieko niekam nesakyti arba perduoda ragelį „advokatui“ ar „gydytojui“.', 'Policija rašo, kad po tokio pokalbio žmogus rečiau patikrina, kas iš tikrųjų nutiko. <!-- F495 F496 --> Tikra policija nereikalauja slėpti informacijos nuo artimųjų. <!-- F278 -->'],
+];
+
+const levers = [
+  ['Baimė.', 'Policija rašo, kad tokie skambučiai dažnai būna emocingi ir skubūs: taip siekiama sukelti baimę ir spaudimą. <!-- F495 --> Kai pavojuje tavo vaikas, galvoji apie vaiką, o ne apie tai, kas tau skambina. <!-- M -->'],
+  ['Skuba.', 'Gydymas ar teismas neva negali palaukti. <!-- F491 F494 M -->'],
+  ['Autoritetas.', 'Kalba „gydytojas“, „pareigūnas“ ar „advokatas“. <!-- F502 F495 -->'],
+];
+
+const sides = [
+  ['„Reikia pinigų gydymui ar operacijai“', 'Ligonių kasos: būtinąją medicinos pagalbą kiekviena gydymo įstaiga privalo suteikti nemokamai visiems Lietuvos gyventojams, apdraustiems ir ne. <!-- F504 --> Kad ir koks būtų gydymas, pinigų nepažįstamam žmogui neatiduok: padėk ragelį ir skambink artimajam. <!-- F499 M -->'],
+  ['„Reikia atlyginti žalą nukentėjusiajam“', 'Kitam žmogui padarytai žalai skirtas privalomasis vairuotojų civilinės atsakomybės draudimas. <!-- F505 --> Utenos policija 2017 m. rašė, kad po eismo įvykio piniginės problemos tarp nukentėjusiojo ir pažeidėjo niekada nesprendžiamos, ir ragino neperduoti pinigų per tarpininkus. <!-- F503 F281 --> Padėk ragelį ir skambink artimajam. <!-- F499 -->'],
+  ['„Sumokėk, ir nebus teismo“', 'Tikra byla grynaisiais prie durų nesibaigia, o pareigūnai pinigų žmonių namuose nerenka. <!-- F277 M --> Skambink 112. <!-- F492 -->'],
+  ['„Sulaikė policija, reikia sumokėti“ <!-- F494 -->', 'Jei kalba apie užstatą: jis mokamas į prokuratūros ar teismo depozitinę sąskaitą, o jo dydį nustato pareigūnas ar teismas. <!-- F506 --> Atvykusiam žmogui grynųjų neduok ir į skambinančiojo nurodytą sąskaitą nepervesk. <!-- F492 M --> Padėk ragelį, skambink 112. <!-- F492 -->'],
+  ['Ragelį paima „dukra“', '2025 m. policijos aprašyta moteris buvo įsitikinusi, kad kalba jos dukra. <!-- F496 --> Balsas nieko neįrodo: padėk ragelį ir skambink jai pačiai. <!-- F97 F499 -->'],
+  ['„Perduodu advokatui“ ar „gydytojui“', 'Tai dar vienas balsas, ne įrodymas: policija rašo, kad po tokio pokalbio žmogus rečiau patikrina, kas nutiko. <!-- F495 --> Padėk ragelį. <!-- M -->'],
+  ['„Niekam nesakyk“', 'Viena moteris taip ir padarė, o šalia buvęs sūnus, nieko nežinodamas, pats atidavė rankinę su pinigais. <!-- F496 --> Papasakok šalia esantiems. <!-- F278 M -->'],
+  ['Pasako tai gyvai, kieme ar prie namų', 'Nekviesk į namus <!-- F281 --> ir skambink artimajam. <!-- F499 -->'],
+  ['Atvyksta paimti pinigų', 'Nieko neatiduok, skambink 112. <!-- F277 -->'],
+];
+
+const sources = [
+  'Policija (15min, 2025-05-23): istorija apie avariją, skuba, ką daryti, pasikalbėti su vyresniaisiais. <!-- F491 F492 F493 -->',
+  'Vilniaus apskrities policija (LRT, 2025-01-10): „skubus pagalbos prašymas“, du atvejai, ką daryti. <!-- F494 F495 F496 F497 F498 F499 -->',
+  'Policijos pranešimai: Vilnius, kiemas (LRT/BNS, 2026-09-25); Vilnius (Vilniaus diena, 2024-10-22); Kauno apskritis (tv3, 2025-01-15); Panevėžys (paninfo.lt, 2025-02-21). <!-- F490 F500 F501 F508 -->',
+  'Prokuratūra (LRT/ELTA, 2026-10-09): byla dėl daugiau kaip 470 tūkst. eurų, kaltinimai. Klaipėdos prokuratūra (2024-02-06): atsitiktiniai senjorai, tyrimo duomenimis. <!-- F502 F282 -->',
+  'Utenos policija (2017-10-24): patys paskambinkite artimajam; piniginės problemos po eismo įvykio tarp nukentėjusiojo ir pažeidėjo nesprendžiamos; neperduoti pinigų per tarpininkus. <!-- F503 F281 -->',
+  'Valstybinė ligonių kasa (2022-05-02, atnaujinta 2023-09-21): būtinoji pagalba nemokama. Lietuvos bankas (atnaujinta 2022-11-29): privalomasis draudimas. Visuotinė lietuvių enciklopedija: užstatas; pačių įstatymų oficialaus teksto perskaityti nepavyko. <!-- F504 F505 F506 -->',
+  'Policija, ką daro ir ko nedaro pareigūnai (TV3, 2026-02-27, 2026-10-19). <!-- F277 F278 -->',
+  'Bankų asociacija (2026-03-16): balsas nėra įrodymas. JAV FBI (2025-12-05): šeimos žodis ir susisiekimas prieš mokant; Lietuvos institucijos, kuri jį rekomenduotų, neradome. <!-- F97 F81 F82 -->',
+  'LRT (2026-07-29): vilniečio atvejis ir KTU kibernetinio saugumo ekspertas apie vardą ekrane. <!-- F692 F693 -->',
+  'Bankas ir policija: kampanija „Padėk ragelį“, epolicija.lt. <!-- F13 F2 F4 F96 -->',
+];
+---
+<Page
+  title="„Sūnus pateko į avariją“: apgaulė dėl pinigų – Suktas"
+  description="Skambina ir sako, kad sūnus ar dukra pateko į avariją ir skubiai reikia pinigų? Kaip tai atrodo, kaip tai patikrinti ir ką daryti, jei jau atidavei."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Skambina nepažįstamas žmogus ir sako, kad tavo sūnus, dukra, anūkas ar kitas artimasis pateko į avariją: yra sužeistas arba sulaikytas policijos. <!-- F494 --> Skambinantis prisistato gydytoju ar policijos pareigūnu. <!-- F502 --> Pinigų reikia tuoj pat: gydymui, žalai atlyginti arba kad nebūtų teismo. <!-- F491 F494 F496 --> Vėliau jų atvyksta paimti nepažįstamas žmogus. <!-- F497 F500 F501 -->')} />
+          <p set:html={nbHtml('Ne visada viskas prasideda skambučiu. 2026 m. rugsėjį Vilniuje prie moters namo kieme priėjo nepažįstamoji ir pasakė, kad sūnus pateko į eismo įvykį ir reikia pinigų. <!-- F490 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį ir paskambink artimajam tuo numeriu, kurį jau turi.')} />
+        <p set:html={nbHtml('Policija pataria neskubėti ir paskambinti tam neva nukentėjusiam žmogui. <!-- F499 M --> Neatsiliepia? Tai dar neįrodo, kad skambinantis sako tiesą. <!-- M --> Skambink kitiems šeimos nariams, į ligoninę ar policiją oficialiu numeriu, o ne tuo, kurį duoda skambinantis; kilus įtarimų – 112. <!-- F499 F492 M --> Pinigų nesiųsk ir neatiduok, kol nesusisieksi su artimuoju ar kitais šeimos nariais. <!-- F81 F492 M --> Jei nelaimė tikra, būtinoji pagalba Lietuvoje tavo pinigų nelaukia: ji turi būti suteikta nedelsiant ir nemokamai. <!-- F504 -->')} />
+        <p set:html={nbHtml('Pažįstamas balsas nieko neįrodo. <!-- F97 --> Neįrodo nei vardas, nei numeris ekrane. <!-- F693 --> 2026 m. liepą LRT aprašė vilniečio atvejį: paskambino „sesuo“, ekrane matėsi jos vardas, nuotrauka ir numeris, telefone girdėjosi lyg jos balsas. Vyras pokalbį baigė ir iškart perskambino seseriai: skambino ne ji. <!-- F692 --> Jei telefonu kalba pats „artimasis“, prieš padedant ragelį paprašyk <a href="/sustok/seimos-zodis/">šeimos žodžio</a>, jei tokį turite. Net jei žodį pasako, vis tiek paskambink artimajam tuo numeriu, kurį jau turi. <!-- F81 M --> Papasakok apie tai tėvams, seneliams ir kaimynams. <!-- F493 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau atidavei</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Jei atidavei kortelę, pirmiausia skambink savo bankui numeriu iš oficialios programėlės ar svetainės ir paprašyk ją užblokuoti. <!-- F502 F13 F4 M --> Jei atidavei pinigus, iškart skambink 112, o jei tai buvo anksčiau – pranešk per epolicija.lt. <!-- F499 F96 F2 --> Skubėti verta: 2025 m. Panevėžyje, kitoje apgaulėje („netikri“ pinigai), moteris apie ją pranešė gana greitai, ir policija sustabdė įtariamojo automobilį; du žmonės buvo sulaikyti. <!-- F508 --> Ar pinigai jai grįžo, šaltinis nerašo, ir pažadėti to negalime, bet pranešti verta bet kuriuo atveju. <!-- M --> Skambina dar kartą ir prašo pinigų? Nieko nemokėk. <!-- F497 M -->')} />
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>, <a href="/jei-apgavo/#artimas">apgavo artimą žmogų</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/seimos-zodis/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Grynųjų, o kartais ir kortelės, į rankas, kol dar nespėjai paskambinti artimajam. <!-- F502 M --> 2024 m. spalį moteris 13 tūkst. eurų atidavė atėjusiam nepažįstamam vyrui, <!-- F500 --> o 2025 m. Kauno apskrityje kita moteris 10,5 tūkst. eurų atidavė nepažįstamam jaunuoliui. <!-- F501 --> 2026 m. rugsėjį Vilniuje kieme užkalbinta moteris nepažįstamąją pasikvietė į butą, atidavė jai 8 tūkst. eurų, o vėliau spintoje pasigedo dar 3 tūkst. <!-- F490 -->')} />
+            <p set:html={nbHtml('2026 m. spalį prokurorai perdavė teismui bylą, kurioje penki jauni vyrai kaltinami sukčiavimu. Anot prokurorų, organizuotos grupės nariai skambindavo žmonėms, prisistatydavo gydytojais arba policijos pareigūnais ir iš Vilniaus bei jo apylinkių gyventojų išviliojo daugiau kaip 470 tūkst. eurų. Nukentėjusiaisiais pripažinti 45 žmonės. Tai kaltinimai: apie teismo sprendimą šaltinis nerašo. <!-- F502 -->')} />
+            <p set:html={nbHtml('Viena atiduota suma gali nebūti paskutinė. 2025 m. policijos aprašytu atveju moteris atidavė 10 000 eurų, o po dar vieno skambučio pasiskolino ir atidavė daugiau nei 10 000 eurų. <!-- F497 --> Kas nutinka prie durų, aprašėme atskirai: <a href="/scenarijai/pareigunas-prie-duru/">„Pareigūnas“ prie durų</a>. <strong class="stop">Sustabdymo vieta:</strong> kol nepakalbėjai su artimuoju, pinigai lieka namie. <!-- F499 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Galbūt visai nedaug. <!-- M --> Klaipėdos prokurorų 2024 m. teismui perduotoje byloje, tyrimo duomenimis, kaltinamieji skambindavo atsitiktiniams senjorams ir, be kita ko, sakydavo, kad giminaičiui skubiai reikia pinigų. <!-- F282 --> Iš kur skambinantis žino apie tavo šeimą ir ar apskritai žino, mūsų šaltiniai nesako. <!-- M --> Namų adresą išsigandę žmonės, anot prokurorų, pasakydavo patys. <!-- F502 --> <strong class="stop">Sustabdymo vieta:</strong> telefonu adreso nesakyk. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Tai ne naivumas: žmogus mano, kad gelbsti savo vaiką. <!-- M --> Policijos 2025 m. aprašytu atveju moteris net atvykusiems tikriems pareigūnams tvirtino, kad jie meluoja, ir tikino tik padedanti savo dukrai; pareigūnams ją įtikinti buvo nelengva. <!-- F498 --> Jei taip nutiko tavo artimajam, nekaltink. <a href="/jei-apgavo/#artimas">Kaip padėti</a>. <!-- M -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> skambutis artimajam užtrunka minutę. Net jei nelaimė tikra, grynųjų nepažįstamam žmogui prie durų atiduoti nereikia: pareigūnai pinigų žmonių namuose nerenka, o būtinąją medicinos pagalbą Lietuvoje gydymo įstaiga privalo suteikti nemokamai. <!-- F277 F504 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/seimos-zodis/">{nb('Susitarkite šeimoje dėl žodžio')}</a>, <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/seima/">{nb('Šeima')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/pareigunas-prie-duru/">{nb('„Pareigūnas“ prie durų')}</a>, <a href="/scenarijai/draugas-praso-pinigu/">{nb('Draugas prašo pinigų')}</a>, <a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

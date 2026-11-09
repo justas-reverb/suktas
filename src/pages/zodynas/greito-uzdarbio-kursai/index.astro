@@ -1,0 +1,242 @@
+---
+/**
+ * Žodynas: Kas yra greito uždarbio kursai, the sixth glossary entry with a page of its own. The copy is
+ * docs/copy/zodynas/greito-uzdarbio-kursai.md, word for word; the source tags stay as comments and the build
+ * strips them. It wears the scenario template, as /zodynas/lazybu-prognozes/ does.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'make money online courses, get-rich-quick courses'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Žada, kad pavyks bet kam.', ' Vokietijos vartotojų centrai įspėja apie programas, kurios neva gali atvesti į sėkmę visus, nepaisant jų žinių ir galimybių. <!-- F778 --> Didžiojoje Britanijoje ASA klaidinančia pripažino vieną reklamą, iš kurios susidarė įspūdis, kad joje rodomą uždarbį ir gyvenimą gali pasiekti bet kas, jei tik mokysis pagal kursą. <!-- F777 -->'],
+  ['Skubina: „tik šiandien“, „tik pirmiems 100“.', ' Taip, pasak Vokietijos vartotojų centrų, neretai elgiasi nepatikimi koučingo programų pardavėjai, ir laiko apsigalvoti nelieka. <!-- F778 --> ES teisė bet kuriomis aplinkybėmis laiko nesąžiningu apgaulingą tvirtinimą, kad pasiūlymas galioja tik labai trumpai, kai juo siekiama paskubinti pirkėjo sprendimą. <!-- F780 --> Didžiojoje Britanijoje ASA nustatė, kad vienos kurso reklamos pažadas „nemokamai dar 48 valandas“ buvo klaidinantis: pasiūlymas galiojo ir pasibaigus toms 48 valandoms. <!-- F777 -->'],
+  ['Nemokamas seminaras veda į brangią programą, o po jos siūloma dar viena.', ' Vokietijos vartotojų centrai tai aprašo kaip nepatikimų koučingo programų būdą, bet pats nemokamas susitikimas dar nieko neįrodo. <!-- F778 M -->'],
+  ['Tik puikūs atsiliepimai.', ' Vokietijos vartotojų centrai rašo, kad tik geri atsiliepimai apie koučingo programą turėtų kelti įtarimą: dažnai jie būna suklastoti ar nupirkti. <!-- F778 -->'],
+  ['Nežinia, kas parduoda.', ' Perkant socialiniuose tinkluose VVTAT ir VMI pataria patikrinti, ar nurodyti pardavėjo kontaktai, ir pasidomėti kitų pirkėjų atsiliepimais apie pardavėją. <!-- F716 M -->'],
+  ['Spaudžia sutikti, kad kursą gautum iš karto, ir kartu atsisakyti teisės apsigalvoti.', ' Vokietijos vartotojų centrai įspėja apie pardavėjus, kurie spaudžia sutikti iš karto gauti skaitmeninį turinį ir kartu atsisakyti teisės apsigalvoti, ir pataria tokių pasiūlymų vengti. <!-- F778 --> Pats toks sutikimas numatytas teisėje, todėl jo gali prašyti ir sąžiningas pardavėjas; ženklas yra spaudimas. <!-- F773 M --> Lietuvoje toks sutikimas, kai skaitmeninis turinys jau pradėtas teikti, atima teisę per 14 dienų atsisakyti sutarties. <!-- F773 -->'],
+  ['Tarp kitko paaiškėja, kad turėsi mokyti kitus.', ' Kai taip nutinka koučingo programoje, Vokietijos vartotojų centrų teigimu, dažniausiai tai piramidė, kurioje vis verbuojami nauji koučeriai, kad augtų pajamos. <!-- F778 --> Čia nekalbama apie programas, kurios iš anksto atvirai skelbia, kad moko koučingo. <!-- M --> ES teisė bet kuriomis aplinkybėmis laiko nesąžiningomis piramidės pobūdžio sistemas, kuriose atlygis gaunamas visų pirma už kitų vartotojų įtraukimą, o ne už produktų pardavimą ar naudojimą. <!-- F757 --> Plačiau: <a href="/zodynas/piramide/">Kas yra finansinė piramidė</a>.'],
+];
+
+const risks = [
+  ['Kurso kaina.', ' Moki už mokymą, o ne už uždarbį: reklamoje rodomi rezultatai nebūtinai tokie, kokius pasiekia dauguma pirkėjų. <!-- F777 M -->'],
+  ['Naujomis išlaidomis.', ' Po pirmos programos gali būti siūloma kita, su nauja sutartimi ir naujomis išlaidomis. <!-- F778 M -->'],
+  ['Įmokomis į piramidę.', ' Jei uždarbis priklauso nuo naujų dalyvių, tai piramidės ženklas. <!-- F778 F757 --> Plačiau: <a href="/zodynas/piramide/">Kas yra finansinė piramidė</a>.'],
+  ['Antra apgaule.', ' Lietuvos bankas įspėja: sukčiai, žinantys, kad praradai pinigų, siūlo už mokestį juos „susigrąžinti“ ir apgauna dar kartą. <!-- F14 F15 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.'],
+];
+
+const steps = [
+  '<strong>Nebepirk kitos programos.</strong> Nemokėk ir tam, kas pats pasisiūlo už mokestį „atgauti, ką praradai“: Lietuvos bankas įspėja, kad tai dar viena apgaulė. <!-- F778 F14 F15 M --> Jei dar moki dalimis, pirma perskaityk 3 ir 4 žingsnius. <!-- M -->',
+  '<strong>Manai, kad tai apgaulė</strong> – pavyzdžiui, kursas tebuvo kelias į <a href="/zodynas/piramide/">piramidę</a>? Kuo skubiau susisiek su banku ar kitu mokėjimo paslaugų teikėju: kai kuriais atvejais jie dar gali sustabdyti mokėjimą. <!-- F252 --> Išsaugok susirašinėjimą, sutartį, mokėjimų išrašus ir reklamą, kurią matei, ir pranešk policijai per epolicija.lt. <!-- F4 F2 M -->',
+  '<strong>Pirkai internetu? Patikrink, ar dar gali atsisakyti sutarties.</strong> Nuotolinės sutarties galima atsisakyti per 14 dienų, nenurodant priežasties, bet ši teisė nėra absoliuti. <!-- F773 --> Kursui svarbios dvi išimtys: jei prieš pradedant teikti paslaugą aiškiai sutikai ir pripažinai, kad prarasi šią teisę, jos netenki, kai paslauga visiškai suteikta; jei taip sutikai dėl skaitmeninio turinio – kai tik jis pradėtas teikti. <!-- F773 --> Jei pardavėjas apie šią teisę tau nepranešė, sutarties galima atsisakyti per 12 mėnesių po 14 dienų pabaigos. <!-- F773 -->',
+  '<strong>Paslaugos sutartį galima nutraukti ir vėliau.</strong> VVTAT rašo, kad paslaugų sutartį galima vienašališkai nutraukti net tada, kai paslauga jau pradėta teikti: sumoki proporcingą jau suteiktų paslaugų kainos dalį ir protingas išlaidas, o už dar nesuteiktas paslaugas turi teisę atgauti pinigus; mokesčio už nutraukimą paslaugos teikėjas reikalauti negali. <!-- F774 --> Ar internetinis kursas yra paslauga, ar skaitmeninis turinys, mūsų rasti šaltiniai neatsako; jei abejoji, paklausk VVTAT. <!-- M -->',
+  '<strong>Raštu kreipkis į pardavėją</strong> (tinka ir el. laiškas) ir aiškiai parašyk, ko reikalauji, ne vėliau kaip per tris mėnesius nuo tada, kai sužinojai ar turėjai sužinoti apie pažeidimą. Jei per 14 dienų neatsako arba atsakymas netenkina, gali kreiptis į Valstybinę vartotojų teisių apsaugos tarnybą (VVTAT), kuri ginčus nagrinėja ne teisme. <!-- F775 -->',
+  '<strong>Mokėjai kortele?</strong> Jei su pardavėju susitarti nepavyksta, kuo greičiau paklausk banko apie mokėjimo užginčijimą: kartais jis įmanomas, kai paslauga nesuteikiama taip, kaip žadėta, tačiau tam yra terminai. <!-- F770 -->',
+  '<strong>Pardavėjas – įmonė kitoje ES šalyje?</strong> Europos vartotojų centras tavo šalyje gali padėti draugiškai susitarti su užsienio prekiautoju, bet pirmiausia reikia pabandyti ginčą išspręsti tiesiogiai su juo. <!-- F717 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Rodomos sėkmės istorijos ir pajamos, bet ne tie, kuriems nepavyko. <!-- F776 M -->'],
+  ['Autoritetas.', 'Jis rodo savo sėkmės istoriją: neva pats viską pasiekė, vadinasi, pavyks ir tau. <!-- F778 M -->'],
+  ['Skuba.', '„Tik šiandien“, „tik pirmiems 100“. <!-- F778 M -->'],
+];
+
+const sides = [
+  ['„Uždirbsi, kai pritrauksi kitų“', 'Tai piramidės ženklas. Nemokėk. <!-- F778 F757 -->'],
+  ['„Tik šiandien“, „tik pirmiems 100“', 'Skuba – ženklas, kad reikia sustoti. Apgaulingas „ribotas laikas“ ES teisėje laikomas nesąžiningu. <!-- F778 F780 M -->'],
+  ['Nemokamas seminaras, paskui – brangi programa', 'Prieš mokant paprašyk rašytinės sutarties, kurioje surašyta, ką gausi. <!-- F778 M -->'],
+  ['Tik puikūs atsiliepimai', 'Jie gali būti suklastoti ar nupirkti. <!-- F778 M -->'],
+  ['Spaudžia sutikti gauti kursą iš karto ir pripažinti, kad prarasi teisę apsigalvoti', 'Neskubėk sutikti: taip gali netekti teisės per 14 dienų atsisakyti sutarties. <!-- F778 F773 -->'],
+];
+
+const sources = [
+  'VVTAT, „Dažniausiai užduodami klausimai“ (atnaujinta 2026-10-28): teisė per 14 dienų ar 12 mėnesių atsisakyti nuotolinės sutarties ir jos išimtys, paslaugų sutarties nutraukimas, kreipimasis į pardavėją ir į VVTAT, terminai. <!-- F773 F774 F775 -->',
+  'Banko „Luminor“ pranešimas, paskelbtas 15min (2026-09-19): finansų turinys socialiniuose tinkluose, taip pat apie pasyvias pajamas ir greitą praturtėjimą; apie kursus jame nekalbama. <!-- F776 -->',
+  'Didžiosios Britanijos reklamos priežiūros institucija ASA: du sprendimai dėl „uždarbio“ kursų reklamų (2025-10-15) ir reklamos taisyklių komiteto CAP pranešimas (2026-04-09). <!-- F777 -->',
+  'Vokietijos vartotojų centrai (Verbraucherzentrale), „Kostenfalle Coachingprogramm“ (2026-07-23): kaip vilioja nepatikimos koučingo programos, ženklai, rašytinė sutartis. <!-- F778 -->',
+  'Europos Komisija (2024-02-14): nuomonės formuotojų, parduodančių savo prekes ar paslaugas, pareigos. <!-- F779 -->',
+  'ES direktyva 2005/29/EB, I priedo 7 ir 14 punktai: apgaulingas „ribotas laikas“ ir piramidės pobūdžio sistemos. <!-- F780 F757 -->',
+  'VVTAT ir VMI atmintinė pirkėjams (2024-09-12): kaip patikrinti pardavėją. <!-- F716 -->',
+  'Europos vartotojų centrų tinklas ir Europos vartotojų centras Vokietijoje (be datos, skaityta 2026-11-07): kortele atlikto mokėjimo užginčijimas. <!-- F770 -->',
+  '„Your Europe“ (paskutinį kartą tikrinta 2026-09-21): Europos vartotojų centras. <!-- F717 -->',
+  'Lietuvos bankas (2020-02-12, 2024-10-28): nemokėk siūlantiems susigrąžinti pinigus. <!-- F14 F15 -->',
+  'Lietuvos bankas, „Pakliuvau sukčiams: ką daryti?“ (atnaujinta 2026-07-30): kuo skubiau kreiptis į banką. <!-- F252 -->',
+  'Policija (2026-02-05, atnaujinta 2026-04-23): pranešti per epolicija.lt. <!-- F2 -->',
+  'Kampanija „Padėk ragelį“ (LRT, policija, Lietuvos bankų asociacija, Lietuvos paštas): išsaugoti susirašinėjimą. <!-- F4 -->',
+];
+---
+<Page
+  title="Greito uždarbio kursai: kaip atpažinti tuščią pažadą – Suktas"
+  description="Kursas ar mentorystė žada pasyvias pajamas ar greitą uždarbį internetu? Kaip atpažinti tuščią pažadą, ką patikrinti prieš mokant ir ką daryti, jei jau sumokėjai."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Kas yra greito uždarbio kursai')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Greito uždarbio kursai – tai mokami kursai, mentorystės ar koučingo programos, kurios žada išmokyti greitai uždirbti ar gauti „pasyvių pajamų“, pavyzdžiui, internetu, iš dropshipping ar koučingo. <!-- F776 F777 F778 M --> Šis pavadinimas reiškia pažadą, o ne temą: mokyti už pinigus, taip pat koučingo ar prekybos internetu, savaime nėra apgaulė. <!-- M --> Didžiosios Britanijos reklamos priežiūros institucija ASA, patikrinusi kelių tokių kursų reklamas, nustatė, kad jų skelbėjai negalėjo įrodyti, jog rodomi rezultatai atspindi tai, ką tikėtina pasiekti daugumai pirkėjų. <!-- F777 --> Apie Lietuvoje parduodamus kursus tokių sprendimų neradome, todėl rašome apie ženklus, o ne apie kurį nors pardavėją. <!-- M --> Prieš mokant paprašyk rašytinės sutarties, kurioje surašyta, ką gausi, ir sužinok, kas parduoda; jei to negauni arba skubina, nemokėk. <!-- F778 F716 M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Socialiniuose tinkluose kas nors pasakoja savo sėkmės istoriją, rodo laisvą gyvenimą ir pajamas, kurias sieja su savo metodu, ir kviečia jo išmokti. <!-- F776 F777 F778 --> Portalas 15min 2026 m. paskelbė banko „Luminor“ pranešimą apie finansų turinį socialiniuose tinkluose: pasak jo, toks turinys, taip pat apie pasyvias pajamas ar greito praturtėjimo metodus, dažnai remiasi emocija, sėkmės istorijomis ir baime praleisti galimybę. Apie mokamus kursus pranešime nekalbama. <!-- F776 -->')} />
+          <p set:html={nbHtml('Vokietijos vartotojų centrai (Verbraucherzentrale), remdamiesi nukentėjusiųjų pasakojimais, aprašo, kaip vilioja nepatikimos koučingo programos Vokietijoje: pavyzdžiui, nemokamu seminaru, o už tikrąjį kursą prašo kelių tūkstančių eurų; po pirmos programos dažnai siūlo kitą – su nauja sutartimi ir naujomis išlaidomis. <!-- F778 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Vienas ženklas dar nieko neįrodo, bet keli kartu – priežastis įtarti: taip apie savo ženklus rašo Vokietijos vartotojų centrai. <!-- F778 -->')} />
+          <ol class="signs" role="list">
+            {signs.map(([head, text]) => (
+              <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš mokant už kursą ar programą, paprašyk rašytinės sutarties, kurioje surašyta, ką tiksliai gausi, ir sužinok, kas parduoda: pavadinimą ar vardą, įmonės kodą ar individualios veiklos pažymos numerį, kontaktus. Jei to negauni arba skubina, nemokėk. <!-- F778 F716 F780 M -->')} />
+        <p set:html={nbHtml('Tinka ir sąlygos el. laiške ar puslapyje, kurias gali išsisaugoti. <!-- M --> Vokietijos vartotojų centrai rašo, kad rašytinė sutartis, kurioje tiksliai išvardyta, kas įeina į programą, būtina visada, ir kad prieš perkant turėtų būti galima nemokamai pasikalbėti individualiai, gyvai ar internetu, o ne masiniame renginyje. <!-- F778 --> Jei žinai pardavėjo pavadinimą ar kodą, VMI svetainės skiltyje „Mokesčių mokėtojų informacija“ gali patikrinti, ar veikla registruota. <!-- F716 M --> Pardavėjo iš kitos ES šalies ten nerasi, ir tai savaime nieko blogo nereiškia. <!-- M --> Mokymai prekiauti akcijomis ar kriptovaliutomis: <a href="/scenarijai/prekybos-kursai-ir-signalai/">Prekybos kursai ir signalai už pinigus</a>.')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            {risks.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="sumokejai">
+        <h2 id="sumokejai">Jei jau sumokėjai</h2>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- F252 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. „Jis“ čia – tas, kuris kursą naudoja kaip kelią į piramidę; kas parduoda kursą ir nieko neverbuoja, toks nėra. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo įmokų, o paskui – kad atvestum kitų: tokioje sistemoje pajamos auga verbuojant vis naujus dalyvius. <!-- F778 M --> <strong class="stop">Sustabdymo vieta:</strong> kai uždarbis priklauso nuo to, kiek žmonių pritrauksi – tada nemokėk. <!-- F778 F757 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, ką parodai: kad seki sėkmės istorijas ir ieškai papildomų pajamų ar laisvesnio gyvenimo. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> noras daugiau uždirbti – ne priežastis mokėti skubant. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Verbuodamas į piramidę jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> dešimt sekundžių ir du klausimai – kas parduoda ir už ką tiksliai moki? <!-- F778 F716 M --> <a href="/sustok/desimt-sekundziu/">Kortelė</a>.')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>O tas, kuris tik parduoda kursą?</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kursas, kuris moko to, ką žada, ir nežada daugiau, nei gali pagrįsti, nėra apgaulė. <!-- M --> Vokietijos vartotojų centrai patys aprašo, kuo rimtas koučingas skiriasi nuo nepatikimo. <!-- F778 --> Didžiojoje Britanijoje tokių kursų reklama neturi leisti suprasti, kad išskirtinė sėkmė yra įprasta. <!-- F777 --> Europos Komisija primena, kad nuomonės formuotojas, kuris parduoda savo prekes ar paslaugas, turi tas pačias pareigas kaip internetinė parduotuvė, pavyzdžiui, suteikti teisę atsisakyti sutarties. <!-- F779 --> <strong class="stop">Sustabdymo vieta:</strong> prieš mokant – rašytinė sutartis ir laiko apsigalvoti. <!-- F778 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <p set:html={nbHtml('Piramidės ženklas yra tik pirma eilutė. Kitus dalykus gali daryti ir sąžiningas pardavėjas, todėl vienas jų dar nieko neįrodo. <!-- F778 M -->')} />
+          <table>
+            <thead>
+              <tr><th scope="col">Ką matai</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Ką matai" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></li>
+          <li><strong>Scenarijai:</strong> <a href="/scenarijai/prekybos-kursai-ir-signalai/">{nb('Prekybos kursai ir signalai už pinigus')}</a>, <a href="/scenarijai/uzduotys-uz-pinigus/">{nb('Užduotys už pinigus')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/piramide/">{nb('Kas yra finansinė piramidė')}</a>, <a href="/zodynas/lazybu-prognozes/">{nb('Kas yra mokamos lažybų prognozės')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Lietuviškų šaltinių apie greito uždarbio kursų pirkėjus neradome, todėl remiamės kitų šalių organizacijų šaltiniais ir kiekvieną jų įvardijame; jų išvados yra apie tų šalių reklamas ir programas, o ne apie kurį nors pardavėją Lietuvoje. Vartotojų teisės – pagal Lietuvos ir ES šaltinius. <!-- M --> Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

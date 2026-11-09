@@ -1,0 +1,185 @@
+---
+/**
+ * Scenarijus: „Draugas“ prašo pinigų. The copy is docs/copy/scenarijai/draugas-praso-pinigu.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('„Draugas“ prašo pinigų');
+const meta = [
+  ['Kanalas', 'paskyra'],
+  ['Ko jis nori', 'pinigų arba tavo paskyros'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Prašymas skubus, neįprastas ir miglotas.', 'Draugas, kuris niekada neprašė paskolinti, staiga prašo, pavyzdžiui, 1000 eurų „nepaprastai situacijai“, bet nesako kokiai. <!-- F156 -->'],
+  ['Rašo ne taip ir ne iš ten.', 'Daro klaidų, kurių paprastai nedaro, arba staiga atsiduria užsienyje, pavyzdžiui, Tailande. <!-- F156 -->'],
+  ['Prašo tavo telefono numerio ar kodo, kuris ateis tau.', 'RRT įspėja: paskutinė tokios grandinėlės žinutė – perduoti savo prisijungimo kodą. <!-- F158 -->'],
+];
+
+const levers = [
+  ['Autoritetas.', 'Šįkart jis skolinasi ne banko, o draugo vardą: pasitikėjimas, kurį jauti draugui, atitenka jam. <!-- M F157 -->'],
+  ['Skuba.', '„Nepaprasta situacija“ ir skubus prašymas nepalieka laiko pagalvoti. <!-- F156 M -->'],
+  ['Nauda.', '„Sveikiname, laimėjote 1200 €!“ skamba kaip pinigai, kuriuos tik reikia atsiimti. <!-- F157 M --> <strong class="stop">Sustabdymo vieta:</strong> kuo skubiau ir gražiau skamba, tuo labiau verta paskambinti draugui. <!-- M F156 -->'],
+];
+
+const sides = [
+  ['Draugas staiga prašo paskolinti pinigų', 'Paskambink jam arba parašyk SMS žinutę; kol jis pats nepatvirtino, nesiųsk. <!-- F156 -->'],
+  ['Prašo tavo telefono numerio', 'Savo numeriu ir kodais per socialinius tinklus nesidalink. <!-- F157 -->'],
+  ['Prašo kodo, kuris „tau ateis“, arba prašo leisti nurodyti tave kaip pagalbą', 'Kad ir kam jis būtų skirtas, neperduok jo niekam. <!-- F158 F159 F42 -->'],
+  ['Žada prizą ir siunčia nuorodą jam atsiimti', 'Nuorodos nespausk, o banko prisijungimo duomenų į ją niekada neįvesk. <!-- F157 M -->'],
+  ['Tavo paskyroje – žinutės, kurių nerašei, arba pakeistas el. paštas ar telefono numeris', 'Eik į facebook.com/hacked. El. pašto pakeitimą gali atšaukti nuoroda, kurią „Facebook“ atsiuntė senuoju adresu. <!-- F160 -->'],
+  ['Bando prisijungti prie tavo paskyros iš savo įrenginio', 'Įjunk dviejų veiksnių autentifikavimą: prisijungiant iš neatpažintos naršyklės ar įrenginio bus prašoma kodo ar patvirtinimo. <!-- F161 F158 --> Tačiau tai nepadės, jei kodą kam nors atiduosi. <!-- M -->'],
+  ['Ta pati paskyra rašo ir kitiems', 'Pranešk apie ją „Facebook“ administracijai ir perspėk vyresnius artimuosius. <!-- F157 -->'],
+];
+
+const sources = [
+  'Policijos virtualusis patrulis per TV3, 2024-01-20: draugų vardu prašoma paskolinti pinigų; ženklai; paskambink ar parašyk SMS. <!-- F156 -->',
+  'Policijos virtualusis patrulis per rinkosaikste.lt, 2025-06-17: telefono numeris, SMS kodas ir „prizas“; numeriu ir kodais nesidalinti. <!-- F157 -->',
+  'RRT per TV3, 2024-10-15: paskutinė grandinėlės žinutė – perduoti savo prisijungimo kodą; dviejų veiksnių autentifikavimas. <!-- F158 -->',
+  'LRT, 2023-07-14: merginos pasakojimas, kaip draugės nusiuntė gautą kodą sukčiams. <!-- F159 -->',
+  '„Facebook“ pagalba: nulaužta paskyra ir facebook.com/hacked; dviejų veiksnių autentifikavimas. <!-- F160 F161 -->',
+  'NKSC, 2026-07-13: niekam neatskleisti SMS patvirtinimo kodų. <!-- F42 -->',
+  'Kampanija „Padėk ragelį“ (LRT, policija, Bankų asociacija, Lietuvos paštas): jei atskleidėte banko duomenis, praneškite bankui; išsaugokite susirašinėjimą ir kreipkitės į policiją. <!-- F4 -->',
+  'Policija, 2026-02-05: nukentėjus nuo sukčių, pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="Draugas per „Facebook“ prašo pinigų ar kodo: tai sukčiai – Suktas"
+  description="Kaip atrodo žinutė iš nulaužtos draugo paskyros, trys jos ženklai ir vienas ėjimas, kuris sustabdo planą."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-30</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('„Facebook“ tau parašo draugas ar šeimos narys, tik rašo ne jis: jo paskyrą perėmė sukčiai. <!-- F156 F157 --> Pradžia paprasta, pavyzdžiui: „Labas, gal gali truputį pagelbėt?“ <!-- F159 --> Toliau – skubus prašymas paskolinti pinigų <!-- F156 --> arba atsiųsti savo telefono numerį ir kodą, kuris tau ateis SMS žinute. Kartais po to žadamas „prizas“ ir nuoroda jam atsiimti. <!-- F157 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Paskambink draugui arba parašyk jam SMS žinutę, ne tame pačiame pokalbyje.')} />
+        <p set:html={nbHtml('Kol jis pats nepatvirtino, nesiųsk nei pinigų, nei savo numerio, nei jokių kodų. <!-- F157 M --> Kai susisieksi, pasakyk, kad jo paskyrą perėmė: tegul eina į facebook.com/hacked iš įrenginio, kuriuo jau jungėsi. <!-- F160 --> Kortelė: <a href="/sustok/seimos-zodis/">Susitarkite šeimoje dėl žodžio</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Jei jau išsiuntei pinigus, pirmiausia skambink bankui, išsaugok susirašinėjimą ir pranešk policijai. <!-- F4 F2 M --> Jei atidavei kodą ir nebegali prisijungti prie savo paskyros, eik į facebook.com/hacked, jei gali – iš įrenginio, kuriuo jau jungeisi prie „Facebook“; skiltyje „Kur esate prisijungę“ atjunk nežinomus įrenginius. <!-- F160 --> Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#paskyra">kažkas perėmė mano paskyrą</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/seimos-zodis/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jam reikia tavo pinigų arba tavo paskyros. <!-- F156 F157 F158 --> Perimta paskyra jam vertinga dvigubai: iš jos galima rašyti tavo draugams. <!-- M F158 --> 2023 m. liepą viena mergina LRT RADIJUI papasakojo, kad iš jos paskyros pažįstamiems buvo rašoma, jog „kodo neatsiunčia“, ir prašoma pagalbos; kelios draugės žinute gautą kodą nusiuntė sukčiams, o paskui bandyta perimti ir jų paskyras. <!-- F159 --> Policija įspėja, kad galiausiai sukčiai siekia ir banko prisijungimų. <!-- F157 --> <strong class="stop">Sustabdymo vieta:</strong> kodo, kuris ateina tau, niekam neperduok, net draugui. <!-- F42 F158 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tai, ką mato perimtoje paskyroje: tavo vardą, jūsų ankstesnius pokalbius, galbūt tai, kaip jūs paprastai kreipiatės. <!-- M --> Bet jis nežino to, ką žinote tik jūs, ir draugo telefonu greičiausiai neatsilieps. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> paskambink jam; jei abejoji ir tada, paklausk to, ką žinote tik jūs. <!-- F156 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Veikia trys kabliukai, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>:')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/seimos-zodis/">{nb('Susitarkite šeimoje dėl žodžio')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/zinute-su-kodu/">{nb('Žinutė su kodu')}</a>, <a href="/scenarijai/slaptazodis-nutekejo/">{nb('Tavo slaptažodis nutekėjo')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-30. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

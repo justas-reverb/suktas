@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>paint prints</title>
+<style>
+  html, body { margin: 0; background: transparent; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  /* The small marks of the site, painted with the same light as the hero: a fox's forefoot
+     pressed into snow, seen from above, lit from the upper right by a low sun. Used for the
+     step markers, the trail between them, the wordmark's print, the favicon and the share
+     image's print. Run by tools/paint-art.mjs; never loaded by the site.
+
+     Flat snow is painted as the page colour itself, so the print can sit on the page with
+     no edge: only the pit, its shadow and its warm rim differ from the page. */
+
+  const VERT = `#version 300 es
+  void main() {
+    vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
+    gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+  }`;
+
+  const FRAG = `#version 300 es
+  precision highp float;
+  uniform vec2 uRes;
+  uniform vec3 uBg;        // the page colour, linear: what flat snow must look like
+  uniform vec4 uMode;      // x: pad boost, y: print length (frame units), z: seed, w: tile (1) or single (0)
+  uniform vec3 uAmb;       // light from the sky, linear
+  uniform vec3 uDeep;      // light inside a deep pit, linear
+  uniform vec3 uSun;       // sunlight colour, linear
+  uniform vec4 uTile;      // single: centre of the print; tile: centre 1 (x, y), centre 2 (x, y)
+  uniform vec2 uTilt;      // tilt of each print (rad)
+  uniform float uOpaque;   // 1 paints a ground of its own behind the print (favicon)
+  uniform vec3 uGround;    // that ground, linear
+  uniform float uOut;      // 0: colour (opaque), 1: the print's opacity, as grey
+  uniform float uAO;       // how much of the light the bottom of a pit loses (0..1)
+  out vec4 o;
+
+  vec2 rot(vec2 p, float a) { float c = cos(a), s = sin(a); return vec2(c * p.x - s * p.y, s * p.x + c * p.y); }
+  float sdEllipse(vec2 p, vec2 r) { return (length(p / r) - 1.0) * min(r.x, r.y); }
+
+  float paw(vec2 p, float boost) {
+    float pad = sdEllipse(p - vec2(0.0, -0.20 - 0.02 * boost), vec2(0.185 + 0.07 * boost, 0.150 + 0.05 * boost));
+    float k = 1.0 - 0.10 * boost;
+    float t1 = sdEllipse(rot(p - vec2(-0.105, 0.205), -0.13), vec2(0.072, 0.112) * k);
+    float t2 = sdEllipse(rot(p - vec2( 0.105, 0.205),  0.13), vec2(0.072, 0.112) * k);
+    float t3 = sdEllipse(rot(p - vec2(-0.262, 0.010), -0.62), vec2(0.066, 0.098) * k);
+    float t4 = sdEllipse(rot(p - vec2( 0.262, 0.010),  0.62), vec2(0.066, 0.098) * k);
+    return min(min(pad, t1), min(min(t2, t3), t4));
+  }
+
+  // height of the snow, in frame units: pits with soft walls and a small lip of pushed snow
+  float H(vec2 q) {
+    float s = uMode.y;
+    float h = 0.0;
+    for (int i = 0; i < 2; i++) {
+      if (i == 1 && uMode.w < 0.5) break;
+      vec2 c = i == 0 ? uTile.xy : uTile.zw;
+      float a = i == 0 ? uTilt.x : uTilt.y;
+      float d = paw(rot(q - c, -a) / s, uMode.x) * s;
+      float w = 0.032 * s;
+      float depth = smoothstep(w, -w, d);
+      float lip = exp(-pow((d - 0.050 * s) / (0.034 * s), 2.0)) * (1.0 - depth);
+      h += (-depth + 0.10 * lip) * 0.16 * s;
+    }
+    return h;
+  }
+
+  const float EL = 0.18;                       // sun elevation, rad: higher than in the hero, so the floor is lit
+  const vec2 LH = vec2(0.34, 0.94);            // the sun is ahead and a little to the right
+
+  vec4 shade(vec2 q) {
+    float e = 0.4 / uRes.y * 2.0;
+    float h0 = H(q);
+    vec2 g = vec2(H(q + vec2(e, 0.0)) - H(q - vec2(e, 0.0)), H(q + vec2(0.0, e)) - H(q - vec2(0.0, e))) / (2.0 * e);
+    vec3 n = normalize(vec3(-g.x, 1.0, -g.y));
+    vec3 L = vec3(LH.x * cos(EL), sin(EL), LH.y * cos(EL));
+    float cav = clamp(-h0 / (0.16 * uMode.y), 0.0, 1.0);
+
+    float sh = 1.0;
+    float tanEl = tan(EL);
+    float jit = fract(sin(dot(q * 900.0, vec2(12.9898, 78.233))) * 43758.5453);
+    for (int i = 1; i <= 44; i++) {
+      float t = (float(i) + jit * 0.5) * 0.0105 * uMode.y;
+      float over = (h0 + t * tanEl) - H(q + LH * t);
+      sh = min(sh, smoothstep(-0.020 * uMode.y, 0.0, over));
+    }
+    float ndl = max(dot(n, L), 0.0);
+    float ao = 1.0 - uAO * cav;
+    vec3 amb = mix(uDeep, uAmb, ao);
+    vec3 col = amb * (0.55 + 0.45 * n.y) + uSun * ndl * sh;
+    vec3 flatCol = uAmb + uSun * sin(EL);
+    vec3 rel = col / flatCol;
+    vec3 base = uOpaque > 0.5 ? uGround : uBg;
+    vec3 lin = base * rel;
+    float md = max(abs(rel.r - 1.0), max(abs(rel.g - 1.0), abs(rel.b - 1.0)));
+    float alpha = uOpaque > 0.5 ? 1.0 : smoothstep(0.012, 0.09, md);
+    return vec4(lin, alpha);
+  }
+
+  void main() {
+    vec2 frag = gl_FragCoord.xy;
+    vec2 uv = (frag * 2.0 - uRes) / uRes.y;
+    float px = 2.0 / uRes.y;
+    vec4 acc = vec4(0.0);
+    for (int j = -1; j <= 1; j++) for (int i = -1; i <= 1; i++) {
+      vec4 c = shade(uv + vec2(float(i), float(j)) * px / 3.0);
+      acc += vec4(c.rgb * c.a, c.a);                   // average with opacity as weight
+    }
+    float alpha = acc.a / 9.0;
+    vec3 lin = acc.a > 0.0 ? acc.rgb / acc.a : uBg;
+    if (uOut > 0.5) { o = vec4(vec3(alpha), 1.0); return; }
+    float gr = fract(sin(dot(frag, vec2(12.9898, 78.233)) + uMode.z) * 43758.5453) - 0.5;
+    vec3 l = clamp(lin, 0.0, 1.0);
+    vec3 enc = mix(l * 12.92, 1.055 * pow(l, vec3(1.0 / 2.4)) - 0.055, step(0.0031308, l));
+    enc += gr * 0.010 * alpha;
+    o = vec4(clamp(enc, 0.0, 1.0), 1.0);
+  }`;
+
+  const srgb = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const lin = (hex) => { const n = parseInt(hex.slice(1), 16); return [srgb(((n >> 16) & 255) / 255), srgb(((n >> 8) & 255) / 255), srgb((n & 255) / 255)]; };
+
+  window.paintPrint = (job) => {
+    const c = document.getElementById('c');
+    c.width = job.w;
+    c.height = job.h;
+    const gl = c.getContext('webgl2', { alpha: false, antialias: false, preserveDrawingBuffer: false });
+    if (!gl) throw new Error('no webgl2');
+    const mk = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+    const prog = gl.createProgram();
+    gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+    gl.bindVertexArray(gl.createVertexArray());
+    gl.viewport(0, 0, job.w, job.h);
+    const u = (n) => gl.getUniformLocation(prog, n);
+    gl.uniform2f(u('uRes'), job.w, job.h);
+    gl.uniform3fv(u('uBg'), lin(job.bg || '#F4F6FC'));
+    gl.uniform4fv(u('uMode'), [job.pad ?? 0, job.size ?? 0.62, job.seed ?? 1, job.tile ? 1 : 0]);
+    gl.uniform3fv(u('uAmb'), lin(job.amb || '#8E9DE6'));
+    gl.uniform3fv(u('uDeep'), lin(job.deep || '#2C3A98'));
+    gl.uniform3fv(u('uSun'), lin(job.sun || '#FFC890'));
+    gl.uniform4fv(u('uTile'), job.tileAt || [0, 0, 0, 0]);
+    gl.uniform2fv(u('uTilt'), job.tilt || [0, 0]);
+    gl.uniform1f(u('uOpaque'), job.ground ? 1 : 0);
+    gl.uniform3fv(u('uGround'), lin(job.ground || '#F4F6FC'));
+    gl.uniform1f(u('uOut'), job.out ? 1 : 0);
+    gl.uniform1f(u('uAO'), job.ao ?? 0.88);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.finish();
+    return { ok: true };
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

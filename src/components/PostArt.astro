@@ -1,0 +1,20 @@
+---
+/**
+ * The painted postmark or cancelled stamp (tools/paint-post.mjs): a still, drawn natively at 1x, 2x and 3x,
+ * never scaled up. Decoration only: no text in it, no alt, hidden from a screen reader.
+ */
+interface Props { kind?: 'cancelled' | 'postmark'; class?: string; }
+const { kind = 'cancelled', class: cls = '' } = Astro.props;
+const [w, h] = kind === 'cancelled' ? [200, 150] : [128, 88];
+---
+<img
+  class:list={['post-art', `post-art--${kind}`, cls]}
+  src={`/art/${kind}-${w}.png`}
+  srcset={`/art/${kind}-${w * 2}.png 2x, /art/${kind}-${w * 3}.png 3x`}
+  width={w}
+  height={h}
+  alt=""
+  decoding="async"
+  loading="lazy"
+  aria-hidden="true"
+/>

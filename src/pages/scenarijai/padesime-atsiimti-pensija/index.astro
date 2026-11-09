@@ -1,0 +1,201 @@
+---
+/**
+ * Scenarijus: „padėsime atsiimti pensiją“ – II pakopos išmokos. The copy is
+ * docs/copy/scenarijai/padesime-atsiimti-pensija.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('„Padėsime atsiimti pensiją“');
+const meta = [
+  ['Kanalas', 'skambutis, kartais žinutė ar vaizdo skambutis'],
+  ['Ko jis nori', 'tavo pensijų pinigų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Pagalbą atsiimti pinigus siūlo jis, nors tu jos neprašei.', '„Nei bankai, nei pensijų fondų valdymo bendrovės niekada patys nesiūlo klientams nutraukti kaupimo ar „padėti atsiimti“ pinigus“, – sako banko „Artea“ atstovė. <!-- F404 --> Prašymas teikiamas tiesiogiai tavo pensijų kaupimo bendrovei, ne per tarpininkus ar „konsultantus“. <!-- F399 F405 -->'],
+  ['Skubina: „būtina veikti dabar“, „paskutinė galimybė“, „paskutiniai žingsniai“.', '<!-- F408 F409 --> Skubėti nėra kur: prašymą galima pateikti bet kada iki 2027 m. gruodžio 31 d., o jei nieko nedarai, kaupimas tiesiog tęsiasi. <!-- F400 F401 --> Pažadas išmokėti greičiau ar kitaip, pasak „Swedbank“, yra sukčiavimas. <!-- F409 -->'],
+  ['Prašo pervesti, išgryninti, investuoti ar patvirtinti mokėjimą.', 'Pensijų fondų lėšos išmokamos tik į asmeninę kliento sąskaitą, o nei bankai, nei policija neprašo gryninti pinigų ar „padėti tyrimui“, primena SEB. <!-- F405 --> „Sodra“ niekada nesiunčia pranešimų, kuriuose prašoma pervesti pinigus, patvirtinti banko operacijas ar skubiai priimti finansinius sprendimus. <!-- F403 -->'],
+];
+
+const steps = [
+  '<strong>Iškart skambink savo bankui</strong> numeriu iš banko programėlės arba iš svetainės, kurios adresą įvedi ranka, ypač jei suvedei kortelės ar interneto banko duomenis. <!-- F13 F405 --> Kuo greičiau pranešk ir policijai per epolicija.lt. <!-- F405 F2 --> Jei sukčiai vis dar skambina ar žada atvykti pasiimti pinigų, skambink 112. <!-- F406 F4 -->',
+  '<strong>Jei į sąskaitą atėjo pinigų, kurių nelaukei, jų neišgrynink ir niekam nepervesk.</strong> Tai gali būti bandymas įtraukti tave į sukčiavimo schemą. <!-- F406 -->',
+  '<strong>Papasakok artimiesiems.</strong> <!-- F405 --> Jei paskui kas nors siūlys už mokestį susigrąžinti prarastus pinigus, perskaityk <a href="/scenarijai/susigrazinti-pinigus/">šį scenarijų</a>. <!-- M -->',
+];
+
+const levers = [
+  ['Skuba.', '„Paskutinė galimybė“ verčia skubėti, nors terminas – tik 2027 m. pabaigoje. <!-- F408 F400 M -->'],
+  ['Autoritetas.', 'Prisidengęs fondo, banko, „brokerio“ ar pareigūno vardu, jis skolinasi pasitikėjimą, kurio pats neturi. <!-- F404 F407 F406 M -->'],
+  ['Baimė.', '„Apsaugokite savo santaupas“ arba žinia, kad tavo sąskaita esą tapo nusikalstamos veiklos taikiniu, – ir norisi daryti viską, kad pavojus išnyktų. <!-- F408 F406 M -->'],
+  ['Nauda.', '„Saugesnė investicija“, auksas ar greitas uždarbis verčia skaičiuoti, o ne abejoti. <!-- F408 F412 M -->'],
+];
+
+const sides = [
+  ['„Esu iš pensijų fondo ar banko, padėsiu atsiimti sukauptus pinigus“', 'Padėk ragelį. Prašymą teik tiesiogiai savo pensijų kaupimo bendrovei, ne per „konsultantus“. <!-- F404 F399 F405 -->'],
+  ['Dirbtinio intelekto balsas lietuviškai, paskui „patarėjas“ rusiškai', 'Padėk ragelį. Bet atsargiai ir su lietuviškai kalbančiu „brokeriu“: sukčiai kalba ir lietuviškai. <!-- F410 F407 -->'],
+  ['„Paskutinė galimybė atsiimti lėšas“, „būtina veikti dabar“', 'Prašymą galima pateikti bet kada iki 2027 m. gruodžio 31 d. <!-- F408 F400 -->'],
+  ['„Išmokėsime greičiau“', 'Bendrovė prašymus nagrinėja ketvirčiais, o pinigus perveda per pirmąsias dešimt kito ketvirčio darbo dienų. Pažadas išmokėti greičiau – sukčiavimas. <!-- F402 F409 -->'],
+  ['„Perkelkite lėšas į saugesnę investiciją“, „brokeris“ vaizdo skambutyje, pradžiai 100–200 eurų', 'Neinvestuok per skambinantįjį. Įmonę gali patikrinti <a href="https://www.lb.lt/lt/finansu-rinku-dalyviai">Lietuvos banko finansų rinkos dalyvių sąraše</a>. <!-- F408 F407 F118 -->'],
+  ['Žinutė su nuoroda: „paskutiniai žingsniai“, „nebaigti patvirtinimai“', 'Nespausk. Interneto banką ar „Sodros“ paskyrą atsidaryk oficialiu adresu, o ne per gautą pranešimą. <!-- F409 F403 -->'],
+  ['„Pareigūnas“ ar „bankas“ prašo nepadėti ragelio ir išgryninti ar pervesti pinigus „tyrimui“', 'Nei bankai, nei policija to neprašo. Nutrauk pokalbį ir savarankiškai susisiek su policija, savo banku ir artimaisiais. <!-- F405 F406 -->'],
+  ['Į sąskaitą atėjo pinigų, kurių nelaukei, ir prašo juos perduoti', 'Neišgrynink ir nepervesk: tai gali būti bandymas tave įtraukti į <a href="/zodynas/pinigu-mulas/">sukčiavimo schemą</a>. <!-- F406 -->'],
+];
+
+const sources = [
+  '„Sodra“ (2025-11-07, 2025-11-21, 2026-06-23, 2026-06-25): kur teikti prašymą, iki kada, kada ir kaip pervedami pinigai, ko „Sodra“ niekada neprašo. <!-- F399 F400 F402 F403 -->',
+  'Lietuvos bankas (2025-10-21, 2026-04-14, 2026-04-16): kas lieka kaupti, sukčiai laukia išmokų, jų žinučių frazės; finansų rinkos dalyvių sąrašas. <!-- F401 F104 F408 F118 -->',
+  'SEB (2025-10-30, 2026-01-30): „brokeriai“ vaizdo skambučiuose, pirmoji žinoma auka, kur išmokami pinigai, ką daryti. <!-- F405 F406 F407 -->',
+  '„Swedbank“ (2025-12-29): „paskutiniai žingsniai“ ir pažadai išmokėti greičiau. <!-- F409 -->',
+  'LRT.lt (2025-11-17, „Artea“ atstovė; 2026-02-23): „konsultanto“ skambutis, 40 skambučių per dvi dienas, pranešimų apie nutekėjimą negauta. <!-- F404 F411 -->',
+  'tv3.lt (2026-02-14, ESET; 2026-10-15, Alytaus policija; 2026-10-24): dirbtinio intelekto balsas, auksas, kiek žmonių pasitraukė. <!-- F410 F412 F413 -->',
+  've.lt (2026-02-09): sukčiai neturi duomenų, kas atsiėmė pinigus. <!-- F411 -->',
+  'Lietuvos paštas (15min.lt, 2026-04-15): sustabdyta perlaida „investicijai į auksą“. <!-- F412 -->',
+  'Lietuvos bankas: su banku susisiek oficialiais kanalais. <!-- F13 -->',
+  'Policija: pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="II pakopos pensija ir sukčiai: „padėsime atsiimti“ – Suktas"
+  description="Skambina „konsultantas“ ir siūlo padėti atsiimti II pakopos pensijų lėšas arba jas „apsaugoti“? Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-02</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('2026–2027 m. kiekvienas antros pakopos dalyvis gali pasitraukti iš kaupimo ir atsiimti sukauptus pinigus, o sukčiai to laukia. <!-- F400 F104 F403 --> Paskambina „konsultantas“, neretai kalbantis rusiškai, kartais po to, kai dirbtinio intelekto balsas lietuviškai praneša, kad tuoj paskambins patarėjas. <!-- F404 F410 --> Jis prisistato pensijų fondų bendrovės ar banko vardu, sako, kad sukaupei didelę sumą, ir siūlo padėti ją atsiimti. <!-- F404 --> Kitas kelias – žinutė „paskutinė galimybė atsiimti lėšas“ arba pasiūlymas „perkelkite lėšas į saugesnę investiciją“. <!-- F408 --> Paskui gali būti „brokeris“ vaizdo skambutyje ir „investicija“ nuo 100–200 eurų, auksas arba „pareigūnas“, kuris prašo išgryninti ar pervesti pinigus „tyrimui“. <!-- F407 F412 F406 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį. Dėl II pakopos pinigų kreipkis tik į savo pensijų kaupimo bendrovę ir tik tada, kai to nori tu – jos svetainės adresą įvesk ranka. Kad ir kas skambintų ir ko prašytų, niekam nepervesk ir neišgrynink pinigų. <!-- F399 F405 F404 F13 M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau pervedei pinigus</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. Pirmoji SEB žinoma auka – vyresnio amžiaus žmogus, dėl ligos atsiėmęs pinigus iš fondo, – sukčiams atidavė keliolika tūkstančių eurų. <!-- F406 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo pensijų pinigų, kai tik jie atsiranda sąskaitoje, o kartais dar prieš tai. <!-- F403 F404 M --> Kad juos gautų, jis prašo pradėti „investuoti“ nuo 100–200 eurų, perkelti lėšas „į saugesnę investiciją“, išgryninti jas „tyrimui“ arba suvesti kortelės ar interneto banko duomenis. <!-- F407 F408 F406 F404 --> <strong class="stop">Sustabdymo vieta:</strong> bet koks skambinančiojo prašymas pervesti, išgryninti ar investuoti. Padėk ragelį. <!-- F405 F410 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Greičiausiai nieko konkretaus. 2026 m. vasarį bankų prevencijos specialistai sakė, kad sukčiai neturi nutekintų duomenų apie tai, kas atsiėmė pinigus. <!-- F411 --> Kai viena senjorė per dvi dienas nuo išmokos sulaukė beveik 40 skambučių iš skirtingų numerių, Valstybinė duomenų apsaugos inspekcija nebuvo gavusi pranešimų apie nutekėjimus nei iš bankų, nei iš pensijų fondų. <!-- F411 --> Jam to ir nereikia: per pirmąjį 2026 m. pusmetį pasitraukimo teise pasinaudojo apie 700 tūkst. dalyvių, tad skambinant tūkstančiams žmonių spėjimas „atsiėmei pensiją“ dažnai pataiko. <!-- F413 F411 --> <strong class="stop">Sustabdymo vieta:</strong> tai, kad jis žino apie reformą ar tavo pensiją, nieko neįrodo. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Lietuvos bankas 2026 m. balandį, kai daliai gyventojų pradėti mokėti pinigai, perspėjo, kad tuo gali pasinaudoti sukčiai, o „Sodra“ birželį – kad laukiant išmokų jie gali suaktyvėti. <!-- F104 F403 --> Tą patį balandį Lietuvos paštas sustabdė garbaus amžiaus kliento perlaidą: socialinių tinklų skelbimu susiviliojusį klientą „vadybininkas“ įtikino „investuoti į auksą“. <!-- F412 -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> pinigus iš fondo atsiimi tik tu, tik per savo bendrovę ir tik į savo sąskaitą. <!-- F399 F405 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a>, <a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a>, <a href="/scenarijai/netikras-brokeris/">{nb('Užpildei formą, o skambina „brokeris“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/pinigu-mulas/">{nb('Pinigų mulas')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-02. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

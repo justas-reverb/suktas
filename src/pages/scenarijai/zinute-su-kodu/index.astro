@@ -1,0 +1,179 @@
+---
+/**
+ * Scenarijus: Žinutė su kodu. The copy is docs/copy/scenarijai/zinute-su-kodu.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Žinutė su kodu');
+const meta = [
+  ['Kanalas', 'žinutė'],
+  ['Ko jis nori', 'prieigos prie tavo pokalbių programėlės paskyros'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Rašo „palaikymas“ ar „pažįstamas“ ir spaudžia.', '<!-- F41 --> „Signal“, anot NKSC, niekada nesikreipia į naudotojus žinutėmis ir neprašo autentifikavimo kodų ar PIN. <!-- F41 -->'],
+  ['Prašo SMS patvirtinimo kodo, programėlės PIN ar paskyros atkūrimo rakto.', 'Šių dalykų NKSC pataria niekam neatskleisti. <!-- F42 -->'],
+  ['Prašo atsiųsti ar nuskenuoti QR kodą.', 'NKSC pataria atsargiai elgtis su QR kodais. <!-- F42 -->'],
+];
+
+const levers = [
+  ['Autoritetas.', '„Palaikymo“ prašymą norisi įvykdyti, nes atrodo, kad jis žino, ką daro. <!-- M --> NKSC pastebi, kad užpuolikas apsimeta palaikymu ar pažįstamu. <!-- F41 -->'],
+  ['Skuba.', 'Skubi kalba atima laiko pagalvoti. <!-- M -->'],
+  ['Pretekstas.', 'Žinutę iš „draugo“ skaitai kitaip nei nepažįstamojo, todėl sukčiui apsimoka apsimesti pažįstamu. <!-- M -->'],
+];
+
+const sides = [
+  ['„Palaikymas“ rašo žinute', '„Signal“ žinutėmis į naudotojus nesikreipia ir kodų neprašo. <!-- F41 -->'],
+  ['SMS kodas, programėlės PIN, atkūrimo raktas', 'Niekam jų neatskleisk; „Signal“ programėlėje įjunk registracijos užraktą. <!-- F42 -->'],
+  ['Pažįstamas „skubiai“ prašo kodo', 'Kodų nesakyk ir „pažįstamam“; susisiek su juo kitu būdu. <!-- F25 F42 M -->'],
+  ['QR kodas', 'Atsargiai; tikrink susietus įrenginius ir pašalink tuos, kurių neatpažįsti. <!-- F42 -->'],
+];
+
+const sources = [
+  'NKSC, 2026-07-13 (su AOTD ir VSD): pokalbių programėlių paskyrų perėmimas, kaip jis vyksta ir ko niekam neatskleisti. <!-- F41 F42 -->',
+  'Kampanija „Padėk ragelį“ ir Lietuvos bankas: kodų ir slaptažodžių niekam nesakyti. <!-- F25 F26 -->',
+  '„Smart-ID“: PIN kodų neprašo. <!-- F30 -->',
+];
+---
+<Page
+  title="Žinutė su kodu: sukčiai prašo kodo ar PIN – Suktas"
+  description="Kaip „palaikymas“ ar „pažįstamas“ pokalbių programėlėje išvilioja kodą ar PIN, trys ženklai ir vienas ėjimas, kuris sustabdo planą."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-24</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Pokalbių programėlėje („Signal“, „WhatsApp“ ar „Telegram“) parašo „palaikymas“ arba „pažįstamas“. <!-- F41 --> Žinutė skubi ir paprasta: reikia „tik“ persiųsti kodą, kuris ką tik atėjo SMS, arba pasakyti programėlės PIN. <!-- F41 --> NKSC 2026 m. liepos 13 d. perspėjo, kad tokių bandymų daugėja. <!-- F41 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Kodų, slaptažodžių ir PIN niekam nesakyk ir neįvesk ten, kur to prašo tau parašęs žmogus.')} />
+        <p set:html={nbHtml('<!-- F25 F26 F30 F42 --> Reguliariai tikrink susietus įrenginius, o „Signal“ programėlėje įjunk registracijos užraktą. <!-- F42 --> Kortelė: <a href="/sustok/kodai-ir-pin/">Kodų ir PIN niekam nesakyk</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Jei kodą ar PIN jau pasakei, žingsniai čia: <a href="/jei-apgavo/#kodai">Jei tave apgavo: pasakiau ar įvedžiau kodą</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/kodai-ir-pin/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Sukčiui reikia tavo paskyros, kad galėtų rašyti tavo vardu tavo pažįstamiems. <!-- M --> Kodas jam yra raktas, o raktas yra pas tave. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kodas ir PIN skirti tik tau; tikras palaikymas jų neprašo. <!-- F41 F42 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Pradžiai jam užtenka tavo numerio ar naudotojo vardo. <!-- M --> Jei paskyra perimta, jis mato tavo pažįstamų sąrašą ir gali apsimesti tavimi. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> tikrink susietus įrenginius ir pašalink nepažįstamus. <!-- F42 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Veikia kabliukai, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>:')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Tai nėra programėlės gedimas: NKSC nerado techninės „Signal“ spragos, leidžiančios perimti paskyrą, o dažniausias būdas – apgaulė. <!-- F41 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/slaptazodziai/">{nb('Slaptažodžiai ir prieigos raktai')}</a>, <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/slaptazodis-nutekejo/">{nb('Tavo slaptažodis nutekėjo')}</a>, <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-24. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

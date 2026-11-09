@@ -1,0 +1,125 @@
+Page: /turinys/ (Turinys), phase 1; every page, grouped as in the map.
+Purpose: one plain list from which any page can be reached; a page that does not exist yet is not listed (the three phase-2 pillars are one line „Netrukus“, never a link).
+FACTS used: none; the page is the site's own structure (`pažadas`).
+
+Source tags: `<!-- pažadas -->` the site's promise. The build strips every comment.
+
+---
+
+**Puslapio pavadinimas:** Turinys – Suktas
+**Aprašas (meta):** Visi svetainės puslapiai vienoje vietoje: temos, scenarijai, patikra, įrankiai, žodynas ir ką daryti, jei tave apgavo.
+
+# Turinys
+
+## Pradėk čia
+
+- [Pradžia](/) <!-- pažadas -->
+- [Jei tave apgavo](/jei-apgavo/)
+- [Pranešk](/pranesk/)
+- [Misija](/misija/)
+
+## Scenarijai
+
+- [Visi scenarijai](/scenarijai/)
+- [Skambutis iš „banko“](/scenarijai/skambutis-is-banko/)
+- [„Parodyk ekraną“](/scenarijai/parodyk-ekrana/)
+- [Skambutis iš „policijos“](/scenarijai/skambutis-is-policijos/)
+- [„Pareigūnas“ prie durų](/scenarijai/pareigunas-prie-duru/)
+- [Skambutis iš „poliklinikos“](/scenarijai/skambutis-is-poliklinikos/)
+- [„Tavo sūnus pateko į avariją“](/scenarijai/artimojo-avarija/)
+- [Skambutis iš „VMI“](/scenarijai/skambutis-is-vmi/)
+- [„Padėsime atsiimti pensiją“](/scenarijai/padesime-atsiimti-pensija/)
+- [Užpildei formą, o skambina „brokeris“](/scenarijai/netikras-brokeris/)
+- [Žada pirmą vietą „Google“](/scenarijai/zada-pirma-vieta-google/)
+- [Praleistas skambutis iš užsienio](/scenarijai/praleistas-skambutis/)
+- [Žinutė su nuoroda](/scenarijai/zinute-su-nuoroda/)
+- [SMS apie baudą](/scenarijai/sms-apie-bauda/)
+- [Netikras laiškas iš „Sodros“, banko ar „Telia“](/scenarijai/netikras-laiskas/)
+- [Žinutė su kodu](/scenarijai/zinute-su-kodu/)
+- [Užduotys už pinigus](/scenarijai/uzduotys-uz-pinigus/)
+- [„Patvirtink per „Smart-ID““](/scenarijai/smart-id-patvirtinimas/)
+- [Netikra valstybės svetainė](/scenarijai/netikra-valstybes-svetaine/)
+- [„Pirkėjas“ skelbime](/scenarijai/pirkejas-skelbime/)
+- [„Pardavėjas“ prašo avanso](/scenarijai/netikras-pardavejas/)
+- [Bilietas į koncertą iš nepažįstamo žmogaus](/scenarijai/bilietas-i-koncerta/)
+- [Netikra el. parduotuvė](/scenarijai/netikra-parduotuve/)
+- [Nuoma, kuri neegzistuoja](/scenarijai/netikra-nuoma/)
+- [Tavo slaptažodis nutekėjo](/scenarijai/slaptazodis-nutekejo/)
+- [Paskola tavo vardu, kurios neėmei](/scenarijai/paskola-tavo-vardu/)
+- [„Draugas“ prašo pinigų](/scenarijai/draugas-praso-pinigu/)
+- [Meilė internete, kuri prašo pinigų](/scenarijai/meile-internete/)
+- [„Mokėk arba paviešinsiu tavo nuotraukas“](/scenarijai/grasina-paviesinti/)
+- [Būrėja prašo vis daugiau pinigų](/scenarijai/bureja-praso-dar/)
+- [Reklama su žinomu veidu](/scenarijai/reklama-su-zinomu-veidu/)
+- [Reklama kviečia į „Telegram“, o ten auga „pelnas“](/scenarijai/investicijos-telegram/)
+- [Prekybos kursai ir signalai už pinigus](/scenarijai/prekybos-kursai-ir-signalai/)
+- [Netikra banko reklama](/scenarijai/netikra-banko-reklama/)
+- [Netikras QR kodas](/scenarijai/netikras-qr-kodas/)
+- [Programėlė iš nuorodos ar reklamos](/scenarijai/programele-is-nuorodos/)
+- [Netikras konkursas](/scenarijai/netikras-konkursas/)
+- [„Padėsime susigrąžinti pinigus“](/scenarijai/susigrazinti-pinigus/)
+
+## Savaitės triukas
+
+- [Savaitės triukas](/triukai/)
+- [Savaitės triukas: SMS „Sodros“ vardu](/triukai/sodros-sms/)
+
+## Įpročiai
+
+- [Šešios kortelės](/sustok/)
+- [Padėk ragelį ir skambink oficialiu numeriu](/sustok/padek-ragely/)
+- [Kodų ir PIN niekam nesakyk](/sustok/kodai-ir-pin/)
+- [Nespausk nuorodos – atsidaryk programėlę ar svetainę](/sustok/nuoroda-ne-is-zinutes/)
+- [Neskenuok QR lipduko – atsidaryk oficialią programėlę](/sustok/qr-ne-is-lipduko/)
+- [Sustok dešimčiai sekundžių](/sustok/desimt-sekundziu/)
+- [Susitarkite šeimoje dėl žodžio](/sustok/seimos-zodis/)
+
+## Temos
+
+- [Visos temos](/temos/)
+- [Kaip veikia atakos](/temos/kaip-veikia-atakos/)
+- [Apgaulė ir sukčiavimas](/temos/apgaule/)
+- [Socialinė inžinerija](/temos/socialine-inzinerija/)
+- [Slaptažodžiai ir prieigos raktai](/temos/slaptazodziai/)
+- [Privatumas](/temos/privatumas/)
+- [Įrenginiai ir tinklas](/temos/irenginiai/)
+- Netrukus: „Ką apie tave žino svetimas“.
+
+## Patikra
+
+- [Patikra](/patikra/)
+- [Patikra per 15 minučių](/patikra/15-minuciu/)
+
+## Treniruotė
+
+- [Treniruotė](/treniruote/)
+- [Ar atskirsi netikrą banko reklamą?](/treniruote/banko-paieska/)
+- [Ką iš tikrųjų tvirtini per „Smart-ID“?](/treniruote/smart-id/)
+
+## Šeimai ir įrankiai
+
+- [Šeimai](/seima/)
+- [Įrankiai](/irankiai/)
+- [Mullvad VPN](/irankiai/mullvad/)
+- [Tailscale](/irankiai/tailscale/)
+- [GrapheneOS](/irankiai/grapheneos/)
+
+## Žodynas ir šaltiniai
+
+- [Žodynas](/zodynas/)
+- [Kas yra phishing](/zodynas/phishing/)
+- [Kas yra pinigų mulas](/zodynas/pinigu-mulas/)
+- [Kas yra nelegalus kazino](/zodynas/nelegalus-kazino/)
+- [Kas yra finansinė piramidė](/zodynas/piramide/)
+- [Kas yra mokamos lažybų prognozės](/zodynas/lazybu-prognozes/)
+- [Kas yra greito uždarbio kursai](/zodynas/greito-uzdarbio-kursai/)
+- [Šaltiniai](/saltiniai/)
+- [Kas pasikeitė](/kas-pasikeite/)
+
+## Apie
+
+- [Apie](/apie/)
+- [Privatumo pranešimas](/privatumo-pranesimas/)
+
+**Mygtukai**
+- Main: **Atversk scenarijus** → /scenarijai/

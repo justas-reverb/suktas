@@ -1,0 +1,198 @@
+---
+/**
+ * Scenarijus: Netikra el. parduotuvė. The copy is docs/copy/scenarijai/netikra-parduotuve.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Netikra el. parduotuvė');
+const meta = [
+  ['Kanalas', 'reklama ir svetainė'],
+  ['Ko jis nori', 'tavo pinigų ir kortelės duomenų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Kaina per gera, kad būtų tiesa.', 'Nuolaidos siekia 80–90 %: NKSC tai vadina vienu akivaizdžiausių netikros parduotuvės požymių. <!-- F200 F204 --> Žinomi prekių ženklai neįtikėtinų nuolaidų nesiūlo. <!-- F212 -->'],
+  ['Neaišku, kas parduoda.', 'Nėra įmonės pavadinimo ir rekvizitų, kontaktui – tik @gmail.com ar @yahoo.com adresas, o svetainės adresas panašus į žinomo prekės ženklo, tik su priedu („prekiniszenklas-batai.com“). <!-- F201 -->'],
+  ['Leidžia mokėti tik pavedimu, kriptovaliuta ar dovanų kortele.', 'Riboti mokėjimo būdai – vienas iš požymių, o šiuos būdus sukčiai mėgsta labiausiai. <!-- F203 -->'],
+];
+
+const steps = [
+  '<strong>Skambink savo bankui</strong> numeriu iš oficialios programėlės ar svetainės ir prašyk sustabdyti mokėjimą ar pavedimą. <!-- F204 F203 F13 -->',
+  '<strong>Užblokuok kortelę</strong>, jei įvedei jos duomenis ar patvirtinai mokėjimą: sukčiai juos gali panaudoti ir po kelių mėnesių. <!-- F204 F202 F203 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, kad ir kaip mokėjai, o netikrą svetainę – NKSC, kuris apie ją praneš svetainės prieglobos teikėjui. <!-- F2 F204 F17 F205 -->',
+  '<strong>Mokėjai kortele?</strong> Paprašyk banko užginčyti operaciją (angl. <em>chargeback</em>). Pateik užsakymo patvirtinimą ir susirašinėjimą su pardavėju: bankas paprašys įrodymo, kad bandei problemą spręsti su juo. Terminą nustato bankas: „Swedbank“ – 90 dienų nuo pirkimo ar pardavėjo nurodytos pristatymo dienos. <!-- F206 F207 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Brangi prekė už penktadalį ar dešimtadalį kainos priverčia skaičiuoti sutaupytus pinigus, o ne abejoti. <!-- F200 M -->'],
+  ['Autoritetas.', 'Žinomo vardo kopija, spynelė, „patikimumo“ ženklai ir atsiliepimai skolina pasitikėjimą. <!-- F201 F202 F203 --> Tačiau NKSC sako, kad nei spynelė (sertifikatas), nei geri atsiliepimai neįrodo, jog parduotuvė tikra. <!-- F201 -->'],
+];
+
+const sides = [
+  ['Reklamoje brangi prekė už penktadalį ar dešimtadalį kainos', '80–90 % nuolaida – vienas akivaizdžiausių netikros parduotuvės požymių. Uždaryk. <!-- F200 F204 -->'],
+  ['Adresas panašus į žinomos parduotuvės, tik su priedu', 'Tikrą parduotuvę susirask paieškoje ir palygink adresą. <!-- F201 M -->'],
+  ['Žinomos parduotuvės „išpardavimas“ su neregėtomis nuolaidomis', 'Patikrink, ar tokia akcija yra oficialioje tos parduotuvės svetainėje. 2023 m. „Lidl“ patvirtino, kad jo vardu plitusi parduotuvė su juo nesusijusi. <!-- F210 F212 -->'],
+  ['Spynelė prie adreso', 'Spynelė nerodo, kad parduotuvė tikra. <!-- F201 F202 -->'],
+  ['Daug gerų atsiliepimų pačioje svetainėje', 'Atsiliepimus galima suklastoti; paskaityk, ką rašo kitose svetainėse. <!-- F201 F203 -->'],
+  ['Nėra įmonės rekvizitų, kontaktas – @gmail.com', 'Nepirk. <!-- F201 -->'],
+  ['Prašo pavedimo, kriptovaliutos ar dovanų kortelės', 'Mokėk tik taip, kad ginčo atveju pinigus galėtum susigrąžinti, pavyzdžiui, kreditine kortele. <!-- F203 F207 -->'],
+  ['Prekė neatkeliauja, pardavėjas neatsako', 'Skambink bankui: kortelės mokėjimą prašyk užginčyti, pavedimą – sustabdyti; išsaugok susirašinėjimą ir pranešk policijai. <!-- F204 F206 F207 F2 -->'],
+  ['Po kelių mėnesių kortelėje – nedideli nuskaitymai, kurių nedarei', 'Užblokuok kortelę ir pranešk bankui. <!-- F202 F204 -->'],
+];
+
+const sources = [
+  'NKSC patarimai (alkas.lt, 2018-12-14) ir pranešimas (LRT, 2024-11-20): požymiai, 80–90 % nuolaidos, ką daryti sumokėjus, kur pranešti. <!-- F200 F201 F204 F205 -->',
+  '„Luminor“ (LRT, 2025-11-02): kaip veikia schema, kokių mokėjimo būdų vengti. <!-- F203 -->',
+  '„Swedbank“ (2021-02-01, 2024-11-26) ir banko kredito kortelių puslapis: spynelė, vėlesni nuskaitymai, operacijos užginčijimas per 90 dienų. <!-- F202 F212 F206 -->',
+  'Europos vartotojų centras (alkas.lt, 2023-03-19): kreditine kortele sumokėtą pirkinį daugeliu atvejų galima užginčyti. <!-- F207 -->',
+  'VVTAT ir byla dėl „Telemaxi“ (LRT, 2021-11-04); netikra „Lidl“ kopija (LRT, 2023-12-01). <!-- F209 F210 -->',
+  'Bankų asociacija, atpazinksukciu.lt: atskira kortelė pirkiniams internetu. <!-- F211 -->',
+  'Policija: pranešti per epolicija.lt; NKSC forma netikrai svetainei. <!-- F2 F17 -->',
+];
+---
+<Page
+  title="Netikra el. parduotuvė: sumokėjai, o prekės nėra – Suktas"
+  description="Reklamoje prekė 80–90 % pigiau, sumokėjai, o siuntinio nėra? Kaip atpažinti netikrą el. parduotuvę ir ką daryti iškart po mokėjimo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-31</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Socialiniuose tinkluose pasirodo reklama: brangi prekė už itin mažą kainą. <!-- F203 --> Svetainė atrodo tikra: produktų nuotraukos, klientų atsiliepimai, „patikimumo“ ženklai, spynelė prie adreso. <!-- F203 F202 --> Sumoki kortele, bet prekės dažniausiai nesulauki (kartais atkeliauja pigi kopija), o netrukus dingsta ir pati parduotuvė. <!-- F203 F200 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Nepažįstamai parduotuvei nemokėk, kol nepatikrinai, kas ji.')} />
+        <p set:html={nbHtml('Pažiūrėk, ar įmonė registruota ir turi tikrus kontaktus, ir ką apie ją rašo kitose svetainėse; užsienio parduotuvės adresą paieškoje surink kartu su žodžiu „scam“. <!-- F203 F201 --> Jei moki, rinkis būdą, kurį galima užginčyti, pavyzdžiui, kreditinę kortelę, o ne pavedimą: kreditine kortele sumokėtą pirkinį daugeliu atvejų galima užginčyti per banką. <!-- F203 F207 --> Dar geriau – atskira kortele pirkiniams internetu: jos sąskaitą papildyk tik prieš mokėjimą ir tik tiek, kiek kainuoja pirkinys. <!-- F211 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau sumokėjai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: 2021 m. LRT aprašytoje byloje dėl vienos netikros parduotuvės nukentėjusiais pripažinta daugiau nei 240 žmonių ir įmonių. <!-- F209 --> Veik iškart: kuo greičiau, tuo didesnė tikimybė atgauti pinigus. <!-- F203 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/jei-apgavo/#pinigai">Jei jau sumokėjai</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Pinigų už prekę, kurios nėra. <!-- F200 F203 --> O dažnai ir daugiau: kortelės duomenų, asmeninės informacijos ar slaptažodžių, kuriuos įvedi užsakymo metu. <!-- F204 --> Kortelės duomenis jis gali panaudoti vėliau arba parduoti. <!-- F203 --> Kai kurie iš pradžių nenuskaito nieko, o po kelių mėnesių ar net metų nuskaito tam tikrą sumą; jei ji nedidelė, ją lengva ilgai nepastebėti. <!-- F202 --> <strong class="stop">Sustabdymo vieta:</strong> mokėjimo langas. Jei nežinai, kas parduoda, ten ir sustok. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko, ir jam nereikia. <!-- M --> Jis nesitaiko į tave: jis paleidžia reklamą socialiniuose tinkluose, siuntinėja el. laiškus ir laukia, kas paspaus. <!-- F200 F203 --> Svetainę jis surenka iš vogtų nuotraukų, netikrų atsiliepimų ir svetimo vardo. <!-- F203 F200 --> <strong class="stop">Sustabdymo vieta:</strong> parduotuvę susirask be reklamos: įvesk adresą ar ieškok paieškoje. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> joks vienas ženklas neįrodo nei klastotės, nei patikimumo, todėl abejonę išsprendžia tik patikra, kas parduoda. <!-- F201 M -->')} />
+            <p set:html={nbHtml('2023 m. internete plito „Lidl“ svetainės kopija, siūliusi elektroniką net 90 % pigiau; „Lidl“ patvirtino, kad su ja neturi nieko bendro. <!-- F210 --> Pinigus susigrąžinti pavyksta ne visada: dažnai tokios parduotuvės registruojamos ne Lietuvoje, o kartais net bankas negali nurodyti, kam buvo atliktas mokėjimas, 2021 m. sakė Valstybinė vartotojų teisių apsaugos tarnyba. <!-- F209 --> Todėl mokėjimo būdas svarbus dar prieš pirkimą. <!-- F203 F207 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/pirkejas-skelbime/">{nb('„Pirkėjas“ skelbime')}</a>, <a href="/scenarijai/netikras-pardavejas/">{nb('„Pardavėjas“ prašo avanso')}</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/netikras-konkursas/">{nb('Netikras konkursas')}</a>, <a href="/scenarijai/uzduotys-uz-pinigus/">{nb('Užduotys už pinigus')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-31. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

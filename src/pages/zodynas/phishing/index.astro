@@ -1,0 +1,265 @@
+---
+/**
+ * Žodynas: Kas yra phishing, the first glossary entry grown into a page of its own. The copy is
+ * docs/copy/zodynas/phishing.md, word for word; the source tags stay as comments and the build
+ * strips them. It wears the scenario template: the plain layer, then his side, opened.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Lietuviškai', 'duomenų viliojimas'],
+  ['Skaitymo laikas', '5 min.'],
+];
+
+const names = [
+  ['Duomenų viliojimas', ' – taip rašo Visuotinė lietuvių enciklopedija ir Lietuvos bankas. <!-- F242 F247 -->'],
+  ['Fišingas', ' – šnekamosios kalbos žodis; Valstybinė lietuvių kalbos komisija šį žodį laiko toleruotinu laisvuosiuose stiliuose. <!-- F245 --> Žodis kilęs iš anglų „password fishing“, slaptažodžių žvejybos, ir pirmą kartą pavartotas apie 1995 m. <!-- F242 -->'],
+  ['Smišingas ir višingas', ' – tas pats per SMS žinutę ir per skambutį. <!-- F243 F245 --> Tas pats per QR kodą angliškai vadinamas „quishing“. <!-- F238 -->'],
+];
+
+const forms = [
+  ['El. laiškas,', ' primenantis banko, policijos ar kitos įstaigos pranešimą, su nuoroda ar priedu. <!-- F247 F248 -->'],
+  ['SMS ar pokalbių programėlės žinutė', ' („WhatsApp“, „Viber“), dažnai banko vardu: apie įtartinus veiksmus sąskaitoje ar būtinybę atnaujinti interneto banko paskyrą. <!-- F247 F243 --> <a href="/scenarijai/zinute-su-nuoroda/">Žinutė su nuoroda</a>, <a href="/scenarijai/zinute-su-kodu/">Žinutė su kodu</a>.'],
+  ['Skambutis,', ' kai sukčiai apsimeta oficialių institucijų atstovais. <!-- F243 --> <a href="/scenarijai/skambutis-is-banko/">Skambutis iš „banko“</a>, <a href="/scenarijai/skambutis-is-policijos/">Skambutis iš „policijos“</a>.'],
+  ['Netikra svetainė,', ' panaši į oficialią; ji gali iškilti ir paieškoje, kai ieškai VMI, „Sodros“ ar „E.sveikatos“. <!-- F243 F256 --> <a href="/scenarijai/netikra-banko-reklama/">Netikra banko reklama</a>.'],
+  ['QR kodas,', ' kuris veda į sukčių svetainę. <!-- F238 --> <a href="/scenarijai/netikras-qr-kodas/">Netikras QR kodas</a>.'],
+  ['„Smart-ID“:', ' netikroje banko svetainėje žmonės įveda „Smart-ID“ PIN, o kartais jų vardu sukčių įrenginyje sukuriama nauja „Smart-ID“ paskyra. <!-- F247 --> <a href="/scenarijai/smart-id-patvirtinimas/">„Patvirtink per „Smart-ID““</a>.'],
+];
+
+const signs = [
+  ['Skubina ir gąsdina.', ' Reikalauja veikti nedelsiant, kad neturėtum laiko pagalvoti. <!-- F244 --> Sukčiai giria, bara, skubina, spaudžia priimti sprendimą. <!-- F255 -->'],
+  ['Prašo to, ko bankas neprašo.', ' Finansų įstaigų darbuotojai neprašo prisijungti prie interneto banko ir neklausia sąskaitos ar kortelės duomenų. <!-- F249 --> Finansų įstaigos nesiunčia žinučių ar laiškų su nuorodomis, kuriose prašo suvesti mokėjimų saugos duomenis. <!-- F251 --> Nei bankai, nei valstybės institucijos asmens ar prisijungimo duomenų el. paštu neprašo. <!-- F254 -->'],
+  ['Siuntėjo adresas ar nuoroda šiek tiek skiriasi nuo įprastų.', ' Nurodomas ne visas banko pavadinimas, įterpta skaičių ar kitų raidžių. <!-- F248 --> Finansų įstaigos nerašo iš „Gmail“, „Yahoo“ ar „Hotmail“ adresų. <!-- F250 -->'],
+  ['Nuoroda veda ne ten, kur rodo.', ' Po įprastai atrodančia nuoroda dažnai slepiasi visai kita. <!-- F250 -->'],
+  ['Keistas priedas.', ' Laiško prieduose dažnai būna keisto formato ar pavadinimo dokumentai. <!-- F248 --> Atidarius užkrėstą dokumentą, gali būti užvaldytas kompiuteris. <!-- F250 -->'],
+];
+
+const steps = [
+  '<strong>Tik paspaudei ir nieko neįvedei?</strong> Uždaryk puslapį ir nieko jame neįvesk. <!-- M --> Jei kas nors atsisiuntė, puslapis prašė įdiegti programėlę ar neprisimeni, ką įvedei, iškart susisiek su banku. <!-- F250 --> Apie programėles iš nuorodų: <a href="/scenarijai/programele-is-nuorodos/">Programėlė iš nuorodos ar reklamos</a>.',
+  '<strong>Įvedei kortelės duomenis? Iškart užblokuok kortelę</strong> banko programėlėje ar interneto banke arba paskambink bankui numeriu iš oficialios banko svetainės. <!-- F252 F7 F13 --> Bankui pranešk ir apie mokėjimus, kurių nedarei: blokavimas jau atliktų mokėjimų neatšaukia. <!-- F6 F7 -->',
+  '<strong>Įvedei banko prisijungimo duomenis ar „Smart-ID“ PIN, ar patvirtinai „Smart-ID“ užklausą?</strong> Nedelsk: skambink bankui numeriu iš oficialios svetainės ir paprašyk užblokuoti prieigą prie interneto banko. <!-- F252 F6 F13 --> Užklausų, kurių nepradėjai, netvirtink. <!-- F250 F30 -->',
+  '<strong>Įvedei slaptažodį?</strong> Iškart pakeisk slaptažodį visose paskyrose, kuriose buvo naudojamas tas pats: el. pašte, programėlėse. <!-- F250 -->',
+  '<strong>Atidarei priedą?</strong> Atjunk kompiuterį nuo tinklo ir iš to kompiuterio nebesijunk prie el. bankininkystės. Nunešk kompiuterį specialistams ir pranešk bankui. <!-- F253 F250 -->',
+  '<strong>Dingo pinigai?</strong> Iškart skambink bankui numeriu iš oficialios banko svetainės, tada pranešk policijai per epolicija.lt. <!-- F252 F2 F259 -->',
+];
+
+const report = [
+  '<strong>Netikra svetainė</strong> – NKSC formoje „Pranešti apie svetainę“. <!-- F17 -->',
+  '<strong>Įtartina žinutė ar skambutis</strong> – NKSC formoje „Pranešti apie žinutę / skambutį“; NKSC pranešimą perduoda Ryšių reguliavimo tarnybai. <!-- F18 F259 -->',
+  '<strong>Nežinai, kurią formą rinktis</strong> – rašyk cert@nksc.lt. <!-- F259 -->',
+  '<strong>Pačioje programėlėje</strong> užblokuok siuntėją ir pažymėk žinutę kaip šlamštą ar sukčiavimą. <!-- F258 -->',
+  '<strong>Nukentėjai</strong> – kreipkis į policiją per epolicija.lt. <!-- F2 F19 -->',
+];
+
+const levers = [
+  ['Autoritetas.', 'Žinutė ar svetainė primena banko, teisėsaugos ar kitos įstaigos pranešimą. <!-- F247 -->'],
+  ['Skuba.', 'Reikalauja veikti nedelsiant, kad neliktų laiko pagalvoti. <!-- F244 -->'],
+  ['Baimė.', 'Jis siekia sukelti stresą ir emocijas, kad nesuveiktų savisauga ir žmogus nesvarstydamas darytų, ko reikalauja sukčiai. <!-- F244 F250 -->'],
+];
+
+const sides = [
+  ['Žinutė ar laiškas su nuoroda „banko“ ar įstaigos vardu', 'Nuorodos nespausk; programėlę ar svetainę atsidaryk tu ir pranešimą patikrink ten. <!-- F249 F251 -->'],
+  ['Skambina „iš banko“ ir prašo prisijungti ar kortelės duomenų', 'Padėk ragelį ir skambink numeriu iš oficialios banko svetainės. <!-- F249 -->'],
+  ['Paieškos rezultatas veda į „VMI“ ar „Sodrą“', 'Adresą surink ranka arba gerai patikrink. <!-- F256 -->'],
+  ['Laiške priedas, kurio nelaukei', 'Neatidaryk; siuntėjo kontaktus susirask savarankiškai, ne laiške. <!-- F258 F254 -->'],
+  ['„Smart-ID“ užklausa, kurios nepradėjai', 'Netvirtink. <!-- F30 F250 -->'],
+  ['Jis žino tavo vardą ar asmens kodą', 'Tai nieko neįrodo: tokie duomenys neretai vieši. <!-- F255 -->'],
+];
+
+const sources = [
+  'Visuotinė lietuvių enciklopedija, „duomenų viliojimas“: apibrėžimas, kilmė, formos (SMS, svetainės, skambučiai, QR kodai), skuba ir emocijos, vertimo ir dirbtinio intelekto įrankiai. <!-- F242 F243 F244 F238 -->',
+  'Valstybinė lietuvių kalbos komisija, 2024-11-14: „fišingas“, „smišingas“, „višingas“ šnekamojoje kalboje. <!-- F245 -->',
+  'NKSC: „duomenų vagystė“; pranešimo formos, cert@nksc.lt, žinutės perduodamos RRT, nukentėjusieji – į policiją. <!-- F246 F17 F18 F19 F259 -->',
+  'Lietuvos bankas („Duomenų viliojimas“, 2024-10-25; naujienos 2021-02-26 ir 2023-04-26; „Pakliuvau sukčiams: ką daryti?“, 2026-07-30): paplitimas, ženklai, ko finansų įstaigos neprašo, kaip pasitikrinti, ką daryti po fakto. <!-- F247 F248 F249 F250 F251 F252 -->',
+  '„Swedbank“ (2020-07-27; „Saugi bankininkystė“): atidarytas priedas, kontaktai ne iš laiško, manipuliacijos, vieši asmens duomenys. <!-- F253 F254 F255 -->',
+  'SEB, „Saugumas internete“: netikri paieškos rezultatai; ką bankas gali ir ko negali, kai praneši laiku. <!-- F256 -->',
+  'Pinigų plovimo prevencijos kompetencijų centras (LRT/ELTA, 2026-08-01): 2026 m. II ketvirčio atvejai. <!-- F109 -->',
+  'Ryšių reguliavimo tarnyba (LRT/ELTA, 2026-08-10): užblokuoti skambučiai ir SMS; siuntėją blokuoti ir žinutę žymėti programėlėje. <!-- F258 -->',
+  '„Google“ ir „Microsoft“ lietuviški puslapiai: „duomenų išviliojimas“ ir „sukčiavimas apsimetant“. <!-- F61 F62 -->',
+  'Lietuvos bankas, 2021-07-09: banką pasiekti per oficialią programėlę ar svetainę; daryti tik savo pradėtas operacijas. SEB ir kiti bankai: kortelės ir prieigos blokavimas. „Smart-ID“: netvirtinti nepradėtų operacijų. <!-- F13 F26 F6 F7 F30 -->',
+  'Policija (policija.lrv.lt): pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="Kas yra phishing (duomenų viliojimas) ir kaip atpažinti – Suktas"
+  description="Phishing, lietuviškai duomenų viliojimas: kas tai, kokių būna, kaip tai atpažinti ir ką daryti, jei jau paspaudei nuorodą ar įvedei duomenis."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Kas yra phishing')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-01</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Phishing (lietuviškai – duomenų viliojimas) yra sukčiavimo būdas: sukčius apsimeta patikimu žmogumi, įmone ar įstaiga, kad išgautų tavo prisijungimo vardus ir slaptažodžius, banko sąskaitos ar kortelės duomenis. <!-- F242 --> Įsilaužti jam nereikia: enciklopedija tai vadina <a href="/temos/socialine-inzinerija/">socialinės inžinerijos</a> forma, kai manipuliuojamas žmogus duomenis sukčiams atiduoda pats. <!-- F242 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai vadinti</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            {names.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+            <li set:html={nbHtml('<strong>Duomenų išviliojimas</strong> („Google“), <strong>sukčiavimas apsimetant</strong> („Microsoft“), <strong>duomenų vagystė</strong> (NKSC). <!-- F61 F62 F246 --> Šioje svetainėje rašome „sukčiavimas apsimetant“: <a href="/zodynas/#sukciavimas-apsimetant">Žodynas</a>. <!-- M -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kiek to Lietuvoje</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Lietuvos bankas duomenų viliojimą vadina vienu bene dažniausių sukčiavimo būdų Lietuvoje. <!-- F247 --> 2026 m. antrąjį ketvirtį Pinigų plovimo prevencijos kompetencijų centras suskaičiavo 3 718 sukčiavimo atvejų; 1 514 iš jų (apie 41 %) – apgaulė SMS žinutėmis ar el. laiškais. <!-- F109 --> Ryšių reguliavimo tarnybos duomenimis, ryšio operatoriai tą patį ketvirtį užblokavo 1,22 mln. apgaulingų SMS žinučių ir 2,78 mln. apgaulingų skambučių. <!-- F258 --> Tai užblokuotos žinutės ir skambučiai, o ne nukentėję žmonės. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kokių būna</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            {forms.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            {signs.map(([head, text]) => (
+              <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+            ))}
+          </ol>
+          <p set:html={nbHtml('Du dalykai nieko neįrodo: kad laiške nėra klaidų ir kad sukčius žino tavo vardą. <!-- F244 F255 --> Klaidų gali ir nebūti: tobulėjant vertimo ir dirbtinio intelekto įrankiams, netikrus laiškus vis sunkiau atskirti nuo tikrų. <!-- F244 --> O vardas, pavardė ar asmens kodas neretai yra viešai prieinami. <!-- F255 -->')} />
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Nespausk nuorodos iš žinutės ar laiško: banko ar įstaigos programėlę ar svetainę atsidaryk tu ir ten patikrink, ar pranešimas tikras.')} />
+        <p set:html={nbHtml('Svetainės adresą surink ranka, o paieškos pasiūlytą adresą gerai patikrink. <!-- F256 --> Abejoji dėl skambučio? Padėk ragelį ir paskambink bankui numeriu iš oficialios banko svetainės, ne tuo, iš kurio skambino. <!-- F249 --> Perskaityk, ką rodo „Smart-ID“ užklausa, ir tvirtink tik operaciją, kurią pradėjai tu. <!-- F249 F30 -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h2 id="padarei">Jei jau paspaudei ar įvedei</h2>
+        <p set:html={nbHtml('Tai gali nutikti bet kam, ir gėdytis čia nėra ko. <!-- F252 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Skubėti verta: Lietuvos bankas rašo, kad finansų įstaigos kai kuriais atvejais dar gali sustabdyti mokėjimą ir išgelbėti pinigus. <!-- F252 --> SEB, laiku informuotas, gali atšaukti ar užginčyti pervedimą ar operaciją kortele, bet rašo, kad jei pinigus sukčiui pervedei tu ar atskleidei jam banko sąskaitos duomenis, jų grąžinti negalės. <!-- F256 --> Kitų bankų taisyklių neskaitėme. <!-- M --> Bankui ir policijai pranešk bet kuriuo atveju. <!-- F252 -->')} />
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kortele">Jei tave apgavo: pasakiau kortelės duomenis</a>, <a href="/jei-apgavo/#kodai">pasakiau ar įvedžiau kodą</a>, <a href="/jei-apgavo/#paskyra">kažkas perėmė mano paskyrą</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2>Kur pranešti</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Pranešti verta ir tada, kai nieko nepraradai. <!-- M F2 -->')} />
+          <ul class="row-list">
+            {report.map((r) => <li set:html={nbHtml(r)} />)}
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo slaptažodžio, kortelės ar banko prisijungimo duomenų, „Smart-ID“ PIN – arba kad patvirtintum jo operaciją. <!-- F242 F247 F30 --> Jam reikia ne įsilaužti, o kad duomenis atiduotum tu. <!-- F242 --> <strong class="stop">Sustabdymo vieta:</strong> duomenis vesk tik programėlėje ar svetainėje, kurią atsidarei tu. <!-- F249 F251 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Dažnai nieko: tą pačią žinutę jis siunčia daugybei žmonių, o operatoriai per vieną ketvirtį tokių žinučių užblokuoja daugiau nei milijoną. <!-- F258 M --> Kartais jis žino tavo vardą, pavardę ar asmens kodą, bet tai neretai vieši duomenys. <!-- F255 --> <strong class="stop">Sustabdymo vieta:</strong> tai, kad jis žino tavo vardą, nieko neįrodo. <!-- F255 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Be to, jo laiškai vis rečiau išsiduoda klaidomis: tam padeda vertimo ir dirbtinio intelekto įrankiai. <!-- F244 --> <strong class="stop">Sustabdymo vieta:</strong> dešimt sekundžių ir vienas klausimas – ar šį veiksmą pradėjai tu? <!-- F26 M --> <a href="/sustok/desimt-sekundziu/">Kortelė</a>.')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a>, <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a>, <a href="/temos/socialine-inzinerija/">{nb('Socialinė inžinerija')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/#sukciavimas-apsimetant">{nb('Sukčiavimas apsimetant')}</a>, <a href="/zodynas/#prieigos-raktas">{nb('Prieigos raktas')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-01. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

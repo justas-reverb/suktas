@@ -1,0 +1,86 @@
+---
+/**
+ * Sustok kortelė: Padėk ragelį ir skambink oficialiu numeriu. The copy is
+ * docs/copy/sustok/padek-ragely.md, word for word. Built like the QR card.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Padėk ragelį ir skambink oficialiu numeriu');
+---
+<Page
+  title="Padėk ragelį ir skambink oficialiu numeriu – Suktas"
+  description="Kai skambina „bankas“ ar „policija“ ir kalba apie pavojų tavo pinigams: padėk ragelį ir skambink oficialiu numeriu."
+  current="sustok"
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/sustok/">Visi įpročiai</a></p>
+        <h1>{title}</h1>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Kada</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Kai skambina „bankas“, „policija“ ar kita „įstaiga“ ir kalba apie pavojų tavo pinigams. <!-- F23 -->')} />
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="daryti">
+        <h2 id="daryti">Ką daryti</h2>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį.')} />
+        <p set:html={nbHtml('Skambink banko numeriu iš oficialios programėlės ar svetainės, o jei įtari netikrą pareigūną – 112. <!-- F13 F4 -->')} />
+      </section>
+
+      <div class="row">
+        <h2>Kodėl tai veikia</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Tikras bankas neskubina ir nesiunčia nuorodų. <!-- F25 --> Kai ragelį padedi ir skambini tu, pokalbį valdai tu, o ne jis. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row row--last">
+        <h2>Kur jis tai bando</h2>
+        <div class="row__body">
+          <ul>
+            <li><a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a></li>
+            <li><a href="/scenarijai/parodyk-ekrana/">{nb('„Parodyk ekraną“')}</a></li>
+            <li><a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a></li>
+            <li><a href="/scenarijai/artimojo-avarija/">{nb('„Tavo sūnus pateko į avariją“')}</a></li>
+            <li><a href="/scenarijai/skambutis-is-vmi/">{nb('Skambutis iš „VMI“')}</a></li>
+            <li><a href="/scenarijai/padesime-atsiimti-pensija/">{nb('„Padėsime atsiimti pensiją“')}</a></li>
+            <li><a href="/scenarijai/netikras-brokeris/">{nb('Užpildei formą, o skambina „brokeris“')}</a></li>
+            <li><a href="/scenarijai/zada-pirma-vieta-google/">{nb('Žada pirmą vietą „Google“')}</a></li>
+            <li><a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="/scenarijai/skambutis-is-banko/">Pamatyk, kaip jis tai bando</a>
+        <a class="btn btn--second" href="/sustok/">Kitos kortelės</a>
+      </div>
+
+      <section class="box" aria-labelledby="padarei">
+        <h2 id="padarei">Jei jau prisigavai</h2>
+        <p set:html={nbHtml('Jei jau atskleidei duomenis ar išsiuntei pinigus, skambink bankui dabar: <a href="/jei-apgavo/#pinigai">Jei tave apgavo</a>.')} />
+      </section>
+    </section>
+
+    <footer class="scn-foot wrap">
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-24. Tą patį sako kampanija „Padėk ragelį“ (LRT, policija, Bankų asociacija, Lietuvos paštas): įtarus netikrą pareigūną, skambinti 112. <!-- F4 --> Lietuvos bankas, 2021-07-09: su banku susisiek per oficialią programėlę ar svetainę, o ne skambinančiojo duotais kontaktais. <!-- F13 --> Kampanija: bankas nesiunčia nuorodų ir neverčia skubėti. <!-- F25 -->')} />
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

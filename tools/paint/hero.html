@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>paint hero</title>
+<style>
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  /* The paint page for the hero's directions: tools/paint-hero.mjs opens it in the installed Chrome, calls
+     window.paint(job) and photographs the canvas from outside. The shipped site never loads it. It runs the
+     same createHeroFx as the live page, so a still and the live canvas agree. */
+  import { createHeroFx, DIRS } from '/src/art/herofx.js';
+
+  window.paint = (job) => {
+    const c = document.getElementById('c');
+    c.width = job.w;
+    c.height = job.h;
+    const eng = createHeroFx(c, job.dir, { strict: false, family: job.family, mood: job.mood, cls: job.cls });
+    if (!eng) throw new Error('this browser has no WebGL2');
+    eng.resize(job.w, job.h, job.w / job.h);
+    eng.draw(job.time ?? DIRS[job.dir].still);
+    eng.gl.finish();
+    return {};
+  };
+  /* Frame cost for tools/paint-hero.mjs --cost: n frames, each closed with a one-pixel readPixels (Chrome's
+     gl.finish() does not wait), so the time is the GPU's work and not the call's. Harness only. */
+  window.cost = (job, n) => {
+    const c = document.getElementById('c');
+    c.width = job.w;
+    c.height = job.h;
+    const eng = createHeroFx(c, job.dir, { strict: false, family: job.family, mood: job.mood, cls: job.cls });
+    eng.resize(job.w, job.h, job.w / job.h);
+    const px = new Uint8Array(4);
+    const sync = () => eng.gl.readPixels(0, 0, 1, 1, eng.gl.RGBA, eng.gl.UNSIGNED_BYTE, px);
+    const t0s = DIRS[job.dir].still;
+    for (let i = 0; i < 10; i++) { eng.draw(t0s + i / 30); sync(); }
+    const ms = [];
+    for (let i = 0; i < n; i++) {
+      const t0 = performance.now();
+      eng.draw(t0s + i / 30);
+      sync();
+      ms.push(performance.now() - t0);
+    }
+    ms.sort((a, b) => a - b);
+    return { median: ms[n >> 1], p95: ms[Math.floor(n * 0.95)], max: ms[n - 1] };
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+---
+/**
+ * Treniruotė: Ar atskirsi netikrą banko reklamą? The copy is docs/copy/treniruote/banko-paieska.md,
+ * word for word. Everything on the two mock-ups is invented (bank, search, addresses) and stamped as a
+ * training example. Nothing can be typed: the "fields" are buttons, there is no form, nothing is sent
+ * or stored. The answers are native popovers (no script); a browser without them shows them in place.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import TrainScore from '../../../components/TrainScore.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import '../../../styles/treniruote.css';
+
+const fieldNote = 'mokomasis mygtukas, nieko nepriima';
+---
+<Page
+  title="Ar atskirsi netikrą banko reklamą? Treniruotė – Suktas"
+  description="Saugi treniruotė: trys keliai į banką, vienas jų – sukčiaus reklama paieškoje. Spausk, kur spaustum iš tikrųjų, ir pamatyk, ką tuo metu daro sukčius."
+  current=""
+>
+  <article class="scn tr">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/treniruote/">Treniruotė</a></p>
+        <h1>{nb('Ar atskirsi netikrą banko reklamą?')}</h1>
+        <p class="tr-lead" set:html={nbHtml('Trys keliai į banką ir vienas puslapis už reklamos. Spausk, kur spaustum iš tikrųjų: iššoks paaiškinimas, ką tuo metu daro sukčius ir kaip jį sustabdyti.')} />
+        <p class="tr-promise" set:html={nbHtml('<strong>Tai mokomasis pavyzdys.</strong> Bankas, paieška ir adresai išgalvoti, o laukeliai nieko nepriima: tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma. Skaitiklis sužino tik tiek, kad puslapis atidarytas ir jame kas nors paspausta (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
+        <p class="tr-rule" data-score-hint hidden set:html={nbHtml('Skaičiuojamas pirmas pasirinkimas kiekviename žingsnyje. Visur rinkis saugų kelią – ir laimėsi.')} />
+      </div>
+    </header>
+
+    <section class="wrap tr-scene" aria-labelledby="situacija">
+      <h2 id="situacija">Situacija</h2>
+      <p class="tr-say" set:html={nbHtml('Reikia sumokėti sąskaitą, todėl paieškoje surenki „pavyzdžio bankas prisijungti“. Kurį kelią rinktumeisi?')} />
+
+      <figure class="mock">
+        <figcaption class="mock__cap">Paieškos maketas</figcaption>
+        <div class="mock__frame">
+          <div class="mock__inner">
+            <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>Tai ne tikra paieška</span></p>
+            <p class="srch__q">pavyzdžio bankas prisijungti</p>
+            <ul class="srch__list" role="list">
+              <li>
+                <button type="button" class="res" popovertarget="p-reklama" data-round="1">
+                  <span class="res__tag">Remiama</span>
+                  <span class="res__url">pavyzdziobankas-prisijungimas.com</span>
+                  <span class="res__title" set:html={nbHtml('Pavyzdžio bankas – prisijunk prie sąskaitos')} />
+                  <span class="res__desc">Greitas ir saugus prisijungimas.</span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="res" popovertarget="p-bankas" data-round="1">
+                  <span class="res__url">pavyzdziobankas.lt</span>
+                  <span class="res__title">Pavyzdžio bankas</span>
+                  <span class="res__desc">Kasdienės paslaugos, paskolos ir taupymas.</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </figure>
+
+      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-programele" data-round="1" data-safe>Neieškau: atsidarau banko programėlę</button></p>
+
+      <div class="answers">
+        <section class="pop" id="p-reklama" popover aria-labelledby="h-reklama">
+          <h3 id="h-reklama" class="pop__h pop__h--catch" set:html={nbHtml('<span class="pop__catch">Pagavau!</span><span class="pop__dash"> –</span><span class="pop__sub"> taip dabar pagalvotų sukčius.</span>')} />
+          <p set:html={nbHtml('Spaudei reklamą. Taip nutinka bet kam: reklama – pačiame viršuje. Žymė „Remiama“ reiškia tik tiek, kad tai reklama: ji neįrodo, kad svetainė oficiali. Sukčiai perka bankų pavadinimus kaip reklaminius raktažodžius, kad jų klastotė iškiltų paieškos viršuje, ir laukia, kas ieškos banko.')} />
+          <p class="pop__move" set:html={nbHtml('<strong>Tavo ėjimas:</strong> banko paieškoje neieškok – atsidaryk banko programėlę ar išsaugotą nuorodą.')} />
+          <div class="pop__actions">
+            <a class="btn" href="#klastote">Pažiūrėk, kur ji veda</a>
+            <button type="button" class="btn btn--second pop__close" popovertarget="p-reklama" popovertargetaction="hide" autofocus>Uždaryti</button>
+          </div>
+        </section>
+
+        <section class="pop" id="p-bankas" popover aria-labelledby="h-bankas">
+          <h3 id="h-bankas" class="pop__h">{nb('Šįkart pataikei.')}</h3>
+          <p set:html={nbHtml('Tai tikras banko adresas. Bet atskirti tikrą nuo klastotės sunku: sukčiai daro kone tobulas kopijas, o adresas gali skirtis viena raide. Sukčius tikėjosi, kad spausi pirmą nuorodą: savo reklamą jis pastatė virš šios. Saugiausia banko paieškoje visai neieškoti.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-bankas" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+
+        <section class="pop" id="p-programele" popover aria-labelledby="h-programele">
+          <h3 id="h-programele" class="pop__h">{nb('Taip ir daryk.')}</h3>
+          <p set:html={nbHtml('Programėlė, išsaugota nuoroda ar adresas, kurį įvedi ranka, – kelias, kuriame reklamos nėra. Toks kelias apsaugo ir tada, kai klastotės neatskiri.')} />
+          <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-programele" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="wrap tr-scene" id="klastote" aria-labelledby="h-klastote">
+      <h2 id="h-klastote">Kur veda reklama</h2>
+      <p class="tr-say" set:html={nbHtml('Taip galėtų atrodyti puslapis už reklamos: kone tobula banko kopija su spynele prie adreso. Ką darytum? Spausk laukelį ar mygtuką arba rinkis kelią po maketu.')} />
+
+      <figure class="mock">
+        <figcaption class="mock__cap">Puslapio maketas</figcaption>
+        <div class="mock__frame">
+          <div class="mock__inner">
+            <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>Tai ne tikras bankas</span></p>
+            <p class="bar"><span class="lock" aria-hidden="true"></span><span class="bar__url">pavyzdziobankas-prisijungimas.com</span></p>
+            <div class="pg">
+              <p class="pg__brand"><span class="pg__mark" aria-hidden="true"></span><span class="pg__name">Pavyzdžio bankas</span></p>
+              <p class="pg__title">Prisijungimas prie interneto banko</p>
+              <div class="tabs"><button type="button" class="tab" popovertarget="p-pagavau" data-round="2">Smart-ID</button></div>
+              <div class="fld">
+                <p class="fld__lbl" aria-hidden="true">Naudotojo ID</p>
+                <button type="button" class="fld__box" popovertarget="p-pagavau" data-round="2" aria-label={`Naudotojo ID: ${fieldNote}`}></button>
+              </div>
+              <div class="fld">
+                <p class="fld__lbl" aria-hidden="true">Asmens kodas</p>
+                <button type="button" class="fld__box" popovertarget="p-pagavau" data-round="2" aria-label={`Asmens kodas: ${fieldNote}`}></button>
+              </div>
+              <button type="button" class="pg__go" popovertarget="p-pagavau" data-round="2">Prisijungti</button>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-uzdarau" data-round="2" data-safe>{nb('Nieko nespaudžiu: uždarau šį puslapį')}</button></p>
+
+      <section class="pop" id="p-uzdarau" popover aria-labelledby="h-uzdarau">
+        <h3 id="h-uzdarau" class="pop__h">{nb('Taip ir daryk.')}</h3>
+        <p set:html={nbHtml('Kad ir kaip tikrai atrodytų, puslapis, į kurį atvedė reklama, nėra tavo kelias į banką. Uždaryk jį ir atsidaryk banko programėlę ar išsaugotą nuorodą.')} />
+        <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-uzdarau" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+      </section>
+
+      <section class="pop" id="p-pagavau" popover aria-labelledby="h-pagavau">
+        <h3 id="h-pagavau" class="pop__h pop__h--catch" set:html={nbHtml('<span class="pop__catch">Pagavau!</span><span class="pop__dash"> –</span><span class="pop__sub"> taip dabar pagalvotų sukčius.</span>')} />
+        <p set:html={nbHtml('Čia įvestum prisijungimo duomenis, o jie atitektų sukčiui. Kol puslapis rodo, kad vis kraunasi, sukčius tavo duomenimis jungiasi prie tikro banko, o tavo telefone pasirodo patvirtinimo užklausos. Spynelė ir „https://“ nieko neįrodo. Net PIN1 čia patvirtintų ne tavo, o sukčiaus prisijungimą. Jei telefonas prašo PIN2, spausk „Atšaukti“: prisijungiant reikia tik PIN1.')} />
+        <p set:html={nbHtml('Jei duomenis jau įvedei tikroje sukčių svetainėje, nieko netvirtink ir iškart skambink bankui numeriu iš banko programėlės: <a href="/jei-apgavo/#kodai">ką daryti pirmiausia</a>.')} />
+        <div class="pop__actions"><button type="button" class="btn btn--second pop__close" popovertarget="p-pagavau" popovertargetaction="hide" autofocus>Uždaryti</button></div>
+      </section>
+    </section>
+
+    <section class="wrap tr-end" aria-labelledby="ejimas">
+      <TrainScore rounds={2} />
+      <div class="move">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prie banko junkis tik savo keliu: per jo programėlę, išsaugotą nuorodą naršyklėje ar adresą, kurį įvedi ranka. Niekada – per paieškos ar socialinio tinklo reklamą.')} />
+        <div class="cta">
+          <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+          <a class="btn btn--second" href="/scenarijai/netikra-banko-reklama/">Visas scenarijus</a>
+        </div>
+      </div>
+
+      <div class="tr-nope">
+        <h3>Ko čia nerasi</h3>
+        <p set:html={nbHtml('Šis puslapis – ne šablonas: bankas išgalvotas, laukeliai – tik mygtukai, todėl įvesti čia nieko neįmanoma. Tai mūsų <a href="/misija/#riba">riba</a>.')} />
+      </div>
+
+      <div class="tr-src">
+        <h2>Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-31. Faktai – iš scenarijaus <a href="/scenarijai/netikra-banko-reklama/">Netikra banko reklama paieškoje</a>, visi su datomis <a href="/saltiniai/">Šaltiniuose</a>.')} />
+      </div>
+    </section>
+  </article>
+
+<script>
+  // Without this the link jumps to the fake page and leaves the open answer card over it; with it the card closes first.
+  // No script: the card stays until Esc, "Uždaryti" or a tap outside, which is fine.
+  document.querySelector('#p-reklama a[href="#klastote"]')?.addEventListener('click', () => {
+    document.getElementById('p-reklama')?.hidePopover();
+  });
+</script>
+</Page>

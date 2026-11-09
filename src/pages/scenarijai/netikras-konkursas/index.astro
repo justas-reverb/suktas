@@ -1,0 +1,198 @@
+---
+/**
+ * Scenarijus: netikras konkursas parduotuvės vardu. The copy is docs/copy/scenarijai/netikras-konkursas.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Netikras konkursas');
+const meta = [
+  ['Kanalas', 'įrašas ar žinutė socialiniuose tinkluose'],
+  ['Ko jis nori', 'tavo kortelės ar banko duomenų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Konkursą skelbia ne oficiali parduotuvės paskyra.', '„Iki“ konkursus skelbia tik iki.lt, savo programėlėje ir oficialiuose socialinių tinklų kanaluose, o oficiali „Maximos“ „Facebook“ paskyra yra viena – „Maxima LT“; netikros vadinasi panašiai, pavyzdžiui, „Maxima Lietuva.fans“. <!-- F369 F373 --> Patikrink, kada paskyra sukurta, kiek turi sekėjų ir ar pavadinime nėra keistų rašmenų, brūkšnelių ar skaičių. <!-- F377 --> „Maxima“ primena: įmonės konkursus skelbia viešai, o ne siunčia asmenine žinute. <!-- F376 -->'],
+  ['Prizas per geras, laimi visi, o laiko mažai.', '„Iki“ pataria įtariai vertinti pasiūlymus, kurie žada itin vertingus prizus už apklausą ar skelbia, kad laimės visi dalyviai. <!-- F370 --> Sukčiai skubina: „Nepraleiskite šios ribotos galimybės“, „turite atsakyti per 24 valandas“. <!-- F374 F376 --> Kartais dar prašo pasidalyti įrašu grupėse ar parašyti komentarą. <!-- F377 F380 -->'],
+  ['Už prizą prašo mokėti ar suvesti kortelės ar banko duomenis.', '„Iki“ niekada neprašo banko kortelės duomenų ar mokėjimo už prizą ar prizo pristatymą, o „Maxima“ niekada neprašo asmeninės informacijos, slaptažodžių ar banko prisijungimo duomenų. <!-- F369 F373 --> Klaipėdos apskrities policija primena: iš laimėtojo niekada nereikalaujama sumokėti mokesčio iš anksto. <!-- F379 -->'],
+];
+
+const steps = [
+  '<strong>Jei suvedei kortelės ar banko duomenis, iškart skambink savo bankui</strong> numeriu iš banko programėlės arba iš svetainės, kurios adresą įvedi ranka. <!-- F371 F375 F13 --> Paprašyk užblokuoti kortelę, o jei reikia – ir interneto banką. <!-- F220 F375 -->',
+  '<strong>Pakeisk slaptažodžius</strong>, jei puslapyje suvedei prisijungimo duomenis. <!-- F371 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt. <!-- F371 F375 F2 -->',
+  '<strong>Perspėk draugus</strong>, ypač jei įrašu pasidalijai. <!-- F380 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Prizas, kurį laimi visi, verčia galvoti apie dovaną, o ne abejoti. <!-- F370 M -->'],
+  ['Autoritetas.', 'Žinomos parduotuvės vardas ir logotipas skolina pasitikėjimą, nors pats logotipas nieko neįrodo. <!-- F367 F372 M -->'],
+  ['Skuba.', '„Turite atsakyti per 24 valandas“ palieka mažai laiko pagalvoti. <!-- F376 M -->'],
+];
+
+const sides = [
+  ['Įrašas su parduotuvės logotipu ir prizais', 'Konkursą rask parduotuvės svetainėje (iki.lt, maxima.lt – adresą įvesk ranka) ar jos programėlėje. <!-- F369 F376 F370 M -->'],
+  ['Paskyros pavadinimas panašus į tikrą, pavyzdžiui, „Maxima Lietuva.fans“', 'Oficiali „Maximos“ „Facebook“ paskyra yra viena – „Maxima LT“. <!-- F373 -->'],
+  ['„Laimi visi“ arba itin vertingas prizas už apklausą', '„Iki“ pataria tokius pasiūlymus vertinti įtariai. <!-- F370 -->'],
+  ['Prašo pasidalyti įrašu grupėse ar parašyti komentarą', 'Nesidalyk ir nespausk nuorodos, o draugus perspėk. <!-- F380 -->'],
+  ['Asmeninė žinutė: „laimėjote konkursą, tačiau turite atsakyti per 24 valandas“', 'Nespausk nuorodos žinutėje. Patikrink parduotuvės svetainėje ar programėlėje: „Maxima“ primena, kad konkursus skelbia viešai. <!-- F376 -->'],
+  ['Mokestis už prizo pristatymą ar kortelės duomenys', 'Iš laimėtojo niekada nereikalaujama sumokėti mokesčio iš anksto. <!-- F379 F369 -->'],
+  ['Prašo interneto banko kodų ar slaptažodžių', 'Nesuvesk: Lietuvos bankas pataria prisijungimo kodų niekam neduoti, o „Maxima“ jų niekada neprašo. <!-- F13 F373 -->'],
+];
+
+const sources = [
+  '„Iki“ (pranešimas spaudai, tv3.lt, 2026-10-27): netikri įrašai tinklo vardu, kur skelbiami tikri konkursai, ko tinklas niekada neprašo, ženklai ir ką daryti. <!-- F367 F368 F369 F370 F371 -->',
+  '„Maxima“ (pranešimai spaudai: 15min.lt ir kauno.diena.lt, 2026-07-16; 15min.lt, 2025-09-12; alkas.lt, 2025-03-04): netikri konkursai ir žaidimai, panašūs pavadinimai, skubinimas, ką daryti. <!-- F372 F373 F374 F375 F376 -->',
+  'LRT.lt (2023-09-29 ir 2021-11-05): netikras „Maximos“ gimtadienio įrašas, „Bitės“ patarimai, anketos „laimėjusiems“. <!-- F377 F378 -->',
+  'Klaipėdos apskrities policija (atnaujinta 2023-12-03): laimėtojas mokesčio iš anksto nemoka. <!-- F379 -->',
+  'Policija (tv3.lt, 2024-10-06): netikras konkursas, kuriuo prašoma dalytis grupėse. <!-- F380 -->',
+  'Lietuvos bankas: su banku susisiek oficialiais kanalais. <!-- F13 -->',
+  '„Citadele“ saugumo puslapis: bankas užblokuos kortelę. <!-- F220 -->',
+  'Policija: pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="Netikras „Iki“ ar „Maximos“ konkursas – Suktas"
+  description="„Iki“ ar „Maximos“ vardu „Facebook“ tinkle žadamas prizas, o prizui atsiimti prašoma kortelės duomenų? Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-02</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('„Facebook“ tinkle pamatai „Iki“ ar „Maximos“ įrašą su logotipu: parduotuvė švenčia gimtadienį ir dalija pinigus, automobilius ar nemokamus pirkinių paketus. <!-- F367 F372 F377 --> Kad dalyvautum, reikia užpildyti apklausą arba paspausti nuorodą. <!-- F368 --> Atsivėręs puslapis atrodo kaip parduotuvės ir sako, kad prizas tavo: tereikia suvesti asmens ir banko kortelės duomenis arba patvirtinti mokėjimą už prizo pristatymą. <!-- F368 M --> Prizo nėra, o tavo kortelės duomenys jau pas jį. <!-- F367 M --> Ta pati „laimė“ ateina ir „Messenger“ žinute: „Maximos“ vardu siūlomas „žaidimas“ prašo suvesti interneto banko kodus. <!-- F376 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Konkursą tikrink tik parduotuvės svetainėje (iki.lt, maxima.lt – adresą įvesk ranka) ar jos programėlėje, o ne per nuorodą įraše. Jei už prizą prašo kortelės duomenų ar mokesčio, tai ne prizas: uždaryk puslapį. <!-- F369 F376 F370 F379 M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau įvedei duomenis</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: vienu netikru „Maximos“ gimtadienio įrašu 2023 m. pasidalijo daugiau nei 5,3 tūkst. žmonių. <!-- F377 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kortele">Jei tave apgavo: pasakiau kortelės duomenis</a>, <a href="/jei-apgavo/#pinigai">išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo kortelės ar banko duomenų, o kartais ir asmens duomenų. <!-- F367 F368 --> Prizas jam tik masalas: mokėjimas už pristatymą atrodo smulkmena prieš didelį prizą, bet kai tą mokėjimą patvirtini, atiduodi kortelės duomenis. <!-- F368 M --> <strong class="stop">Sustabdymo vieta:</strong> prašymas už prizą mokėti ar suvesti kortelės duomenis. Uždaryk puslapį. <!-- F369 F379 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko, ir jam nereikia. <!-- M --> Jis pasiskolina parduotuvės vardą, logotipą ir net tikras jos akcijas, kad įrašas atrodytų tikras, ir laukia, kol įrašu pasidalys kuo daugiau žmonių. <!-- F367 F372 F377 F380 M --> <strong class="stop">Sustabdymo vieta:</strong> konkursą patikrink parduotuvės svetainėje ar programėlėje. <!-- F369 F370 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('„Iki“ 2026 m. spalį perspėjo, kad sukčių taikiniu tapo prizai, kuriuos tinklas dalija švęsdamas 35-ąjį gimtadienį. <!-- F367 --> „Maxima“ apie netikrus konkursus savo vardu perspėja jau ne pirmus metus: 2021, 2023, 2025 ir 2026 m. <!-- F378 F377 F376 F372 -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> tikras prizas iš anksto nieko nekainuoja. <!-- F379 F369 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/netikra-parduotuve/">{nb('Netikra el. parduotuvė')}</a>, <a href="/scenarijai/draugas-praso-pinigu/">{nb('„Draugas“ prašo pinigų')}</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-02. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

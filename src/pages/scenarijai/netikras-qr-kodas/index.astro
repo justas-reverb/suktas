@@ -1,0 +1,202 @@
+---
+/**
+ * Scenarijus: Netikras QR kodas. The copy is docs/copy/scenarijai/netikras-qr-kodas.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Netikras QR kodas');
+const meta = [
+  ['Kanalas', 'QR lipdukas, laiškas ar žinutė'],
+  ['Ko jis nori', 'tavo kortelės ar banko duomenų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['QR kodas užklijuotas ant parkomato, bankomato ar afišos ir kviečia mokėti ar prisijungti.', ' Vilniaus „JUDU“ sako, kad niekada neprašo per QR kodą suvesti duomenų ar sumokėti. <!-- F101 --> Lipduką gali užklijuoti bet kas. <!-- M -->'],
+  ['Puslapis, kuris atsidaro, prašo kortelės ar banko prisijungimo duomenų.', ' Bankai ir valstybės institucijos per viešus QR kodus tokių duomenų neprašo. <!-- F237 -->'],
+  ['Kodas atėjo laišku ar žinute, o ne iš paslaugos, kurią atsidarei tu.', ' Kodą skenuok tik patikimoje svetainėje ar paslaugoje. <!-- F35 F238 --> Jei „Smart-ID“ rodo paslaugą ar veiksmą, kurio nesitikėjai, atšauk užklausą. <!-- F35 M -->'],
+];
+
+const steps = [
+  '<strong>Įvedei kortelės duomenis? Iškart užblokuok kortelę</strong> banko programėlėje ar interneto banke arba paskambink bankui numeriu iš oficialios banko svetainės ir pasakyk, ką įvedei. <!-- F7 F13 --> Pasakyk ir apie mokėjimus, kurių nedarei: blokavimas jau atliktų mokėjimų neatšaukia. <!-- F7 F6 -->',
+  '<strong>Įvedei banko prisijungimo duomenis ar patvirtinai „Smart-ID“ užklausą?</strong> Skambink bankui numeriu iš oficialios svetainės ir paprašyk užblokuoti prieigą prie interneto banko. <!-- F6 F13 F30 F7 -->',
+  '<strong>Nuskenavai kodą „WhatsApp“ ar kita pokalbių programėle?</strong> Patikrink susietus įrenginius ir pašalink tuos, kurių neatpažįsti. <!-- F42 --> „WhatsApp“ susietą įrenginį atjungsi pagrindiniame telefone: atsidaryk susietų įrenginių sąrašą, paliesk įrenginį ir atsijunk. <!-- F241 --> Perspėk artimuosius: tavo vardu gali būti prašoma pinigų. <!-- F43 -->',
+  '<strong>Nuskenavai, bet nieko neįvedei?</strong> Uždaryk puslapį ir nieko jame neįvesk. Pranešk apie lipduką: Vilniuje – „JUDU“, prie bankomato ar ant afišos – bankui. <!-- F101 F237 M -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, jei dingo pinigai. Jei pinigai nedingo, apie bandymą pranešk NKSC. <!-- F2 -->',
+];
+
+const levers = [
+  ['Autoritetas.', 'Lipdukas ant tikro parkomato ar bankomato atrodo kaip tikra įrenginio dalis, o puslapis primena banko ar įstaigos svetainę. <!-- F237 M -->'],
+  ['Skuba.', 'Automobilis jau pastatytas, laikas eina, o kodas siūlo sumokėti per kelias sekundes. <!-- M -->'],
+];
+
+const sides = [
+  ['QR lipdukas ant parkomato kviečia sumokėti', 'Mokėk oficialioje programėlėje (Vilniuje – ir SMS žinute konkrečiu numeriu). <!-- F101 F235 -->'],
+  ['QR kodas ant bankomato, afišos ar skelbimų lentos', 'Neskenuok jo, kad prisijungtum ar sumokėtum; į banką junkis per oficialią programėlę ar svetainę. Įtartiną kodą parodyk bankui. <!-- F237 -->'],
+  ['Puslapis po nuskenavimo prašo kortelės ar prisijungimo duomenų', 'Neįvesk; uždaryk puslapį. Kai kurie telefonai, pvz., „Pixel“ fotoaparatas, nuorodą pirma tik parodo – tada jos neliesk. <!-- F237 F239 M -->'],
+  ['QR kodas atkeliauja laišku ar žinute', 'Neskenuok; siuntėją tikrink per oficialią paslaugos svetainę ar programėlę. <!-- F238 F13 M -->'],
+  ['„Smart-ID“ rodo paslaugą ar veiksmą, kurio nepradėjai', 'Atšauk užklausą. <!-- F35 -->'],
+  ['Pažįstamo nuoroda veda į svetainę, kuri prašo nuskenuoti kodą „WhatsApp“ programėle', 'Neskenuok ir patikrink susietus įrenginius. <!-- F240 F42 -->'],
+  ['Kas nors klijuoja lipdukus ant parkomatų', 'Jei saugu, nufotografuok ar nufilmuok ir skambink 112. <!-- F235 F236 -->'],
+];
+
+const sources = [
+  '„JUDU“ (LRT, 2026-07-10): netikri QR lipdukai ant Vilniaus parkomatų; „JUDU“ niekada neprašo per QR kodą suvesti duomenų ar mokėti; mokama oficialioje programėlėje ar SMS žinute. <!-- F101 -->',
+  'Šnipiškių seniūnija (kauno.diena.lt, 2026-08-06; tv3.lt, 2026-08-05) ir Kretingos rajono policija (ve.lt, 2026-08-16): lipdukai veda į netikrą mokėjimo puslapį; pastebėjus klijuojančius – 112. <!-- F235 F236 -->',
+  '„Luminor“ (tv3.lt, 2025-09-26): kodai ant afišų, skelbimų lentų ir prie bankomatų; bankai ir institucijos per viešus QR kodus duomenų neprašo. <!-- F237 -->',
+  'Visuotinė lietuvių enciklopedija, „duomenų viliojimas“: QR kodai laiškuose, socialiniuose tinkluose, skelbimuose ir ant tikrų kodų. <!-- F238 -->',
+  '„Smart-ID“: skenuoti tik patikimose svetainėse ar paslaugose, patikrinti paslaugą ir veiksmą, neaiškią užklausą atšaukti. <!-- F35 -->',
+  '„Google“ „Pixel“ pagalba: fotoaparatas parodo nuorodą, o atidaryti ją reikia paliečiant (perskaityta 2026-11-01). <!-- F239 -->',
+  'Singapūro policija (anglų k., 2026-02-10): pažįstamo nuoroda į netikrą balsavimą ir QR kodas, prijungęs sukčiaus įrenginį prie „WhatsApp“ paskyros. „WhatsApp“ pagalba (anglų k.): kaip atjungti susietą įrenginį ir perspėti artimuosius. <!-- F240 F241 F43 -->',
+  'NKSC (2026-07-13): atsargiai su QR kodais, tikrinti susietus įrenginius. <!-- F42 -->',
+  'SEB: kortelę užblokuoti programėlėje, interneto banke ar telefonu; Lietuvos bankas: banką pasiekti per oficialią programėlę ar svetainę; bankų patarimas užblokuoti ir prieigą prie interneto banko. <!-- F7 F13 F6 -->',
+  '„Smart-ID“: netvirtinti operacijos, kurios nepradėjai. <!-- F30 -->',
+  'Policija (policija.lrv.lt, atnaujinta 2026-04-23): pranešti per epolicija.lt; bandymą, kuris nieko nekainavo – NKSC. <!-- F2 -->',
+];
+---
+<Page
+  title="Netikras QR kodas ant parkomato ar bankomato – Suktas"
+  description="Ant parkomato ar bankomato užklijuotas QR kodas kviečia sumokėti ar prisijungti? Kodas gali vesti į netikrą mokėjimo puslapį. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-01</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Pastatai automobilį, o ant parkomato užklijuotas QR kodas siūlo sumokėti telefonu. <!-- F101 F235 --> Nuskenuoji, atsidaro mokėjimo puslapis, įvedi kortelės duomenis ir pinigai atitenka sukčiams. <!-- F235 F236 --> Sukčiai tokius kodus klijuoja ir ant afišų, skelbimų lentų ar net prie bankomatų: jie veda į netikrą svetainę, panašią į banko ar įstaigos, kuri gali prašyti prisijungimo ar kortelės duomenų. <!-- F237 --> QR kodą gali rasti ir el. laiške, socialiniame tinkle ar skelbime spaudoje, o lipdukas kartais užklijuojamas ant tikro kodo. <!-- F238 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Mokėk ir junkis tik oficialioje paslaugos programėlėje ar svetainėje, kurią atsidarei tu. Užklijuoto ar atsiųsto QR kodo tam neskenuok.')} />
+        <p set:html={nbHtml('Vilniuje už stovėjimą mokama tik oficialioje programėlėje arba SMS žinute konkrečiu numeriu. <!-- F101 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: lipdukas ant tikro parkomato atrodo kaip įrenginio dalis. <!-- F235 M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kortele">Jei tave apgavo: pasakiau kortelės duomenis</a>, <a href="/jei-apgavo/#kodai">pasakiau ar įvedžiau kodą</a>, <a href="/jei-apgavo/#paskyra">kažkas perėmė mano paskyrą</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/qr-ne-is-lipduko/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo kortelės ar banko prisijungimo duomenų: kai juos įvedi netikrame puslapyje, jie atitenka jam. <!-- F235 F237 --> Kartais – tavo pokalbių paskyros: Singapūro policija 2026 m. vasarį aprašė „WhatsApp“ žinutes nuo pažįstamų su nuoroda į netikrą balsavimo svetainę: ji prašė „patvirtinti“ balsą nuskenavus QR kodą „WhatsApp“ programėle, ir taip prie aukos paskyros buvo prijungtas sukčiaus įrenginys. <!-- F240 --> Lietuvos šaltinio apie tokį atvejį neradome. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> dar prieš skenuojant – kodas ant daikto ar laiške; neskenuok jo. Jei jau nuskenavai – puslapis, kuris prašo duomenų. Neįvesk jų. <!-- F235 F237 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko, ir jam nereikia. <!-- M --> Jis tik pasirenka vietą, kur žmonės įpratę mokėti ar tvarkyti pinigus: parkomatą, bankomatą, afišą. <!-- F235 F237 M --> Lipdukas laukia bet ko, kas skubės sumokėti. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kur mokėti, renkiesi tu – oficiali programėlė, o ne kodas ant daikto. <!-- F101 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Be to, žmonės dar nėra įpratę tikrinti QR kodų, todėl laiškas su QR kodu gali ateiti be jokio pašto įspėjimo (Visuotinė lietuvių enciklopedija). <!-- F238 --> <strong class="stop">Sustabdymo vieta:</strong> mokėjimą pradėk tu, oficialioje programėlėje, o ne kodu, kurį kažkas pakišo. <!-- F235 F101 M -->')} />
+            <p set:html={nbHtml('Apie lipdukus ant Vilniaus parkomatų „JUDU“ įspėjo 2026 m. liepą, Šnipiškių seniūnija vėl įspėjo rugpjūtį, o Kretingos rajono policija – tą patį mėnesį. <!-- F101 F235 F236 --> Kiek žmonių nukentėjo ir kiek prarado, nei šie, nei kiti mūsų rasti šaltiniai nesako. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/qr-ne-is-lipduko/">{nb('Neskenuok QR lipduko – atsidaryk oficialią programėlę')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/irenginiai/">{nb('Įrenginiai ir tinklas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/zinute-su-nuoroda/">{nb('Žinutė su nuoroda')}</a>, <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a>, <a href="/scenarijai/zinute-su-kodu/">{nb('Žinutė su kodu')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-01. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

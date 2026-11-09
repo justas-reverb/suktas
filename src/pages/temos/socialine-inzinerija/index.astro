@@ -1,0 +1,161 @@
+---
+/**
+ * Socialinė inžinerija: a topic since 2026-11-06 (a word page at /zodynas/socialine-inzinerija/ until
+ * then; public/.htaccess sends that address here). The copy is docs/copy/temos/socialine-inzinerija.md,
+ * word for word; the source tags stay as comments and the build strips them. Same template as the
+ * other pillars.
+ */
+import Page from '../../../layouts/Page.astro';
+import PillarHead from '../../../components/PillarHead.astro';
+import PillarStage from '../../../components/PillarStage.astro';
+import Sides from '../../../components/Sides.astro';
+import PillarFoot from '../../../components/PillarFoot.astro';
+import { nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/scenario.css';
+import '../../../styles/pillar.css';
+
+const elsewhere = [
+  'Valstybinės duomenų apsaugos inspekcijos duomenimis, iš 2025 m. pranešimų apie asmens duomenų saugumo pažeidimus, kuriuos sukėlė kibernetinis incidentas, 26 % – dėl socialinės inžinerijos ir duomenų viliojimo atakų. <!-- F654 -->',
+  'Ryšių reguliavimo tarnybos duomenimis, 2025 m. užblokuota 63 % daugiau apgaulingų skambučių ir beveik 80 % daugiau apsimestinių SMS nei 2024 m., o sukčiai pritaiko vis naujus socialinės inžinerijos metodus. <!-- F655 -->',
+  'ES ir EEE šalyse 2024 m. 74 % pinigų, prarastų per sukčiavimą pervedimais, žmonės pervedė patys, apgauti sukčių. <!-- F657 --> Tai visos ES ir EEE duomenys; tokio skaičiaus Lietuvai Lietuvos bankas neskelbia. <!-- F656 F657 -->',
+];
+
+const forms = [
+  ['Skambutis', ' iš „banko“, „policijos“ ar kitos įstaigos. <!-- F655 F664 --> <a href="/scenarijai/skambutis-is-banko/">Skambina „bankas“</a>, <a href="/scenarijai/skambutis-is-policijos/">Skambutis iš „policijos“</a>, <a href="/scenarijai/parodyk-ekrana/">„Parodyk ekraną“</a>.'],
+  ['Žinutė ar laiškas', ' su nuoroda ar prašymu pasakyti kodą. <!-- F242 F663 --> <a href="/scenarijai/zinute-su-kodu/">Žinutė su kodu</a>, <a href="/scenarijai/netikras-laiskas/">Netikras laiškas</a>.'],
+  ['Draugo paskyra', ', kurią sukčius jau perėmė, ir prašymas pinigų ar kodo. <!-- F663 --> <a href="/scenarijai/draugas-praso-pinigu/">Draugas prašo pinigų ar kodo</a>.'],
+  ['Nauda', ': investicijos, pelnas, meilė internete. <!-- F652 F329–F347 --> <a href="/scenarijai/netikras-brokeris/">Skambina „brokeris“</a>, <a href="/scenarijai/meile-internete/">Meilė internete</a>.'],
+  ['Prie durų', ': „pareigūnas“ ar „kurjeris“. <!-- F277–F290 --> <a href="/scenarijai/pareigunas-prie-duru/">„Pareigūnas“ prie durų</a>.'],
+  ['Darbe', ': buhalterė ar buhalteris gauna laišką neva iš direktoriaus su nurodymu skubiai pervesti pinigus į užsienio įmonės sąskaitą. <!-- F661 F662 F650 --> 2026 m. birželį taip iš Kauno rajono įmonės išviliota 47 tūkst. eurų. <!-- F661 --> 2019 m. Alytaus įmonė tokiu laišku prarado beveik 20 tūkst. eurų. <!-- F662 -->'],
+];
+
+const signs = [
+  ['Pradėjo jis, ne tu.', ' Skambutis, žinutė ar laiškas atėjo nekviesti. <!-- M F26 -->'],
+  ['Šokas, spaudimas, skuba.', ' Jei skambutis ar žinutė gąsdina ar verčia skubėti, tai jau ženklas. <!-- F664 -->'],
+  ['Prašo kodų.', ' SMS patvirtinimo kodų, programėlės PIN, paskyros atkūrimo raktų niekam nereikia sakyti. <!-- F663 --> „Smart-ID“ PIN kodų niekada neprašo. <!-- F30 -->'],
+  ['Prisistato įstaiga, kuri taip nedaro.', ' Policijos pareigūnai neskambina žmonėms ir neprašo asmens duomenų ar prisijungimo slaptažodžių. <!-- F664 --> Bankai prisijungimo duomenų neprašo. <!-- F26 -->'],
+  ['Nurodymas pervesti pinigus nauju ar neįprastu keliu', ', net jei atėjo nuo pažįstamo žmogaus ar vadovo. <!-- F661 F663 M -->'],
+];
+
+const sides = [
+  ['Skambina „bankas“ ar „policija“', 'Padėk ragelį ir paskambink oficialiu numeriu, kurį susiradai tu. <!-- F664 -->'],
+  ['Prašo SMS kodo, PIN ar atkūrimo rakto', 'Niekam jų nesakyk. <!-- F663 -->'],
+  ['Draugas ar vadovas staiga prašo pinigų', 'Paskambink draugui ar vadovui numeriu, kurį jau turi. <!-- F663 M -->'],
+  ['Gąsdina ir skubina', 'Tai jau ženklas: nutrauk pokalbį. <!-- F664 -->'],
+];
+
+const related = [
+  ['Kitos temos:', '<a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>, <a href="/temos/kaip-veikia-atakos/">Kaip veikia atakos</a>'],
+  ['Kortelės:', '<a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>, <a href="/sustok/kodai-ir-pin/">Kodų ir PIN niekam nesakyk</a>'],
+  ['Žodynas:', '<a href="/zodynas/phishing/">Kas yra phishing</a>, <a href="/zodynas/#sukciavimas-apsimetant">Sukčiavimas apsimetant</a>'],
+];
+
+const sources = [
+  'NKSC, „Kibernetinio saugumo vadovas verslui“ (2020): ką siekia socialinė inžinerija; Alytaus įmonės atvejis (2019). <!-- F650 F662 -->',
+  'NKSC, „Nacionalinė kibernetinio saugumo ataskaita 2025“, ir KAM 2025 m. apžvalga: incidentų dalis, grėsmės žmonėms, policijos, Valstybinės duomenų apsaugos inspekcijos ir Ryšių reguliavimo tarnybos duomenys. <!-- F651 F652 F653 F654 F655 -->',
+  'Lietuvos bankas: mokėtojo manipuliavimas (2025-09-17); apklausos (2023-06-15, 2023-07-03, 2026-04-22); „Padėk ragelį“ (2025-12-15). <!-- F656 F658 F659 F660 F664 -->',
+  'EBA ir ECB, ataskaita apie sukčiavimą mokėjimais (2025-12-15): ES duomenys. <!-- F657 -->',
+  'LRT ir ELTA (2026-06-19): Kauno rajono įmonės atvejis. <!-- F661 -->',
+  'NKSC, AOTD ir VSD (2026-07-13): kodai, PIN ir atkūrimo raktai; atakų taikinys – žmogus. <!-- F663 -->',
+  'Visuotinė lietuvių enciklopedija: duomenų viliojimas – socialinės inžinerijos forma. <!-- F242 -->',
+  'Lietuvos bankas (2021-07-09), „Smart-ID“, policija: tik savo pradėtos operacijos, PIN neprašomas, epolicija.lt. <!-- F13 F26 F30 F2 -->',
+];
+---
+<Page
+  title="Kas yra socialinė inžinerija ir kaip jos neprisileisti – Suktas"
+  description="Socialinė inžinerija – apgaulė, kai įsilaužiama ne į kompiuterį, o į žmogų. Kas tai, kodėl NKSC jos registruoja daugiausia, kokių būna ir kaip ją sustabdyti."
+  current="temos"
+>
+  <article class="scn topic">
+    <PillarHead
+      title="Socialinė inžinerija"
+      lead="Kas yra socialinė inžinerija ir kodėl tarp NKSC registruojamų incidentų ji dažniausia. Kokių formų ji būna, kaip ją atpažinti ir koks vienas ėjimas sustabdo daugumą jų. <!-- F651 pažadas -->"
+      actions={[
+        ['Atidaryk kortelę „Padėk ragelį ir skambink oficialiu numeriu“', '/sustok/padek-ragely/'],
+        ['Jei tave apgavo', '/jei-apgavo/', 'second'],
+      ]}
+    />
+
+    <section class="layer wrap" aria-labelledby="siandien">
+      <section class="move">
+        <h2 id="siandien">Vienas dalykas šiandien</h2>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį ar nutrauk susirašinėjimą ir susisiek savo iniciatyva oficialiu keliu: bankui – numeriu iš oficialios svetainės, draugui ar vadovui – tuo numeriu, kurį jau turi.')} />
+        <p set:html={nbHtml('<!-- F664 F13 F663 M --> Prieš bet kokį neįprastą veiksmą įsitikink, kad žinutę tikrai atsiuntė tas žmogus. <!-- F663 --> Pasitarti su artimu žmogumi nėra gėda. <!-- M -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.')} />
+      </section>
+    </section>
+
+    <section class="part wrap" aria-labelledby="kas-tai">
+      <h2 id="kas-tai" class="layer__title">Kas tai yra</h2>
+      <p class="part__intro" set:html={nbHtml('Socialinė inžinerija – tai apgaulė, kai sukčius ne laužia sistemą, o apgauna žmogų, kuris prie jos prieina. <!-- F652 M --> Jis sugalvoja įtikinamą situaciją, paveikia žmogų psichologiškai ir taip išvilioja pinigus, duomenis arba priverčia padaryti tai, ko reikia jam. <!-- F650 --> Duomenų viliojimas (phishing) yra viena iš jos formų. <!-- F242 --> <a href="/zodynas/phishing/">Kas yra phishing</a>.')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="kodel">
+      <h2 id="kodel" class="layer__title">Kodėl apie ją verta žinoti</h2>
+      <p class="part__intro" set:html={nbHtml('Tarp incidentų, kuriuos registruoja NKSC, ji dažniausia. <!-- F651 --> 2025 m. Nacionalinis kibernetinio saugumo centras (NKSC) užregistravo 1 551 socialine inžinerija grįstą incidentą – 54 % visų savo užregistruotų incidentų (2024 m. – 59 %). <!-- F651 --> NKSC rašo, kad grėsmės vis dažniau nukreiptos ne į pačias sistemas, o į žmones, kurie turi prieigą prie jų. <!-- F652 --> Ataskaitos policijos dalyje rašoma, kad didžiausia grėsmė elektroninėje erdvėje išlieka socialinė inžinerija. <!-- F653 -->')} />
+      <p class="part__more">Tai matyti ir kitur:</p>
+      <ul class="row-list">
+        {elsewhere.map((t) => <li set:html={nbHtml(t)} />)}
+      </ul>
+    </section>
+
+    <section class="part wrap" aria-labelledby="nuvertinti">
+      <h2 id="nuvertinti" class="layer__title">Kodėl ją lengva nuvertinti</h2>
+      <p class="part__intro" set:html={nbHtml('Daugelis mano, kad jų neapgaus. 2023 m. Lietuvos banko užsakymu atliktoje apklausoje 58 % žmonių save laikė atspariais finansiniams sukčiams. <!-- F658 --> 2026 m. Lietuvos banko preliminariais duomenimis, per pastaruosius dvejus metus nuo bent vienos rūšies finansinės apgaulės ar sukčiavimo nukentėjo ne mažiau kaip 44 % suaugusių gyventojų, ir daugiau nei pusė jų prarado pinigų. <!-- F660 --> Tai skirtingų metų apklausos su skirtingais klausimais, todėl jų skaičių tiesiogiai lyginti negalima. <!-- M --> Lietuvos bankas rašo paprastai: auka gali tapti bet kas. <!-- F660 -->')} />
+      <p class="part__more" set:html={nbHtml('Atpažinti irgi įmanoma: toje pačioje 2023 m. apklausoje 39 % gyventojų per trejus metus buvo susidūrę su finansinių sukčių ataka: 33 % ją atpažino ir finansiškai nenukentėjo, 6 % nukentėjo. <!-- F659 -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="formos">
+      <h2 id="formos" class="layer__title">Kokių būna</h2>
+      <ul class="row-list">
+        {forms.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+      </ul>
+    </section>
+
+    <section class="part wrap" aria-labelledby="atpazinti">
+      <h2 id="atpazinti" class="layer__title">Kaip atpažinti</h2>
+      <ol class="signs" role="list">
+        {signs.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ol>
+      <p class="part__more" set:html={nbHtml('Kokiais kabliukais jis gaudo, aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>. <!-- M -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="prisigavai">
+      <section class="box">
+        <h2 id="prisigavai">Jei jau prisigavai</h2>
+        <p set:html={nbHtml('Tai gali nutikti bet kam, ir gėdytis čia nėra ko. <!-- F660 M --> Iškart skambink bankui numeriu iš oficialios svetainės, tada pranešk policijai per epolicija.lt. <!-- F13 F2 --> Pranešk bet kuriuo atveju, net jei suma nedidelė. <!-- F660 M --> Jei nieko nepraradai, apie bandymą pranešk NKSC. <!-- F2 --> Žingsnis po žingsnio: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+    </section>
+
+    <PillarStage note="Šis sluoksnis uždarytas ir atsidaro paspaudus. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Kaip jis tai daro, čia nerašome. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.">
+      <div class="row">
+        <h3>Ko jis nori</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Pinigų, duomenų ar vieno tavo veiksmo: kodo, patvirtinimo, pervedimo. <!-- F650 --> Jam reikia ne įsilaužti, o kad duris atidarytum tu. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> daryk tik tą veiksmą, kurį pradėjai tu. <!-- F26 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Kodėl tai veikia</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Programą galima atnaujinti, o žmogų – tik išmokyti. <!-- M --> Skuba ir baimė neleidžia pagalvoti, o vardas ekrane ar pažįstamo paskyra skolina pasitikėjimą. <!-- F664 F663 M --> NKSC rašo, kad tokios atakos tampa vis įtikinamesnės. <!-- F663 --> <strong class="stop">Sustabdymo vieta:</strong> dešimt sekundžių ir vienas klausimas – kas tai pradėjo? <!-- M --> <a href="/sustok/desimt-sekundziu/">Kortelė</a>.')} />
+        </div>
+      </div>
+      <Sides heads={['Jo triukas', 'Tavo atsakymas']} rows={sides} />
+      <div class="row row--last">
+        <h3>Ko čia nerasi</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+        </div>
+      </div>
+    </PillarStage>
+
+    <PillarFoot
+      related={related}
+      intro="Patikrinta: 2026-11-06. Faktai surašyti <a href='/saltiniai/'>Šaltiniuose</a>:"
+      sources={sources}
+    />
+  </article>
+</Page>

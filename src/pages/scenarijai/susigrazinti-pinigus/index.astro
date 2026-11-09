@@ -1,0 +1,195 @@
+---
+/**
+ * Scenarijus: „Padėsime susigrąžinti pinigus“ (the recovery scam). The copy is docs/copy/scenarijai/susigrazinti-pinigus.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('„Padėsime susigrąžinti pinigus“');
+const meta = [
+  ['Kanalas', 'skambutis, žinutė ar reklama'],
+  ['Ko jis nori', 'mokesčio už „susigrąžinimą“ – antrą kartą'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Pirma reikia sumokėti.', '„Tarpininkavimo mokestis“, mokestis už grąžinimą, 10–50 % sumos ar keli šimtai eurų – iš anksto. <!-- F14 F185 F188 F191 --> Interpolas, sako Lietuvos policija, niekada neprašo pinigų už galimybę atgauti prarastas lėšas. <!-- F184 -->'],
+  ['Jis žino apie tavo nuostolį, nors tu jam nesakei.', 'Tokie „gelbėtojai“ paprastai žino, kiek ir kada praradai. <!-- F15 --> Tai ne įrodymas, kad jis tikras. <!-- M -->'],
+  ['Prašo programos, dokumento ar naujos sąskaitos.', 'Įdiegti nuotolinio valdymo programą, nufotografuoti asmens dokumentą ir save, atsidaryti naują banko ar kriptovaliutų sąskaitą „pinigams grąžinti“. <!-- F188 F187 F199 -->'],
+];
+
+const levers = [
+  ['Nauda.', 'Investavimo apgaulėje prarastų pinigų grąžinama nedaug: 2025 m. pirmąjį pusmetį, Pinigų plovimo prevencijos kompetencijų centro duomenimis, iš daugiau nei 2 mln. eurų žalos susigrąžinta 47 tūkst., apie 2 %. <!-- F194 --> Todėl žodžiai „jūsų lėšos rastos“ skamba kaip paskutinė proga. <!-- F187 F186 -->'],
+  ['Autoritetas.', '„Teisininkų kontora“, „tyrėjas“, „Interpolas“. <!-- F14 F191 F185 --> Tačiau Interpolas skundų iš žmonių nepriima, o kas sako galintis tarpininkauti, tas meluoja, įspėja Kriminalinės policijos biuras. <!-- F184 -->'],
+  ['Gėda.', 'Žmogus, kurį ką tik apgavo, yra emociškai pažeidžiamas ir nori viską ištaisyti kuo greičiau, dažnai niekam nesakydamas. <!-- F186 F189 M --> <strong class="stop">Sustabdymo vieta:</strong> pasakyk bankui, policijai ir artimam žmogui. <!-- F186 M -->'],
+];
+
+const sides = [
+  ['„Matome, kad buvote nukentėję, jūsų lėšos rastos“', 'Bankų asociacija šią frazę vadina tariamų teisininkų ar pareigūnų „pamėgta dainele“. Padėk ragelį. <!-- F187 -->'],
+  ['„Interpolas“ grąžins pinigus už nedidelį mokestį', 'Interpolas skundų iš žmonių nepriima ir pinigų už lėšų atgavimą neprašo. <!-- F184 -->'],
+  ['„Teisininkų kontora“ prašo 10–50 % sumos', 'Nemokėk: Lietuvos bankas perspėja, kad taip apgaunama dar kartą. <!-- F14 -->'],
+  ['Reklama ar svetainė žada susigrąžinti prarastus pinigus', 'Tai ta pati apgaulė, tik šįkart jį susirandi tu. <!-- F185 F189 F192 -->'],
+  ['Prašo įdiegti „AnyDesk“ ar kitą nuotolinio valdymo programą, „kad padėtų“', 'Neįdiek. Per ją jis gali pasiekti ir tavo interneto banką. <!-- F187 F188 F197 -->'],
+  ['Prašo asmens dokumento nuotraukos ir asmenukės „identifikacijai“', 'Nesiųsk: vieno vyro vardu po to buvo sudarytos kredito sutartys. <!-- F188 -->'],
+  ['Liepia atsidaryti naują banko ar kriptovaliutų sąskaitą ir pervesti ten pinigus', 'Neatidaryk ir nepervesk: per ją tavo pinigai iškeliauja jam. <!-- F188 F199 -->'],
+  ['Siūlo „atgauti“ pinigus, jei leisi kitiems naudotis tavo banko sąskaita', 'Nesutik: taip įsitrauki į nusikaltimą. <!-- F192 -->'],
+  ['Skambina „institucija“, kuri esą tiria sukčių tinklą', 'Tai tas pats triukas, tik kitu vardu. Padėk ragelį. <!-- F16 -->'],
+  ['Sumokėjai vieną mokestį, o dabar reikia „dar vieno“', 'Daugiau nemokėk nė cento ir skambink bankui. <!-- F190 F196 -->'],
+];
+
+const sources = [
+  'Lietuvos bankas, atnaujinta 2024-10-28: „teisininkų kontorų atstovai“ ir 10–50 %; ką daryti, jei jau apgavo. <!-- F14 F190 -->',
+  'Lietuvos bankas, 2020-02-12: „gelbėtojai“ žino investavimo istoriją ir prarastas sumas. <!-- F15 -->',
+  'Bankų asociacija, 2022-10-27, ir LRT, 2019-08-31: „institucijos“ ir „tyrėjai“ po kelių savaičių; mokestis nuo kelių šimtų eurų. <!-- F16 F191 -->',
+  'Bankų asociacija, atpazinksukciu.lt: „jūsų lėšos rastos“. <!-- F187 -->',
+  'Bankų asociacija, 2023-01-25: bankai ir teisėsauga 2022 m. sustabdė ar grąžino apie 5 mln. eurų. <!-- F193 -->',
+  'Lietuvos policija ir Kriminalinės policijos biuras (15min, 2025-12-31): Interpolas pinigų neprašo ir skundų iš žmonių nepriima. <!-- F184 F185 -->',
+  '„Luminor“ (2026-05-12): pakartotinis sukčiavimas; ką daryti iškart. <!-- F186 -->',
+  '„TF Bank“: ženklai ir dviejų klientų patirtys. <!-- F188 -->',
+  'Klaipėdos policija (LRT, 2025-04-29): 200 tūkst. ir dar 40 tūkst. eurų „virtualiems advokatams“. <!-- F189 -->',
+  'Policija (tv3.lt, 2022-09-23): rasta svetainė ir paskolinta banko sąskaita. <!-- F192 -->',
+  '„Swedbank“, Pinigų plovimo prevencijos kompetencijų centro duomenys (2025-08-28): grąžinta apie 2 %. <!-- F194 -->',
+  'Belgijos FSMA (2024-10-03), Šveicarijos NCSC (2025-12-23), Europos Komisija apie Europolo ir Eurojusto bylą (2026-07-27), JAV FBI (2023–2025): kaip tai veikia kitose šalyse. <!-- F195 F196 F197 F198 F199 -->',
+  'Policija: pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="„Padėsime susigrąžinti pinigus“: antra sukčių apgaulė – Suktas"
+  description="Po apgaulės skambina „teisininkas“, „tyrėjas“ ar „Interpolas“ ir žada susigrąžinti pinigus už mokestį? Tai antra apgaulė. Kaip ją atpažinti ir ką daryti."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-31</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Neseniai praradai pinigų per „investiciją“ ar kitą apgaulę. <!-- F14 F16 --> Po kelių savaičių ar vėliau paskambina ar parašo „teisininkas“, „finansų skyrius“, „tyrėjas“ ar net „Interpolo atstovas“: „Matome, kad buvote nukentėję, jūsų lėšos rastos.“ <!-- F187 F188 F191 F185 --> Dažnai jis žino, kiek praradai. <!-- F15 --> Kartais jį randi tu: per reklamą ar svetainę, kuri žada grąžinti pinigus. <!-- F185 F189 F192 --> Atsiranda viltis. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Nemokėk niekam, kas žada susigrąžinti tavo pinigus.')} />
+        <p set:html={nbHtml('<!-- F14 F15 F184 --> Padėk ragelį ir nutrauk ryšį. <!-- F190 --> Apie prarastus pinigus kalbėk su savo banku ir policija, kai kreipiesi tu: į banką – oficialiu numeriu, į policiją – per epolicija.lt. <!-- F13 F186 F190 F2 --> Pasakyk ir artimam žmogui. <!-- M --> Kortelė: <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: policija yra mačiusi net tokių atvejų, kai žmonės, jos įspėti, vėl užkimba ant to paties. <!-- F189 --> Daugiau nemokėk nė cento ir nutrauk ryšį. <!-- F190 --> Iškart skambink savo bankui: jis gali padėti sustabdyti pervedimus, užblokuoti korteles ir interneto banko prisijungimus. <!-- F186 F190 --> Jei įdiegei programą ar siuntei dokumento nuotrauką, pasakyk ir tai: vienam vyrui jo vardu po to buvo sudarytos kredito sutartys. <!-- F188 --> Pranešk policijai per epolicija.lt. <!-- F2 F186 --> Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Antrą kartą pinigų iš to paties žmogaus. <!-- F185 F14 --> Paprastai – mokesčio iš anksto: procentų nuo investuotos sumos arba nuo kelių šimtų iki tūkstančio ir daugiau eurų. <!-- F14 F15 F191 --> Kartais jam reikia ne mokesčio, o prieigos: programos, per kurią valdytų tavo kompiuterį, asmens dokumento ar naujos sąskaitos, į kurią „grįš“ pinigai. <!-- F188 F197 F199 --> Gavęs vieną mokestį, jis sugalvoja kitą arba dingsta. <!-- F192 F196 --> <strong class="stop">Sustabdymo vieta:</strong> pirmas mokestis. Nemokėk. <!-- F14 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Daug, ir tai jo stipriausias koziris. <!-- M --> Tokie „gelbėtojai“ paprastai žino tavo investavimo istoriją ir prarastas sumas. <!-- F15 --> Belgijos finansų priežiūros institucija rašo, kad tie patys sukčiai dažnai apgauna tą patį žmogų du kartus, ir gali parduoti aukų kontaktus kitiems sukčiams. <!-- F197 --> 2026 m. Europolo ir Eurojusto koordinuotas tyrimas išardė Albanijoje veikusį tinklą, kuris vėl susisiekdavo su žmonėmis, jau praradusiais pinigų per netikras platformas, ir siūlydavo juos „susigrąžinti“. <!-- F199 --> <strong class="stop">Sustabdymo vieta:</strong> jei jis žino tavo sumą, paklausk savęs, iš kur. <!-- F197 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Klaipėdos policija 2025 m. pasakojo apie per 80 metų vyrą, kuris investavimo apgaulėje prarado apie 200 tūkst. eurų, o paskui pats susirado „virtualius advokatus“ ir sumokėjo jiems dar 40 tūkst. <!-- F189 --> Tikras susigrąžinimas eina per banką ir policiją: 2022 m. bankai ir teisėsauga sustabdė ar grąžino apie 5 mln. iš 12 mln. eurų, kuriuos sukčiai išviliojo visais būdais, ne tik per investicijas. <!-- F193 --> Kuo greičiau kreipsiesi, tuo didesnė tikimybė sustabdyti ar atsekti bent dalį pinigų. <!-- F186 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/piramide/">{nb('Kas yra finansinė piramidė')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a>, <a href="/scenarijai/padesime-atsiimti-pensija/">{nb('„Padėsime atsiimti pensiją“')}</a>, <a href="/scenarijai/bureja-praso-dar/">{nb('Būrėja prašo vis daugiau pinigų')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-31. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

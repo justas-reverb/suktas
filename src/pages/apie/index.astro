@@ -1,0 +1,67 @@
+---
+/**
+ * Apie: who writes the site, what it is not, how to correct it, how it is built. The copy is
+ * docs/copy/apie.md, word for word.
+ */
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import Contact from '../../components/Contact.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+
+const built = [
+  'Nieko nesaugome tavo naršyklėje. <!-- pažadas -->',
+  'Nieko neįkeliame iš kitų serverių. <!-- pažadas -->',
+  'Jokio sekimo ir svetimos analitikos: apsilankymus be slapukų skaičiuoja tik mūsų pačių skaitiklis (<a href="/privatumo-pranesimas/#ka-skaiciuojame">kaip</a>). <!-- pažadas -->',
+  'Puslapiai veikia ir be „JavaScript“. <!-- pažadas -->',
+  'Kaip patikrinti savarankiškai: <a href="/privatumo-pranesimas/">Privatumo pranešimas</a>. <!-- pažadas -->',
+  'Svetainės kodas, kiekvienas faktas su šaltiniu ir puslapių tekstai vieši: <a href="https://github.com/justas-reverb/suktas">„GitHub“</a>. <!-- pažadas -->',
+];
+---
+<Page
+  title="Apie – Suktas"
+  description="Kas rašo Suktą, ko mes nesame, kaip mus pataisyti ir kaip padaryta svetainė."
+>
+  <DocHead
+    title="Apie"
+    actions={[
+      ['Parašyk mums', '#kaip-pataisyti-mus'],
+      ['Mūsų pažadas', '/privatumo-pranesimas/', 'second'],
+    ]}
+  />
+
+  <article class="wrap doc">
+    <section class="doc-sec" aria-labelledby="kas-cia">
+      <h2 id="kas-cia">Kas čia</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Suktą rašo Justas Vaičekauskas. Kitus jo darbus rasi svetainėje <a href="https://sudievu.lt">sudievu.lt</a>. <!-- pažadas --> Savo telefone jis naudoja „GrapheneOS“. <!-- pažadas -->')} />
+        <p set:html={nbHtml('Suktas – balsas tavo galvoje, kuris pirmas paklausia: „O jei čia apgaulė?“ Daugiau – <a href="/misija/">Misijoje</a>. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="ko-nesame">
+      <h2 id="ko-nesame">Ko mes nesame</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Mes nesame įsilaužimo mokykla. Kaip to mokytis teisėtai, pasakoja kiti, ne mes. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kaip-pataisyti-mus">
+      <h2 id="kaip-pataisyti-mus">Kaip mus pataisyti</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Jei radai klaidą, pasenusį faktą ar sakinį, kuris klaidina, parašyk: <a href="mailto:info@suktas.lt">info@suktas.lt</a>. <!-- pažadas --> Kiekvieną pataisymą užrašome puslapyje <a href="/kas-pasikeite/">Kas pasikeitė</a>. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kaip-padaryta">
+      <h2 id="kaip-padaryta">Kaip padaryta svetainė</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {built.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+  </article>
+  <Contact openers='a[href="#kaip-pataisyti-mus"], a[href^="mailto:info@suktas.lt"]' />
+</Page>

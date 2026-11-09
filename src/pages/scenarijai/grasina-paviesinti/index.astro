@@ -1,0 +1,218 @@
+---
+/**
+ * Scenarijus: „Mokėk arba paviešinsiu tavo nuotraukas“. The copy is docs/copy/scenarijai/grasina-paviesinti.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('„Mokėk arba paviešinsiu tavo nuotraukas“');
+
+const meta = [
+  ['Kanalas', 'socialinis tinklas, pažinčių programėlė ar el. paštas'],
+  ['Ko jis nori', 'tavo pinigų arba daugiau nuotraukų'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const first = [
+  '<strong>Tau dar nėra 18?</strong> Paskambink į <strong><a href="tel:116111">Vaikų liniją 116 111</a></strong>: kasdien 11–23 val., nemokamai. Vardo sakyti nebūtina, o tavo numerio jie nemato. Rašyti galima kasdien 14–23 val. <a href="https://www.vaikulinija.lt/vaikams-paaugliams/pagalba-pokalbiais-internetu/">pokalbiuose internetu</a>. <!-- F540 --> Papasakok ir suaugusiam, kuriuo pasitiki, nors tai ir baisu. <!-- F541 F554 --> Ką papasakosi, lieka konfidencialu, išskyrus du atvejus, kuriuos nurodo pati Vaikų linija: pavojų tavo gyvybei (tada skambutį sujungia su 112) ir labai sunkų nusikaltimą, apie kurį sužino. Ar tai liečia šantažą, jų puslapyje neparašyta, todėl gali paklausti iš karto, dar prieš pradedant pasakoti. <!-- F540 M -->',
+  '<strong>Naktis, ir Vaikų linija nedirba?</strong> Jei tau jau 16, Jaunimo linija <strong><a href="tel:080028888" class="nw">0 800 28 888</a></strong> atsiliepia visą parą, o jei gresia pavojus, skambink <strong><a href="tel:112">112</a></strong>. Nieko nemokėk ir nesiųsk, o nuo 11 val. paskambink. Nuo 8 val. (išskyrus sekmadienį) vaikams atsiliepia ir Vaiko teisių linija <strong><a href="tel:080010800" class="nw">0 800 10800</a></strong>. <!-- F545 F544 F543 M -->',
+  '<strong>Atrodo, kad išeities nėra, arba bijai, kad gali sau pakenkti?</strong> Išeitis yra, ir nereikia su tuo likti vienumoje. Skambink <strong><a href="tel:112">112</a></strong> bet kuriuo paros metu arba, jei taip lengviau, į Jaunimo liniją <strong><a href="tel:080028888" class="nw">0 800 28 888</a></strong> (16–35 m.) ar Vilties liniją <strong><a href="tel:116123">116 123</a></strong>: abi atsiliepia visą parą. Pasakyk ir žmogui, kuris yra šalia. <!-- F540 F544 F545 F558 M -->',
+  '<strong>Apie tai tau papasakojo tavo vaikas?</strong> Nekritikuok ir nekaltink, kad ir kaip viskas prasidėjo. Taip policija pataria tėvams, kai vaikas patiria patyčias internete, ir čia tai galioja taip pat. Neištrink žinučių vaiko telefone. Nemokėk ir pačių nuotraukų niekam nepersiųsk. <!-- F544 F559 M --> Patarimo galima prašyti <strong><a href="tel:080010800">Vaiko teisių linijoje <span class="nw">0 800 10800</span></a></strong>: pirmadieniais–šeštadieniais 8–20 val., nemokamai. <!-- F543 -->',
+  '<strong>Tau jau 16 ar daugiau?</strong> Jaunimo linija <strong><a href="tel:080028888" class="nw">0 800 28 888</a></strong> (16–35 m.) ir suaugusiems skirta Vilties linija <strong><a href="tel:116123">116 123</a></strong> atsiliepia visą parą, abi nemokamos. <!-- F545 -->',
+];
+
+const signs = [
+  ['Nuotraukų prašo žmogus, kurio gerai nepažįsti.', 'Ukmergės policija tarp pagrindinių pavojų vaikams internete vardija prašymus siųsti nuotraukas, ypač asmeninio pobūdžio. <!-- F554 M -->'],
+  ['Grasina parodyti kitiems.', 'Draugams, giminaičiams ar pažįstamiems, jei nesumokėsi. <!-- F551 F552 -->'],
+  ['Prašymai nesibaigia.', 'Nusiuntus vieną nuotrauką, prašoma vis daugiau. <!-- F555 -->'],
+];
+
+const steps = [
+  '<strong>Daugiau nemokėk ir nieko nesiųsk.</strong> Nesiderėk ir nebeatsakinėk. NCA pataria: jei sumokėjai, nepanikuok, bet daugiau nemokėk. <!-- F559 F541 -->',
+  '<strong>Išsaugok įrodymus, tada užblokuok jį.</strong> Išsaugok žinutes, ekrano nuotraukas su grasinimais, jo profilio nuorodą ir mokėjimų duomenis. Pačios nuotraukos niekam nepersiųsk. Neištrink nei žinučių, nei savo paskyros: jų gali prireikti, kad jį būtų galima sustabdyti. <!-- F541 F547 F558 M -->',
+  '<strong>Kreipkis į policiją</strong> per epolicija.lt ar komisariate, o kai skubu – <a href="tel:112">112</a>. Pridėk tai, ką išsaugojai. <!-- F544 F547 F553 F2 --> Žinome tiek: vienoje 2025 m. byloje teismas taip šantažuotus suaugusius vyrus laikė nukentėjusiaisiais. <!-- F552 --> Neradome Lietuvos institucijos puslapio, kuris tiesiai pasakytų, ar vaikas gali kreiptis be suaugusiojo ir kaip policija vertina žmogų, nusiuntusį savo nuotrauką, todėl pažadėti negalime. <!-- M --> Neramu? Pirma paklausk Vaikų linijos ar suaugusio, kuriuo pasitiki. <!-- F540 M -->',
+  '<strong>Jau pervedei pinigų?</strong> Iškart kreipkis į savo banką numeriu iš oficialios svetainės ar programėlės. <!-- F13 M --> Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.',
+  '<strong>Nuotrauka jau matoma viešai?</strong> Pranešk apie ją toje platformoje jos įrankiais ir kreipkis į svetainės administratorių. <!-- F541 F546 F547 --> Nepadeda? Pranešk RRT interneto karštajai linijai <a href="https://www.svarusinternetas.lt/pranesk/1">svarusinternetas.lt</a>, galima ir anonimiškai: specialistai įvertina pranešimą ir padeda siekti, kad turinys būtų pašalintas. Privataus susirašinėjimo RRT atidaryti negali, todėl su išsaugotomis žinutėmis kreipkis į policiją. <!-- F546 F547 --> Vaiko atveju į platformas gali kreiptis ir Vaikų linija per savo <a href="https://www.vaikulinija.lt/patikimas-pranesejas/">patikimo pranešėjo paslaugą</a>, bet tai nėra automatinis pašalinimas. <!-- F542 --> Nuotraukoms, darytoms, kai tau dar nebuvo 18, Vaikų linija <a href="https://www.vaikulinija.lt/vaikams-paaugliams/sekstingas-ir-nudes-ka-svarbu-apie-tai-zinoti/">nurodo</a> užsienio įrankį „Take It Down“, o vėlesnėms yra užsienio <a href="https://stopncii.org/">„StopNCII“</a>. Jie veikia tik tose platformose, kurios prie jų prisijungė, o ne visame internete. <!-- F541 F558 -->',
+];
+
+const levers = [
+  ['Gėda.', 'RRT sako, kad šantažuotojas naudojasi žmogaus baime ir gėda. <!-- F549 --> Asociacijos „Lygiai“ vadovė LRT sako, kad auka visuomenėje stipriai kaltinama, todėl norisi tylėti, o tyla jam naudinga. <!-- F555 M --> Vaikui apie tai pasakyti ypač sunku, jei bijo tėvų reakcijos arba kaltina save. <!-- F549 --> Jei taip jauti, tai nereiškia, kad kaltė tavo. <!-- F541 M -->'],
+  ['Baimė.', 'Kad pamatys visi, kuriuos pažįsti. <!-- F551 F552 --> Iš baimės mokėjimas atrodo vienintelis kelias, nors sumokėjus garantijų nėra, kad grasinimai baigsis. <!-- F553 F559 M -->'],
+];
+
+const sides = [
+  ['Reikalauja mokėti, kitaip pamatys visi', 'Nemokėk: sumokėjus garantijų nėra. <!-- F553 F559 -->'],
+  ['Prašo atsiųsti dar vieną', 'Nesiųsk: prašoma vis daugiau. <!-- F541 F555 -->'],
+  ['Tikisi, kad kaltinsi save', 'Kaltas tas, kuris grasina. <!-- F541 F558 M -->'],
+  ['Tikisi, kad niekam nesakysi', 'Pasakyk suaugusiam, kuriuo pasitiki, arba paskambink į pagalbos liniją. <!-- F541 F554 F540 M -->'],
+  ['Tikisi, kad iš gėdos viską ištrinsi', 'Neištrink: išsaugok ir pridėk prie pranešimo policijai. <!-- F541 F547 F558 M -->'],
+  ['Laiškas, kurio siuntėjas neva viską apie tave žino', 'Pasak „ESET Lietuva“, neatrašyk, nespausk nuorodų ir nemokėk. <!-- F556 -->'],
+];
+
+const sources = [
+  'Vaikų linija (vaikulinija.lt, 2023-11-15, atnaujinta 2024-10-08; 2024-10-13, atnaujinta 2025-11-24): darbo laikas, konfidencialumas ir jo ribos; „ne tavo kaltė“, ką išsaugoti; patikimo pranešėjo paslauga. <!-- F540 F541 F542 -->',
+  'Vaiko teisių linija (vaikoteises.lrv.lt, atnaujinta 2026-08-11), Jaunimo linija ir Vilties linija: telefonai, darbo laikas ir kam jie skirti. <!-- F543 F545 -->',
+  'Policija (policija.lrv.lt, 2026-02-05 ir 2026-10-20; Kauno diena, 2026-05-20): kur pranešti, kaip kalbėtis su vaiku, prašymai siųsti nuotraukas. <!-- F544 F554 F2 -->',
+  'RRT (svarusinternetas.lt; tv3.lt, 2026-10-20): karštoji linija, kas viešai ir kas privatu, kiek pranešimų gauta. <!-- F546 F547 F548 F549 -->',
+  'Policija ir teismas per BNS (tv3.lt, 2024-04-24 ir 2023-03-01; Kauno diena, 2025-09-23): atvejai ir sumos. <!-- F550 F551 F552 -->',
+  '15min (2026-08-18) ir LRT (2022-12-04): nemokėti; vis daugiau nuotraukų; kaltinimai nukentėjusiesiems. <!-- F553 F555 -->',
+  '„ESET Lietuva“ (be datos): masiniai laiškai. Tai privati bendrovė, oficialaus Lietuvos šaltinio šiuo klausimu neradome. <!-- F556 -->',
+  'Užsienis: NCMEC (JAV), „StopNCII“ (Didžioji Britanija), NCA (Didžioji Britanija, 2024-04-29, dabar pažymėta kaip nebeaktuali). Lietuvos situacijos jie neaprašo. <!-- F558 F559 -->',
+  'Lietuvos bankas (2021-07-09): banką pasiekti per oficialią programėlę ar svetainę. <!-- F13 -->',
+];
+---
+<Page
+  title="Grasina paviešinti tavo nuotraukas? Ką daryti – Suktas"
+  description="Kažkas reikalauja pinigų ar daugiau nuotraukų ir grasina jas paviešinti? Tai ne tavo kaltė. Nemokėk. Kur kreiptis vaikui ir suaugusiam, ką išsaugoti ir kaip tai sustabdyti."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-04</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Pirmiausia</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('<strong>Tai ne tavo kaltė.</strong> Vaikų linija sako tiesiai: niekas neturi teisės platinti tavo nuotraukų be tavo sutikimo, o jei jomis pasidalinta, tai ne tavo kaltė. <!-- F541 --> JAV centras NCMEC priduria: kaltas šantažuotojas, net jei dėl savo sprendimo dabar gailiesi. Tai, ką jis daro, yra nusikaltimas: Lietuvoje teismas už tai jau yra nuteisęs žmogų. <!-- F558 F552 -->')} />
+          <p class="lead" set:html={nbHtml('<strong>Nemokėk, nieko daugiau nesiųsk ir neištrink žinučių. Pasakyk žmogui, kuriuo pasitiki.</strong> <!-- F541 F553 F558 -->')} />
+          <ul class="row-list">
+            {first.map((s) => <li set:html={nbHtml(s)} />)}
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Kažkas, su kuo susipažinai socialiniame tinkle ar pažinčių programėlėje, o kartais ir buvęs partneris ar partnerė, grasina parodyti tavo intymias nuotraukas ar įrašą draugams, artimiesiems ir pažįstamiems. <!-- F550 F551 F552 F553 F555 --> Reikalauja pinigų arba daugiau nuotraukų. <!-- F549 --> Pasak policijos, Tauragėje 2024 m. iš vyro reikalauta 8,5 tūkst. eurų, o Šiauliuose 2023 m. iš kito – daugiau kaip 8 tūkstančių eurų į nurodytą sąskaitą. <!-- F550 F551 --> Taip šantažuojami ir vaikai, ir suaugusieji. <!-- F549 --> Smurtą internete patiria ne tik moterys ir mergaitės, bet ir vyrai bei berniukai, o Didžiojoje Britanijoje NCA rašo, kad didelėje dalyje atvejų nukentėjo 14–18 metų vaikinai. <!-- F555 F559 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Nemokėk ir nesiųsk daugiau nuotraukų. Išsaugok žinutes ir pasakyk žmogui, kuriuo pasitiki. <!-- F541 F553 -->')} />
+        <p set:html={nbHtml('Saugumo ekspertas Marius Pareščius pataria niekada nemokėti, nes nuotraukas vis tiek gali paviešinti, ir iškart kreiptis į policiją. <!-- F553 --> Didžiosios Britanijos nusikaltimų agentūra NCA perspėja: sumokėjus garantijų nėra, o pamatęs, kad tu gali mokėti, šantažuotojas greičiausiai paprašys daugiau. <!-- F559 --> Niekas negali pažadėti, kad jis grasinimo neįvykdys: Šiauliuose vieno vyro įrašas iš tikrųjų buvo išsiųstas pažįstamiems. <!-- F551 --> Bet ir sumokėjus tokio pažado niekas neduoda, o jei taip nutiktų, vis tiek yra ką daryti: žingsniai žemiau. <!-- F553 F559 M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Sumokėjai, nusiuntei daugiau ar jis jas jau paviešino? Tai gali nutikti bet kam, ir tai nėra gėda. Žingsniai 2 ir 3 tinka ir tada, kai jis kol kas tik grasina. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+      </section>
+
+      <div class="row">
+        <h3>Dar verta žinoti</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Kiek tokių atvejų iš viso, nežinome: Lietuvos policijos skaičiaus neradome. Nuotrauka gali būti ir netikra, sukurta dirbtiniu intelektu, bet RRT 2026 m. spalį sakė gavusi tik keletą pranešimų apie tokį šantažą, o tokių klastočių bangos kol kas nefiksuoja. <!-- F548 --> Ėjimas tas pats. <!-- M -->')} />
+          <p set:html={nbHtml('Yra ir kitas variantas: el. laiškas, kurio siuntėjas neva turi apie tave intymios informacijos. Pasak antivirusines programas parduodančios „ESET Lietuva“, tokie masiniai laiškai tėra bandymas šantažuoti nieko apie tave neturint, nors tikrų atvejų pasitaiko. Nemokėk, neatrašyk ir nespausk nuorodų, o jei laiške minimas tavo slaptažodis, kuo greičiau jį pakeisk: <a href="/scenarijai/slaptazodis-nutekejo/">Slaptažodis nutekėjo</a>. <!-- F556 -->')} />
+        </div>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="tel:116111">{nb('Skambink Vaikų linijai 116 111 (11–23 val.)')}</a>
+        <a class="btn btn--second" href="/jei-apgavo/#pinigai">{nb('Jei jau pervedei')}</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">{nb('Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.')}</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Pinigų arba daugiau nuotraukų. <!-- F549 --> Kai pamato, kad tu gali mokėti, greičiausiai paprašys daugiau, perspėja NCA (Didžioji Britanija). <!-- F559 --> <strong class="stop">Sustabdymo vieta:</strong> kitas tavo „ne“, net jei jau kartą sumokėjai. Daugiau jis negauna nei pinigų, nei nuotraukų. <!-- F541 F553 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tai, ką matė tavo profilyje, ir tai, ką nusiuntei. <!-- M --> Todėl grasina parodyti tiems, kurių nuomonė tau svarbi: draugams, giminaičiams, pažįstamiems. <!-- F551 F552 --> Taikiniu gali tapti ir vaikas, ir suaugęs žmogus. <!-- F549 F555 --> <strong class="stop">Sustabdymo vieta:</strong> žmogus, kuriam pasakai. Kai artimas jau žino, grasinimui lieka mažiau jėgos. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> pasakyti sunku, bet būtent tai atima iš jo daugiausia jėgos. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead><tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr></thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr><td data-label="Jo triukas" set:html={nbHtml(his)} /><td data-label="Tavo atsakymas" set:html={nbHtml(yours)} /></tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/meile-internete/">{nb('Meilė internete, kuri prašo pinigų')}</a>, <a href="/scenarijai/draugas-praso-pinigu/">{nb('„Draugas“ prašo pinigų')}</a></li>
+        </ul>
+      </section>
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-04. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+      <Share />
+    </footer>
+  </article>
+</Page>

@@ -1,0 +1,91 @@
+---
+/**
+ * Sustok kortelė: Kodų ir PIN niekam nesakyk. The copy is docs/copy/sustok/kodai-ir-pin.md,
+ * word for word. Built like the QR card: the Scenarijus parts, one layer only.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Kodų ir PIN niekam nesakyk');
+
+const sources = [
+  '„Smart-ID“ sako, kad niekada neprašo PIN kodų, net „tik paskutinių dviejų skaitmenų“; PIN1 skirtas prisijungti, PIN2 – patvirtinti operacijas ir pasirašyti, ir juos reikia įvesti tik programėlėje. <!-- F30 F31 -->',
+  'Prašymas, kurio nepradėjai: „Atšaukti“; prieš PIN patikrink veiksmą ir paslaugą. <!-- F32 F35 -->',
+  'Kampanija „Padėk ragelį“: pareigūnai neprašo asmens kodo, bankininkystės slaptažodžių ar kortelės duomenų. <!-- F25 -->',
+  'NKSC, 2026-07-13: pokalbių programėlių paskyrų perėmimas; neatskleisti SMS kodų, programėlės PIN ir atkūrimo raktų. <!-- F41 F42 -->',
+];
+---
+<Page
+  title="Kodų ir PIN niekam nesakyk – Suktas"
+  description="Kai kas nors prašo kodo, PIN ar patvirtinti tai, ko nepradėjai: nesakyk ir neįvesk niekur, kur to prašo paskambinęs ar parašęs žmogus."
+  current="sustok"
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/sustok/">Visi įpročiai</a></p>
+        <h1>{title}</h1>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Kada</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Kai kas nors prašo kodo, PIN ar „patvirtinti“ tai, ko nepradėjai tu: skambinantis „bankininkas“, „pareigūnas“ ar net „pažįstamas“ per pokalbių programėlę. <!-- F25 F30 F41 -->')} />
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="daryti">
+        <h2 id="daryti">Ką daryti</h2>
+        <p class="move__line" set:html={nbHtml('Kodų, slaptažodžių ir PIN nesakyk ir neįvesk niekur, kur to prašo tau paskambinęs ar parašęs žmogus.')} />
+        <p set:html={nbHtml('<!-- F25 F26 F30 F42 --> Jei „Smart-ID“ prašo PIN, nors nieko nepradėjai, spausk „Atšaukti“; o prieš įvedant PIN patikrink, ar programėlėje rodomi veiksmas ir paslauga sutampa su tais, kuriuos pradėjai. <!-- F32 F35 -->')} />
+      </section>
+
+      <div class="row">
+        <h2>Kodėl tai veikia</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Tikras bankas, pareigūnas ar „Smart-ID“ šių duomenų neprašo, todėl pats prašymas parodo, kad skambina ne tas, kuo apsimeta. <!-- F25 F26 F30 -->')} />
+        </div>
+      </div>
+
+      <div class="row row--last">
+        <h2>Kur jis tai bando</h2>
+        <div class="row__body">
+          <ul>
+            <li><a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a></li>
+            <li><a href="/scenarijai/zinute-su-kodu/">{nb('Žinutė su kodu')}</a></li>
+            <li><a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a></li>
+            <li><a href="/scenarijai/paskola-tavo-vardu/">{nb('Paskola tavo vardu, kurios neėmei')}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="/scenarijai/zinute-su-kodu/">Pamatyk, kaip jis tai bando</a>
+        <a class="btn btn--second" href="/sustok/">Kitos kortelės</a>
+      </div>
+
+      <section class="box" aria-labelledby="padarei">
+        <h2 id="padarei">Jei jau prisigavai</h2>
+        <p set:html={nbHtml('Jei kodą ar PIN jau pasakei, skambink bankui numeriu iš oficialios programėlės: <a href="/jei-apgavo/#kodai">Jei tave apgavo: pasakiau ar įvedžiau kodą</a>.')} />
+      </section>
+    </section>
+
+    <footer class="scn-foot wrap">
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p>Patikrinta: <span class="nw">2026-10-24</span>.</p>
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

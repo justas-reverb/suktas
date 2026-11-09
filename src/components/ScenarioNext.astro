@@ -1,0 +1,36 @@
+---
+/**
+ * The foot of every scenario: the next one in the catalogue's order as a card that says what it is,
+ * the one before it, and the channels to jump to, so a reader who finishes always has somewhere to go.
+ */
+import Chooser from './Chooser.astro';
+import { nb } from '../lib/typo.js';
+interface Props { spot: { s: any; prev: any; next: any } }
+const { spot: { s, prev, next } } = Astro.props;
+const sameChannel = next && next.channel === s.channel;
+---
+<section class="up" aria-labelledby="up-h">
+  <div class="up__in wrap">
+    <h2 id="up-h" class="up__h">Kas toliau?</h2>
+    {next ? (
+      <a class="up__card" href={next.href} rel="next">
+        <span class="up__kicker">Kita apgaulė · {sameChannel ? `${nb(next.channel.name)}, ${next.n} iš ${next.channel.items.length}` : `${nb(next.channel.name)}`}</span>
+        <strong class="up__title">{nb(next.title)}</strong>
+        <span class="up__text">{nb(next.text)}</span>
+        <span class="up__time">{next.time}</span>
+      </a>
+    ) : (
+      <a class="up__card" href="/scenarijai/">
+        <span class="up__kicker">Tai paskutinė</span>
+        <strong class="up__title">Visos apgaulės vienoje vietoje</strong>
+        <span class="up__text">Grįžk prie sąrašo ir pasirink pagal tai, kas tavęs neramina.</span>
+      </a>
+    )}
+    <p class="up__back">
+      {prev && <a href={prev.href} rel="prev">← {nb(prev.title)}</a>}
+      <a href="/scenarijai/">Visos apgaulės</a>
+    </p>
+    <p class="up__sub">Kas dar tau nutiko?</p>
+    <Chooser label="Pagal tai, kas tavęs neramina" here={s.channel.slug} urgent />
+  </div>
+</section>

@@ -1,0 +1,213 @@
+---
+/**
+ * Scenarijus: reklama nuveda į „Telegram“ grupę, o ten auga „pelnas“. The copy is
+ * docs/copy/scenarijai/investicijos-telegram.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Reklama kviečia į „Telegram“, o ten auga „pelnas“');
+const meta = [
+  ['Kanalas', 'reklama, „Telegram“ grupė ir pokalbis'],
+  ['Ko jis nori', 'kad „investuotum“ vis daugiau'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Investuoti kviečia pokalbių programėlėje.', 'Lietuvos bankas perspėja, kad socialiniuose tinkluose ir susirašinėjimo programėlėse, pavyzdžiui, „Telegram“, siūloma investuoti per nelegaliai veikiančias platformas. <!-- F746 -->'],
+  ['Pelnas auga, kiti grupės nariai giriasi uždarbiu.', 'Lietuvos bankas apie tokius rezultatus sako: „Jie netikri“. <!-- F462 --> Net pervesta „grąža“ nieko neįrodo: taip įgyjamas pasitikėjimas. <!-- F471 F740 --> Apie „Telegram“ grupes su užduotimis už pinigus SEB rašo, kad kai kurie dalyviai drąsina kitus rodydami neva gautus mokėjimus. <!-- F414 -->'],
+  ['Tau priskiria asmeninį „konsultantą“, ir jis skubina.', 'Asmeninio konsultanto (brokerio) priskyrimą Lietuvos bankas mini tarp to, kuo vilioja nelegalios platformos. <!-- F746 --> Spaudimą apsispręsti čia ir dabar „Luminor“ vadina vienu dažniausių investicinio sukčiavimo požymių. <!-- F744 -->'],
+];
+
+const steps = [
+  '<strong>Įdiegei jo nurodytą programą ir leidai valdyti įrenginį?</strong> Pirma išjunk „Wi-Fi“ ir mobiliuosius duomenis, o bankui skambink iš kito, saugaus įrenginio: <a href="/jei-apgavo/#nuotolinis">Įdiegiau programą</a>. <!-- F305 M -->',
+  '<strong>Skambink bankui dabar</strong> numeriu iš oficialios programėlės ar svetainės ir prašyk sustabdyti pavedimus: Lietuvos bankas sako, kad kai kuriais atvejais tai dar įmanoma. <!-- F13 F474 --> Papasakok viską, ir ką „konsultantas“ liepė sakyti bankui. <!-- F471 F740 M -->',
+  '<strong>Iškart po to išsaugok pokalbį.</strong> Padaryk ekrano nuotraukas, užsirašyk „konsultanto“ ir grupės vardus bei naudotojo vardus (@…), platformos adresą ir sąskaitą, į kurią pervedei: „Telegram“ leidžia žinutes ištrinti abiem pusėms, tad jis gali jas ištrinti ir tavo telefone. <!-- F752 F418 M -->',
+  '<strong>Daugiau nė cento,</strong> ir jokio „mokesčio“ už pinigų atsiėmimą: mokestis pinigų negrąžina. <!-- F466 F190 F353 --> Į jo žinutes nebeatsakinėk. <!-- M -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, o apie svetainę ar programėlę – <a href="https://www.lb.lt/lt/pakliuvau-sukciams-ka-daryti">ir Lietuvos bankui</a>. <!-- F2 F190 F474 -->',
+  '<strong>Kai pokalbį jau išsaugojai, pranešk apie paskyrą „Telegram“</strong> programėlės mygtuku „Report“ (pranešti): „Telegram“ sako, kad paskyros, apie kurias pranešta, gali rašyti tik tiems, kurie turi jų numerį išsisaugoję. <!-- F752 --> Pokalbio netrink. <!-- M -->',
+  '<strong>Nemokėk tiems, kas siūlo pinigus susigrąžinti.</strong> Lietuvos bankas sako, kad tai dar viena apgaulė. <!-- F14 F15 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.',
+];
+
+const levers = [
+  ['Nauda.', 'Pelnas ekrane priverčia skaičiuoti, o ne abejoti. <!-- F743 F744 M -->'],
+  ['Autoritetas.', '„Konsultantas“, profesionali platforma ir kitų „sėkmė“ atrodo kaip įrodymas. <!-- F740 F744 F414 M -->'],
+  ['Skuba.', 'Apsispręsti reikia čia ir dabar. <!-- F744 -->'],
+];
+
+const sides = [
+  ['Reklama kviečia į „Telegram“ grupę', 'Investuoti per pokalbių programėlę – ženklas, ne galimybė. Uždaryk. <!-- F746 M -->'],
+  ['Grupėje kiti giriasi uždarbiu', 'Tai nieko neįrodo: apie „Telegram“ grupes su užduotimis už pinigus SEB rašo, kad kai kurie dalyviai drąsina kitus neva gautais mokėjimais. Daugiau nepervesk. <!-- F414 M -->'],
+  ['„Konsultantas“ su lietuvišku vardu, gražiu profiliu, net trumpu pokalbiu vaizdu', '„Luminor“: tai dar nėra patikimumo įrodymas. Įmonę tikrink Lietuvos banko sąraše. <!-- F743 F118 -->'],
+  ['„Patvirtintas“ profilis su ženkleliu', '„Telegram“ šiuo metu asmenų paskyrų netikrina: patvirtinimą gauna tik dideli oficialūs kanalai, grupės ir botai. Ženklelis prie žmogaus vardo – ne „Telegram“ patvirtinimas. Leidimą siūlyti investicijas rodo tik Lietuvos banko sąrašas. <!-- F750 F118 M -->'],
+  ['Žada garantuotą pelną, nes „prekiauja DI“', 'ES vertybinių popierių priežiūros institucija ESMA perspėja, kad tokios platformos gali būti sukčiai. Lietuvos bankas: „Didelės grąžos be rizikos nebūna.“ Uždaryk ir nepervesk. <!-- F755 F104 M -->'],
+  ['Pelnas auga platformoje', 'Lietuvos bankas sako, kad tokie rezultatai netikri. Daugiau nepervesk. <!-- F462 M -->'],
+  ['Pervedė dalį „grąžos“', 'Taip kuriamas pasitikėjimas. Daugiau nepervesk ir patikrink įmonę. <!-- F471 F740 M -->'],
+  ['Skubina apsispręsti čia ir dabar', '„Luminor“: tai vienas dažniausių požymių. Uždaryk pokalbį. <!-- F744 M -->'],
+  ['Moko, ką sakyti bankui', 'SEB: joks finansų brokeris nemokys, kaip kalbėti su banko specialistais. Papasakok bankui viską. <!-- F471 M -->'],
+  ['Kad atsiimtum, reikia sumokėti mokestį', 'Nemokėk. Net sumokėjus pinigų atgauti nepavyks. <!-- F353 F744 -->'],
+  ['Profilyje žyma SCAM ar FAKE', 'Sustok: taip „Telegram“ gali pažymėti apsimetėlius ir sukčius. Bet ir be žymos paskyra gali būti sukčių. <!-- F751 M -->'],
+  ['Siūlo atgauti prarastus pinigus', 'Nemokėk: Lietuvos bankas sako, kad tai dar viena apgaulė. <!-- F14 F15 -->'],
+];
+
+const sources = [
+  'Lietuvos bankų asociacija (2023-12-15): „Telegram“ grupės, „konsultantai“, „grąža“, mokymas, ką sakyti bankui. <!-- F740 -->',
+  'Policija (15min, 2026-02-19; LRT, 2025-11-12; tv3.lt, 2026-09-25; 2026-02-05, atnaujinta 2026-04-23): kas rašo, atvejai, epolicija.lt. <!-- F741 F747 F2 -->',
+  '„Tele2“ (15min, 2026-03-13): DI agentai pokalbių programėlėse. <!-- F742 -->',
+  '„Luminor“ (15min, 2026-09-15 ir 2026-09-23; alkas.lt, 2024-04-22 ir 2026-10-28): pelnas ekrane, mokesčiai, skuba, DI kuriami profiliai, išsaugoti susirašinėjimą, programa ir ryšio išjungimas. <!-- F743 F744 F418 F305 -->',
+  '„Revolut“ (15min, 2026-02-26): „Telegram“ dalis tarp bendrovės klientų praneštų atvejų. <!-- F745 -->',
+  'Lietuvos bankas (2020-02-12, 2020-06-03, 2021-07-09, 2023-07-03, 2024-10-28, 2025-07-08, 2026-03-27, 2026-04-14, 2026-07-30): pokalbių programėlės, asmeninis konsultantas, finansų rinkos dalyvių ir nelegalių įmonių sąrašai, netikri rezultatai, ką daryti, antras apgavimas. <!-- F13 F14 F15 F104 F118 F190 F462 F465 F469 F474 F746 -->',
+  'Živilė Kielienė, Pinigų plovimo prevencijos kompetencijų centras (15min, 2026-09-10; LRT, 2025-08-29): ko klausia, ką daryti, sumos. <!-- F463 F466 F467 -->',
+  'SEB (2023-10-23, 2025-10-24): pervedama „grąža“, mokymas, ką sakyti bankui, grupių dalyviai. <!-- F471 F414 -->',
+  '„Swedbank“ (be datos): mokesčiai pinigų negrąžina. <!-- F353 -->',
+  '„Telegram“ (be datos, skaityta 2026-11-07): žyma „bot“, patvirtinimas, žymos SCAM ir FAKE, pranešimas apie paskyrą, žinučių trynimas. <!-- F749 F750 F751 F752 -->',
+  'Užsienio šaltiniai: JAV FTB (2025-07-03), ES institucija ESMA (be datos). <!-- F754 F755 -->',
+];
+---
+<Page
+  title="Investiciniai sukčiai „Telegram“ grupėse: kas tau rašo – Suktas"
+  description="Reklama nuvedė į „Telegram“ grupę, o „konsultantas“ rodo augantį pelną? Kas iš tikrųjų rašo, trys ženklai ir vienas ėjimas."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Reklama „Facebook“ ar „Instagram“ žada greitą uždarbį ir nuveda į „Telegram“ pokalbių grupę. <!-- F740 F743 --> Grupėje rašo „investavimo konsultantai“, prisistatantys lietuviškais vardais ir pavardėmis, o grupių pavadinimai nuolat keičiasi. <!-- F740 --> Tau rodo pelno pavyzdžius, pasakoja sėkmės istorijas ir ragina pradėti nuo nedidelės sumos. <!-- F743 -->')} />
+          <p set:html={nbHtml('Paskui atsiranda profesionaliai atrodanti svetainė ar programėlė, kurioje tavo „pelnas“ auga. <!-- F744 --> Būna, kad pirmoji „grąža“ net pervedama į sąskaitą, kad patikėtum ir pervestum daugiau. <!-- F471 F740 --> Kai nori pinigus atsiimti, reikia sumokėti „mokestį“, arba „konsultantai“ tiesiog dingsta. <!-- F743 F744 F465 -->')} />
+          <p set:html={nbHtml('<strong>Kas tau rašo?</strong> „Konsultantas“ su lietuvišku vardu yra tariamas: rašyti gali samdomas žmogus, dirbtinis intelektas (DI) ar abu. <!-- F740 F741 F742 --> Spręsti pagal jį neverta: „Luminor“ sako, kad nei gražus profilis, nei taisyklinga kalba, nei trumpas pokalbis vaizdu patikimumo neįrodo. <!-- F743 --> Tikrink ne jį, o įmonę. <!-- M --> Kas bebūtų, pinigai keliauja tuo pačiu keliu, o tavo ėjimas tas pats. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Per pokalbį – nė cento. <!-- F466 M -->')} />
+        <p set:html={nbHtml('Įmonę, kuriai mokėtum, susirask <a href="https://www.lb.lt/lt/finansu-rinku-dalyviai">Lietuvos banko finansų rinkos dalyvių sąraše</a>, o su ja kalbėk tik per jos oficialią svetainę, ne per nuorodas iš grupės. <!-- F118 F466 M --> Pavadinimas turi sutapti tiksliai. <!-- F746 --> Jei sąraše jos nėra, nepervesk, net jei „konsultantas“ sako, kad leidimą ji turi iš kitos ES šalies: uždaryk pokalbį ir pasitark su savo banku ar policija. <!-- F469 F466 F740 M --> Kortelė: <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>.')} />
+        <p set:html={nbHtml('Lietuvos bankas skelbia ir sąrašą įmonių, neturinčių teisės Lietuvoje teikti finansinių paslaugų; 2025 m. liepą jame buvo daugiau kaip 300 įmonių. <!-- F746 --> Bet jei įmonės ten nėra, tai dar nieko neįrodo: naujos grupės ir pavadinimai atsiranda nuolat. <!-- F118 F740 M --> Abejoji? Parodyk pokalbį artimam žmogui. <!-- F466 --> Iš šalies matyti lengviau. <!-- M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau pervedei pinigus</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Veik iškart:')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kad pinigus pervestum tu, ir vis daugiau. <!-- F740 M --> Lietuvos bankų asociacija dar 2023 m. aprašė, kaip tai vyksta: keletą mėnesių žmogus mato įspūdingą „investicinę grąžą“, o įgijęs pasitikėjimą sukčius įtikina pervesti didesnes sumas, kurių nebegrąžina. <!-- F740 --> 2025 m. policija pranešė apie garbaus amžiaus panevėžietę, kuri „Telegram“ susipažino su investuoti siūliusiais žmonėmis ir per tris mėnesius neteko 25 238 eurų. <!-- F747 --> 2026 m. rugsėjį 2004 m. gimęs vyras Biržuose „Telegram“ rado skelbimą apie galimybę investuoti ir neteko 360 eurų. <!-- F747 --> Pinigų plovimo prevencijos kompetencijų centro duomenimis, 2025 m. dėl investicinio sukčiavimo gyventojai prarado daugiau kaip 4 mln. eurų. <!-- F467 --> <strong class="stop">Sustabdymo vieta:</strong> kiekvienas pavedimas. Sustoti galima ir po dešimto. <!-- F466 M -->')} />
+            <p set:html={nbHtml('„Revolut“ skelbia, kad 2025 m. „Telegram“ buvo sparčiausiai augantis sukčiavimo šaltinis tarp bendrovės klientų visame pasaulyje: tokių atvejų padaugėjo 233 %. <!-- F745 --> Lietuvoje 21 % bendrovės klientų praneštų įvairių sukčiavimo atvejų prasidėjo „Telegram“. <!-- F745 --> Tai vienos bendrovės klientų duomenys, ne visos Lietuvos. <!-- F745 M --> Kvietimas investuoti „Telegram“ jau yra ženklas: uždaryk pokalbį. <!-- F746 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tai, ką jam parodai: kad paspaudei reklamą, prisijungei prie grupės ir domiesi uždarbiu. <!-- M --> Kitką sužino kalbėdamas: kaip ir telefonu skambinantys „brokeriai“, gali klausti apie santaupas, pajamas ir kitus finansinius išteklius. <!-- F463 M --> <strong class="stop">Sustabdymo vieta:</strong> nepažįstamam žmogui pokalbyje nerašyk, kiek turi ir kiek uždirbi. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Grupė atrodo kaip bendruomenė: daug žmonių, kitiems sekasi, o „konsultantas“ atrodo kaip pagalbininkas, ne pardavėjas. <!-- M --> Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong>Kas rašo: žmogus ar programa?</strong> Ieškodami 2026-11-07 neradome Lietuvos atvejo, kuriame būtų nustatyta, kad „konsultantas“ buvo programa. <!-- M --> Policija sako, kad sukčiai apskritai samdo lietuviškai kalbančius darbuotojus ir pasitelkia DI, kad pokalbius pradėtų lietuviškai; didžiausiuose centruose dirba šimtai, kartais ir tūkstančiai žmonių. <!-- F741 --> „Tele2“ atstovas sako, kad DI agentus jau galima įdiegti į „Telegram“: tada vienas žmogus gali valdyti daugybę pokalbių, o auka gali net nesuprasti, kad bendrauja ne su žmogumi. <!-- F742 --> JAV Federalinis tyrimų biuras (FTB) perspėja, kad investavimo „klubų“ nariai gali būti botai ar netikros paskyros. <!-- F754 --> Prie botų „Telegram“ rodo žymą „bot“, bet jos nebuvimas nieko neįrodo: DI gali rašyti ir per paprastą paskyrą. <!-- F749 M --> Žmogus, DI ar abu – tau tai nieko nekeičia. <!-- M -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> skaičius platformoje nėra pinigai. Net tai, kas grįžo į tavo sąskaitą, neįrodo, kad likusieji yra tikri. <!-- F462 F471 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/netikras-brokeris/">{nb('Užpildei formą, o skambina „brokeris“')}</a>, <a href="/scenarijai/uzduotys-uz-pinigus/">{nb('Užduotys už pinigus')}</a>, <a href="/scenarijai/padesime-atsiimti-pensija/">{nb('„Padėsime atsiimti pensiją“')}</a>, <a href="/scenarijai/parodyk-ekrana/">{nb('„Parodyk ekraną“')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

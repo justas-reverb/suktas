@@ -1,0 +1,176 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>post</title>
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script>
+/* A postmark and a cancelled stamp, painted in Canvas 2D at one device pixel per art pixel.
+   ?kind=postmark|cancelled &scale=1|2|3. Textless: the site's rings, struck as ink on paper.
+   The ink is laid as many short strokes whose width and weight wander (a rubber stamp rocked a little to
+   one side), with the rings broken in places, then worn with grain and mottling, and struck over the stamp
+   with multiply so the overlap reads as ink on paper. Rendered outside the site by tools/paint-post.mjs;
+   the page never draws them. */
+const q = new URLSearchParams(location.search);
+const kind = q.get('kind') || 'postmark';
+const S = Number(q.get('scale') || 1);
+const SIZE = { postmark: [128, 88], cancelled: [200, 150] }[kind];
+const cv = document.getElementById('c');
+cv.width = Math.round(SIZE[0] * S);
+cv.height = Math.round(SIZE[1] * S);
+const ctx = cv.getContext('2d');
+ctx.scale(S, S);
+const ink = document.createElement('canvas');
+ink.width = cv.width; ink.height = cv.height;
+const ix = ink.getContext('2d');
+ix.scale(S, S);
+
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const rand = rng(kind === 'postmark' ? 11 : 23);
+const INK = '45,36,176';
+
+/* smooth 1-D value noise, 0..1 */
+function makeNoise() {
+  const t = Array.from({ length: 256 }, () => rand());
+  return (x) => {
+    const i = Math.floor(x), f = x - i, s = f * f * (3 - 2 * f);
+    return t[((i % 256) + 256) % 256] * (1 - s) + t[(((i + 1) % 256) + 256) % 256] * s;
+  };
+}
+const nW = makeNoise(), nA = makeNoise(), nG = makeNoise();
+
+/* One stroke laid along `pts` (dense points): width and weight wander, `fade` thins the ends, gaps break it. */
+function stroke(pts, w, a, { gap = 0.9, pa = 0, press = 0.45, taper = false, off = 0 } = {}) {
+  ix.lineCap = 'butt';
+  const n = pts.length;
+  for (let i = 1; i < n; i++) {
+    const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+    const u = i / n;
+    if (nG(i * 0.045 + off * 13) > gap) continue;                  // a break in the ink
+    let k = 0.72 + 0.56 * nW(i * 0.03 + off * 7);                  // width wander
+    let al = a * (0.62 + 0.38 * nA(i * 0.17 + off * 5));           // weight wander
+    if (press) { const ang = Math.atan2(y1 - y0, x1 - x0); al *= 1 - press + press * (0.5 + 0.5 * Math.cos(ang - pa)); }
+    if (taper) { const e = Math.min(u, 1 - u) * 5; k *= Math.min(1, 0.45 + e); al *= Math.min(1, 0.3 + e * 1.2); }
+    ix.beginPath(); ix.moveTo(x0, y0); ix.lineTo(x1, y1);
+    ix.lineWidth = w * k; ix.strokeStyle = `rgba(${INK},${Math.max(0, Math.min(1, al))})`; ix.stroke();
+  }
+}
+
+/* A ring struck a little out of round, heavier on one side, with breaks. */
+function ring(cx, cy, r, w, a, o) {
+  const steps = Math.ceil(2 * Math.PI * r / 0.8), pts = [];
+  const ph = o.off * 3.1;
+  for (let i = 0; i <= steps; i++) {
+    const th = i / steps * Math.PI * 2;
+    const rr = r * (1 + 0.016 * (nW(th * 2.2 + ph) - 0.5) * 2) + 0.35 * (nA(th * 6 + ph) - 0.5);
+    pts.push([cx + Math.cos(th) * rr, cy + Math.sin(th) * rr]);
+  }
+  /* pressure follows the angle around the ring, not the stroke direction */
+  const pa = o.pa;
+  ix.lineCap = 'butt';
+  for (let i = 1; i < pts.length; i++) {
+    const th = i / steps * Math.PI * 2;
+    if (nG(th * 5.5 + o.off * 17) > o.gap) continue;
+    const k = 0.6 + 0.8 * nW(i * 0.05 + o.off * 7);
+    const al = a * (0.6 + 0.4 * nA(i * 0.2 + o.off)) * (0.55 + 0.45 * (0.5 + 0.5 * Math.cos(th - pa)));
+    ix.beginPath(); ix.moveTo(pts[i - 1][0], pts[i - 1][1]); ix.lineTo(pts[i][0], pts[i][1]);
+    ix.lineWidth = w * k; ix.strokeStyle = `rgba(${INK},${Math.min(1, al)})`; ix.stroke();
+  }
+}
+
+/* The cancel lines: waves that thin out where they end. */
+function wave(x0, x1, y0, ph, amp, w, a, off, pa) {
+  const pts = [];
+  for (let x = x0; x <= x1; x += 0.45) pts.push([x, y0 + Math.sin((x - x0) / 6.4 * Math.PI + ph) * amp + (nW(x * 0.09 + off) - 0.5) * 0.8]);
+  stroke(pts, w, a, { gap: 0.97, taper: true, off, pa, press: 0.25 });
+}
+
+function postmark(cx, cy, R, rot, waveTo) {
+  ix.save();
+  ix.translate(cx, cy); ix.rotate(rot); ix.translate(-cx, -cy);
+  const pa = -0.7;
+  ring(cx, cy, R, R * 0.07, 0.9, { off: 1, gap: 0.91, pa });
+  ring(cx, cy, R * 0.88, R * 0.028, 0.75, { off: 2, gap: 0.88, pa });
+  ring(cx, cy, R * 0.6, R * 0.04, 0.8, { off: 3, gap: 0.86, pa });
+  ring(cx, cy, R * 0.28, R * 0.032, 0.78, { off: 4, gap: 0.85, pa });
+  ix.beginPath(); ix.arc(cx + 0.3, cy - 0.2, R * 0.075, 0, Math.PI * 2); ix.fillStyle = `rgba(${INK},0.8)`; ix.fill();
+  const gap = R * 0.43;
+  for (let i = 0; i < 4; i++) wave(cx + R * 0.98, waveTo, cy - gap * 1.5 + i * gap, i * 0.9, R * 0.085, R * 0.062, 0.86, 20 + i, pa);
+  ix.restore();
+}
+
+/* The stamp: perforated paper with a tooth, a soft picture of rings with a bright core. */
+function stamp(x0, y0, w, h) {
+  const pr = 2.8, step = 7.6;
+  const ctx2 = ctx;
+  ctx2.fillStyle = '#f8f7fd'; ctx2.fillRect(x0, y0, w, h);
+  /* paper tooth: faint fibres and flecks */
+  for (let i = 0; i < w * h * 0.03; i++) {
+    const a = rand() < 0.5 ? `rgba(255,255,255,${0.35 + rand() * 0.4})` : `rgba(${INK},${0.025 + rand() * 0.04})`;
+    ctx2.fillStyle = a;
+    const px = x0 + rand() * w, py = y0 + rand() * h;
+    ctx2.fillRect(px, py, 0.6 + rand() * 1.8, 0.5);
+  }
+  ctx2.globalCompositeOperation = 'destination-out';
+  const nx = Math.round(w / step), ny = Math.round(h / step);
+  const hole = (x, y) => { ctx2.beginPath(); ctx2.arc(x, y, pr * (0.9 + rand() * 0.2), 0, 7); ctx2.fill(); };
+  for (let i = 0; i <= nx; i++) for (const y of [y0, y0 + h]) hole(x0 + i * (w / nx), y);
+  for (let j = 0; j <= ny; j++) for (const x of [x0, x0 + w]) hole(x, y0 + j * (h / ny));
+  ctx2.globalCompositeOperation = 'source-over';
+  const px = x0 + 8, py = y0 + 8, pw = w - 16, ph = h - 16;
+  const g = ctx2.createLinearGradient(0, py, 0, py + ph);
+  g.addColorStop(0, '#ebe8fc'); g.addColorStop(1, '#c6bff2');
+  ctx2.fillStyle = g; ctx2.fillRect(px, py, pw, ph);
+  ctx2.save(); ctx2.beginPath(); ctx2.rect(px, py, pw, ph); ctx2.clip();
+  const cx = px + pw * 0.5, cy = py + ph * 0.6;
+  const glow = ctx2.createRadialGradient(cx, cy, 0, cx, cy, pw * 0.85);
+  glow.addColorStop(0, 'rgba(255,255,255,0.95)'); glow.addColorStop(0.35, 'rgba(218,212,251,0.5)'); glow.addColorStop(1, 'rgba(218,212,251,0)');
+  ctx2.fillStyle = glow; ctx2.fillRect(px, py, pw, ph);
+  [5.5, 11.5, 18, 25.5, 34, 44, 55.5, 68, 82].forEach((r, i) => {
+    ctx2.save(); ctx2.shadowColor = 'rgba(120,108,240,0.5)'; ctx2.shadowBlur = 3.4;
+    ctx2.beginPath(); ctx2.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx2.lineWidth = 1.8 - i * 0.11; ctx2.strokeStyle = `rgba(${INK},${0.82 - i * 0.075})`; ctx2.stroke(); ctx2.restore();
+  });
+  ctx2.beginPath(); ctx2.arc(cx, cy, 2.6, 0, 7); ctx2.fillStyle = '#fff'; ctx2.shadowColor = '#fff'; ctx2.shadowBlur = 6; ctx2.fill(); ctx2.shadowBlur = 0;
+  for (let i = 0; i < w * h * 0.012; i++) { ctx2.fillStyle = `rgba(${INK},${0.04 + rand() * 0.07})`; ctx2.fillRect(px + rand() * pw, py + rand() * ph, 0.9, 0.9); }
+  ctx2.restore();
+  ctx2.lineWidth = 0.9; ctx2.strokeStyle = `rgba(${INK},0.5)`; ctx2.strokeRect(px + 0.5, py + 0.5, pw - 1, ph - 1);
+}
+
+/* Wear taken out of the ink: dense grain, a few worn flecks, and soft mottling where the pad was dry. */
+function wear(layer, grains, flecks, mottles) {
+  layer.save(); layer.globalCompositeOperation = 'destination-out';
+  for (let i = 0; i < grains; i++) {
+    layer.globalAlpha = 0.3 + rand() * 0.65;
+    layer.beginPath(); layer.arc(rand() * SIZE[0], rand() * SIZE[1], 0.2 + rand() * 0.6, 0, 7); layer.fill();
+  }
+  for (let i = 0; i < flecks; i++) {
+    layer.globalAlpha = 0.5 + rand() * 0.5;
+    const x = rand() * SIZE[0], y = rand() * SIZE[1];
+    layer.beginPath(); layer.ellipse(x, y, 0.8 + rand() * 1.7, 0.4 + rand() * 0.8, rand() * 3, 0, 7); layer.fill();
+  }
+  for (let i = 0; i < mottles; i++) {
+    const x = rand() * SIZE[0], y = rand() * SIZE[1], r = 4 + rand() * 9;
+    const gr = layer.createRadialGradient(x, y, 0, x, y, r);
+    gr.addColorStop(0, `rgba(0,0,0,${0.22 + rand() * 0.25})`); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    layer.globalAlpha = 1; layer.fillStyle = gr; layer.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+  layer.restore();
+}
+
+if (kind === 'postmark') {
+  postmark(40, 44, 35.5, -0.12, 124);
+  wear(ix, 520, 26, 12);
+  ctx.drawImage(ink, 0, 0, SIZE[0], SIZE[1]);
+} else {
+  ctx.save();
+  ctx.shadowColor = 'rgba(25,19,79,0.32)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2.5;
+  stamp(88, 8, 100, 124);
+  ctx.restore();
+  postmark(68, 94, 38, -0.1, 197);
+  wear(ix, 900, 40, 16);
+  ctx.save(); ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(ink, 0, 0, SIZE[0], SIZE[1]);
+  ctx.restore();
+}
+window.__ready = true;
+</script>

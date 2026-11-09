@@ -1,0 +1,33 @@
+---
+/**
+ * "What reached you?": one tile per channel, in the reader's words, with how many scams are behind
+ * it. On the catalogue the tiles jump to a section of the same page; elsewhere they go to that
+ * section of the catalogue. `urgent` adds the one coral tile, for the reader it already happened to.
+ */
+import { channels, apgaules } from '../lib/catalogue.js';
+import { nb } from '../lib/typo.js';
+
+interface Props { here?: string; sameNow?: boolean; urgent?: boolean; label: string; }
+const { here = '', sameNow = false, urgent = false, label } = Astro.props;
+const base = sameNow ? '' : '/scenarijai/';
+---
+<nav class="choose" aria-label={label}>
+  <ul role="list" class="choose__list">
+    {channels.map((c) => (
+      <li>
+        <a class="choose__tile" href={`${base}#${c.slug}`} aria-current={here === c.slug ? 'true' : undefined}>
+          <strong>{nb(c.ask)}</strong>
+          <span set:html={apgaules(c.items.length).replace(' ', '&nbsp;')} />
+        </a>
+      </li>
+    ))}
+    {urgent && (
+      <li class="choose__sos">
+        <a class="choose__tile choose__tile--sos" href="/jei-apgavo/">
+          <strong>{nb('Jau apgavo')}</strong>
+          <span>{nb('Ką daryti dabar')}</span>
+        </a>
+      </li>
+    )}
+  </ul>
+</nav>

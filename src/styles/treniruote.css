@@ -1,0 +1,474 @@
+/* ------------------------------------------------------------------------------------
+   Treniruotė: the safe scam game.
+
+   The page is ours (daylight, indigo ink, mint for the move). The mock-ups are specimens in a
+   frame: a hatched tape border in indigo and lilac, a stamp strip inside every frame, a plain
+   slate-and-white interior with no brand colour of any bank and no Google look. Nothing in a
+   mock-up is a form: the fields are buttons. The answers are native popovers; the closed state is
+   never hidden by us, so a browser without popovers shows them in place.
+   ------------------------------------------------------------------------------------ */
+
+.tr {
+  --m-paper: #fff;
+  --m-ink: #2a3140;
+  --m-mid: #566074;
+  --m-line: #c5cbd6;
+  --m-fill: #eef0f5;
+  --m-steel: #3f5878;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ---- Head words ---- */
+
+.tr-lead { max-width: 36rem; margin-top: 0.6rem; font-size: var(--lead); line-height: 1.4; }
+.tr-promise {
+  max-width: 36rem;
+  margin-top: 1.1rem;
+  padding: 0.85rem 1rem;
+  border: 1.5px dashed var(--indigo);
+  border-radius: var(--radius);
+  background: rgb(255 255 255 / 0.65);
+  font-size: var(--small);
+  line-height: 1.5;
+}
+
+.tr-rule { max-width: 36rem; margin-top: 0.8rem; font-weight: 700; line-height: 1.45; }
+
+/* ---- The score (components/TrainScore.astro) ---- */
+
+.tr-score {
+  max-width: 42rem;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  padding: 1rem 1.15rem;
+  border: 1.5px solid var(--indigo);
+  border-radius: var(--radius);
+  background: #fff;
+}
+.tr-score h2 { font-size: var(--h3); }
+.tr-score__line { margin-top: 0.35rem; font-size: var(--lead); line-height: 1.4; }
+.tr-score__verdict { margin-top: 0.5rem; font-weight: 700; line-height: 1.45; color: var(--coral-deep); }
+.tr-score--won { border-color: var(--mint); background: var(--mint-wash); }
+.tr-score--won .tr-score__verdict { color: var(--mint); }
+.tr-score__end .btn { margin-top: 0.8rem; }
+
+.tr-scene { padding-top: clamp(1.75rem, 4vw, 3rem); }
+.tr-scene h2 { font-size: var(--h2); line-height: 1.08; }
+.tr-say { max-width: 40rem; margin-top: 0.6rem; font-size: var(--lead); line-height: 1.4; }
+.tr-scene[id] { scroll-margin-top: 0.75rem; }
+
+/* ---- The framed mock-up ---- */
+
+.mock { margin: 1.5rem 0 0; max-width: 36rem; }
+.mock__cap { margin-bottom: 0.45rem; color: var(--ink-2); font-weight: 700; }
+.mock__frame {
+  padding: 0.6rem;
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(135deg, var(--indigo) 0 0.55rem, var(--day-3) 0.55rem 1.1rem);
+}
+.mock__inner {
+  overflow: hidden;
+  border-radius: 0.35rem;
+  background: var(--m-paper);
+  color: var(--m-ink);
+}
+.mock p { margin: 0; }
+.stamp {
+  padding: 0.6rem 0.9rem;
+  background: var(--indigo);
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+.stamp strong { letter-spacing: 0.05em; }
+
+/* Press feedback shared by everything pressable inside the mock-ups */
+.res, .fld__box, .tab, .pg__go, .tr-choice, .pop .btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+
+/* From a wide screen the words stand left and the framed mock-up right, so the page is not a thin column */
+@media (min-width: 60rem) {
+  .tr-scene {
+    display: grid;
+    grid-template-columns: minmax(0, 24rem) minmax(0, 36rem);
+    column-gap: clamp(2rem, 6vw, 5rem);
+    align-content: start;
+  }
+  .tr-scene > h2, .tr-scene > .tr-say { grid-column: 1; }
+  .tr-scene > .mock { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
+  .tr-scene > .tr-third { grid-column: 2; }
+  .tr-scene > .answers, .tr-scene > .pop { grid-column: 1 / -1; }
+}
+
+/* ---- Scene 1: the search ---- */
+
+.srch__q {
+  margin: 0.9rem 0.9rem 0.8rem !important;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid var(--m-line);
+  border-radius: 0.3rem;
+  background: var(--m-fill);
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+.srch__list { display: grid; gap: 0.6rem; padding: 0 0.9rem 1rem; }
+.res {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: start;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--m-line);
+  border-radius: 0.4rem;
+  background: var(--m-paper);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.15s ease-out, background-color 0.15s ease-out, transform 0.15s ease-out;
+}
+.res:active, .fld__box:active, .tab:active, .pg__go:active { transform: scale(0.985); }
+.res__tag {
+  padding: 0.02rem 0.45rem;
+  border: 1.5px solid var(--m-mid);
+  border-radius: 0.25rem;
+  color: var(--m-ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.res__url { color: var(--m-mid); font-size: 0.9rem; overflow-wrap: anywhere; }
+.res__title { color: var(--m-steel); font-size: 1.15rem; font-weight: 700; line-height: 1.25; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+.res__desc { font-size: 0.98rem; line-height: 1.4; }
+
+.tr-third { margin-top: 1.1rem; max-width: 36rem; }
+.tr-choice { width: 100%; min-height: 3.5rem; font-size: 1.1rem; }
+
+/* ---- Scene 2: the login ---- */
+
+.bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--m-line);
+  background: var(--m-fill);
+  color: var(--m-mid);
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+.bar__url { min-width: 0; overflow-wrap: anywhere; }
+.lock { position: relative; flex: none; width: 0.8rem; height: 0.6rem; margin-top: 0.45rem; border-radius: 0.1rem; background: currentColor; }
+.lock::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0.13rem;
+  width: 0.54rem;
+  height: 0.42rem;
+  border: 0.13rem solid currentColor;
+  border-bottom: 0;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.pg { display: grid; gap: 0.9rem; max-width: 24rem; margin-inline: auto; padding: 1.4rem 1.1rem 1.6rem; }
+.pg__brand { display: flex; align-items: center; gap: 0.6rem; }
+.pg__mark { display: grid; place-items: center; flex: none; width: 1.9rem; height: 1.9rem; border-radius: 0.35rem; background: var(--m-mid); color: #fff; font: 700 1.05rem / 1 var(--font-text); }
+.pg__mark::after { content: 'P'; }
+.pg__name { font-size: 1.2rem; font-weight: 700; }
+.pg__title { font-size: 1.05rem; line-height: 1.35; }
+.tabs { border-bottom: 2px solid var(--m-line); }
+.tab {
+  min-height: 2.75rem;
+  margin-bottom: -2px;
+  padding: 0.4rem 0.2rem;
+  border: 0;
+  border-bottom: 3px solid var(--m-steel);
+  background: none;
+  color: var(--m-steel);
+  font: inherit;
+  font-weight: 700;
+  transition: transform 0.15s ease-out;
+}
+.fld { display: grid; gap: 0.3rem; }
+.fld__lbl { color: var(--m-mid); font-size: 0.92rem; }
+.fld__box {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0;
+  border: 1.5px solid var(--m-line);
+  border-radius: 0.3rem;
+  background: var(--m-paper);
+  transition: border-color 0.15s ease-out, transform 0.15s ease-out;
+}
+.pg__go {
+  min-height: 3rem;
+  margin-top: 0.4rem;
+  border: 0;
+  border-radius: 0.3rem;
+  background: var(--m-steel);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out;
+}
+
+/* The reader's pointer is the reader's colour (indigo), not the mock-up's */
+@media (hover: hover) and (pointer: fine) {
+  .res:hover { border-color: var(--indigo); background: #f6f5fe; }
+  .fld__box:hover { border-color: var(--indigo); }
+  .tab:hover { color: var(--indigo); }
+  .pg__go:hover { background: var(--indigo); }
+}
+.res:focus-visible, .fld__box:focus-visible, .tab:focus-visible, .pg__go:focus-visible { outline-offset: 2px; }
+
+/* ---- The answers: native popovers, a card sitting low on the screen ---- */
+
+.answers { display: flex; flex-direction: column; gap: 1rem; }
+.tr-scene > .pop { margin-top: 1.25rem; }
+
+.pop {
+  inset: auto 0 max(0.75rem, env(safe-area-inset-bottom));
+  width: min(38rem, calc(100% - 1.5rem));
+  max-height: calc(100dvh - 1.5rem);
+  margin: 0 auto;
+  padding: 1.1rem clamp(1rem, 4vw, 1.6rem) 1.25rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line);
+  border-top: 0.4rem solid var(--indigo);
+  border-radius: 1rem;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1.5rem 3rem -0.75rem rgb(25 19 79 / 0.35);
+  font-size: var(--small);
+}
+.pop p { max-width: 36rem; margin-top: 0.75rem; line-height: 1.55; }
+.pop__h { font: 400 clamp(1.7rem, 1.3rem + 1.6vw, 2.1rem) / 1.12 var(--font-display); letter-spacing: -0.01em; color: var(--ink); }
+.pop__h--catch { font: 700 1.1rem / 1.3 var(--font-text); letter-spacing: 0; }
+.pop__dash { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } /* the copy's dash stays for readers and copy; on its own line it is a stray mark */
+.pop__sub { display: block; margin-top: 0.3rem; }
+.pop__catch {
+  display: inline-block;
+  color: var(--indigo);
+  font: 400 clamp(2.4rem, 9vw, 3.2rem) / 1 var(--font-display);
+  letter-spacing: -0.015em;
+  transform: rotate(-2deg);
+  transform-origin: 0 100%;
+}
+.pop__move {
+  padding: 0.8rem 1rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--mint-wash);
+}
+.pop__move strong { color: var(--mint); }
+.pop a:not(.btn) { color: var(--indigo); font-weight: 700; }
+.pop__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.pop__actions .btn { flex: 1 1 11rem; }
+
+/* Open and close: rises from the bottom edge and leaves the same way, faster than it came */
+@supports selector(:popover-open) {
+  .pop {
+    transform-origin: 50% 100%;
+    transition: opacity 0.16s ease-out, transform 0.16s ease-out, overlay 0.16s allow-discrete, display 0.16s allow-discrete;
+  }
+  .pop:not(:popover-open) { opacity: 0; transform: translateY(1rem) scale(0.97); }
+  .pop:popover-open { opacity: 1; transform: none; transition-duration: 0.26s; transition-timing-function: var(--ease-out); }
+  @starting-style {
+    .pop:popover-open { opacity: 0; transform: translateY(1rem) scale(0.97); }
+  }
+  .pop::backdrop {
+    background: rgb(25 19 79 / 0.22);
+    transition: opacity 0.2s ease-out, overlay 0.2s allow-discrete, display 0.2s allow-discrete;
+  }
+  .pop:not(:popover-open)::backdrop { opacity: 0; }
+  @starting-style {
+    .pop:popover-open::backdrop { opacity: 0; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @supports selector(:popover-open) {
+    .pop:not(:popover-open) { transform: none; }
+    .pop:popover-open { transition-duration: 0.12s; }
+    @starting-style {
+      .pop:popover-open { transform: none; }
+    }
+  }
+  .res, .fld__box, .tab, .pg__go { transition-property: border-color, background-color; }
+  .res:active, .fld__box:active, .tab:active, .pg__go:active { transform: none; }
+}
+
+/* A browser without popovers: the answers stand in place, and the buttons that cannot work say so */
+@supports not selector(:popover-open) {
+  .pop { margin-block: 0; box-shadow: none; }
+  .pop__close { display: none; }
+  .res, .fld__box, .tab, .pg__go, .tr-choice { cursor: default; }
+}
+
+/* ---- The foot ---- */
+
+.tr-end { padding-block: clamp(2rem, 5vw, 4rem); }
+.tr-end .move { margin-top: 0; }
+.tr-end .move__line { max-width: 28ch; }
+.tr-nope, .tr-src { max-width: 42rem; margin-top: clamp(1.5rem, 4vw, 2.5rem); }
+.tr-nope h3 { font-size: var(--h3); }
+.tr-nope p, .tr-src p { margin-top: 0.4rem; }
+.tr-src h2 { font-size: clamp(1.5rem, 1.25rem + 0.9vw, 2rem); }
+
+/* ---- The hub ---- */
+
+.games { padding-block: var(--section); }
+.games h2 { font-size: var(--h2); line-height: 1.08; }
+.games ul { display: grid; gap: 1rem; margin-top: 1.25rem; }
+.game {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  transition: border-color 0.15s ease-out, transform 0.15s ease-out;
+}
+.game:active { transform: scale(0.99); }
+@media (hover: hover) and (pointer: fine) { .game:hover { border-color: var(--indigo); } }
+.game h3 { font-size: var(--h3); line-height: 1.2; }
+.game h3 a { text-decoration: none; }
+.game h3 a::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius); }
+.game p { margin-top: 0.35rem; }
+.game__thumb {
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  background: repeating-linear-gradient(135deg, var(--indigo) 0 0.4rem, var(--day-3) 0.4rem 0.8rem);
+}
+.game__thumb > div { display: grid; gap: 0.35rem; padding: 0.6rem; border-radius: 0.25rem; background: #fff; }
+.game__thumb i { display: block; height: 0.7rem; border-radius: 0.15rem; background: #c5cbd6; }
+.game__thumb i.game__q { height: 0.9rem; background: #e3e6ee; }
+.game__thumb i.game__ad { height: 1.4rem; border: 1.5px solid #566074; background: #fff; }
+.game__thumb i:last-child { width: 70%; }
+@media (min-width: 40rem) {
+  .game { grid-template-columns: 13rem minmax(0, 1fr); align-items: center; padding: 1.1rem; gap: 1.5rem; }
+}
+
+/* ---- Game 2 (smart-id): a call and a request card from an invented app. Plain slate, an invented tile, no PIN pad ---- */
+
+.ph { display: grid; gap: 0.8rem; padding: 0.9rem; background: var(--m-fill); }
+.call {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.6rem;
+  align-items: baseline;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--m-ink);
+  color: #fff;
+  line-height: 1.3;
+}
+.call__st { font-size: 0.85rem; letter-spacing: 0.03em; opacity: 0.85; }
+.call__who { font-size: 1.05rem; font-weight: 700; }
+.say {
+  padding: 0.1rem 0.2rem 0.1rem 0.9rem;
+  border-left: 0.25rem solid var(--m-line);
+  color: var(--m-ink);
+  font-size: 1.02rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+.rq {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border: 1.5px solid var(--m-line);
+  border-radius: 0.7rem;
+  background: var(--m-paper);
+  box-shadow: 0 0.6rem 1.4rem -0.7rem rgb(42 49 64 / 0.4);
+}
+.rq__app { display: flex; align-items: center; gap: 0.6rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--m-line); }
+.rq__tile { display: grid; place-items: center; flex: none; width: 2.1rem; height: 2.1rem; border-radius: 50%; background: var(--m-steel); color: #fff; font: 700 0.8rem / 1 var(--font-text); }
+.rq__tile::after { content: 'ID'; }
+.rq__who { display: grid; line-height: 1.25; }
+.rq__bank { color: var(--m-mid); font-size: 0.9rem; }
+.rq__what { margin-top: 0.4rem !important; font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+.rq__amt { font-size: 1.9rem; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.rq__to { color: var(--m-ink); font-size: 1.02rem; }
+.rq__k { color: var(--m-mid); }
+.rq__code { font-size: 1.4rem; letter-spacing: 0.08em; }
+.rq__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.7rem; }
+.rq__b {
+  min-height: 3rem;
+  padding: 0.4rem 0.5rem;
+  border: 1.5px solid var(--m-steel);
+  border-radius: 0.4rem;
+  background: var(--m-paper);
+  color: var(--m-steel);
+  font: inherit;
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
+}
+.rq__b--go { background: var(--m-steel); color: #fff; }
+.rq__b:active { transform: scale(0.97); }
+.rq__b:focus-visible { outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) {
+  .rq__b:hover { border-color: var(--indigo); color: var(--indigo); }
+  .rq__b--go:hover { background: var(--indigo); color: #fff; }
+}
+
+.tr-scene--wide { display: block; }
+.rq-cap { margin: 1.5rem 0 0; }
+.rq-grid { display: grid; gap: 1.75rem; margin-top: 0.6rem; }
+.rq-grid .mock { margin-top: 0; }
+.rq-ctx { margin-bottom: 0.55rem; color: var(--ink); line-height: 1.4; }
+.rq-ctx strong { display: block; font-size: 1.1rem; }
+.tr-scene--wide > .answers { margin-top: 1.5rem; }
+@media (min-width: 64rem) {
+  .rq-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; align-items: start; }
+}
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 64rem) {
+    .rq-item, .rq-item > .mock { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; }
+    .rq-item > .mock { max-width: none; }
+    .rq-item .mock__frame { display: flex; }
+    .rq-item .mock__inner { display: flex; flex: 1; flex-direction: column; }
+    .rq-item .ph { flex: 1; }
+    .rq-item .rq { display: flex; flex-direction: column; }
+    .rq-item .rq__btns { margin-top: auto; padding-top: 0.7rem; }
+  }
+}
+.game__thumb i.game__call { height: 0.7rem; background: #566074; }
+@media (prefers-reduced-motion: reduce) {
+  .rq__b { transition-property: border-color, background-color; }
+  .rq__b:active { transform: none; }
+}
+@supports not selector(:popover-open) { .rq__b { cursor: default; } }
+
+/* ---- Print: the frame in ink, the stamp as a box, every answer open ---- */
+
+@media print {
+  .mock__frame { padding: 0; border: 3px dashed #000; background: none; }
+  .stamp { border: 2px solid #000; background: #fff; color: #000; }
+  .res, .fld__box { border-color: #000; }
+  .pg__go { border: 2px solid #000; background: #fff; color: #000; }
+  .res, .fld__box, .tab, .pg__go { break-inside: avoid; }
+  .pop, .pop:not(:popover-open), .pop:popover-open {
+    position: static; display: block; opacity: 1; transform: none;
+    width: auto; max-height: none; margin: 0.5cm 0; box-shadow: none; border: 2px solid #000;
+    break-inside: avoid;
+  }
+  .pop__actions .pop__close, .tr-promise { border-color: #000; }
+  .pop__close { display: none; }
+  .pop__catch { color: #000; transform: none; }
+  .pop__move { background: #fff; border-left-color: #000; }
+  .pop__move strong, .pop a:not(.btn) { color: #000; }
+  .game__thumb { display: none; }
+  .call { background: #fff; color: #000; border: 2px solid #000; }
+  .rq, .rq__b { border-color: #000; box-shadow: none; }
+  .rq__b--go { background: #fff; color: #000; }
+  .rq__tile { background: #fff; color: #000; border: 2px solid #000; }
+  .rq, .rq-item { break-inside: avoid; }
+}

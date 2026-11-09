@@ -1,0 +1,56 @@
+---
+/**
+ * One weekly letter, on its page: the shape every letter shares (the weekly "Savaitės triukas"). A
+ * letter reads like one somebody forwards to their mother, so it is a single sheet in one column:
+ *   source  - where we know it from, quiet (what the reader trusts)
+ *   move    - the reader's move, mint, the loudest block on the sheet
+ *   plan    - how he does it, on the stage colour (the attacker's side), then `signs`: what gives it away,
+ *             a checklist on the paper again
+ *   again   - is it new, quiet
+ *   report  - ask to show us one, and the line to forward
+ * The words are the page's: it passes the five headings as props and each section's content as a slot, so a
+ * new letter is a page of words and no markup of its own. Classes the content may use: tl-link (the source
+ * link), tl-say (the one sentence of the move), tl-urgent (the line for someone already caught), tl-signs
+ * (the checklist), tl-note (the closing line under the signs), tl-fwd (the line to forward).
+ */
+import PostHead from './PostHead.astro';
+import PostArt from './PostArt.astro';
+import { nb } from '../lib/typo.js';
+const { title, actions = [], heads: raw } = Astro.props;
+const heads = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, nb(v)]));
+---
+<PostHead title={title} actions={actions} split column stamp={false} />
+<article class="wrap tl">
+  <div class="tl-frame">
+  <PostArt class="tl-stamp" />
+  <div class="tl-sheet">
+    <section class="tl-sec tl-source" aria-labelledby="is-kur">
+      <h2 id="is-kur">{heads.source}</h2>
+      <div class="tl-body"><slot name="source" /></div>
+    </section>
+
+    <section class="tl-sec tl-move" aria-labelledby="ejimas">
+      <h2 id="ejimas">{heads.move}</h2>
+      <div class="tl-body"><slot name="move" /></div>
+    </section>
+
+    <section class="tl-sec tl-plan" aria-labelledby="kaip-jis">
+      <div class="tl-stage stage">
+        <h2 id="kaip-jis">{heads.plan}</h2>
+        <div class="tl-body"><slot name="plan" /></div>
+      </div>
+      <div class="tl-body tl-signsbox"><slot name="signs" /></div>
+    </section>
+
+    <section class="tl-sec tl-again" aria-labelledby="ar-naujas">
+      <h2 id="ar-naujas">{heads.again}</h2>
+      <div class="tl-body"><slot name="again" /></div>
+    </section>
+
+    <section class="tl-sec tl-report" aria-labelledby="pranesk">
+      <h2 id="pranesk">{heads.report}</h2>
+      <div class="tl-body"><slot name="report" /></div>
+    </section>
+  </div>
+  </div>
+</article>

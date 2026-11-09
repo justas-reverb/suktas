@@ -1,0 +1,21 @@
+---
+/**
+ * The head of a document page (misija, apie, privatumo pranešimas, kas pasikeitė, šaltiniai,
+ * žodynas, įrankiai): the page's name, an optional sentence or two, the buttons. No art: these are
+ * pages to read, and the name set large in Young Serif is the head. It borrows the shelf head's
+ * spacing and buttons (shelf.css) and adds only its own heading size (doc.css).
+ */
+import { nb, nbHtml } from '../lib/typo.js';
+const { title, lead, actions = [] } = Astro.props;
+---
+<section class="shead shead--plain doc-head" aria-labelledby="h1">
+  <div class="wrap shead__body">
+    <h1 id="h1" class="doc-h1">{nb(title)}</h1>
+    {lead && <p class="shead__lead doc-lead" set:html={nbHtml(lead)} />}
+    {actions.length > 0 && (
+      <div class="shead__actions">
+        {actions.map(([label, href, kind]) => <a class:list={['btn', { 'btn--second': kind === 'second' }]} href={href}>{nb(label)}</a>)}
+      </div>
+    )}
+  </div>
+</section>

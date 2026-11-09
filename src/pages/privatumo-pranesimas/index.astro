@@ -1,0 +1,132 @@
+---
+/**
+ * Privatumo pranešimas: the promise in plain words, what the visit counter counts, what the server still keeps, how a reader
+ * checks it, what happens to a letter, who else holds the data, who answers for it, the reader's
+ * rights. The copy is docs/copy/privatumo-pranesimas.md, word for word, with the unverified parts
+ * left off on purpose: the sentence that the host and the mail provider process the data only on
+ * the writer's behalf (the contracts are not checked), and the notes asking how long the log and
+ * the mailbox keep things (the page states only what is known).
+ */
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+
+const nedarome = [
+  '<strong>Nenaudojame slapukų.</strong> <!-- pažadas -->',
+  '<strong>Nieko nesaugome tavo naršyklėje</strong>, nebent paprašai neskaičiuoti tavo apsilankymų (žr. „Ką skaičiuojame“). <!-- pažadas -->',
+  '<strong>Nieko neįkeliame iš kitų serverių:</strong> nei šriftų, nei paveikslėlių, nei skriptų. <!-- pažadas -->',
+  '<strong>Jokios svetimos analitikos ir reklamos.</strong> Apsilankymus skaičiuoja tik mūsų pačių skaitiklis. <!-- pažadas -->',
+];
+
+const patikra = [
+  'Atsidaryk bet kurį puslapį. <!-- pažadas -->',
+  'Atsidaryk naršyklės kūrėjo įrankius ir tinklo skiltį. <!-- pažadas -->',
+  'Įkelk puslapį iš naujo ir pažiūrėk, iš kur viskas atėjo: viskas turi būti iš šio adreso. <!-- pažadas --> Vienintelė užklausa kitur eina į mūsų skaitiklį count.sudievu.lt: ją siunčia puslapis, o iš ten nieko neįkeliama. <!-- pažadas -->',
+  'Atsidaryk naršyklės saugyklos skiltį: ji turi likti tuščia, nebent atidarei puslapį su ?notrack. <!-- pažadas -->',
+];
+
+const kasMato = [
+  '<strong>Serveris.</strong> Svetainė ir skaitiklis veikia mūsų pačių serveryje Lietuvoje, todėl prieigos žurnalas ir skaitiklio įrašai yra pas mus, o ne pas serverio nuomotoją. <!-- pažadas -->',
+  '<strong>Tinklas, per kurį ateini.</strong> Kiekviena užklausa į šią svetainę ir į skaitiklį eina per „Cloudflare“ tinklą, todėl „Cloudflare“ mato tavo IP adresą ir tai, ko prašai. <!-- pažadas --> „Cloudflare“ yra duomenų tvarkytoja: duomenis tvarko tik mūsų vardu, kaip nustato jos duomenų tvarkymo susitarimas. <!-- F124 --> Ji yra JAV įmonė, todėl duomenys gali palikti Europos ekonominę erdvę; tam ji taiko Europos Komisijos standartines sutarčių sąlygas ir ES ir JAV duomenų privatumo sistemą. <!-- F124 -->',
+  '<strong>Rezervinė kopija.</strong> Rezervinę svetainės kopiją laikome serveryje, kurį nuomojame iš „Interneto vizijos“ (iv.lt), todėl ten gali būti ir prieigos žurnalo bei skaitiklio įrašų. <!-- pažadas --> „Interneto vizija“ yra duomenų tvarkytoja: duomenis tvarko tik mūsų vardu, kaip nustato jos duomenų tvarkymo susitarimas. <!-- F121 -->',
+  '<strong>Pašto paslaugos teikėjas.</strong> Pašto dėžutės info@suktas.lt ir sargyba@suktas.lt yra „Telia“ serveriuose, todėl laiškai, kuriuos mums rašai, laikomi ten, o savaitės laišką siunčiame per tą patį paštą. <!-- pažadas --> „Telia“ yra duomenų tvarkytoja: duomenis tvarko tik mūsų vardu, kaip nustato jos svetainių talpinimo taisyklės, o pašto dėžutė yra tos paslaugos dalis. <!-- F122 -->',
+];
+---
+<Page
+  title="Privatumo pranešimas – Suktas"
+  description="Ko Suktas nedaro, ką skaičiuoja, ką serveris vis tiek laiko ir kaip gali patikrinti savarankiškai."
+>
+  <DocHead
+    title="Privatumo pranešimas"
+    actions={[
+      ['Pažiūrėk, ką siunčia šis puslapis', '#kaip-patikrinti-savarankiskai'],
+      ['Parašyk mums', '/apie/#kaip-pataisyti-mus', 'second'],
+    ]}
+  />
+
+  <article class="wrap doc">
+    <section class="doc-sec" aria-labelledby="ko-nedarome">
+      <h2 id="ko-nedarome">Ko nedarome</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {nedarome.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="ka-skaiciuojame">
+      <h2 id="ka-skaiciuojame">Ką skaičiuojame</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Kad žinotume, kurie puslapiai skaitomi ir iš kur į juos ateinama, apsilankymus skaičiuoja mūsų pačių skaitiklis count.sudievu.lt. <!-- pažadas --> Jis veikia tame pačiame mūsų serveryje kaip ir ši svetainė, ne pas svetimą įmonę. <!-- pažadas -->')} />
+        <p set:html={nbHtml('Atidarytas puslapis skaitikliui praneša tik tai: kurį puslapį atidarei (adresą be to, kas po „?“), iš kurios svetainės atėjai (tik jos pavadinimą) ir ar puslapį skaitei bent 8 sekundes ar ką nors jame paspaudei, taip pat ar naršyklę valdo programa ir ar paprašei tavęs neskaičiuoti. <!-- pažadas --> Jei nuoroda, per kurią atėjai, turi reklamos žymių (utm_source, utm_medium ir utm_campaign: kur nuoroda paskelbta, kokiu kanalu ir kuriai kampanijai), skaitiklis gali užrašyti ir jas. <!-- pažadas -->')} />
+        <p set:html={nbHtml('Kad tas pats žmogus tą pačią dieną nebūtų suskaičiuotas du kartus, iš tavo IP adreso ir naršyklės pavadinimo su slaptu, kasdien keičiamu priedu sudaromas lankytojo kodas. <!-- pažadas --> Kitą dieną priedas ištrinamas, todėl kodo nebeįmanoma susieti nei su tavimi, nei su kita diena. <!-- pažadas --> Skaitiklio įrašuose nesaugomi nei IP adresas, nei naršyklės pavadinimas (užklausą, kaip ir kiekvieną, užrašo tik serverio prieigos žurnalas, žr. toliau), o slapukų skaitiklis nenaudoja. <!-- pažadas -->')} />
+        <p set:html={nbHtml('Įrašai laikomi 35 dienas, po to lieka tik kiekvienos dienos sumos. <!-- pažadas --> Ir čia remiamės teisėtu interesu: norime žinoti, kurie puslapiai skaitomi. <!-- F112 -->')} />
+        <p set:html={nbHtml('Nenori, kad tavo apsilankymai būtų skaičiuojami? Išjunk naršyklėje „JavaScript“: visa svetainė veikia ir be jo, o skaitiklis tada nepaleidžiamas. <!-- pažadas --> Arba atidaryk bet kurį puslapį su ?notrack adreso gale (pavyzdžiui, suktas.lt/?notrack): naršyklė tai įsimins, o skaitiklis tavo apsilankymus pažymės ir neįskaičiuos. <!-- pažadas --> Adresas su ?track tai atšaukia. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="ka-serveris-laiko">
+      <h2 id="ka-serveris-laiko">Ką serveris vis tiek laiko</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Kaip ir kiekvienas serveris, mūsų serveris veda prieigos žurnalą: kada ir iš kokio IP adreso paprašyta kurio puslapio, iš kurio puslapio atėjai ir kokią naršyklę naudoji. <!-- pažadas --> Įrašai automatiškai ištrinami ne vėliau kaip po 9 savaičių. <!-- pažadas -->')} />
+        <p set:html={nbHtml('Žurnalą laikome tam, kad serveris liktų saugus: kad pastebėtume atakas ir gedimus. Duomenis tvarkome remdamiesi teisėtu interesu: Bendrasis duomenų apsaugos reglamentas (BDAR) tai leidžia, kai jie tvarkomi tik tiek, kiek būtina tinklo saugumui. <!-- F112 --> Niekam kitam žurnalo nenaudojame. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kaip-patikrinti-savarankiskai">
+      <h2 id="kaip-patikrinti-savarankiskai">Kaip patikrinti savarankiškai</h2>
+      <div class="doc-sec__body">
+        <ol class="doc-steps">
+          {patikra.map((t) => <li set:html={nbHtml(t)} />)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="jei-parasai">
+      <h2 id="jei-parasai">Jei parašai mums</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Jei rašai adresu info@suktas.lt, laiškas patenka į pašto dėžutę, kurią skaito Justas. <!-- pažadas --> Laišką ir mūsų atsakymą ištriname ne vėliau kaip po metų nuo paskutinio laiško. <!-- pažadas --> Ištrintas laiškas „Telia“ atsarginėse kopijose gali likti dar iki 14 dienų. <!-- F122 --> Tavo adresas niekur kitur neperduodamas. <!-- pažadas --> Laišką laikome tam, kad galėtume atsakyti; ir čia remiamės teisėtu interesu. <!-- F112 -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="jei-pranesi">
+      <h2 id="jei-pranesi">Jei praneši apie sukčius</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Tai, ką atsiunti adresu sargyba@suktas.lt, skaito Justas. <!-- pažadas --> Rūšiuoti padeda kalbos modelis, veikiantis jo kompiuteryje: modelis laiško teksto niekur nesiunčia. <!-- pažadas --> Laišką, nuotraukas ir mūsų pastabas ištriname ne vėliau kaip po 90 dienų. <!-- pažadas --> Ištrintas laiškas „Telia“ atsarginėse kopijose gali likti dar iki 14 dienų. <!-- F122 --> Apie triukus rašome be vardų, numerių ir veikiančių nuorodų. <!-- pažadas --> Laišką laikome tam, kad galėtume atsakyti ir perspėti kitus; čia remiamės teisėtu interesu. <!-- F112 -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="savaites-laiskas">
+      <h2 id="savaites-laiskas">Savaitės laiškas</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Jei parašai „Noriu“ adresu sargyba@suktas.lt, tavo adresą įrašome į sąrašą, kad kartą per savaitę atsiųstume vieną laišką. <!-- pažadas --> Sąraše laikome tik adresą, datą, kada prisijungei, kaip prisijungei, kuriuos laiškus jau gavai ir ar paskutinis laiškas grįžo nepristatytas. <!-- pažadas --> Adresą sąraše laikome, kol atsisakysi. <!-- pažadas --> Sąrašas yra Justo kompiuteryje, ne svetainės serveryje, ir niekam kitam neperduodamas: laiškai išeina per „Telia“ paštą. <!-- pažadas --> Laiškai yra paprastas tekstas: be paveikslėlių ir be sekimo, todėl nežinome, ar laišką atidarei. <!-- pažadas --> Čia remiamės tavo sutikimu. <!-- F436 --> Jį gali atšaukti bet kada: atrašyk vieną žodį „Atsisakyti“, ir adresą iš sąrašo ištrinsime. <!-- F436 --> Laiškas su žodžiu „Noriu“ ar „Atsisakyti“ ištrinamas kaip ir kiti laiškai, ne vėliau kaip po 90 dienų. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kas-dar-mato">
+      <h2 id="kas-dar-mato">Kas dar mato šiuos duomenis</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {kasMato.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kas-atsako">
+      <h2 id="kas-atsako">Kas atsako už duomenis</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Už duomenis, apie kuriuos rašoma šiame puslapyje, atsako Justas Vaičekauskas: jis yra šių duomenų valdytojas. <!-- pažadas --> Susisiekti: <a href="mailto:info@suktas.lt">info@suktas.lt</a>. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="tavo-teises">
+      <h2 id="tavo-teises">Tavo teisės</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Gali paprašyti parodyti, kokius duomenis apie tave turime, juos ištaisyti ar ištrinti, apriboti jų tvarkymą arba nesutikti, kad juos tvarkytume. <!-- F113 --> Savo įrašą sąraše gali gauti ir kompiuterio skaitomu formatu. <!-- F436 --> Parašyk mums. Žurnale nėra vardų, tik IP adresai, todėl paprašysime nurodyti IP adresą ir laiką, kad rastume tavo įrašus. <!-- pažadas -->')} />
+        <p set:html={nbHtml('Jei manai, kad tavo duomenis tvarkome neteisėtai, gali skųstis <a href="https://vdai.lrv.lt/lt/veiklos-sritys-1/skundu-nagrinejimas/">Valstybinei duomenų apsaugos inspekcijai</a>. <!-- F114 F115 -->')} />
+      </div>
+    </section>
+  </article>
+</Page>

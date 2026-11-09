@@ -1,0 +1,69 @@
+---
+/**
+ * Savaitės triukas: the weekly letter's home and archive, read from src/lib/triukai.js. The copy is
+ * docs/copy/triukai/index.md, word for word. Joining is one word by mail: no form, on purpose. The archive
+ * is a ledger of one row per letter, built to stay calm at one letter and at forty.
+ */
+import Page from '../../layouts/Page.astro';
+import PostHead from '../../components/PostHead.astro';
+import PostArt from '../../components/PostArt.astro';
+import { letters } from '../../lib/triukai.js';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+import '../../styles/post.css';
+import '../../styles/triukai.css';
+
+const [newest] = letters;
+// A title reads "Savaitės triukas: <what>"; the front is set small, the words unchanged.
+const parts = (t) => { const i = t.indexOf(': '); return i > 0 ? [t.slice(0, i + 1), t.slice(i + 2)] : ['', t]; };
+const [newPre, newRest] = parts(newest.title);
+---
+<Page
+  title="Savaitės triukas: kas dabar sklando – Suktas"
+  description="Kartą per savaitę vienas laiškas: koks sukčių triukas dabar sklando, kaip jį atpažinti ir ką daryti. Be reklamos ir be formos."
+>
+  <link slot="head" rel="alternate" type="application/rss+xml" title="Suktas: Savaitės triukas" href="/triukai/feed.xml" />
+  <PostHead
+    art
+    title="Savaitės triukas"
+    lead="Vienas sukčių triukas per savaitę: iš kur apie tai žinome, ką tau daryti ir kaip tai daro jis. <!-- pažadas -->"
+    actions={[['Parašyti „Noriu“', 'mailto:sargyba@suktas.lt?subject=Noriu&body=Noriu'], ['Pranešti apie apgavystę', '/pranesk/', 'second']]}
+  />
+
+  <article class="wrap doc tk">
+    <section class="doc-sec" aria-labelledby="naujausias">
+      <h2 id="naujausias">Naujausias laiškas</h2>
+      <div class="doc-sec__body">
+        <div class="tk-new">
+          <PostArt kind="postmark" class="tk-new__mark" />
+          <p class="tk-new__title">
+            <a href={`/triukai/${newest.slug}/`}>{newPre && <span class="tl-pre">{nb(newPre)}{' '}</span>}{nb(newRest)}</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="prisijunk">
+      <h2 id="prisijunk">Gauk paštu</h2>
+      <div class="doc-sec__body">
+        <p class="tk-ask" set:html={nbHtml('<strong>Kai šeimoje kažkas neveikia, skambina tau?</strong> Tada ir klausimas „ar čia sukčiai?“ ateis pas tave. <!-- pažadas --> Kartą per savaitę – vienas laiškas: koks triukas dabar sklando, kaip jį atpažinti ir ką daryti. Laišką persiųsi tam, kas paspaustų nuorodą.<!-- pažadas --> Be reklamos. <!-- pažadas -->')} />
+        <p class="post-env" set:html={nbHtml('Kad prisijungtum, parašyk „Noriu“ adresu <a class="post-env__addr" href="mailto:sargyba@suktas.lt?subject=Noriu&amp;body=Noriu">sargyba@suktas.lt</a>. <!-- pažadas --> Formos neturime, o tavo adresą naudosime tik šiam laiškui. <!-- pažadas --> Kad atsisakytum, užtenka atrašyti vieną žodį: „Atsisakyti“.<!-- pažadas --> Kaip tai veikia: <a href="/privatumo-pranesimas/#savaites-laiskas">Privatumo pranešimas</a>.')} />
+        <p class="doc-small" set:html={nbHtml('Naudoji RSS skaitytuvą? <a href="/triukai/feed.xml">Prenumeruok per RSS</a>. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="archyvas">
+      <h2 id="archyvas">Archyvas</h2>
+      <div class="doc-sec__body">
+        <ul class="tk-ledger">
+          {letters.map(({ slug, date, title }) => {
+            const [, rest] = parts(title);
+            return <li class="tk-row"><span class="nw tk-row__date">{date}</span>: <a href={`/triukai/${slug}/`}>{nb(rest)}</a></li>;
+          })}
+        </ul>
+        <p class="doc-small" set:html={nbHtml('Pirmieji laiškai remiasi oficialiais perspėjimais, kuriuos nurodome su data. <!-- pažadas --> Kai tai, ką parodysi mums, padės perspėti kitus, parašysime be vardų ir numerių. <!-- pažadas -->')} />
+      </div>
+    </section>
+  </article>
+</Page>

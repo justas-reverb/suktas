@@ -1,0 +1,21 @@
+---
+/**
+ * A painted band at the head of a page or above its "his plan" block: a dot-matrix panel in the colours of the scam
+ * family the page belongs to (src/art/bands.js picks it from the address). The still is an <img>; src/art/herofx.js
+ * lays a canvas over it, painted by the same shader, that moves in the family's own way.
+ */
+import { familyFor } from '../art/bands.js';
+interface Props { mood: 'day' | 'stage'; class?: string; sizes: string; eager?: boolean; }
+const { mood, class: cls = '', sizes, eager = false } = Astro.props;
+const family = familyFor(Astro.url.pathname);
+const set = [780, 1280, 1920, 2880].map((w) => `/art/band-${family}-${mood}-${w}.webp ${w}w`).join(', ');
+const desk = (c) => [1280, 1920].map((w) => `/art/band-${family}-${mood}-${c}-${w}.webp ${w}w`).join(', ');
+---
+<div class:list={['art', `art--${mood}`, 'art--k', cls]} data-herofx="k" data-band={family} data-mood={mood} aria-hidden="true">
+  <picture>
+    <source media="(min-width: 90rem)" srcset={desk('w')} sizes="72rem" />
+    <source media="(min-width: 60rem)" srcset={desk('n')} sizes="72rem" />
+    <img src={`/art/band-${family}-${mood}-1280.webp`} srcset={set} sizes={sizes} width="1920" height="640" alt="" decoding="async" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'low'} />
+  </picture>
+  <canvas></canvas>
+</div>

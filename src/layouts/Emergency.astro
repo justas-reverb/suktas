@@ -1,0 +1,32 @@
+---
+/**
+ * The frame of /jei-apgavo/: the shared header and footer, and nothing else. No script but the visit
+ * counter every page loads (the phone menu is a native <details> and works without one), no painted art, and only the text face is
+ * preloaded: emergency.css points the display face at it, so Young Serif is never asked for.
+ */
+import Base from './Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/fonts.css';
+import '../styles/system.css';
+import '../styles/syntax.css';
+import '../styles/emergency.css';
+
+import atkLatinExt from '../../node_modules/@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2?url';
+import atkLatin from '../../node_modules/@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<Base title={title} description={description}>
+  <Fragment slot="head">
+    <link rel="preload" href={atkLatinExt} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={atkLatin} as="font" type="font/woff2" crossorigin />
+  </Fragment>
+  <a class="skip" href="#main">Pereiti prie turinio</a>
+  <SiteHeader />
+  <main id="main" class="sos-page">
+    <slot />
+  </main>
+  <SiteFooter />
+</Base>

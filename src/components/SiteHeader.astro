@@ -1,0 +1,91 @@
+---
+/**
+ * The header on every page. Wide screens: the wordmark, four things the reader came to do
+ * (Apgaulės is a page; Apsisaugok and Suprask open a short list; Šeimai is a page), and the red
+ * button. A phone: the wordmark, the red button and Meniu, which opens the whole map. All of it is
+ * native <details>, so it works with JavaScript off; src/lib/menu.js only closes what is open.
+ * Where the reader is comes from the path, so no page has to say.
+ * Ieškoti (a magnifier alone up to 72rem; under 30rem the row has no room, so it heads the Meniu sheet
+ * instead) is a link to /turinys/; on content pages src/lib/find.js
+ * turns it into the search <dialog> below, over /paieska.json (tools/search-index.mjs).
+ */
+import { catalogue, protect, family, understand, about, inside } from '../lib/nav.js';
+import { channels } from '../lib/catalogue.js';
+
+const path = Astro.url.pathname;
+const here = (g) => (inside(g, path) ? 'true' : undefined);
+const page = (href) => (path === href ? 'page' : undefined);
+---
+<header class="head">
+  <div class="head__in">
+    <a class="emergency" href="/jei-apgavo/"><span class="emergency__a">Jei tave</span>{" "}<span class="emergency__a">apgavo</span></a>
+    <a class="mark" href="/" aria-label="Suktas, į pradžią"><picture><source media="(min-width: 64rem)" srcset="/brand/logo-wide-1x.png 1x, /brand/logo-wide-2x.png 2x, /brand/logo-wide-3x.png 3x" width="146" height="56" /><img src="/brand/logo-1x.png" srcset="/brand/logo-1x.png 1x, /brand/logo-2x.png 2x, /brand/logo-3x.png 3x" width="115" height="44" alt="" /></picture></a>
+    <nav class="nav" aria-label="Pagrindinė">
+      <a href={catalogue.href} aria-current={path === catalogue.href ? 'page' : here(catalogue)} data-here={here(catalogue)}>{catalogue.label}<span class="nav__n">{catalogue.count}</span></a>
+      {[protect, understand].map((g) => (
+        <details class="drop" name="nav" data-drop data-here={here(g)}>
+          <summary>{g.label}</summary>
+          <ul class="drop__list" role="list">
+            {g.items.map(([label, href, desc]) => (
+              <li><a href={href} aria-current={page(href)}><strong>{label}</strong><span>{desc}</span></a></li>
+            ))}
+          </ul>
+        </details>
+      ))}
+      <a href={family.href} aria-current={page(family.href)} data-here={here(family)}>{family.label}</a>
+    </nav>
+    <a class="find" href="/turinys/" data-find aria-haspopup="dialog"><span class="find__glass" aria-hidden="true"></span><span class="find__label">Ieškoti</span></a>
+    <details class="menu" data-menu>
+      <summary>Meniu</summary>
+      <nav class="menu__list" aria-label="Pagrindinė, telefone">
+        <a class="menu__find" href="/turinys/" data-find aria-haspopup="dialog"><span class="find__glass" aria-hidden="true"></span>Ieškoti svetainėje</a>
+        <p class="menu__h">{catalogue.label}</p>
+        <a class="menu__all" href={catalogue.href} aria-current={page(catalogue.href)}><strong>Visos apgaulės</strong><span>{catalogue.count}</span></a>
+        <ul class="menu__chips" role="list">
+          {channels.map((c) => <li><a href={`/scenarijai/#${c.slug}`}>{c.ask}</a></li>)}
+        </ul>
+        {[protect, understand].map((g) => (
+          <>
+            <p class="menu__h">{g.label}</p>
+            <ul role="list">
+              {g.items.map(([label, href, desc]) => (
+                <li><a href={href} aria-current={page(href)}><strong>{label}</strong><span>{desc}</span></a></li>
+              ))}
+            </ul>
+          </>
+        ))}
+        <p class="menu__h">{family.label}</p>
+        <ul role="list">
+          <li><a href={family.href} aria-current={page(family.href)}><strong>Puslapis šeimai</strong><span>{family.desc}</span></a></li>
+        </ul>
+        <p class="menu__h">Apie svetainę</p>
+        <ul class="menu__chips" role="list">
+          {about.map(([label, href]) => <li><a href={href} aria-current={page(href)}>{label}</a></li>)}
+        </ul>
+      </nav>
+    </details>
+  </div>
+  <dialog class="find__dlg" data-find-dialog aria-labelledby="find-h">
+    <div class="find__top">
+      <label class="find__h" id="find-h" for="find-q">Paieška svetainėje</label>
+      <button class="find__x" type="button" data-find-close aria-label="Uždaryti paiešką"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="find__field">
+      <span class="find__glass" aria-hidden="true"></span>
+      <input class="find__q" id="find-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="Pvz.: kurjeris, Smart-ID" aria-describedby="find-status" />
+    </div>
+    <div class="find__body" data-find-body>
+      <div class="find__hint" data-find-hint>
+        <p class="find__what">Apgaulės, žodynas, temos, patarimai ir šaltiniai: visa svetainė vienoje vietoje.</p>
+        <p class="find__try-h">Pabandyk:</p>
+        <ul class="find__try" role="list">
+          {['Smart-ID', 'kurjeris', 'investicijos', 'slaptažodis', 'policija', 'SMS', 'paskola', 'bankas', 'QR kodas', 'laiškas'].map((w) => <li><button type="button" data-find-try>{w}</button></li>)}
+        </ul>
+        <p class="find__priv">Ieško tavo naršyklė. Tai, ką rašai, niekur nesiunčiama ir nesaugoma.</p>
+      </div>
+      <p class="find__status" id="find-status" data-find-status aria-live="polite"></p>
+      <ol class="find__list" data-find-list role="list"></ol>
+      <p class="find__all"><a href="/turinys/">Visas svetainės turinys</a></p>
+    </div>
+  </dialog>
+</header>

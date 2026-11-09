@@ -1,0 +1,109 @@
+---
+/**
+ * Pradžia. The copy is docs/copy/pradzia.md, word for word; the source tags stay as comments and
+ * the build strips them. Two painted pieces from one engine (src/art/herofx.js): hero B behind the
+ * question, and its sibling `t` behind his five beats; everything else is type and colour.
+ * Indigo is his trick, the stage is his plan, mint is your move.
+ */
+import Page from '../layouts/Page.astro';
+import ThinkArt from '../components/ThinkArt.astro';
+import { nb, nbHtml } from '../lib/typo.js';
+import Chooser from '../components/Chooser.astro';
+import HeroFx from '../components/HeroFx.astro';
+import { scenarios } from '../lib/catalogue.js';
+import '../styles/home.css';
+
+// B is the hero (owner's choice, 2026-11-06); HERO=a|c builds a parked direction
+const fx = ['a', 'c'].includes(process.env.HERO ?? '') ? process.env.HERO : 'b';
+
+const beats = [
+  ['Pasirinkimas', 'jis renkasi, į ką taikytis. <!-- M -->'],
+  ['Pretekstas', 'jis apsimeta kuo nors, kuo tu pasitiki. <!-- M -->'],
+  ['Spaudimas', 'jis neduoda laiko pagalvoti. <!-- M -->'],
+  ['Veiksmas', 'jis prašo, kad veiksmą atliktum tu. <!-- M -->'],
+  ['Pasitraukimas ir pakartojimas', 'jis dingsta ir bando vėl; „gelbėtojai“, siūlantys susigrąžinti pinigus, irgi yra to dalis. <!-- M F14 F16 -->'],
+];
+
+const habits = [
+  ['Padėk ragelį ir skambink oficialiu numeriu', '/sustok/padek-ragely/', 'kai skambina „bankas“ ar „policija“.'],
+  ['Kodų ir PIN niekam nesakyk', '/sustok/kodai-ir-pin/', 'kai kas nors prašo kodo.'],
+  ['Nespausk nuorodos – atsidaryk programėlę ar svetainę', '/sustok/nuoroda-ne-is-zinutes/', 'kai žinutė su nuoroda skubina.'],
+  ['Neskenuok QR lipduko – atsidaryk oficialią programėlę', '/sustok/qr-ne-is-lipduko/', 'kai ant parkavimo automato prilipdytas QR kodas. <!-- F101 -->'],
+  ['Sustok dešimčiai sekundžių', '/sustok/desimt-sekundziu/', 'kai kas nors sako „dabar“.'],
+  ['Susitarkite šeimoje dėl žodžio', '/sustok/seimos-zodis/', 'kai artimasis „skubiai“ prašo pagalbos.'],
+];
+---
+<Page
+  title="Suktas – O jei čia apgaulė?"
+  description="Pamatyk triuką dar prieš jam prasidedant. Kiekvieną apgaulę rodome iš sukčiaus pusės ir baigiame vienu tavo ėjimu."
+>
+  <HeroFx dir={fx} />
+
+  <section class="ask wrap" aria-labelledby="nutiko">
+    <h2 id="nutiko">{nb('Kas tau nutiko?')}</h2>
+    <p class="ask__lead">{nb('Pasirink, kas tavęs neramina. Parodysime, kaip tai atrodo iš sukčiaus pusės ir kur jį sustabdyti.')}</p>
+    <Chooser urgent label="Pagal tai, kas tavęs neramina" />
+    <p class="more"><a href="/scenarijai/">{nb(`Visos apgaulės (${scenarios.length})`)}</a></p>
+  </section>
+
+  <section class="think band" aria-labelledby="galvoja" data-herofx="t">
+    <ThinkArt />
+    <div class="wrap think__in">
+      <div class="think__intro">
+        <h2 id="galvoja">{nb('Kaip jis galvoja')}</h2>
+        <p>{nb('Beveik kiekvienas triukas vyksta penkiais žingsniais. Tai mūsų pačių modelis, ne oficialus:')}</p>
+      </div>
+      <ol class="beats" role="list">
+        {beats.map(([name, text]) => (
+          <li><strong set:html={nbHtml(name)} /> <span set:html={nbHtml(text)} /></li>
+        ))}
+      </ol>
+      <p class="think__more"><a class="btn btn--stage" href="/temos/kaip-veikia-atakos/">{nb('Skaityk, kaip jis galvoja')}</a></p>
+    </div>
+  </section>
+
+  <section class="habits wrap" aria-labelledby="ipociai">
+    <div class="habits__intro">
+      <h2 id="ipociai">{nb('Įpročiai')}</h2>
+      <p>{nb('Šešios kortelės, kiekviena – vienas ėjimas:')}</p>
+      <p class="more"><a href="/sustok/">{nb('Visi įpročiai')}</a></p>
+    </div>
+    <ul class="habits__list" role="list">
+      {habits.map(([name, href, when]) => (
+        <li class="habit">
+          <h3><a href={href}>{nb(name)}</a></h3>
+          <p set:html={nbHtml(when)} />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="pair band">
+   <div class="wrap pair__in">
+    <section class="mins" aria-labelledby="penkiolika">
+      <h2 id="penkiolika">{nb('Penkiolika minučių sau')}</h2>
+      <p>{nb('Penki žingsniai su tuo, ką jau turi, be naujų paskyrų: el. paštas, nutekėjimų patikra, telefonas, dienos limitai banko programėlėje ir šeimos žodis.')}</p>
+      <p><a class="btn" href="/patikra/15-minuciu/">{nb('Pasitikrink dabar')}</a></p>
+    </section>
+    <section class="family" aria-labelledby="tevams">
+      <h2 id="tevams">{nb('Tėvams ir seneliams')}</h2>
+      <p>{nb('Tėvams ar seneliams geriausia siųsti puslapį šeimai. Vienas puslapis, didelis šriftas, tinka spausdinti.')}</p>
+      <p><a class="btn btn--second" href="/seima/">{nb('Puslapis šeimai')}</a></p>
+    </section>
+   </div>
+  </div>
+
+  <section class="promise band" aria-labelledby="nerasi">
+   <div class="wrap promise__in">
+    <h2 id="nerasi">{nb('Ko čia nerasi')}</h2>
+    <div class="promise__body">
+      <p set:html={nbHtml('Čia nėra patarimų, kaip apgauti žmogų ar įsilaužti į tai, kas ne tavo. Svetainė dirba tik gynybai. <!-- pažadas --> Ir ji tavęs neseka: jokių slapukų, svetimos analitikos ir reklamos, o apsilankymus skaičiuoja tik mūsų pačių skaitiklis (<a href="/privatumo-pranesimas/#ka-skaiciuojame">kaip</a>). <!-- pažadas -->')} />
+      <p class="promise__links"><a href="/misija/#riba">{nb('Mūsų riba')}</a> · <a href="/privatumo-pranesimas/">{nb('Privatumo pranešimas')}</a></p>
+    </div>
+   </div>
+  </section>
+</Page>
+
+<script>
+  import '../art/gutters.js';
+</script>

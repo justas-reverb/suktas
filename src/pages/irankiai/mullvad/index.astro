@@ -1,0 +1,141 @@
+---
+/**
+ * Įrankiai: Mullvad VPN, a tool article. The copy is docs/copy/irankiai/mullvad.md, word for word;
+ * the source tags stay as comments and the build strips them. It wears the scenario template without
+ * the attacker's layer, since a tool page has none.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const helps = [
+  ['Viešas „Wi-Fi“.', ' NKSC pataria viešame belaidžiame tinkle nesinaudoti el. bankininkyste, nepirkti ir neįvesti asmeninių duomenų, o būtinus dalykus daryti per savo mobilųjį internetą arba VPN. <!-- F981 -->'],
+  ['Tavo interneto tiekėjas.', ' Su VPN jis nemato, ką veiki internete. <!-- F950 -->'],
+  ['Tavo IP adresas.', ' Svetainės mato VPN serverio adresą, ne tavo. <!-- F950 M --> „Mullvad“ rašo, kad tada niekas negali tavęs sekti pagal tavo IP adresą. <!-- F950 -->'],
+];
+
+const limits = [
+  ['Nuo apgaulės neapsaugo.', ' Jei sukčius įkalbės paspausti nuorodą ar padiktuoti kodą, VPN to nesustabdys. <!-- M --> Tam skirti <a href="/sustok/">Įpročiai</a>.'],
+  ['Svetainės, kuriose prisijungi, vis tiek žino, kas tu.', ' VPN keičia tik kelią, kuriuo eina ryšys. <!-- M F982 -->'],
+  ['Privatumui jo neužtenka.', ' Pats „Mullvad“ rašo, kad VPN reikia derinti su privatumą saugančia naršykle. <!-- F950 --> Kaip sumažinti sekimą naršyklėje: <a href="/temos/irenginiai/#sekimas">Įrenginiai ir tinklas</a>.'],
+  ['Pasitikėjimą tik perkeli.', ' Tai, ką anksčiau matė interneto tiekėjas, dabar gali matyti VPN tiekėjas, todėl naudok tik tą, kuriuo pasitiki. <!-- M F982 -->'],
+];
+
+const why = [
+  ['Jokių asmens duomenų.', ' Nei vardo, nei el. pašto, nei slaptažodžio: gauni atsitiktinį paskyros numerį. <!-- F953 --> Mokėjimas kortele, „PayPal“ ar banko pavedimu nėra anonimiškas. Grynuosius galima atsiųsti paštu, ir „Mullvad“ rašo, kad nežino, kas juos atsiuntė. <!-- F953 F952 -->'],
+  ['Veiklos žurnalų nesaugo.', ' Taip rašo „Mullvad“ taisyklės. <!-- F954 --> 2023 m. balandį Švedijos policija atvyko į „Mullvad“ biurą Geteborge su kratos orderiu paimti kompiuterių su klientų duomenimis; pasak „Mullvad“, tokių duomenų nebuvo, ir policija išėjo nieko nepaėmusi. <!-- F955 -->'],
+  ['Tikrina ir kiti.', ' Naujausią saugumo vertinimą 2026 m. vasarį atliko „Leviathan“, programėlės auditą 2024 m. lapkritį – „X41 D-Sec“; taip nurodo „Mullvad“, ataskaitų patys neskaitėme. <!-- F956 -->'],
+  ['Atviras kodas ir viena kaina.', ' Kodas – pagal GPL-3 licenciją; kaina – 5 € per mėnesį su PVM, ta pati nuo 2009 m. <!-- F957 F952 -->'],
+  ['Jį mini ir „GrapheneOS“.', ' Šios telefono sistemos kūrėjai iš VPN programėlių rekomenduoja tik oficialią „WireGuard“ ir oficialią „Mullvad“ programėlę. <!-- F979 -->'],
+];
+
+const steps = [
+  ['Parsisiųsk tik iš oficialaus šaltinio:', ' <a href="https://mullvad.net/en/download/vpn">mullvad.net/en/download/vpn</a> arba „Google Play“, „F-Droid“, „App Store“. <!-- F951 -->'],
+  ['Susikurk paskyrą', ' ir išsaugok paskyros numerį <a href="/irankiai/#slaptazodziu-tvarkykles">slaptažodžių tvarkyklėje</a>: be jo neprisijungsi. <!-- F953 M -->'],
+  ['Apmokėk tiek laiko, kiek nori:', ' už mėnesį ar už metus kaina ta pati. <!-- F952 --> Per 14 dienų pinigus gali susigrąžinti, išskyrus grynuosius. <!-- F952 -->'],
+  ['Įdiek tuose įrenginiuose, kuriuose reikia:', ' viena paskyra tinka iki 5 įrenginių. <!-- F959 -->'],
+  ['Viešame „Wi-Fi“ tinkle VPN įjunk', ' dar prieš atidarant banką ar parduotuvę, arba naudokis mobiliuoju internetu. <!-- F981 M -->'],
+];
+
+const watch = [
+  ['Kalba.', ' Kompiuterio programoje lietuvių kalbos nėra; svetainės ir telefono programėlių kalbų netikrinome. <!-- F960 -->'],
+  ['Netikros kopijos.', ' VPN programėlę siųskis tik iš gamintojo puslapio ar jo nurodytų parduotuvių. <!-- pažadas F951 --> Reklama, kad VPN „apsaugo nuo visko“, – ženklas suklusti. <!-- M F982 -->'],
+];
+
+const sources = [
+  '„Mullvad“ (pagrindinis puslapis, kainos, atsisiuntimas, DUK, „Apie“, žurnalų politika, atnaujinta 2026-06-17; tinklaraštis, 2023-04-20; „GitHub“ saugykla): ką daro VPN, platformos, kaina, paskyra, žurnalai, krata, auditai, licencija, įmonė, įrenginiai, kalbos. <!-- F950 F951 F952 F953 F954 F955 F956 F957 F958 F959 F960 -->',
+  'NKSC (2020-02-12): viešas „Wi-Fi“ ir VPN. <!-- F981 -->',
+  'EFF „Surveillance Self-Defense“ (JAV, peržiūrėta 2026-07-28): kam tinka VPN ir kaip juo pasitikėti. <!-- F982 -->',
+  'ACCC (Australija, 2023-07-26): „Onavo Protect“ ir teismo skirta 20 mln. Australijos dolerių bauda. <!-- F983 -->',
+  '„GrapheneOS“ DUK: rekomenduojamos VPN programėlės. <!-- F979 -->',
+];
+
+const list = (items) => items.map(([head, text]) => `<li><strong>${nbHtml(head)}</strong>${nbHtml(text)}</li>`).join('');
+---
+<Page
+  title="Mullvad VPN: ką VPN apsaugo, o ko ne – Suktas"
+  description="Kada VPN tikrai padeda, ką reklamos perdeda, kodėl nesiūlome nemokamo VPN ir kaip saugiai pradėti naudotis „Mullvad“."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/irankiai/">Įrankiai</a></p>
+        <h1>{nb('Mullvad VPN: ką VPN apsaugo, o ko ne')}</h1>
+        <dl class="meta">
+          <div><dt>Skaitymo laikas</dt><dd>3 min.</dd></div>
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('VPN užšifruoja tavo interneto ryšį ir nukreipia jį per kitą tinklą. <!-- F950 F982 --> Tavo interneto tiekėjas nebemato, ką veiki, o svetainės mato ne tavo, o VPN serverio IP adresą. <!-- F950 F982 M --> Bet nuo sukčių, kenkėjiškų programų ir sekimo VPN vienas neapsaugo: reklamos, kurios tai žada, perdeda. <!-- F982 --> „Mullvad“ – mokamas VPN iš Švedijos, kuriam nereikia nei tavo vardo, nei el. pašto. <!-- F958 F953 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kada VPN padeda</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(helps)} /></div>
+      </div>
+
+      <div class="row">
+        <h2>Ko VPN nedaro</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(limits)} /></div>
+      </div>
+
+      <div class="row">
+        <h2 id="nemokamas">Kodėl ne nemokamas VPN</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Nemokamų VPN nesiūlome. <!-- pažadas --> Nemokama paslauga irgi turi iš kažko gyventi; JAV ne pelno organizacija EFF siūlo paklausti, kaip VPN išsilaiko, jei neparduoda savo paslaugos. <!-- F982 --> „Mullvad“ rašo, kad „nemokamos“ paslaugos beveik visada turi savo kainą: reklamą, tavo duomenų rinkimą arba apribotas funkcijas. <!-- F952 --> EFF taip pat įspėja: tai, kad programėlė yra oficialioje parduotuvėje, dar nereiškia, kad ji saugi. <!-- F982 -->')} />
+          <p set:html={nbHtml('Kaip tai atrodo: nemokamas „Meta“ (tada – „Facebook“) grupės VPN „Onavo Protect“ programėlių parduotuvėse žadėjo apsaugoti asmeninę informaciją, o nuasmeninti suvestiniai duomenys apie tai, kokias programėles žmonės atidarė ir kiek laiko jose praleido, buvo perduodami „Meta“ bendrovei jos komercinei naudai. 2023 m. Australijos teismas pripažino, kad tai galėjo klaidinti, nes žmonėms apie tai nebuvo tinkamai pasakyta, ir skyrė dviem „Meta“ dukterinėms įmonėms iš viso 20 mln. Australijos dolerių baudą; paslauga veikė iki 2019 m. gegužės. <!-- F983 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kodėl „Mullvad“</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(why)} /></div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip pradėti</h2>
+        <div class="row__body"><ol class="row-list" set:html={list(steps)} /></div>
+      </div>
+
+      <div class="row">
+        <h2>Ką stebėti</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(watch)} /></div>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="/irankiai/#k-mullvad">Kortelė Įrankiuose</a>
+        <a class="btn btn--second" href="/irankiai/">Visi įrankiai</a>
+      </div>
+    </section>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Įrankiai:</strong> <a href="/irankiai/tailscale/">Tailscale</a>, <a href="/irankiai/grapheneos/">GrapheneOS</a>, <a href="/irankiai/#slaptazodziu-tvarkykles">{nb('Slaptažodžių tvarkyklės')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/irenginiai/">{nb('Įrenginiai ir tinklas')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

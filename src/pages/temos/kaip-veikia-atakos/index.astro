@@ -1,0 +1,170 @@
+---
+/**
+ * Kaip veikia atakos: the site's spine. The copy is docs/copy/temos/kaip-veikia-atakos.md, word for
+ * word; the source tags stay as comments and the build strips them. The five beats, the five levers
+ * and the chain of a technical attack are one pattern (Beats / the lever cards): his step, and next
+ * to it the place to stop it. Every "Kaip tai daro jis" layer on the site points here.
+ */
+import Page from '../../../layouts/Page.astro';
+import PillarHead from '../../../components/PillarHead.astro';
+import Beats from '../../../components/Beats.astro';
+import PillarStage from '../../../components/PillarStage.astro';
+import Sides from '../../../components/Sides.astro';
+import PillarFoot from '../../../components/PillarFoot.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/scenario.css';
+import '../../../styles/pillar.css';
+
+const beats = [
+  ['Pasirinkimas.', 'Jis renkasi ne tave, o skambinimo ar rašymo sąrašą, kuriame esi ir tu. <!-- M -->', 'ar pateksi į jo sąrašą, nuo tavęs nepriklauso, bet gali padaryti, kad tai jam nieko neduotų: pavadinimas ar numeris ekrane nieko neįrodo. <!-- F38 F39 -->'],
+  ['Pretekstas.', 'Jam reikia priežasties, kodėl tu jam atsakytum: „bankas“, „policija“, kurjeris, žinomas veidas. <!-- F23 -->', 'patikrink savarankiškai, ne per jo duotą kelią. <!-- F13 -->'],
+  ['Spaudimas.', 'Jis skubina ir gąsdina: „paskyra bus užblokuota“, „būtina patvirtinti“. <!-- F24 -->', 'tikras bankas neskubina ir nesiunčia nuorodų, todėl pats skubinimas jau yra ženklas. <!-- F25 -->'],
+  ['Veiksmas.', 'Jam reikia vieno dalyko iš tavęs: kodo, PIN, nuorodos paspaudimo, programos įdiegimo ar pinigų. <!-- F25 F26 F30 F51 -->', 'oficialioje programėlėje daryk tik tas operacijas, kurias pradėjai tu. <!-- F26 -->'],
+  ['Pasitraukimas ir pakartojimas.', 'Jis dingsta, o gėda ir tyla leidžia jam grįžti: kartais kaip „susigrąžinimo“ paslauga už mokestį. <!-- F14 F16 M -->', 'pasakyk bankui ir policijai, o už „susigrąžinimą“ nemokėk. <!-- F4 F14 -->'],
+];
+
+const levers = [
+  ['Skuba.', 'Mažai laiko – mažai minčių. <!-- M -->', 'dešimt sekundžių, <a href="/sustok/desimt-sekundziu/">kortelė</a>. <!-- M -->'],
+  ['Autoritetas.', 'Prisidengęs banku, pareigūnu, žinomu veidu ar naujienų portalo išvaizda, sukčius skolinasi pasitikėjimą, kurio pats neturi. <!-- F23 F50 M -->', 'autoritetas nėra įrodymas; patikrink savarankiškai. <!-- F13 F50 -->'],
+  ['Baimė.', '„Tavo pinigams gresia pavojus“ priverčia žmogų daryti viską, kad tik pavojus išnyktų. <!-- F24 M -->', 'padėk ragelį, <a href="/sustok/padek-ragely/">kortelė</a>. <!-- F4 -->'],
+  ['Gėda.', 'Po nuostolio norisi tylėti, o tyla jam naudinga. <!-- M -->', 'tai gali nutikti bet kam, o pranešti verta net tada, kai tai buvo tik bandymas: <a href="/jei-apgavo/">Jei tave apgavo</a>. <!-- M F2 F4 -->'],
+  ['Nauda.', 'Pelnas, siuntinys ar „grąžinami“ pinigai priverčia skaičiuoti, o ne abejoti. <!-- F23 F44 M -->', 'jei nauda atėjo nekviesta, tai ne dovana. <!-- M -->'],
+];
+
+const chain = [
+  ['Nutekėjimas.', 'Slaptažodis ar adresas nuteka iš paslaugos, ne iš tavęs. Jam reikia sąrašo. <!-- F69 M -->', 'nutekėjimo tu sustabdyti negali, bet gali padaryti taip, kad nutekėjęs slaptažodis niekur kitur neatidarytų durų. <!-- F71 -->'],
+  ['Pakartotinis naudojimas.', 'Jam reikia žmogaus, kuris tą patį slaptažodį naudoja ir kitur. <!-- M -->', 'skirtingas slaptažodis kiekvienai paskyrai. <!-- F71 -->'],
+  ['Perėmimas.', 'Jam reikia paskyros, kuri atveria daugiausia, o dažniausiai tai el. paštas, nes per jį galima atkurti kitų paskyrų slaptažodžius. <!-- F83 -->', 'ilgas slaptažodis ir antras žingsnis; geriausia – prieigos raktas ar fizinis raktas, o SMS – tik jei nieko kito nėra. <!-- F55 F64 F65 F66 -->'],
+  ['Kita paskyra.', 'Iš vienos paskyros jis žengia į kitą. <!-- M -->', 'skirtingi slaptažodžiai ir antras žingsnis kiekvienoje svarbioje paskyroje, ne tik el. pašte. <!-- F71 M -->'],
+];
+
+const stops = [
+  ['Pasirinkimas', 'Pavadinimas ar numeris ekrane neįrodo, kas skambina. <!-- F38 F39 -->'],
+  ['Pretekstas', 'Patikrink savarankiškai oficialiu keliu. <!-- F13 -->'],
+  ['Spaudimas', 'Tikras bankas neskubina. <!-- F25 -->'],
+  ['Veiksmas', 'Tik tai, ką pradėjai tu, oficialioje programėlėje. <!-- F26 -->'],
+  ['Pasitraukimas ir pakartojimas', 'Pranešk ir nemokėk už „susigrąžinimą“. <!-- F14 F16 -->'],
+  ['Nutekėjimas ir pakartotinis naudojimas', 'Skirtingas slaptažodis kiekvienai paskyrai. <!-- F71 -->'],
+  ['Perėmimas', 'Ilgas slaptažodis, prieigos raktas ar kitas antras žingsnis. <!-- F55 F64 -->'],
+];
+
+const map = [
+  ['Tavęs', '<a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>'],
+  ['Tavo paskyros', '<a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>'],
+  ['Tavo duomenų', '<a href="/temos/privatumas/">Privatumas</a>'],
+  ['Tavo įrenginio ir tinklo', '<a href="/temos/irenginiai/">Įrenginiai ir tinklas</a>'],
+];
+
+const related = [
+  ['Temos:', '<a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>, <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>, <a href="/temos/socialine-inzinerija/">Socialinė inžinerija</a>'],
+  ['Scenarijai:', '<a href="/scenarijai/">Scenarijai</a>'],
+  ['Kortelės:', '<a href="/sustok/">Įpročiai</a>'],
+  ['Žodynas:', '<a href="/zodynas/#sukciavimas-apsimetant">Sukčiavimas apsimetant</a>, <a href="/zodynas/#antras-prisijungimo-zingsnis">Antras prisijungimo žingsnis</a>, <a href="/zodynas/phishing/">Kas yra phishing</a>'],
+];
+
+const sources = [
+  'Kampanija „Padėk ragelį“: schemos, frazės, patarimai. <!-- F4 F23 F24 F25 -->',
+  'Lietuvos bankas: pasitikrinimas, savo pradėtos operacijos, reklamos su žinomais veidais, „susigrąžinimo“ pasiūlymai. <!-- F13 F14 F26 F50 -->',
+  '„Smart-ID“: PIN niekada neprašomas. <!-- F30 -->',
+  'RRT: suklastoti numeriai. <!-- F38 F39 -->',
+  'Bankų asociacija: antrasis apgavimas ir nuotolinio prisijungimo programos. <!-- F16 F51 -->',
+  'Lietuvos paštas: netikros žinutės apie siuntinius. <!-- F44 -->',
+  'NIST, CISA, FIDO, NKSC, Have I Been Pwned, NCSC (JK): slaptažodžiai, antras žingsnis, nutekėjimai, el. paštas kaip raktas. <!-- F55 F60 F64 F65 F66 F69 F71 F83 -->',
+];
+---
+<Page
+  title="Kaip veikia atakos – Suktas"
+  description="Penki žingsniai ir penki kabliukai, kuriais remiasi beveik kiekvienas triukas, grandinė, pagal kurią vyksta techninė ataka, ir kur visa tai nutraukti."
+  current="temos"
+>
+  <article class="scn topic">
+    <PillarHead
+      title="Kaip veikia atakos"
+      lead="Du dalykai. Pirma – kaip sukčius apdoroja žmogų. Antra – kaip techninė ataka eina nuo vieno silpno taško iki kito. Abu aprašome iš jo pusės, kad matytum, kur jį sustabdyti. Čia nėra nei įrankių, nei instrukcijų, kaip tai padaryti. <!-- pažadas -->"
+      actions={[
+        ['Atversk scenarijus', '/scenarijai/'],
+        ['Jei tave ką tik apgavo', '/jei-apgavo/', 'sos'],
+      ]}
+    />
+
+    <section class="layer wrap" aria-labelledby="siandien">
+      <section class="move">
+        <h2 id="siandien">Vienas dalykas šiandien</h2>
+        <p class="move__line" set:html={nbHtml('Prieš bet ką darant paklausk: kas tai pradėjo – aš ar jis?')} />
+        <p set:html={nbHtml('Jei jis, sustok. <!-- M F26 -->')} />
+      </section>
+    </section>
+
+    <section class="part wrap" aria-labelledby="pirma">
+      <h2 id="pirma" class="layer__title">Pirma pusė: triukas, kuriuo apgaunamas žmogus</h2>
+      <h3>{nb('Penki žingsniai, iš kurių susideda beveik kiekvienas triukas')}</h3>
+      <p class="model-note" set:html={nbHtml('Tai mūsų pačių modelis, o ne oficiali schema: taip mes sudėjome tai, ką matome oficialiuose šaltiniuose. Faktai kiekviename žingsnyje pažymėti, modelis – ne. <!-- M -->')} />
+      <Beats items={beats} />
+
+      <h3 class="part__sub">{nb('Penki kabliukai')}</h3>
+      <p class="part__intro" set:html={nbHtml('Žingsniams veikti jis naudoja penkis kabliukus. Čia juos įvardijame vieną kartą; kiti puslapiai tik nurodo vardą. <!-- pažadas -->')} />
+      <ul class="lv" role="list">
+        {levers.map(([name, text, stop]) => (
+          <li class="lever">
+            <p class="lever__name">{nb(name)}</p>
+            <p set:html={nbHtml(text)} />
+            <p class="stopline"><strong>Sustabdymo vieta:</strong> <Fragment set:html={nbHtml(stop)} /></p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="part wrap" aria-labelledby="antra">
+      <h2 id="antra" class="layer__title">Antra pusė: kaip techninė ataka virsta grandine</h2>
+      <p class="part__intro" set:html={nbHtml('Čia nėra žmogaus balso, tik grandinė. Jam užtenka vienos silpnos grandies, o tau – vienos nutrauktos. <!-- M -->')} />
+      <Beats items={chain} chain />
+      <p class="part__more" set:html={nbHtml('Visas aprašas su lentele: <a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>. Kas tinka kiekvienai grandžiai: <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>.')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="zemelapis">
+      <h2 id="zemelapis" class="layer__title">Žemėlapis</h2>
+      <table class="map">
+        <thead>
+          <tr><th scope="col">Ko jis siekia</th><th scope="col">Kur skaityti</th></tr>
+        </thead>
+        <tbody>
+          {map.map(([aim, where]) => (
+            <tr>
+              <td data-label="Ko jis siekia">{nb(aim)}</td>
+              <td data-label="Kur skaityti" class:list={{ 'map__soon': where === 'netrukus' }} set:html={nbHtml(where)} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <PillarStage note="Šis sluoksnis uždarytas ir atsidaro paspaudus. Čia – kodėl visa tai jam apskritai veikia. Paaiškinimas yra mūsų pačių modelis.">
+      <div class="row">
+        <h3>Ko jis nori</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Kad veiksmą atliktum tu, o ne jis. Žmogų apgauti lengviau nei programą. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> jei veiksmą pradėjai ne tu, nutrauk. <!-- F26 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Ką jis jau žino</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Tik tai, ką turi sąrašas: vardą, numerį, adresą. Visa kita jam išduoda tavo atsakymai pokalbio metu. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nieko apie save nepasakyk tam, kuris skambina pats. <!-- F13 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Kodėl tai veikia</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Nes penki kabliukai veikia kartu: skuba atima laiką, baimė – nuovoką, autoritetas – abejonę. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nutrauk bent vieną – dešimt sekundžių nutraukia skubą, o be skubos silpnėja ir kiti. <!-- M -->')} />
+        </div>
+      </div>
+      <Sides heads={['Jo žingsnis', 'Tavo atsakymas']} rows={stops} />
+    </PillarStage>
+
+    <PillarFoot
+      related={related}
+      intro="Patikrinta: 2026-10-24. Žingsniai ir kabliukai – mūsų modelis. Faktai, kuriais jis pagrįstas, surašyti <a href='/saltiniai/'>Šaltiniuose</a>:"
+      sources={sources}
+    />
+  </article>
+</Page>

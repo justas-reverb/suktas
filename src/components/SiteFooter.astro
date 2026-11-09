@@ -1,0 +1,44 @@
+---
+import pageDates from '../data/page-dates.json';
+import { catalogue, protect, family, understand, about } from '../lib/nav.js';
+import { channels } from '../lib/catalogue.js';
+
+// The site was last updated when its most recently changed page was.
+const updated = Object.values(pageDates).sort().at(-1);
+const path = Astro.url.pathname;
+const page = (href) => (path === href ? 'page' : undefined);
+---
+<footer class="foot">
+  <div class="wrap foot__in">
+    <p class="foot__sos"><a href="/jei-apgavo/" class="foot__emergency">Jei tave apgavo</a><span>: pirmieji žingsniai ir kam pranešti.</span></p>
+    <div class="foot__cols">
+      <nav aria-label={catalogue.label}>
+        <h2>{catalogue.label}</h2>
+        <ul>
+          <li><a href={catalogue.href} aria-current={page(catalogue.href)}>Visos ({catalogue.count})</a></li>
+          {channels.map((c) => <li><a href={`/scenarijai/#${c.slug}`}><span>{c.name}<span class="foot__n">&nbsp;{c.items.length}</span></span></a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label={protect.label}>
+        <h2>{protect.label}</h2>
+        <ul>
+          {protect.items.map(([label, href]) => <li><a href={href} aria-current={page(href)}>{label}</a></li>)}
+          <li><a href={family.href} aria-current={page(family.href)}>{family.label}</a></li>
+        </ul>
+      </nav>
+      <nav aria-label={understand.label}>
+        <h2>{understand.label}</h2>
+        <ul>
+          {understand.items.map(([label, href]) => <li><a href={href} aria-current={page(href)}>{label}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Apie svetainę">
+        <h2>Apie svetainę</h2>
+        <ul>
+          {about.map(([label, href]) => <li><a href={href} aria-current={page(href)}>{label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+    <p class="foot__close">Jokių slapukų ir nieko iš kitų serverių. Atnaujinta <span class="nw">{updated}</span>. <span class="nw">Svetainę sukūrė <a href="https://sudievu.lt/">sudievu.lt</a>.</span></p>
+  </div>
+</footer>

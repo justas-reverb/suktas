@@ -1,0 +1,20 @@
+---
+/**
+ * Puslapio nėra. The copy is docs/copy/404.md, word for word. The light layout of /jei-apgavo/ (no
+ * script, no art, the text face only): a reader who lands here wants a way out, not a scene.
+ */
+import Emergency from '../layouts/Emergency.astro';
+import { nb } from '../lib/typo.js';
+---
+<Emergency title="Puslapio nėra – Suktas" description="Tokio puslapio nėra.">
+  <article class="sos">
+    <header class="wrap sos__head">
+      <h1>{nb('Tokio puslapio nėra')}</h1>
+      <p class="sos__line">{nb('Gal adrese yra klaida, o gal puslapis perkeltas.')}</p>
+    </header>
+    <div class="wrap sos__cta">
+      <a class="btn btn--sos" href="/jei-apgavo/">{nb('Jei tave ką tik apgavo')}</a>
+      <a class="btn btn--second" href="/scenarijai/">{nb('Atversk scenarijus')}</a>
+    </div>
+  </article>
+</Emergency>

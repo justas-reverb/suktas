@@ -1,0 +1,211 @@
+---
+/**
+ * Scenarijus: bilietas į koncertą iš nepažįstamo žmogaus. The copy is
+ * docs/copy/scenarijai/bilietas-i-koncerta.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Bilietas į koncertą iš nepažįstamo žmogaus');
+const meta = [
+  ['Kanalas', 'socialinis tinklas ar skelbimas'],
+  ['Ko jis nori', 'tavo pinigų už bilietą, su kuriuo nepateksi'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Parduoda nepažįstamas žmogus, o bilietų oficialiai nebėra.', 'Bilietų platintojas „Kakava.lt“ sako, kad daugiausia atvejų fiksuojama per itin populiarius ar išparduotus renginius, o policija įspėja, kad bilietų pasiūlymas socialiniame tinkle gali būti spąstai. <!-- F530 F538 -->'],
+  ['Skubina arba vilioja kaina.', 'Policija sako, kad žmonės pasiduoda spaudimui, jog bilietus greitai nupirks kiti, o neretai vilioja ir mažesnė kaina. <!-- F531 --> Bet ir įprasta kaina nieko neįrodo. <!-- F536 M -->'],
+  ['Įrodinėja nuotraukomis.', 'Bilieto nuotrauka ar PDF, pasak „Bilietai.lt“, negarantuoja, kad pateksi, o kvitą ar susirašinėjimo ekrano nuotrauką galima suklastoti. <!-- F533 F529 F521 -->'],
+];
+
+const steps = [
+  '<strong>Skambink savo bankui</strong> numeriu iš oficialios programėlės ar svetainės ir prašyk sustabdyti pavedimą: kuo greičiau kreipsiesi, tuo didesnė tikimybė sumažinti nuostolius. <!-- F13 F528 F203 -->',
+  '<strong>Suvedei kortelės ar banko duomenis svetainėje?</strong> Pasakyk tai bankui tame pačiame skambutyje ir paprašyk užblokuoti mokėjimo priemones. <!-- F528 F4 -->',
+  '<strong>Išsaugok</strong> visą susirašinėjimą, skelbimą, mokėjimo informaciją ir ekrano kopijas. <!-- F528 M -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, net jei suma nedidelė ir net jei pirkai ne iš oficialaus pardavėjo. <!-- F2 F261 F524 --> Nelauk koncerto dienos: 2024 m. LRT rašė, kad pareigūnai pranešimų sulaukia pavėluotai, kai pinigai jau pervesti, o paskyros panaikintos. <!-- F527 F523 -->',
+  '<strong>Daugiau nemokėk.</strong> Jei po pavedimo prašo primokėti, pavyzdžiui, už bilieto „repersonalizavimą“, sustok: 2023 m. vienas pirkėjas pervedė 178 eurus, paskui dar 22, o bilietai negaliojo. <!-- F521 M -->',
+];
+
+const levers = [
+  ['Skuba.', 'Bilieto „nori ir kiti“, o koncertas jau greitai, tad pavedimas atrodo kaip vienintelis būdas nepraleisti progos. <!-- F528 F531 M -->'],
+  ['Nauda.', 'Mažesnė kaina vilioja, bet kartais užtenka ir to, kad bilietų niekur kitur nebėra. <!-- F531 F529 M -->'],
+  ['Autoritetas.', 'Bilieto nuotrauka, kvitas ar neva susirašinėjimas su pardavimo svetaine kelia pasitikėjimą, kurio jis nenusipelnė. <!-- F521 F529 M -->'],
+];
+
+const sides = [
+  ['„Negaliu nueiti, parduodu savo bilietą“', 'Gal ir tiesa, bet to nepatikrinsi. Pirk tik ten, kur nurodo organizatorius. <!-- F536 F528 M -->'],
+  ['„Bilieto nori ir kiti, pervesk dabar“', 'Skuba yra ženklas, ne priežastis. Nepervesk. <!-- F528 F531 M -->'],
+  ['Kaina mažesnė nei oficiali', 'Mažesnė kaina vilioja, o įprasta nieko neįrodo. Pirk tik ten, kur nurodo organizatorius. <!-- F531 F536 M -->'],
+  ['Atsiunčia bilieto nuotrauką, PDF ar kvitą', 'Tai negarantuoja, kad pateksi: kopija atrodo kaip tikras bilietas, o kvitą ar ekrano nuotrauką galima suklastoti. Nemokėk. <!-- F533 F527 F521 F529 -->'],
+  ['Siūlo susitikti gyvai', 'Susitikimas neįrodo, kad bilietas galioja. Nepirk ir tada. <!-- F525 M -->'],
+  ['Prašo pervesti į užsienio ar kito žmogaus sąskaitą', 'Nepervesk. Bet ir sutampantis vardas neįrodo, kad bilietas galioja. <!-- F524 F537 M -->'],
+  ['Po pavedimo prašo primokėti už „repersonalizavimą“', '„Bilietai.lt“ taisyklėse tokia galimybė yra, o jos sąlygos tada nurodomos renginio aprašyme. Nepažįstamam žmogui daugiau nemokėk. <!-- F521 F532 M -->'],
+  ['Bilietas kito žmogaus vardu', '„Bilietai.lt“ sako, kad su personalizuotu bilietu pateks tik biliete nurodytas asmuo, o kitu atveju paprastai gali ir kitas žmogus. Ar bilietas galioja, vis tiek nesužinosi. Nepirk. <!-- F533 M -->'],
+  ['Siunčia nuorodą į svetainę, panašią į bilietų pardavėjo', 'Nespausk ir kortelės duomenų nevesk. Oficialų pardavėją rask per renginio organizatorių. <!-- F528 F534 M -->'],
+];
+
+const sources = [
+  'Šiaulių apskrities policija (2023-05-25; ir LRT): 32 apgauti „Rammstein“ gerbėjai, negaliojantys bilietai, primokėjimas už „repersonalizavimą“. <!-- F520 F521 -->',
+  'Policija („15min“, 2026-10-20): 160 eurų, pakruojietė. <!-- F522 -->',
+  'Kauno apskrities policija („Kauno diena“, 2025-03-17, pakartota 2025-07-15): devyni pranešimai, spaudimas ir kaina, oficialūs platintojai, atšaukiamas mokėjimas. <!-- F523 F531 -->',
+  'Vilniaus apskrities policija (LRT, 2024-07-03): 7 pranešimai dėl Dainų šventės, „Facebook“ grupės, užsienio sąskaitos. <!-- F524 -->',
+  'Prokurorai („15min“, 2019-01-22): byla dėl netikrų bilietų perduota teismui; tai kaltinimas, ne nuosprendis. <!-- F525 -->',
+  'Policija („Kauno diena“, 2026-08-26; TV3, 2026-09-29): tas pats tikras bilietas keliems, išparduoti renginiai, rungtynės. <!-- F526 F538 -->',
+  '„Žalgirio“ arena ir Kauno apskrities policija (LRT, 2024-07-21): prie įėjimo, kopijos, pavėluoti pranešimai. <!-- F527 -->',
+  '„Artea“ (alkas.lt, 2026-06-25): schema, svetainės, bankas, ką išsaugoti. <!-- F528 -->',
+  '„Baltimax“ ir „Kakava.lt“ (LRT, 2025-08-28): kopijos, klastotės, profilis, išparduoti renginiai, oficialūs platintojai nepadeda. <!-- F529 F530 -->',
+  '„Bilietai.lt“ taisyklės (nuo 2026-02-26) ir straipsnis (2026-08-28): kopija, personalizavimas, tikrinimo paslaugos nėra. <!-- F532 F533 -->',
+  'Kauno apskrities policija (2022-02-11): netikrų bilietų svetainė, pinigai sulaikyti. <!-- F534 -->',
+  'Policija (2025-07-04): masiškiausi būdai. <!-- F535 -->',
+  '„Bilietai.lt“ komentaras („Kauno diena“, 2025-07-15): kur siūlomi bilietai ir už kokią kainą. <!-- F536 -->',
+  '„Tele2“ (LRT, 2024-07-12): pavedimai ir gavėjas. <!-- F537 -->',
+  'Kampanija „Padėk ragelį“, policija, Lietuvos bankas ir „Luminor“: bankui iškart, oficialiais kanalais, policijai per epolicija.lt, net dėl nedidelės sumos. <!-- F4 F2 F13 F203 F261 -->',
+];
+---
+<Page
+  title="Netikri bilietai į koncertą iš nepažįstamo žmogaus – Suktas"
+  description="Koncertas išparduotas, o socialiniame tinkle kažkas parduoda savo bilietą? Kodėl nuotrauka ar PDF nieko neįrodo ir ką daryti, jei jau sumokėjai."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-04</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Bilietų į koncertą nebėra, o socialiniame tinkle ar skelbimų portale kažkas siūlo savo bilietą: esą pats nueiti negali, tad parduoda pigiau, už tą pačią kainą ar brangiau. <!-- F526 F531 F536 --> Jis skubina: esą bilieto nori ir kiti. <!-- F528 --> Pervedi pinigus, ir tada jis dingsta, užblokuoja tave arba atsiunčia bilietą, kuris negalioja. <!-- F528 --> Kartais bilietas tikras, bet tas pats parduotas keliems: įeina tas, kas pirmas jį parodo prie įėjimo, o kiti lieka už durų. <!-- F526 F529 F533 --> Dalis pirkėjų apie tai sužino tik renginio dieną. <!-- F526 --> Tas pats gali nutikti ir su bilietais į rungtynes ar spektaklį. <!-- F520 F530 F538 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Bilietą pirk tik ten, kur nurodo renginio organizatorius. Iš nepažįstamo žmogaus nepirk, net jei bilietas atrodo tikras. <!-- F528 F526 -->')} />
+        <p set:html={nbHtml('Kopija atrodo taip pat kaip tikras bilietas, o „Bilietai.lt“ iš kitų žmonių pirktų bilietų netikrina ir negali patvirtinti, ar jie galioja. <!-- F527 F533 --> Gyvas susitikimas irgi neapsaugo: 2019 m. teismui perduotoje byloje vyras kaltintas, kad, susitikęs su 14 žmonių skirtinguose miestuose, pardavė netikrus bilietus ir gavo beveik 2 000 eurų. <!-- F525 -->')} />
+        <p set:html={nbHtml('Ne kiekvienas pardavėjas yra sukčius, bet iš skelbimo to neatskirsi. <!-- M --> Jei bilietų nebeliko, pažiūrėk, ar organizatorius nurodo oficialią perpardavimo vietą; jei ne, geriau neiti į renginį nei prarasti pinigus. <!-- F528 F529 --> Jei vis tiek perki, policija siūlo saugaus pirkimo internetu paslaugą, kai mokėjimą gali atšaukti. Tiesioginio pavedimo venk, o per pardavėjo atsiųstą nuorodą nemokėk. Bilietas ir tada gali negalioti. <!-- F531 F537 F528 F529 M --> Perki daiktą, o ne bilietą? Skaityk <a href="/scenarijai/netikras-pardavejas/">„Pardavėjas“ prašo avanso</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau sumokėjai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: 2023 m. gegužę dėl vieno „Rammstein“ koncerto į policiją kreipėsi 32 žmonės, o 2026 m. spalį pakruojietė pervedė 160 eurų ir bilietų negavo. <!-- F520 F522 -->')} />
+        <p set:html={nbHtml('Bilietą gavai, bet nežinai, ar jis galioja? Iš anksto gali ir nesužinoti: „Bilietai.lt“ iš kitų žmonių pirktų bilietų netikrina. <!-- F533 --> Jei pardavėjas dingo, užblokavo tave ar prašo primokėti, veik iškart: <!-- F528 F521 M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Pinigų atgauti dažnai nepavyksta, o oficialūs platintojai, pasak „Kakava.lt“, čia padėti negali, nes bilietas pirktas ne per jų sistemą. <!-- F530 --> Pranešti vis tiek verta: 2022 m. Kauno apskrities policija, tirdama netikrų bilietų svetainę, gautus pinigus sulaikė banko sąskaitose, ir sukčių jie nepasiekė. Tai vienas atvejis, ne pažadas. <!-- F534 M -->')} />
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kortele">pasakiau kortelės duomenis</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/jei-apgavo/#pinigai">Jei jau sumokėjai</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo pinigų už bilietą, su kuriuo nepateksi. <!-- F528 M --> Kartais bilieto visai nebūna: gavęs pinigus jis užblokuoja pirkėją ir dingsta. <!-- F521 F524 --> Kartais bilietas yra, bet negalioja arba jau parduotas kitam. <!-- F521 F526 F527 --> Kartais jis siunčia į svetainę, panašią į oficialaus pardavėjo, ir tada gali bandyti ištuštinti tavo sąskaitą, nors, pasak saugumo eksperto (2025 m.), Lietuvoje tokie atvejai dar reti. <!-- F528 F529 --> <strong class="stop">Sustabdymo vieta:</strong> pavedimas. Kol pinigų nepervedei, jis neturi nieko. <!-- M -->')} />
+            <p set:html={nbHtml('Bendro skaičiaus, kiek žmonių Lietuvoje taip apgauta, neradome. Turime tik atskirų renginių skaičius: dėl „Rammstein“ 2023 m. kreipėsi 32 žmonės, dėl Dainų šventės 2024 m. per pirmas dienas užregistruoti 7 pranešimai, dėl vieno koncerto Kaune 2025 m. – 9. <!-- F520 F524 F523 --> Policija avansinius sukčiavimus, kai skelbimuose siūlomos prekės ar renginių bilietai, vadina vienu masiškiausių būdų. <!-- F535 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, kad nori patekti į tą renginį, o oficialiai bilietų nebėra. <!-- M --> Jei parašei grupėje, kad ieškai bilieto, jis tai mato: policija aprašo, kaip po tokių įrašų „Facebook“ grupėse atsiranda „pardavėjai“. <!-- F524 --> Jo profilis mažai ką pasako: visai naujas profilis gali būti įtarimo ženklas, bet ir nuotrauka, draugai ar senesnė paskyra nereiškia, kad pardavėjas patikimas. <!-- F529 F528 --> <strong class="stop">Sustabdymo vieta:</strong> žiūrėk ne į tai, kas parduoda, o į tai, kur perki. <!-- F528 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> nuotrauka neįrodo net to, kad bilietas tikras. O jei ir tikras, ji nepasako, ar juo nepasinaudos kas nors kitas. <!-- F533 F526 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/netikras-pardavejas/">{nb('„Pardavėjas“ prašo avanso')}</a>, <a href="/scenarijai/netikra-parduotuve/">{nb('Netikra el. parduotuvė')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-04. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

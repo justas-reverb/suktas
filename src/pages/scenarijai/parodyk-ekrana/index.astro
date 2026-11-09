@@ -1,0 +1,203 @@
+---
+/**
+ * Scenarijus: „Parodyk ekraną“. The copy is docs/copy/scenarijai/parodyk-ekrana.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('„Parodyk ekraną“');
+const meta = [
+  ['Kanalas', 'skambutis'],
+  ['Ko jis nori', 'matyti tavo ekraną ir valdyti tavo įrenginį'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Prašo parodyti ekraną.', ' Luminor sako: jei telefonu kalbantis asmuo prašo parodyti ekraną, prisijungti prie banko ar patvirtinti neaiškų veiksmą, pokalbį reikia nutraukti. <!-- F305 --> ES finansų priežiūros institucijos rašo, kad bankai ir finansų įstaigos niekada neprašys dalytis ekranu. <!-- F307 -->'],
+  ['Liepia įsidiegti programą.', ' „AnyDesk“, „TeamViewer“ ar „QuickSupport“ – teisėtos techninės pagalbos programos, bet per jas galima stebėti ekraną, o priklausomai nuo įrenginio ir leidimų – ir nuotoliniu būdu valdyti kai kurias telefono ar kompiuterio funkcijas. <!-- F305 F309 --> Policija primena, kad nei pareigūnai, nei bankų darbuotojai niekada neprašo įsidiegti nuotolinio prisijungimo programėlių. <!-- F308 -->'],
+  ['Kviečia tęsti per „Viber“, „WhatsApp“ ar vaizdo skambutį.', ' „Swedbank“ sako, kad banko darbuotojas niekada nesiūlys perkelti pokalbio į „Viber“ ar „WhatsApp“. <!-- F303 --> Banko vardas ar numeris ekrane nieko neįrodo: numerį galima suklastoti. <!-- F303 -->'],
+];
+
+const steps = [
+  '<strong>Pirmiausia nutrauk pokalbį</strong> ir išjunk ekrano rodymą, jei jis dar įjungtas. <!-- F305 -->',
+  '<strong>Įdiegei programą ir leidai jai valdyti įrenginį?</strong> Išjunk „Wi-Fi“ ir mobiliuosius duomenis: taip gali nutraukti jo prisijungimą. <!-- F305 --> Jei abejoji, ar leidai, – vis tiek išjunk. <!-- M -->',
+  '<strong>Iš kito, saugaus įrenginio skambink bankui</strong> (jei kito neturi – iš artimojo telefono) <!-- M --> numeriu iš oficialios svetainės ir pasakyk, kokią prieigą suteikei ir ką darei. <!-- F305 F13 --> Pakeisk svarbiausius slaptažodžius, pašalink įtartinas programas ir patikrink joms suteiktus leidimus. <!-- F305 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt. <!-- F2 F305 --> Net jeigu pinigai nedingo, tai dar nereiškia, kad nieko blogo neįvyko: sukčiai galėjo surinkti duomenis, kuriais pasinaudos vėliau. <!-- F305 -->',
+];
+
+const levers = [
+  ['Autoritetas.', 'Skambina „bankas“ ar „pareigūnas“, o ekrane gali rodytis tikras numeris. <!-- F303 F308 -->'],
+  ['Baimė.', '„Pastebėtas įtartinas mokėjimas“, „sąskaita užblokuota“: atrodo, kad pinigams gresia pavojus. <!-- F305 -->'],
+  ['Skuba.', 'Viską reikia padaryti dabar, kol jis laukia kitame laido gale. <!-- M -->'],
+];
+
+const sides = [
+  ['„Tik parodyk ekraną“', 'ES finansų priežiūros institucijos rašo: bankai ir finansų įstaigos niekada to neprašys. <!-- F307 --> Nutrauk pokalbį. <!-- F305 -->'],
+  ['„Įsidiek „AnyDesk“ ar „TeamViewer“, padėsiu“', 'Pareigūnai ir bankų darbuotojai niekada neprašo įsidiegti nuotolinio prisijungimo programėlių. <!-- F308 --> Bendrovė „TeamViewer“ rašo, kad pati jokių nuotolinės pagalbos paslaugų neteikia: ji kuria programinę įrangą. <!-- F316 -->'],
+  ['„Atsidaryk banko programėlę, kol aš žiūriu“', 'Po to jis žingsnis po žingsnio prašys leidimų ir patvirtinimo. <!-- F305 --> Skambučio metu nieko nedaryk. <!-- F308 -->'],
+  ['„Pratęskime per „Viber“ ar vaizdo skambutį“', '„Swedbank“ darbuotojas pokalbio į „Viber“ ar „WhatsApp“ neperkelia. <!-- F303 --> Tokių skambučių operatoriai užblokuoti negali – sukčiai tuo ir naudojasi. <!-- F39 -->'],
+  ['Kvietimas į „Google Meet“, „Teams“ ar „Zoom“ ir prašymas įjungti ekrano bendrinimą', '„Telia“ ekspertas sako, kad taip sukčiai gali matyti prisijungimo duomenis ir vienkartinius banko kodus. <!-- F309 --> Neprisijunk prie nelaukto skambučio. <!-- M -->'],
+  ['„WhatsApp“ perspėja, kai bandai rodyti ekraną nepažįstamam kontaktui', '„Meta“ 2025 m. spalį paskelbė tokį įspėjimą, nes sukčiai spaudžia rodyti ekraną ir taip išvilioja banko duomenis ar kodus. <!-- F313 --> Jei jį matai – sustok ir padėk ragelį. <!-- M -->'],
+  ['„Revolut“ saugumo darbuotojas per „Viber“, dažniausiai angliškai, paslėptu numeriu', 'Ukmergės policija įspėja: tai sukčiai, kurie prašo prisijungimo duomenų ir atsiunčia nuorodą su netikru paskyros „skenavimu“. Nutrauk pokalbį ir padėk ragelį. <!-- F302 -->'],
+  ['Banko vardas ar tikras numeris ekrane', 'Numerį galima suklastoti, todėl jis nieko neįrodo. Paskambink bankui oficialiu numeriu. <!-- F303 -->'],
+];
+
+const sources = [
+  'Luminor (alkas.lt, 2026-10-28): kaip prasideda skambutis; ką mato žmogus, kuriam rodai ekraną; nuo ekrano iki patvirtinimo; ką daryti, jei ekraną jau rodei. <!-- F171 F305 -->',
+  '„Swedbank“ (2026-02-13, 2023-01-19 ir saugumo puslapis be datos): darbuotojas nesiūlo „Viber“, „WhatsApp“ ar „AnyDesk“; numerį galima suklastoti; ką leidžia nuotolinio valdymo programa; vaizdo skambučiai. <!-- F303 F304 F306 -->',
+  'Europos bankininkystės institucija, EIOPA ir ESMA (lietuviškas leidinys, 2026): bankai niekada neprašys dalytis ekranu ar diegti nuotolinės prieigos programų. <!-- F307 -->',
+  'Utenos apskrities policija (aukstaitijosgidas.lt, 2026-05-28): „gydymo įstaigos“, „policijos“ ir „banko“ grandinė; ko pareigūnai ir bankai niekada neprašo. <!-- F308 -->',
+  '„Telia“ (ve.lt, 2026-10-08): ekrano bendrinimas vaizdo skambučiuose. <!-- F309 -->',
+  'Policijos departamentas (LRT, 2026-06-26): Šiaulių atvejis, 131,8 tūkst. eurų. <!-- F310 -->',
+  'kaipkada.lt (2026-07-07): bankui skambinti numeriu iš svetainės ar kortelės. <!-- F311 -->',
+  'Ukmergės rajono policija (tv3.lt, 2026-07-30): „Revolut“ vardu per „Viber“. <!-- F302 -->',
+  'RRT (2026-08-10): sukčiai naudojasi „Viber“ ir „WhatsApp“, kurių operatoriai negali blokuoti. <!-- F39 -->',
+  '„Meta“ (9to5mac.com, 2025-10-21; užsienio šaltinis): „WhatsApp“ įspėjimas apie ekrano rodymą. <!-- F313 -->',
+  '„TeamViewer“ (savo puslapis, 2024-10-01; užsienio šaltinis): nuotolinės pagalbos paslaugų neteikia. <!-- F316 -->',
+  'Lietuvos bankas: banką pasiekti per oficialią programėlę ar svetainę. <!-- F13 -->',
+  'Policija: pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="„Parodyk ekraną“: ekrano dalijimasis ir „AnyDesk“ – Suktas"
+  description="Skambina „bankas“ ir prašo parodyti ekraną ar įsidiegti „AnyDesk“? Taip sukčiai gali pamatyti tavo sąskaitas ir kodus. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-01</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Skambina „banko darbuotojas“, kartais „pareigūnas“ ar „techninės pagalbos specialistas“. <!-- F171 F305 F308 --> Jis nori „padėti“: apsaugoti sąskaitą ar atšaukti įtartiną mokėjimą. <!-- F171 --> Pokalbis gali persikelti į „Viber“, „WhatsApp“ ar vaizdo skambutį. <!-- F303 F304 F306 --> Iš pradžių jis prašo tik parodyti ekraną. Vėliau – atidaryti banko programėlę, prisijungti, suteikti papildomus leidimus ir galiausiai ką nors patvirtinti. <!-- F305 --> Arba liepia įsidiegti „AnyDesk“, „TeamViewer“ ar panašią programą. <!-- F306 F308 F309 --> 2026 m. birželį Šiauliuose rusiškai kalbėję „banko darbuotojai“ įtikino vyrą telefone įdiegti nuotolinio prisijungimo programėlę ir atiduoti banko korteles; jis policijai pranešė, kad iš jo sąskaitos pasisavinta 131,8 tūkst. eurų. <!-- F310 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Vos paprašo parodyti ekraną – padėk ragelį.')} />
+        <p set:html={nbHtml('<!-- F305 --> Tada skambink bankui – numeriu iš oficialios banko svetainės, programėlės ar mokėjimo kortelės, o ne tuo, kurį padiktavo skambinantysis. <!-- F13 F303 F311 --> Kortelė: <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. Jis prisistato kaip pagalba, o pagalbą priimti natūralu. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#nuotolinis">Jei tave apgavo: įdiegiau programą ar leidau valdyti telefoną</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Matyti tai, ką matai tu: sąskaitų likučius, gaunamus pranešimus ir patvirtinimo kodus, kai jie pasirodo ekrane. <!-- F305 F309 --> Su nuotolinio prisijungimo programa jis gali ir pats daryti veiksmus: formuoti pavedimus, keisti operacijų limitus ar pildyti paraišką paskolai. <!-- F304 --> <strong class="stop">Sustabdymo vieta:</strong> ekranas, kurio jis nemato. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kartais daugiau, nei manai. Utenos policija aprašė, kaip pirmiausia skambina „gydymo įstaiga“ ir išgauna asmens duomenis, tada „policininkas“, o paskui „bankas“, kuris liepia įsidiegti „AnyDesk“. <!-- F308 --> Kai ekranas jau rodomas, jam nebereikia nieko klausti: daug ką pamato pats. <!-- F305 M --> <strong class="stop">Sustabdymo vieta:</strong> banko numeris, kurį susirandi tu. <!-- F311 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Be to, „tik parodyk ekraną“ atrodo nekaltai: nieko nesakai ir nieko neįvedi. Todėl jis ir neprašo visko iš karto. <!-- F305 M --> <strong class="stop">Sustabdymo vieta:</strong> pats pirmasis prašymas parodyti ekraną. <!-- F305 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a>, <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a>, <a href="/scenarijai/programele-is-nuorodos/">{nb('Programėlė iš nuorodos ar reklamos')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-01. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

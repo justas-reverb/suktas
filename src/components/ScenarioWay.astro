@@ -1,0 +1,23 @@
+---
+/**
+ * The strip above every scenario: where this is (Apgaulės › channel, n of N in it) and a step to the
+ * neighbour on either side, in the catalogue's order. Plain links, so it works with JavaScript off.
+ */
+import { nb } from '../lib/typo.js';
+interface Props { spot: { s: any; prev: any; next: any } }
+const { spot: { s, prev, next } } = Astro.props;
+const total = s.channel.items.length;
+---
+<nav class="way" aria-label="Kur esi">
+  <div class="way__in wrap">
+    <ol class="way__trail" role="list">
+      <li><a href="/scenarijai/">Apgaulės</a></li>
+      <li><a href={`/scenarijai/#${s.channel.slug}`}>{nb(s.channel.name)}</a></li>
+      <li class="way__pos">{s.n} iš {total}</li>
+    </ol>
+    <div class="way__step">
+      {prev ? <a class="way__btn way__btn--prev" href={prev.href} rel="prev" aria-label={`Ankstesnė: ${prev.title}`}><span aria-hidden="true"></span></a> : <span class="way__btn way__btn--off" aria-hidden="true"><span></span></span>}
+      {next ? <a class="way__btn way__btn--next" href={next.href} rel="next" aria-label={`Kita: ${next.title}`}><span aria-hidden="true"></span></a> : <span class="way__btn way__btn--off" aria-hidden="true"><span></span></span>}
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,64 @@
+---
+/**
+ * Apgaulės: the catalogue. The copy is docs/copy/scenarijai/index.md, word for word; the data is
+ * src/lib/catalogue.js, which every other part of the site reads too. The reader picks by what
+ * reached them (the tiles), then scans one channel at a time: a title, the scene in one line, the time.
+ */
+import Page from '../../layouts/Page.astro';
+import ArtBand from '../../components/ArtBand.astro';
+import Chooser from '../../components/Chooser.astro';
+import { channels, apgaules } from '../../lib/catalogue.js';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+---
+<Page
+  title="Sukčių scenarijai: skambučiai, SMS ir reklamos – Suktas"
+  description="Kiekvieną apgaulę rodome iš sukčiaus pusės, o baigiame vienu tavo ėjimu. Pasirink pagal tai, kas tau paskambino ar parašė."
+  current="scenarijai"
+>
+  <section class="shead shead--short" aria-labelledby="h1">
+    <ArtBand mood="day" class="shead__art" sizes="(min-width: 60rem) 115vw, 120vw" eager />
+    <div class="wrap shead__body">
+      <h1 id="h1">{nb('Apgaulės')}</h1>
+      <p class="shead__lead" set:html={nbHtml('Kiekvienas puslapis rodo vieną apgaulę iš sukčiaus pusės: kaip ji atrodo, ko jis nori ir kur jį sustabdyti. <!-- pažadas --> Pirmas sluoksnis trunka maždaug pusantros minutės ir baigiasi vienu tavo ėjimu; antrą skaityk, jei nori suprasti, kodėl tai veikia. <!-- pažadas -->')} />
+    </div>
+  </section>
+
+  <div class="shelf">
+    <section class="finder wrap" aria-labelledby="pagal">
+      <h2 id="pagal">{nb('Pagal tai, kas tau paskambino ar parašė')}</h2>
+      <Chooser sameNow urgent label="Pagal tai, kas tavęs neramina" />
+
+      <div class="chans">
+        {channels.map((c) => (
+          <section class="chan" id={c.slug} aria-labelledby={`ch-${c.slug}`}>
+            <div class="chan__rail">
+              <h3 id={`ch-${c.slug}`}>{nb(c.name)}</h3>
+              <p class="chan__ask">{nb(c.ask)}</p>
+              <p class="chan__n" set:html={apgaules(c.items.length).replace(' ', '&nbsp;')} />
+            </div>
+            <ul class="cats" role="list">
+              {c.items.map((s) => (
+                <li class="cat">
+                  <h4><a href={s.href}>{nb(s.title)}</a></h4>
+                  <p class="cat__time">{s.time}</p>
+                  <p class="cat__text" set:html={nbHtml(s.text)} />
+                </li>
+              ))}
+            </ul>
+            <p class="chan__top"><a href="#pagal">↑ Kiti kanalai</a></p>
+          </section>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap" aria-labelledby="nutiko">
+      <div class="after">
+        <h2 id="nutiko">{nb('Jei jau nutiko')}</h2>
+        <p set:html={nbHtml('Jei tave ką tik apgavo, skaityk čia: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </div>
+    </section>
+
+    <p class="related wrap">{nb('Susiję:')} <a href="/sustok/">{nb('Įpročiai')}</a> · <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></p>
+  </div>
+</Page>

@@ -1,0 +1,141 @@
+---
+/**
+ * Patikra per 15 minučių: five timed steps, the most important first. The copy is
+ * docs/copy/patikra/15-minuciu.md, word for word; the source tags stay as comments in the strings
+ * and the build strips them. Nothing here is a control and nothing is stored: the strip of minutes
+ * only jumps to a step, and the boxes to tick appear on paper (styles/patikra.css, @media print).
+ */
+import Page from '../../../layouts/Page.astro';
+import DocHead from '../../../components/DocHead.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/doc.css';
+import '../../../styles/patikra.css';
+
+const steps = [
+  {
+    id: 'pirmas-zingsnis', name: 'El. pašto paskyra', min: 4, cls: 'pk-m4',
+    body: [
+      '<strong>Nustatyk jai ilgą slaptažodį, kurio nenaudoji niekur kitur.</strong> <!-- F55 F71 --> Jei slaptažodis vienas saugo paskyrą, NIST reikalauja bent 15 ženklų. <!-- F55 --> Nereikia nei simbolių mišinio, nei keisti slaptažodžio kas kelis mėnesius: NIST to nebereikalauja. <!-- F56 F57 --> Keisk tada, kai yra požymių, kad slaptažodis nutekėjo. <!-- F57 -->',
+      '<strong>Įjunk antrą prisijungimo žingsnį.</strong> Kur galima, rinkis prieigos raktą ar fizinį raktą, o jei jų nėra – programėlę, bet ne SMS. <!-- F60 F64 F66 --> SMS kodas nėra atsparus apgaulei, o SIM kortelės pakeitimas yra vienas iš būdų jį apeiti: sukčiai įtikina operatorių perkelti tavo numerį į savo SIM kortelę. <!-- F65 F66 F67 --> Jei paslauga siūlo tik SMS, įjunk ir jį: NKSC pataria naudoti daugiaveiksnį autentifikavimą. <!-- F68 -->',
+      'Slaptažodžius įsimena slaptažodžių tvarkyklė. <!-- F72 --> Jei jos dar neturi, išsirinksi vėliau <a href="/irankiai/">Įrankių</a> puslapyje.',
+    ],
+    why: '<em>Kodėl šis žingsnis pirmas:</em> kas patenka į tavo el. paštą, per jį gali atkurti kitų paskyrų slaptažodžius. <!-- F83 -->',
+  },
+  {
+    id: 'antras-zingsnis', name: 'Nutekėjimų patikra', min: 3, cls: 'pk-m3',
+    body: [
+      '<strong>Įvesk savo el. pašto adresą svetainėje haveibeenpwned.com.</strong> Tai nemokama svetainė, rodanti, ar adresas buvo tarp nutekėjusių duomenų; ją nuo 2013 m. veda Troy Hunt, o NKSC ją nurodo kaip pavyzdį, kaip patikrinti adresą. <!-- F69 F71 --> Ten rašai tik el. pašto adresą. Jei adresas rastas ir slaptažodį naudojai dar kur nors, pirmiausia pakeisk jį svarbiausiose paskyrose. <!-- F71 -->',
+    ],
+  },
+  {
+    id: 'trecias-zingsnis', name: 'Telefonas', min: 3, cls: 'pk-m3',
+    body: [
+      '<strong>Įjunk automatinius atnaujinimus.</strong> <!-- F77 --> Daugelis atnaujinimų taiso saugumo spragas, o svarbiausius reikia įdiegti kuo greičiau. <!-- F77 --> <strong>Turėk ekrano užraktą:</strong> PIN kodą, piešinį ar slaptažodį. <!-- F78 -->',
+    ],
+  },
+  {
+    id: 'ketvirtas-zingsnis', name: 'Dienos limitai banko programėlėje', min: 3, cls: 'pk-m3',
+    body: [
+      '<strong>Atsidaryk savo banko programėlę ir iš anksto sumažink dienos limitus.</strong> <!-- F26 --> Tada per vieną dieną iš sąskaitos galima išsiųsti mažiau. <!-- M -->',
+    ],
+  },
+  {
+    id: 'penktas-zingsnis', name: 'Šeimos žodis', min: 2, cls: 'pk-m2',
+    body: [
+      '<strong>Susitark su artimaisiais dėl žodžio ar frazės, kurią žinote tik jūs:</strong> kortelė <a href="/sustok/seimos-zodis/">Susitarkite šeimoje dėl žodžio</a>. Tai JAV FBI patarimas; Lietuvos institucijos, kuri tai rekomenduotų, neradome. <!-- F80 F81 F82 -->',
+    ],
+  },
+];
+
+const why = [
+  ['El. paštas.', 'Jam geriausia paskyra, kuri atveria kitas. <!-- F83 -->', 'ilgas slaptažodis ir antras žingsnis, geriausia ne SMS. <!-- F55 F66 -->'],
+  ['Nutekėjimai.', 'Nutekėjęs slaptažodis jam yra pradžia, jei tą patį naudoji dar kur nors. <!-- F71 -->', 'tu patikrini savo adresą, o skirtingi slaptažodžiai nutekėjimą izoliuoja. <!-- F69 F71 -->'],
+  ['Telefonas.', 'Jam pakanka spragos, kurią kiti jau užtaisė, o tu dar ne. <!-- M -->', 'automatiniai atnaujinimai. <!-- F77 -->'],
+  ['Dienos limitai.', 'Jam svarbus vienas didelis laimėjimas, o limitas jį sumažina. <!-- M -->', 'mažesnis dienos limitas, nustatytas iš anksto. <!-- F26 -->'],
+  ['Šeimos žodis.', 'Jam reikia, kad patikėtum skubiu balsu ar suklastotais „įrodymais“. <!-- F81 -->', 'žodis, kurio jis nežino. <!-- F80 F81 -->'],
+];
+
+const next = [
+  'Kortelės: <a href="/sustok/">Įpročiai</a>.',
+  'Tema: <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>.',
+  'Jei tave ką tik apgavo: <a href="/jei-apgavo/">Jei tave apgavo</a>.',
+];
+---
+<Page
+  title="Patikra per 15 minučių – Suktas"
+  description="Penki žingsniai: el. paštas, nutekėjimų patikra, telefonas, banko dienos limitai ir šeimos žodis. Svarbiausi – pirmieji."
+  current="patikra"
+>
+  <DocHead
+    title="Patikra per 15 minučių"
+    lead="Penki žingsniai: pasitikrink save taip, kaip tikrintų jis. Svarbiausi – pirmieji. <!-- pažadas -->"
+    actions={[
+      ['Pradėk nuo pirmo žingsnio', '#pirmas-zingsnis'],
+      ['Kita patikra', '/patikra/', 'second'],
+    ]}
+  />
+
+  <article class="wrap doc">
+    <section class="doc-sec" aria-labelledby="pries">
+      <h2 id="pries">Prieš pradedant</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('<span class="pk-need">Reikės telefono ir savo el. pašto. Naujų paskyrų kurti nereikia.</span> Šis puslapis nieko nesaugo ir niekur nesiunčia: pažymėk žingsnius ant popieriaus arba spausdink iš naršyklės. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="zingsniai">
+      <h2 id="zingsniai">Žingsniai</h2>
+      <div class="doc-sec__body">
+        <nav class="pk-route" aria-labelledby="zingsniai">
+          <ol>
+            {steps.map((s, i) => (
+              <li class={s.cls}><a href={`#${s.id}`}><span class="pk-route__n">{i + 1}</span><span class="pk-route__min"><b>{s.min}</b> min.</span></a></li>
+            ))}
+          </ol>
+        </nav>
+        <ol class="pk-steps">
+          {steps.map((s) => (
+            <li class="pk-step">
+              <div class="pk-step__head">
+                <h3 id={s.id}>{s.name}</h3>
+                <p class="pk-min">{nb(`${s.min} min.`)}</p>
+              </div>
+              {s.body.map((t) => <p set:html={nbHtml(t)} />)}
+              {s.why && <p class="pk-note" set:html={nbHtml(s.why)} />}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kodel">
+      <h2 id="kodel">Kodėl šie žingsniai</h2>
+      <div class="doc-sec__body">
+        <p class="doc-small" set:html={nbHtml('Atsidaro paspaudus. Čia – kodėl jam tai naudinga, jei to nepadarai. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.')} />
+        <div class="pk-whys">
+          {why.map(([name, line, stop]) => (
+            <details>
+              <summary>{name}</summary>
+              <div class="pk-whys__in">
+                <p set:html={nbHtml(line)} />
+                <p class="doc-stop"><strong>Sustabdymo vieta:</strong> <Fragment set:html={nbHtml(stop)} /></p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="toliau">
+      <h2 id="toliau">Kas toliau</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {next.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <p class="pk-checked doc-small" set:html={nbHtml('Patikrinta: 2026-10-24 (<a href="/saltiniai/">Šaltiniai</a>)')} />
+  </article>
+</Page>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>paint the share image</title>
+<style>
+  @font-face { font-family: 'Young Serif'; font-weight: 400; src: url('/node_modules/@fontsource/young-serif/files/young-serif-latin-400-normal.woff2') format('woff2'); }
+  html, body { margin: 0; background: #1b1470; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden; }
+  canvas { position: absolute; inset: 0; }
+  .ground { position: absolute; inset: 0; background: linear-gradient(90deg, #1b1470 0, #1b1470 60%, rgb(27 20 112 / 0) 76%); }
+  .words { position: absolute; left: 92px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; font-family: 'Young Serif', Georgia, serif; color: #eeebff; }
+  .logo { display: block; width: 620px; height: auto; }
+  .line { margin: 26px 0 0 6px; font-size: 52px; color: #6fe3b8; }
+  .url { position: absolute; left: 92px; bottom: 54px; margin-left: 6px; font: 400 30px 'Young Serif', Georgia, serif; color: #cdc8f8; }
+</style>
+</head>
+<body>
+<div class="card">
+  <canvas id="c" width="1200" height="630"></canvas>
+  <div class="ground"></div>
+  <div class="words">
+    <img class="logo" src="/tools/paint/logo-stage.png" alt="">
+    <div class="line">Gyvenk suktai.</div>
+  </div>
+  <div class="url">suktas.lt</div>
+</div>
+<script type="module">
+  /* The share image: the home hero's caller-ID digits, painted by the same createHeroFx as the live art, at its still,
+     with the painted snake lockup (its stage variant, from the PhotoCraft master) on a solid ground left of them.
+     tools/paint-og.mjs photographs it. */
+  import { createHeroFx, DIRS } from '/src/art/herofx.js';
+  const c = document.getElementById('c');
+  const eng = createHeroFx(c, 'b', { strict: false });
+  eng.resize(1200, 630, 1200 / 630);
+  Promise.all([document.querySelector('.logo').decode(), document.fonts.load("52px 'Young Serif'")]).then(() => document.fonts.ready).then(() => {
+    eng.draw(DIRS.b.still);
+    eng.gl.finish();
+    window.__ready = true;
+  });
+</script>
+</body>
+</html>

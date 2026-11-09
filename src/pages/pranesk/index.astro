@@ -1,0 +1,90 @@
+---
+/**
+ * Pranešk: the report box. The copy is docs/copy/pranesk.md, word for word; the source tags stay as
+ * comments in the strings and the build strips them. There is no form, on purpose: a report is a plain
+ * mail to sargyba@suktas.lt, and what happens to it is docs/MAILBOX.md.
+ */
+import Page from '../../layouts/Page.astro';
+import PostHead from '../../components/PostHead.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+import '../../styles/post.css';
+
+const siusti = [
+  '<strong>Žinutę ar laišką:</strong> persiųsk arba atsiųsk ekrano nuotrauką. Nuorodos spausti nereikia. <!-- pažadas -->',
+  '<strong>Skambutį:</strong> parašyk, kas skambino, kaip prisistatė, ko prašė ir iš kokio numerio. <!-- pažadas -->',
+  '<strong>Skelbimą ar svetainę:</strong> atsiųsk ekrano nuotrauką ir parašyk, kur tai radai. <!-- pažadas -->',
+  '<strong>Visada:</strong> kada tai nutiko. <!-- pažadas -->',
+];
+
+const nerasyti = [
+  '<strong>Slaptažodžių, PIN, kodų, kortelės numerio ir banko išrašų.</strong> Jų mums nereikia. <!-- pažadas -->',
+  '<strong>Artimųjų ir kitų nukentėjusiųjų vardų ir numerių.</strong> Nuotraukoje juos užtepk. <!-- pažadas -->',
+];
+
+const toliau = [
+  'Iš karto gausi automatinį atsakymą su nuoroda į puslapį „Jei tave apgavo“. <!-- pažadas -->',
+  'Tavo laišką skaito žmogus. Rūšiuoti padeda kalbos modelis, veikiantis mūsų kompiuteryje, o ne pas svetimą įmonę. <!-- pažadas -->',
+  'Atsakymą perskaito ir išsiunčia žmogus. Nedirbame visą parą, todėl tai gali užtrukti kelias dienas. <!-- pažadas -->',
+  'Tai, kas kartojasi ar yra nauja, aprašome be vardų, numerių ir veikiančių nuorodų. <!-- pažadas --> Jei taip aprašyti negalime, nieko neskelbiame. <!-- pažadas --> Kai tavo pranešimas pakeičia puslapį, tai įrašome į <a href="/kas-pasikeite/">Kas pasikeitė</a>. <!-- pažadas -->',
+];
+---
+<Page
+  title="Pranešk apie sukčius: parodyk įtartiną žinutę – Suktas"
+  description="Gavai įtartiną žinutę, skambutį ar skelbimą? Parodyk mums: perskaitysime, o jei galėsime, be vardų ir numerių perspėsime kitus."
+>
+  <section class="wrap pk-urgent" aria-label={nb('Jei jau nukentėjai')}>
+    <p set:html={nbHtml('<strong>Jei jau pervedei pinigus, įvedei ar pasakei kodą, kortelės ar banko duomenis, nelauk mūsų atsakymo:</strong> <a href="/jei-apgavo/">Jei tave apgavo</a>. Laiškas mums nepakeičia nei skambučio bankui, nei pranešimo policijai. <!-- pažadas -->')} />
+  </section>
+
+  <PostHead
+    art
+    fade
+    title="Pranešk"
+    lead="<strong>Gavai kažką įtartino? Parodyk mums.</strong> Persiųsk žinutę ar nuotrauką adresu <a href='mailto:sargyba@suktas.lt'>sargyba@suktas.lt</a> arba papasakok apie įtartiną skambutį. <!-- pažadas --> Perskaitysime ir, jei galėsime atsakyti, parašysime, ar atpažįstame triuką. <!-- pažadas --> Jei triukas naujas ir galėsime jį aprašyti be vardų ir numerių, perspėsime kitus. <!-- pažadas --> Negalime pasakyti, kad kas nors tikrai saugu. <!-- pažadas --> Galime pasakyti, kur matėme tą patį triuką. <!-- pažadas -->"
+    actions={[['Parašyti laišką', 'mailto:sargyba@suktas.lt'], ['Jei tave ką tik apgavo', '/jei-apgavo/', 'sos']]}
+  />
+
+  <article class="wrap doc pk">
+    <div class="pk-pair">
+      <section class="pk-card pk-card--send" aria-labelledby="ka-atsiusti">
+        <h2 id="ka-atsiusti">Ką atsiųsti</h2>
+        <ul class="pk-list">
+          {siusti.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </section>
+
+      <section class="pk-card pk-card--not" aria-labelledby="ko-nerasyti">
+        <h2 id="ko-nerasyti">Ko nerašyti</h2>
+        <ul class="pk-list">
+          {nerasyti.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </section>
+    </div>
+
+    <section class="doc-sec" aria-labelledby="toliau">
+      <h2 id="toliau">Kas nutinka toliau</h2>
+      <div class="doc-sec__body">
+        <ol class="doc-steps">
+          {toliau.map((t) => <li set:html={nbHtml(t)} />)}
+        </ol>
+        <p class="pk-note" set:html={nbHtml('Pinigų negrąžiname ir su sukčiumi nesusisiekiame. <!-- pažadas --> Kas už mokestį žada susigrąžinti tavo pinigus, dažnai yra kitas sukčius: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>. <!-- F14 F15 --> Laiškas mums nėra pranešimas nei bankui, nei policijai: jei nukentėjai, pranešk per <a href="https://www.epolicija.lt/">epolicija.lt</a>; jei pinigai nedingo, apie bandymą gali pranešti <a href="https://www.nksc.lt/pranesti-zinute.html">NKSC</a>. <!-- F2 F18 -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kur">
+      <h2 id="kur">Kur rašyti</h2>
+      <div class="doc-sec__body">
+        <p class="post-env" set:html={nbHtml('Parašyk adresu <a class="post-env__addr" href="mailto:sargyba@suktas.lt">sargyba@suktas.lt</a>. <!-- pažadas --> Tai paprastas el. laiškas: formos neturime, o ši svetainė apie tavo pranešimą nieko nežino. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec pk-quiet" aria-labelledby="su-laisku">
+      <h2 id="su-laisku">Ką darome su tavo laišku</h2>
+      <div class="doc-sec__body">
+        <p class="doc-small" set:html={nbHtml('Laišką ir nuotraukas ištriname ne vėliau kaip po 90 dienų. <!-- pažadas --> Ištrintas laiškas „Telia“ atsarginėse kopijose gali likti dar iki 14 dienų. <!-- F122 --> Daugiau: <a href="/privatumo-pranesimas/#jei-pranesi">Privatumo pranešimas</a>.')} />
+      </div>
+    </section>
+  </article>
+</Page>

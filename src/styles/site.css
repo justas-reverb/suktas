@@ -1,0 +1,814 @@
+/* ------------------------------------------------------------------------------------
+   Suktai. One quiet page around one loud thing: the painted field at the top.
+   Snow for the page, a deep indigo for ink, fox orange only where the reader should act.
+   Young Serif for the voice, Atkinson Hyperlegible Next for everything that is read.
+   ------------------------------------------------------------------------------------ */
+
+:root {
+  color-scheme: light;
+
+  --snow: #f4f6fc;
+  --snow-deep: #e8ecfa;
+  --lilac: #e3e0f6;
+  --dusk: #d6d0f0;
+  --night: #14123a;
+  --night-2: #1f1d57;
+
+  --ink: #1d1a45;
+  --ink-2: #47436f;
+  --ink-3: #5e5a8a;
+  --on-night: #eceefd;
+  --on-night-2: #bcc0ea;
+
+  --fox: #cf4511;
+  --fox-deep: #b53a0a;
+  --black: #07091c;
+  --gold: #ffc46b;
+  --line: rgb(29 26 69 / 0.16);
+  --line-night: rgb(236 238 253 / 0.22);
+
+  --font-display: 'Young Serif', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-text: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+
+  --text: clamp(1.0625rem, 1.01rem + 0.25vw, 1.25rem);
+  --small: clamp(1.0625rem, 0.84rem + 0.6vw, 1.15rem);
+  --h1: clamp(2.35rem, 1.2rem + 3.6vw, 5.4rem);
+  --h2: clamp(2rem, 1.2rem + 2.8vw, 3.9rem);
+  --h3: clamp(1.55rem, 1.2rem + 1.2vw, 2.3rem);
+
+  --pad: clamp(1rem, 4.2vw, 2.75rem);
+  --max: 88rem;
+  --gap: clamp(1.25rem, 3.4vw, 3rem);
+  --section: clamp(4rem, 9vw, 8.5rem);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 1.5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--snow);
+  color: var(--ink);
+  font: 400 var(--text) / 1.6 var(--font-text);
+  font-synthesis: none;
+  font-variant-numeric: lining-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img, canvas { display: block; max-width: 100%; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+h1 { font-size: var(--h1); line-height: 1.04; }
+h2 { font-size: var(--h2); line-height: 1.08; }
+h3 { font-size: var(--h3); line-height: 1.15; }
+p { text-wrap: pretty; }
+.nw { white-space: nowrap; }
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+a {
+  color: var(--fox-deep);
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.2em;
+}
+a:hover { color: var(--ink); }
+
+:focus-visible {
+  outline: 3px solid var(--fox);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.on-night :focus-visible,
+.foot :focus-visible { outline-color: var(--gold); }
+
+::selection { background: var(--gold); color: var(--ink); }
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 50;
+  padding: 0.7rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 6px;
+}
+.skip:focus { top: 1rem; }
+
+/* ---------------------------------------------------------------- header */
+
+.head {
+  position: absolute;
+  z-index: 10;
+  inset: 0 0 auto 0;
+}
+.head__in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.85rem;
+}
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  color: var(--ink);
+  font: 400 clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem) / 1 var(--font-display);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+/* The snake is painted at three sizes of its own, each with a file for every device pixel ratio, so it is
+   shown at exactly its pixels: 40 px tall (38 wide) on a desktop, 32 (30) on a phone and 24 (22) on the
+   narrowest phones. Its tongue points at the hiss that follows it. */
+.mark picture, .mark img { display: block; }
+.mark img { width: 30px; height: 32px; }
+@media (min-width: 46em) { .mark img { width: 38px; height: 40px; } }
+@media (max-width: 22.49em) { .mark img { width: 22px; height: 24px; } }
+/* "Sss": the snake's hiss, in the heaviest weight of the text face, slanted, black like the snake (the name
+   beside it is the page's navy ink), each letter smaller than the last (never under the page's own smallest
+   text: 17 px, 18 px from 768 up), and raised so that it leaves the snake's mouth. It is decoration: the
+   link's own label says Suktai. */
+.mark__hiss {
+  display: inline-flex;
+  align-items: baseline;
+  color: var(--black);
+  font: 800 0.86em / 1 var(--font-text);
+  font-style: italic;
+  letter-spacing: -0.02em;
+  transform: translateY(-0.2em);
+}
+/* room after the hiss grows with the width: none at 320, where there are 21 px to spare, so that on a wide
+   screen it reads as the snake's sound and not as the start of the name */
+@media (min-width: 22.5em) { .mark__hiss { margin-right: 0.18em; } }
+@media (min-width: 46em) { .mark__hiss { margin-right: 0.45em; } }
+.mark__hiss i { font-style: inherit; }
+.mark__hiss i:nth-child(2) { font-size: max(1.0625rem, 0.84em); }
+.mark__hiss i:nth-child(3) { font-size: max(1.0625rem, 0.7em); }
+@media (min-width: 48em) {
+  .mark__hiss i:nth-child(2) { font-size: max(1.125rem, 0.84em); }
+  .mark__hiss i:nth-child(3) { font-size: max(1.125rem, 0.7em); }
+}
+.nav { display: flex; align-items: center; gap: clamp(0.7rem, 2.4vw, 2.1rem); }
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  white-space: nowrap;
+  color: var(--ink);
+  font-weight: 650;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+.nav a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.nav .opt { display: none; }
+@media (min-width: 46em) { .nav .opt { display: inline-flex; } }
+
+/* ---------------------------------------------------------------- hero */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  height: max(35rem, 100vh);
+  height: max(35rem, 100svh);
+  overflow: hidden;
+  overflow: clip;
+  background: var(--snow);
+}
+@media (min-aspect-ratio: 5/4) {
+  .hero { height: clamp(35rem, 100vh, 68vw); height: clamp(35rem, 100svh, 68vw); }
+}
+.hero__art { position: absolute; inset: 0; z-index: -1; }
+.hero__art img,
+.hero__art canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 0%;
+}
+.hero__art canvas {
+  opacity: 0;
+  touch-action: pan-y;
+  transition: opacity 0.7s ease;
+}
+.hero.is-live .hero__art canvas { opacity: 1; }
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 16%;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgb(244 246 252 / 0), var(--snow));
+  pointer-events: none;
+}
+
+.hero__copy {
+  position: relative;
+  z-index: 2;
+  padding-top: clamp(5rem, 12.5vh, 8.5rem);
+}
+.hero__copy h1 {
+  font-size: var(--h1);
+  max-width: 14em;
+}
+/* The words are in two groups so that none of them sits on the dark trees: the headline in
+   the sky, and the lead and the button on the snow, below the horizon of the painting. The
+   horizon is 43% down the wide picture and 50% down the tall one; the picture is shown
+   top-anchored and covering the hero, so its height is the larger of the hero's and the width
+   times its aspect. */
+.hero__sub {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  top: calc(max(100%, 56.25vw) * 0.43 + clamp(1rem, 2.4vw, 1.9rem));
+}
+@media (max-aspect-ratio: 1/1) {
+  /* On a phone the painting is tall: sky and headline above, the trail across the middle, and
+     the lead and the button at the foot, where the thumb is, on the pale foreground. */
+  .hero__sub { top: auto; bottom: clamp(1.25rem, 3.5vh, 2.5rem); bottom: clamp(1.25rem, 3.5svh, 2.5rem); }
+  .hero__hint { display: none; }
+}
+/* The painting carries its own bank of mist behind the words, but the picture is cropped to
+   whatever shape the screen is, so the mist cannot always land under them. This is the safety
+   net: a faint veil of the snow's colour with feathered edges (no visible box), under the lead,
+   the button and the hint. tools/paint-contrast.mjs measures the result. */
+.hero__sub-in { position: relative; isolation: isolate; width: fit-content; max-width: 100%; }
+.hero__hint { isolation: isolate; }
+.hero__sub-in::before,
+.hero__hint::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -2rem -4rem;
+  background: rgb(244 246 252 / 0.4);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 4rem, #000 calc(100% - 4rem), transparent), linear-gradient(to bottom, transparent, #000 2rem, #000 calc(100% - 2rem), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 4rem, #000 calc(100% - 4rem), transparent), linear-gradient(to bottom, transparent, #000 2rem, #000 calc(100% - 2rem), transparent);
+  mask-composite: intersect;
+  pointer-events: none;
+}
+.hero__lead {
+  max-width: 24em;
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.45rem);
+  line-height: 1.45;
+  color: var(--ink);
+}
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.4rem;
+  margin-top: clamp(1.1rem, 2.4vw, 1.9rem);
+}
+.hero__note {
+  font-size: var(--small);
+  font-weight: 560;
+  color: var(--ink);
+  max-width: 17em;
+  line-height: 1.35;
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.5rem;
+  padding: 0.55rem 1.6rem;
+  background: #cc4310;
+  color: #fff;
+  font: 700 clamp(1.1rem, 1.02rem + 0.35vw, 1.3rem) / 1.2 var(--font-text);
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 0.18rem 0 rgb(29 26 69 / 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.btn:hover { background: #b53a0a; color: #fff; transform: translateY(1px); box-shadow: 0 0.1rem 0 rgb(29 26 69 / 0.35); }
+.btn:active { transform: translateY(3px); box-shadow: none; }
+/* the sunken button still covers the strip it left above (3px when pressed), so a slow pointer on its top edge
+   does not flicker it (tools/hover-check.mjs) */
+.btn:hover::after { content: ''; position: absolute; bottom: 100%; left: 0; right: 0; height: 3px; }
+
+.hero__hint {
+  position: absolute;
+  right: var(--pad);
+  bottom: clamp(1.25rem, 5vh, 3rem);
+  z-index: 2;
+  max-width: 14em;
+  text-align: right;
+  font-size: var(--small);
+  font-style: italic;
+  font-weight: 560;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.8s ease 1s;
+  pointer-events: none;
+}
+.hero.is-live .hero__hint { opacity: 1; }
+.hero.has-wiped .hero__hint { opacity: 0; transition-delay: 0s; transition-duration: 0.4s; }
+
+/* ---------------------------------------------------------------- intro */
+
+.intro { padding-block: clamp(3rem, 7vw, 6rem) 0; }
+.intro__grid { display: grid; gap: var(--gap); align-items: start; }
+.intro__big {
+  font: 400 clamp(1.9rem, 1.2rem + 2.4vw, 3.3rem) / 1.12 var(--font-display);
+  letter-spacing: -0.012em;
+}
+.intro__big span { display: block; }
+.intro__text { max-width: 36em; }
+.intro__text p + p { margin-top: 1em; }
+@media (min-width: 56em) {
+  .intro__grid { grid-template-columns: 5fr 6fr; }
+}
+
+/* ---------------------------------------------------------------- steps */
+
+.steps { padding-block: var(--section) calc(var(--section) * 0.65); }
+.steps__head { max-width: 52rem; margin-bottom: clamp(2rem, 5vw, 4rem); }
+.steps__head h2 span { display: block; }
+.steps__head p { margin-top: 1.1em; color: var(--ink-2); max-width: 34em; }
+
+.steps__list { --spine: clamp(3.8rem, 8vw, 6.4rem); counter-reset: step; }
+.step {
+  counter-increment: step;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--spine) minmax(0, 1fr);
+  column-gap: clamp(0.8rem, 3vw, 2.6rem);
+  padding-block: clamp(1.6rem, 3.5vw, 2.8rem);
+  border-top: 1px solid var(--line);
+}
+.step:last-child { border-bottom: 1px solid var(--line); }
+
+.step__mark {
+  position: relative;
+  width: var(--spine);
+  height: var(--spine);
+  display: grid;
+  place-items: center;
+}
+.step__mark img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+}
+/* The number sits in the heel pad of the print. It is generated from the list's own counter, because
+   it is decoration (the list itself is numbered for everyone who reads it) and its text box is
+   taller than the pad: a contrast tool that reads the box sees the snow around the pad, not the digit.
+   tools/paint-contrast.mjs reads the digit's ink instead. */
+.step__n {
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  transform: translate(-50%, -50%);
+  font: 400 clamp(1.1rem, calc(var(--spine) * 0.30), 1.7rem) / 1 var(--font-display);
+  color: #fff;
+}
+.step__n::after { content: counter(step); }
+/* In forced-colours mode the number would turn to the system's text colour, black on the dark pad
+   of a picture that the mode does not recolour. It keeps its own white. */
+@media (forced-colors: active) {
+  .step__n { forced-color-adjust: none; color: #fff; }
+}
+.step__trail {
+  position: absolute;
+  left: 0;
+  top: calc(clamp(1.6rem, 3.5vw, 2.8rem) + var(--spine) + 0.4rem);
+  bottom: 0.4rem;
+  max-height: 15rem;
+  width: var(--spine);
+  background: url('/art/trail-tile.png') center top / 100% auto repeat-y;
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  pointer-events: none;
+}
+
+.step__body { min-width: 0; padding-top: 0.2rem; }
+.step__story, .step__menus { min-width: 0; }
+.step__title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1rem; }
+.step__title h3 { font-size: var(--h3); }
+.step__time { font-weight: 650; color: var(--ink-3); white-space: nowrap; }
+.step__why {
+  margin-top: 0.7em;
+  max-width: 34em;
+  font-size: clamp(1.125rem, 1.04rem + 0.4vw, 1.4rem);
+  line-height: 1.4;
+  font-weight: 560;
+  font-style: italic;
+}
+.step__do { margin-top: 0.8em; max-width: 38em; }
+.step__do strong { font-weight: 700; }
+
+.fold { margin-top: 0.9rem; max-width: 42rem; }
+.fold summary {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  min-height: 2.75rem;
+  color: var(--fox-deep);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.fold summary::-webkit-details-marker { display: none; }
+.fold summary::before {
+  content: '';
+  width: 0.62rem;
+  height: 0.62rem;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+  margin-right: 0.2rem;
+}
+.fold[open] summary::before { transform: rotate(45deg); }
+.fold summary:hover { color: var(--ink); }
+.fold__in {
+  margin-top: 0.4rem;
+  padding: 1.1rem 1.3rem 1.3rem;
+  background: var(--snow-deep);
+  border-left: 4px solid var(--fox);
+  font-size: var(--small);
+  line-height: 1.6;
+}
+.fold__in p + p { margin-top: 0.85em; }
+.fold__in strong { font-weight: 700; }
+
+/* On a wide screen a step is two columns: the story (what and why) stays in view on the left
+   while the exact menus, which can be four times as tall, scroll past on the right at a
+   reading measure. The menus open under the story on anything narrower. */
+@media (min-width: 72em) {
+  .step__body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(2rem, 4.5vw, 4.5rem);
+    align-items: start;
+  }
+  .fold { margin-top: 0; max-width: 40rem; }
+}
+/* Only where the window is tall enough to hold the whole story: a sticky block taller than the
+   window would hide its own foot until the step ended. */
+@media (min-width: 72em) and (min-height: 44rem) {
+  .step__story { position: sticky; top: 1.5rem; }
+}
+
+/* A step can be ticked off. Nothing is saved: reload and the tracks are back, and the page
+   says so, because a privacy guide that remembered your ticks would be a poor joke. */
+.tick {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.75rem;
+  margin-top: 1rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.tick input {
+  position: absolute;
+  opacity: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+}
+.tick__box {
+  position: relative;
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 2.5px solid var(--ink);
+  border-radius: 6px;
+  background: #fff;
+  transition: background-color 0.2s ease;
+}
+.tick__box::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0.12rem;
+  width: 0.45rem;
+  height: 0.9rem;
+  border-right: 3.5px solid #fff;
+  border-bottom: 3.5px solid #fff;
+  transform: rotate(40deg) scale(0);
+  transition: transform 0.2s ease;
+}
+.tick input:checked + .tick__box { background: var(--fox-deep); border-color: var(--fox-deep); }
+.tick input:checked + .tick__box::after { transform: rotate(40deg) scale(1); }
+.tick input:focus-visible + .tick__box { outline: 3px solid var(--fox); outline-offset: 3px; }
+.tick__done { display: none; color: var(--ink-2); font-weight: 560; font-style: italic; }
+.step:has(.tick input:checked) .tick__done { display: inline; }
+.step:has(.tick input:checked) .step__mark img { opacity: 0.2; filter: blur(1.5px); transform: scale(0.94); }
+.step:has(.tick input:checked) .step__n { color: var(--ink-2); }
+
+@media (max-width: 39.99em) {
+  .step__body, .step__story, .step__menus { display: contents; }
+  .step__title { grid-column: 2; }
+  .step__why, .step__do, .fold, .tick { grid-column: 1 / -1; }
+  .step__mark { grid-row: 1; }
+  .step__trail { display: none; }
+}
+
+/* ---------------------------------------------------------------- levels
+   The same field at three hours. Each level opens on a painting (its foot fades into the
+   colour of the text below it), then a block of words. */
+
+.levels__head { padding-block: calc(var(--section) * 0.65) clamp(1.5rem, 4vw, 3rem); }
+.levels__head p { margin-top: 1.1em; max-width: 36em; color: var(--ink-2); }
+
+/* The vistas are paintings that already fade into the colours around them: their sky dissolves
+   into the page above, in the sky only, so the trees stand whole, and their snow into the block
+   below. So nothing here masks them.
+   On a wide screen the band is kept near 44% of the window's height, which is a third of the
+   width (3:1) only up to a window about 3:2; on a 16:9 screen it is a quarter (4:1). The painting is
+   3:1, so the box crops it from the top and the foot, where the painting keeps 14% of its height
+   as flat colour for just that; the horizon is at its middle, so the horizon and the trail stay.
+   Never thinner than 4:1, because a deeper crop would reach the fades.
+   On a phone held upright the band is 3:2 and the painting is a 3:2 one, so the scene is not a thin
+   strip; held sideways it is a wide screen like the rest, and gets the 3:1 painting. */
+.level { position: relative; }
+.level__vista,
+.nofollow__band,
+.foot__vista {
+  position: relative;
+  height: clamp(25vw, 44vh, 33.34vw);
+  height: clamp(25vw, 44svh, 33.34vw);
+  background: var(--snow);
+}
+.level__vista picture,
+.nofollow__band picture,
+.foot__vista picture { display: block; height: 100%; }
+@media (max-width: 39.99em) and (orientation: portrait) {
+  .level__vista,
+  .nofollow__band,
+  .foot__vista { height: 66.67vw; }
+}
+.level--2 .level__vista { background: linear-gradient(to bottom, var(--snow), var(--dusk)); }
+.level--3 .level__vista,
+.foot__vista { background: linear-gradient(to bottom, var(--dusk), var(--night)); }
+.level__vista img,
+.nofollow__band img,
+.foot__vista img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.level__body { padding-block: clamp(0.5rem, 2vw, 1.5rem) clamp(3rem, 7vw, 6rem); }
+.level--1 .level__body { background: var(--snow); }
+.level--2 .level__body { background: var(--dusk); }
+.level--3 .level__body { background: var(--night); color: var(--on-night); }
+.level--3 a { color: var(--gold); }
+.level--3 a:hover { color: #fff; }
+
+.level__grid { display: grid; gap: clamp(1.2rem, 3vw, 2.5rem) var(--gap); align-items: start; }
+.level__name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1rem; }
+.level__name h3 { font-size: clamp(2.2rem, 1.4rem + 3vw, 4rem); line-height: 1.02; }
+.level__time { font-weight: 650; color: var(--ink-3); }
+.level--2 .level__time { color: var(--ink-2); }
+.level--3 .level__time { color: var(--on-night-2); }
+.level__sum { margin-top: 0.7em; max-width: 22em; font-size: clamp(1.125rem, 1.04rem + 0.4vw, 1.4rem); line-height: 1.4; font-weight: 560; font-style: italic; }
+.level__list { display: grid; gap: 0.9rem; max-width: 36em; }
+.level__list li { padding-left: 1.5rem; position: relative; }
+.level__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--fox);
+}
+.level--3 .level__list li::before { background: var(--gold); }
+.level__list strong { font-weight: 700; }
+
+.route { display: grid; gap: 0; max-width: 34em; border-top: 1px solid var(--line); }
+.route li { border-bottom: 1px solid var(--line); }
+.route a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3rem;
+  padding: 0.55rem 0;
+  color: var(--ink);
+  font: 400 clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem) / 1.2 var(--font-display);
+  text-decoration: none;
+}
+.route a:hover { color: var(--fox-deep); }
+.route span { font: 650 var(--small) / 1 var(--font-text); color: var(--ink-3); white-space: nowrap; }
+.route__sum { margin-top: 0.9rem; color: var(--ink-2); font-weight: 560; }
+
+.bank {
+  margin-top: 1.8rem;
+  max-width: 38em;
+  padding: 1.2rem 1.4rem 1.4rem;
+  border: 1.5px solid var(--line-night);
+  border-left: 5px solid var(--gold);
+  font-size: var(--small);
+  line-height: 1.6;
+}
+.bank h4 {
+  margin: 0 0 0.5rem;
+  font: 400 clamp(1.3rem, 1.1rem + 0.6vw, 1.7rem) / 1.2 var(--font-display);
+}
+.bank p + p { margin-top: 0.7em; }
+.bank__date { color: var(--on-night-2); font-style: italic; }
+@media (min-width: 56em) {
+  .level__grid { grid-template-columns: 5fr 6fr; }
+}
+
+/* ---------------------------------------------------------------- areas */
+
+.areas { padding-block: var(--section); }
+.areas__head { max-width: 40rem; }
+.areas__head p { margin-top: 1.1em; color: var(--ink-2); }
+.areas__list {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  display: grid;
+  gap: 0 clamp(1.2rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  border-top: 3px solid var(--ink);
+}
+.areas__list li {
+  position: relative;
+  padding: 1.1rem 0 1.2rem 3.4rem;
+  border-bottom: 1px solid var(--line);
+}
+.areas__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.9rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  background: url('/art/marker-112.png') center / contain no-repeat;
+  opacity: 0.4;
+}
+.areas__name { display: block; font: 400 clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem) / 1.2 var(--font-display); }
+.areas__own { display: block; margin-top: 0.3rem; font: 400 var(--small) / 1.45 var(--font-text); color: var(--ink-2); }
+
+/* ---------------------------------------------------------------- how we choose */
+
+.how { padding-block: 0 var(--section); }
+.how__head { max-width: 44rem; }
+.how__head p { margin-top: 1.1em; color: var(--ink-2); max-width: 34em; }
+.how__rules {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  display: grid;
+  gap: 1.4rem clamp(1.5rem, 4vw, 3.5rem);
+  border-top: 3px solid var(--ink);
+  padding-top: clamp(1.3rem, 3vw, 2rem);
+}
+.how__rules li { padding-left: 1.6rem; position: relative; max-width: 30em; }
+.how__rules li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--fox);
+}
+.how__rules strong { font-weight: 700; }
+.how__marks { margin-top: clamp(1.6rem, 4vw, 2.5rem); display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1.2rem; }
+.how__marks p { font-weight: 560; color: var(--ink-2); }
+.marks { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.mark-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: 2.2rem;
+  padding: 0.1rem 0.85rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-weight: 650;
+  font-size: var(--small);
+}
+.mark-tag::before { content: ''; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--fox); }
+.mark-tag--date::before { background: var(--ink); }
+@media (min-width: 56em) {
+  .how__rules { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------------------------------------------------------------- the promise */
+
+.nofollow { position: relative; padding-block: 0 var(--section); }
+.nofollow__band { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
+.nofollow__grid { display: grid; gap: var(--gap); align-items: start; }
+.nofollow__facts { display: grid; gap: 1rem; max-width: 36em; margin-top: 1.4rem; }
+.nofollow__facts li { padding-left: 1.6rem; position: relative; }
+.nofollow__facts li::before {
+  content: '';
+  position: absolute;
+  left: 0.15rem;
+  top: 0.4em;
+  width: 0.5rem;
+  height: 0.9rem;
+  border-right: 3px solid var(--fox-deep);
+  border-bottom: 3px solid var(--fox-deep);
+  transform: rotate(40deg);
+}
+.nofollow__log { margin-top: 1.4rem; max-width: 36em; color: var(--ink-2); }
+.check {
+  padding: clamp(1.2rem, 3vw, 2rem);
+  background: var(--night);
+  color: var(--on-night);
+  max-width: 34rem;
+}
+.check h3 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); }
+.check p { margin-top: 0.9em; color: var(--on-night); }
+.check .keys { margin-top: 1.2rem; }
+.keys { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.8rem; font-weight: 650; }
+kbd {
+  display: inline-block;
+  min-width: 2.6rem;
+  padding: 0.3rem 0.8rem 0.4rem;
+  background: var(--on-night);
+  color: var(--night);
+  font: 700 1.15rem / 1.2 var(--font-text);
+  text-align: center;
+  border-radius: 7px;
+  box-shadow: 0 0.2rem 0 #8c90c8;
+}
+@media (min-width: 56em) {
+  .nofollow__grid { grid-template-columns: 6fr 5fr; }
+}
+
+/* ---------------------------------------------------------------- apps */
+
+.apps { padding-block: 0 var(--section); }
+.apps__head { max-width: 42rem; }
+.apps__head p { margin-top: 1.1em; color: var(--ink-2); }
+.apps__list { margin-top: clamp(1.8rem, 4vw, 3rem); display: grid; gap: 0; border-top: 3px solid var(--ink); }
+.app { display: grid; gap: 0.6rem var(--gap); padding-block: clamp(1.4rem, 3vw, 2.2rem); border-bottom: 1px solid var(--line); }
+.app h3 { font-size: clamp(1.7rem, 1.3rem + 1.5vw, 2.6rem); }
+.app__what { max-width: 30em; }
+.app__priv { max-width: 28em; font-weight: 560; }
+.app__soon { font-weight: 650; color: var(--ink-3); font-size: var(--small); }
+@media (min-width: 56em) {
+  .app { grid-template-columns: 4fr 5fr 5fr; align-items: start; }
+}
+
+/* ---------------------------------------------------------------- about */
+
+.about { padding-block: 0 var(--section); background: linear-gradient(to bottom, var(--snow) 0, var(--snow) 84%, var(--dusk) 100%); }
+.about__grid { display: grid; gap: var(--gap); align-items: start; }
+.about__text { max-width: 36em; }
+.about__text p + p { margin-top: 1em; }
+.about__link { margin-top: 1.2rem; font-weight: 700; }
+@media (min-width: 56em) {
+  .about__grid { grid-template-columns: 4fr 7fr; }
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.foot { position: relative; background: var(--night); color: var(--on-night); }
+.foot__in { padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
+.foot__grid { display: grid; gap: 1.4rem var(--gap); align-items: start; }
+.foot a { color: var(--gold); }
+.foot a:hover { color: #fff; }
+.foot__big { font: 400 clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem) / 1.2 var(--font-display); }
+.foot__small { color: var(--on-night-2); font-size: var(--small); line-height: 1.55; }
+.foot__links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; font-weight: 650; }
+@media (min-width: 56em) {
+  .foot__grid { grid-template-columns: 5fr 4fr 3fr; }
+}
+
+/* ---------------------------------------------------------------- motion off */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

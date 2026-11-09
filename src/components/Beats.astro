@@ -1,0 +1,17 @@
+---
+/**
+ * The pattern the site's spine is made of: a step of his on the left, the place to stop it on the
+ * right. Used for the five beats of a trick and for the chain of a technical attack
+ * (chain = rings instead of discs). items: [name, text, stop], text and stop are html.
+ */
+import { nb, nbHtml } from '../lib/typo.js';
+const { items, chain = false } = Astro.props;
+---
+<ol class:list={['beats', { 'beats--chain': chain }]} role="list">
+  {items.map(([name, text, stop]) => (
+    <li class="beat">
+      <p class="beat__his"><strong class="beat__name" set:html={nbHtml(name)} /> <Fragment set:html={nbHtml(text)} /></p>
+      <p class="stopline"><strong>Sustabdymo vieta:</strong> <Fragment set:html={nbHtml(stop)} /></p>
+    </li>
+  ))}
+</ol>

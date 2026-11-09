@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>art frame cost</title>
+<style>html, body { margin: 0; background: #000; } canvas { display: block; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  /* How long does one frame of the hero take the GPU? This page is only for measuring and is
+     never shipped, so it may use what the site itself must not: GPU timer queries. It draws
+     the same shader through the same engine as the live hero, N frames, and reports the
+     median, the 95th percentile and the worst frame, in milliseconds. tools/paint-cost.mjs
+     opens it. */
+  import { createEngine } from '/src/art/engine.js';
+  import { scene } from '/src/art/presets.js';
+
+  window.measure = async (job) => {
+    const c = document.getElementById('c');
+    c.width = job.w;
+    c.height = job.h;
+    const eng = createEngine(c, { lite: !!job.lite });
+    if (!eng) throw new Error('no webgl2');
+    const gl = eng.gl;
+    eng.resize(job.w, job.h);
+    eng.setScene(scene(job.mood || 'morning', job.shot || 'wide', { fade: 1 }));
+    const ext = gl.getExtension('EXT_disjoint_timer_query_webgl2');
+    const wipes = job.brush ? Array.from({ length: 12 }, (_, i) => [0.2 + i * 0.15, 3 + i * 0.4, 1, 0.5]) : null;
+
+    // warm up: shader compilation and first-use costs are not a frame
+    for (let i = 0; i < 20; i++) eng.draw(i * 0.03, wipes);
+    gl.finish();
+
+    const gpu = [];
+    const wall = [];
+    const pending = [];
+    const drain = (all) => {
+      while (pending.length) {
+        const q = pending[0];
+        const done = gl.getQueryParameter(q, gl.QUERY_RESULT_AVAILABLE);
+        if (!done && !all) break;
+        if (!done) { /* wait */ }
+        else {
+          if (!gl.getParameter(ext.GPU_DISJOINT_EXT)) gpu.push(gl.getQueryParameter(q, gl.QUERY_RESULT) / 1e6);
+          pending.shift();
+          gl.deleteQuery(q);
+        }
+        if (!done && all) break;
+      }
+    };
+    for (let i = 0; i < job.frames; i++) {
+      let q = null;
+      if (ext) { q = gl.createQuery(); gl.beginQuery(ext.TIME_ELAPSED_EXT, q); }
+      const t0 = performance.now();
+      eng.draw(1 + i * 0.033, wipes);
+      if (q) { gl.endQuery(ext.TIME_ELAPSED_EXT); pending.push(q); }
+      gl.finish();
+      wall.push(performance.now() - t0);
+      if (ext && i % 8 === 7) await new Promise((r) => requestAnimationFrame(r));
+      if (ext) drain(false);
+    }
+    if (ext) { for (let k = 0; k < 40 && pending.length; k++) { await new Promise((r) => setTimeout(r, 25)); drain(false); } }
+    const stat = (a) => {
+      if (!a.length) return null;
+      const s = [...a].sort((x, y) => x - y);
+      const p = (f) => s[Math.min(s.length - 1, Math.floor(s.length * f))];
+      return { n: s.length, median: p(0.5), p95: p(0.95), max: s[s.length - 1] };
+    };
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    return { renderer: info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : 'unknown', timerQuery: !!ext, gpu: stat(gpu), wall: stat(wall) };
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

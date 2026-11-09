@@ -1,0 +1,186 @@
+---
+/**
+ * Scenarijus: Skambutis iš „poliklinikos“. The copy is docs/copy/scenarijai/skambutis-is-poliklinikos.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Skambutis iš „poliklinikos“');
+const meta = [
+  ['Kanalas', 'skambutis, kartais vizitas namuose'],
+  ['Ko jis nori', 'tavo duomenų ir adreso, o paskui pinigų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['„Poliklinika“ prašo dokumento numerio, banko prisijungimo ar kortelės duomenų.', 'Antakalnio poliklinika sako, kad jos darbuotojai telefonu niekada neprašo prisijungimo duomenų ar asmens dokumentų numerių, o Ukmergės sveikatos centras – kad neprašo banko prisijungimų, kortelių duomenų ar PIN kodų. <!-- F684 F691 --> Asmens kodo ar gimimo datos Antakalnio poliklinika gali paklausti tik tada, kai į registratūrą kreipiesi tu. <!-- F684 -->'],
+  ['Siūlo atvažiuoti į namus ir klausia adreso.', 'Ministerija sako, kad sveikatos priežiūros įstaigų darbuotojai nevaikšto po namus be iš anksto suderinto oficialaus vizito. <!-- F687 --> Antakalnio poliklinika kraujo tyrimų namuose neteikia, išskyrus iš anksto suderintus slaugos atvejus, o Ukmergės centras odontologų vizitų į namus telefonu nesiūlo, jei pirmiau nesikreipei tu. <!-- F685 F691 -->'],
+  ['Po „poliklinikos“ skambina „policija“.', 'Ministerija primena, kad gydymo įstaigų darbuotojai kalba valstybine, lietuvių kalba ir skambina tik dėl sveikatos priežiūros paslaugų. <!-- F688 --> Rusų kalba gali būti ženklas, bet lietuvių kalba nieko neįrodo: Antakalnio poliklinika įspėja, kad tokių skambučių galima sulaukti ir lietuviškai. <!-- F688 F689 F683 --> „Policijos“ skambutis po „poliklinikos“ yra tos pačios apgaulės tęsinys. <!-- F690 F279 -->'],
+];
+
+const levers = [
+  ['Autoritetas.', 'Poliklinika yra įstaiga, kuria pasitikime ir kuriai įprastai sakome asmens kodą. <!-- F684 M -->'],
+  ['Nauda.', 'Nuolaida, apžiūra ar tyrimas namuose skamba kaip rūpestis. <!-- F279 F690 M -->'],
+  ['Baimė.', 'Vėliau jis gali sakyti, kad esą nustatyta problema, pradėtas tyrimas arba reikia skubiai patvirtinti tapatybę. <!-- F689 -->'],
+];
+
+const sides = [
+  ['Prašo dokumento numerio „tapatybei patvirtinti“', 'Antakalnio poliklinikos darbuotojai telefonu dokumentų numerių neprašo. Padėk ragelį ir skambink į registratūrą. <!-- F684 F686 -->'],
+  ['Siūlo atvažiuoti paimti kraujo ir klausia adreso', 'Ministerija sako, kad sveikatos priežiūros įstaigų darbuotojai nevaikšto po namus be suderinto oficialaus vizito. Adreso nesakyk, paklausk registratūros. <!-- F687 F685 M -->'],
+  ['Sako, kad vizitas pas gydytoją atšauktas', 'Tai vienas iš policijos aprašytų pretekstų. Padėk ragelį ir vizitą patikrink registratūroje. <!-- F690 F686 M -->'],
+  ['Sako, kad į namus atvyks „mobili odontologinių paslaugų komanda“', 'Ukmergės centras tokių vizitų telefonu nesiūlo, jei pirmiau nesikreipei tu. Neįsileisk, patikrink registratūroje. <!-- F691 F687 M -->'],
+  ['Prašo prisijungti prie banko ar padiktuoti kortelės duomenis', 'Ukmergės centras niekada neprašo banko prisijungimų, kortelių duomenų ar PIN kodų. Padėk ragelį. <!-- F691 -->'],
+  ['Po „poliklinikos“ skambina „policija“ ir gąsdina krata', 'Tai tos pačios apgaulės tęsinys. Padėk ragelį ir pinigų niekam neatiduok; jei ateina jų pasiimti – 112. <!-- F279 F690 F277 -->'],
+  ['„Medikai“ prie durų be suderinto vizito', 'Neįsileisk ir skambink 112. <!-- F687 -->'],
+];
+
+const sources = [
+  'Sveikatos apsaugos ministerija (LRT, 2026-02-20; tv3.lt, 2026-05-21): „medikai“ regionuose, 112, lietuvių kalba. <!-- F687 F688 -->',
+  'Antakalnio poliklinika (LRT, 2026-06-11): ko darbuotojai telefonu neprašo, tyrimai namuose, registratūra. <!-- F683 F684 F685 F686 -->',
+  'Ukmergės pirminės sveikatos priežiūros centras (tv3.lt, 2026-10-20): odontologai namuose, banko duomenys. <!-- F691 -->',
+  'Policija (TV3 ir tv3.lt, 2026-05-21; regionai.lt, 2026-05-24; „Respublika“, 2026-05-31): du skambučiai, pretekstai, kaip prasideda pokalbis, atvejis Vilniaus rajone. <!-- F279 F688 F689 F690 -->',
+  'Varėnos policija (TV3, 2026-10-19): pareigūnai pinigų namuose nerenka. <!-- F277 -->',
+  'Lietuvos bankas: „STOP vartojimo kreditams“; su banku – tik oficialiais kanalais. Kampanija „Padėk ragelį“ ir policija: 112, epolicija.lt. <!-- F560 F562 F13 F4 F2 -->',
+];
+---
+<Page
+  title="Skambutis iš „poliklinikos“: sukčiai ir tyrimai namuose – Suktas"
+  description="Skambina „poliklinika“, siūlo kraujo tyrimą namuose ir klausia adreso ar dokumento numerio? Trys ženklai, vienas ėjimas ir ką daryti, jei jau pasakei."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Skambina „poliklinikos darbuotojas“. Kalba apie prevencines programas, nedarbingumo pažymėjimus ar tyrimus, bet kartu prašo asmens dokumento numerio arba banko prisijungimo duomenų. <!-- F683 --> Kartais siūlo atvažiuoti į namus paimti kraujo ar atlikti kitų tyrimų ir klausia adreso. <!-- F685 F690 --> 2026 m. gegužę policija aprašė ir kitus pretekstus: užregistruoti pas gydytoją, pranešti, kad vizitas atšauktas, pasiūlyti kitų medicinos paslaugų. <!-- F690 --> Neretai pokalbis prasideda tariamai nekaltais klausimais apie sveikatą, registraciją ar tyrimų atsakymus, o vėliau pereinama prie grasinimų ar skubos. <!-- F689 -->')} />
+          <p set:html={nbHtml('Po pirmojo skambučio gali sulaukti antro, jau iš „policijos“: sako, kad tave apgaudinėja, ir reikalauja deklaruoti pajamas, o jei ne – grasina atvykti daryti kratos. <!-- F690 F279 --> 2026 m. vasarį Sveikatos apsaugos ministerija įspėjo ir apie „medikus“ prie durų: regionuose, ypač kaimo vietovėse, jie siūlo „patikrinti sveikatą“ ar „atnaujinti duomenis“ ir prašo asmeninės informacijos. <!-- F687 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį ir paskambink į savo polikliniką jos numeriu.')} />
+        <p set:html={nbHtml('Numerį pasiimk iš poliklinikos svetainės ar savo dokumentų – ne iš ekrano, kuriuo tau skambino – ir paklausk, ar tavęs tikrai ieškojo. <!-- F686 M --> Tam, kuris paskambino tau, nesakyk dokumento numerio, adreso, kodų ar banko duomenų. <!-- F279 F684 M --> Jei „medikai“ jau prie durų – neįsileisk ir skambink 112. <!-- F687 --> Papasakok apie tai tėvams, seneliams ir kaimynams. <!-- F687 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau pasakei</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Jei pasakei banko prisijungimo ar kortelės duomenis, iškart skambink savo bankui numeriu iš oficialios programėlės ar svetainės. <!-- F13 F4 M --> Jei pasakei asmens kodą ar dokumento numerį, gali nemokamai įsirašyti į Lietuvos banko sąrašą <a href="https://www.lb.lt/lt/stop-vartojimo-kreditams">„STOP vartojimo kreditams“</a>, kad kiti nepaimtų kredito tavo vardu. <!-- F560 F562 --> Jei pasakei adresą, gali sulaukti antro skambučio ar vizito – tai tos pačios apgaulės dalis: padėk ragelį, nieko neįsileisk ir pinigų niekam neatiduok, o jei kas ateina jų pasiimti, skambink 112. <!-- F279 F277 F687 M --> Jei pinigus jau atidavei, iškart skambink 112, o jei tai buvo anksčiau – pranešk per epolicija.lt. <!-- F277 F2 F4 --> Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">{nb('Atidaryk kortelę „Padėk ragelį ir skambink oficialiu numeriu“')}</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Pirmajame skambutyje – dažniausiai ne pinigų, o duomenų: asmens kodo, dokumento numerio, adreso, banko prisijungimo. <!-- F683 F690 M --> Pinigai paimami vėliau, kai skambina „policija“ ir kažkas atvyksta į namus. <!-- F279 F688 --> 2026 m. gegužę Vilniaus rajone vyrui paskambino rusiškai kalbantys „poliklinikos darbuotojai“ ir „policijos pareigūnai“; apie 10 tūkst. eurų vyras atidavė atvykusiam nepažįstamajam. <!-- F688 --> Kas vyksta prie durų, aprašėme atskirai: <a href="/scenarijai/pareigunas-prie-duru/">„Pareigūnas“ prie durų</a>. <strong class="stop">Sustabdymo vieta:</strong> pirmasis skambutis. Nieko nesakyk ir padėk ragelį: kuo mažiau jis sužino, tuo sunkiau jam surežisuoti antrąjį. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Galbūt tik numerį ir vardą. <!-- M --> Šaltiniai nerodo, kad šie sukčiai būtų naudoję nutekėjusius duomenis. <!-- F690 M --> <strong class="stop">Sustabdymo vieta:</strong> net jei jis žino tavo vardą ar gydytoją, tai neįrodo, kad skambina poliklinika. Patikrink: paskambink į registratūrą. <!-- F686 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Tai ne naivumas: skambutis iš poliklinikos yra įprastas dalykas. <!-- M --> Jei taip nutiko tavo artimajam, nekaltink. <a href="/jei-apgavo/#artimas">Kaip padėti</a>.')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> tikras reikalas nedings, jei padėsi ragelį ir paskambinsi į registratūrą. <!-- F686 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/pareigunas-prie-duru/">{nb('„Pareigūnas“ prie durų')}</a>, <a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a>, <a href="/scenarijai/paskola-tavo-vardu/">{nb('Paskola tavo vardu')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

@@ -1,0 +1,234 @@
+---
+/**
+ * Scenarijus: Prekybos kursai ir signalai už pinigus. The copy is
+ * docs/copy/scenarijai/prekybos-kursai-ir-signalai.md, word for word; the source tags stay as
+ * comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Prekybos kursai ir signalai už pinigus');
+const meta = [
+  ['Kanalas', 'reklama ir grupės socialiniuose tinkluose'],
+  ['Ko iš tavęs nori', 'mokesčio už kursą ar grupę, o sukčius – tavo santaupų'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const tiers = [
+  '<strong>Apgaulė.</strong> Kvietimas „išmokti investuoti“ ar „nemokama grupė“ tėra kelias prie tavo telefono numerio ir santaupų: paskui skambina „brokeris“ arba siunčia į platformą, kurioje pelnas ekrane netikras. <!-- F458 F103 F462 --> Tai – <a href="/scenarijai/netikras-brokeris/">netikras brokeris</a>.',
+  '<strong>Galimas taisyklių pažeidimas, kurio rizika tenka tau.</strong> Patarimai, į ką investuoti, gali būti investavimo rekomendacijos, o tokiai veiklai reikia licencijos ar leidimo. <!-- F710 --> Nuomonės formuotojas, už reklamą gaunantis pinigų, dovanų ar privilegijų, turi tai viešai pasakyti. <!-- F711 -->',
+  '<strong>Teisėtas kursas su klaidingu pažadu.</strong> Kursus pardavinėti galima, bet pažadas uždirbti greitai ir be rizikos – klaidingas: didelės grąžos be rizikos nebūna. <!-- F104 F473 M -->',
+];
+
+const signs = [
+  ['Pasako tiksliai, ką ir kada pirkti ar parduoti, ir ima už tai pinigus.', 'Lietuvos bankas rašo, kad tokie patarimai gali būti investavimo rekomendacijos, o joms reikia licencijos ar veiklos leidimo. <!-- F710 --> Ar toks leidimas yra, iš įrašų nematyti. <!-- M -->'],
+  ['Žada greitą pelną be rizikos.', '„Praturtėk greitai“, „jokios rizikos“. Didelės grąžos be rizikos nebūna, o prarasti galima net ir visus investuotus pinigus. <!-- F712 F104 F711 -->'],
+  ['Neatskleidžia, ar gauna naudos, kai sekėjai perka tai, ką giria.', 'Lietuvos bankas su ESMA prašo nuomonės formuotojų pasakyti, jei jiems naudinga, kad kiti pirktų. <!-- F712 --> VVTAT rašo, kad dažniausiai nepažymimi „Stories“ įrašai ir pačių nuomonės formuotojų parduodamų produktų reklama. <!-- F715 -->'],
+];
+
+const steps = [
+  '<strong>Už kursą ar grupę:</strong> pasilik kvitus, susirašinėjimą ir reklamą, kurią matei. <!-- M --> Ar pavyks atgauti pinigus, priklauso nuo sutarties ir įstatymų, kurių čia neaiškiname. <!-- M --> Jei pardavėjas iš kitos ES šalies, pirma pabandyk susitarti su pardavėju tiesiogiai; jei nepavyksta, Europos vartotojų centras gali padėti draugiškai susitarti. <!-- F717 --> Jei manai, kad tai buvo apgaulė, pranešk policijai per epolicija.lt. <!-- F2 -->',
+  '<strong>Pinigai platformoje ar pas tą, kuris „prekiauja už tave“, o dabar prašo mokesčio, kad juos atsiimtum:</strong> daugiau nė cento. Mokestis už atsiėmimą yra ta pati apgaulė: net jį sumokėjus, pinigų atgauti nepavyks. <!-- F351 F348 F353 --> Skambink bankui numeriu iš oficialios programėlės ar svetainės ir eik per <a href="/scenarijai/netikras-brokeris/">visus žingsnius</a>. <!-- F13 -->',
+  '<strong>Kas nors siūlo už mokestį susigrąžinti, ką praradai:</strong> tai dar viena apgaulė. <!-- F14 F15 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.',
+  '<strong>Lažybos ar kazino nebėra žaidimas</strong> tau ar artimam žmogui? Lošimų priežiūros tarnyba konsultuoja nemokamai, ir artimuosius taip pat: <span class="nw">+370 5 233 62 41</span>. <!-- F720 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Pinigų nuotraukos, sėkmės istorijos ir pelnas ekrane. <!-- F714 F719 F462 -->'],
+  ['Autoritetas.', '„Ekspertas“, kurio statuso niekas nepatikrino. <!-- M --> Kartais jis prisidengia ir žinomu vardu. <!-- F103 -->'],
+  ['Skuba.', '„Praturtėk greitai“: bet greitai galima ir prarasti. <!-- F712 -->'],
+  ['Gėda.', 'Kai jau įdėjai pinigų, sunku pripažinti, kad tai apgaulė, todėl norisi „dar pabandyti“. <!-- F350 -->'],
+];
+
+const seller = [
+  '<strong>Už mokestį sako, ką ir kada pirkti:</strong> tai gali būti veikla, kuriai reikia leidimo. <!-- F710 -->',
+  '<strong>Rašo „Tai nėra investavimo rekomendacija“:</strong> toks prierašas nieko nekeičia, vertink patį patarimą. <!-- M --> ESMA ir Lietuvos bankas sako, kad toks perspėjimas nuomonės formuotojo neapsaugo, jei patarimas iš tiesų yra rekomendacija. <!-- F712 -->',
+  '<strong>Parduoda lažybų „patarimus“:</strong> patarimas, kur statyti, laimėjimo nežada. <!-- M --> Jei lošimas nebėra žaidimas, Lošimų priežiūros tarnyba konsultuoja nemokamai: <span class="nw">+370 5 233 62 41</span>. <!-- F720 --> Plačiau: <a href="/zodynas/nelegalus-kazino/">Kas yra nelegalus kazino</a>, <a href="/zodynas/lazybu-prognozes/">Kas yra mokamos lažybų prognozės</a>.',
+  '<strong>Pardavėjo kontaktų nėra:</strong> nemokėk. <!-- F716 M -->',
+];
+
+const sides = [
+  ['Rodo pinigų krūvas ir pelną', 'Nuotrauka neįrodo, iš kur pinigai. <!-- F714 M -->'],
+  ['Žada pelną be rizikos', 'Didelės grąžos be rizikos nebūna. <!-- F104 -->'],
+  ['„Praturtėk greitai“', 'Taip pat greitai galima ir prarasti. <!-- F712 -->'],
+  ['Kviečia į nemokamą grupę „išmokti investuoti“', 'Tokią grupę gali būti sukūrę sukčiai, net prisidengę žinomu vardu. <!-- F103 --> Patikrink tos organizacijos oficialioje svetainėje. <!-- M -->'],
+  ['Siūlo prekiauti už tave', 'Patikrink įmonę Lietuvos banko sąraše. <!-- F118 -->'],
+  ['Investuoti kviečia per „WhatsApp“ ar „Viber“', 'Tikros investicijos per juos nevyksta. <!-- F470 -->'],
+  ['Prašo mokesčio pelnui atsiimti', 'Nemokėk: tai ta pati apgaulė. <!-- F348 F353 -->'],
+];
+
+const sources = [
+  'Lietuvos bankas (2026-02-24): patarimai, į ką investuoti, gali būti investavimo rekomendacijos; per geri pasiūlymai; reklamos atskleidimas. <!-- F710 F711 -->',
+  'ESMA ir Lietuvos bankas, lankstinukas „Nuomonės finansų srityje formuotojai“ (2025): mokymai kaip rekomendacijos, perspėjimai, „praturtėk greitai“, nauda, kai kiti perka. <!-- F712 -->',
+  'Lietuvos bankas (2025-03-18): mokami mokymai ir statusas. <!-- F713 -->',
+  '„Kauno diena“ (2022-04-27), VMI pareigūno pasakojimas: mokesčių byla. <!-- F714 -->',
+  'VVTAT (2020, atnaujinta 2024-05-22): reklamos žymėjimas. VVTAT ir VMI (2024-09-12): kaip patikrinti pardavėją. <!-- F715 F716 -->',
+  '„Your Europe“ (paskutinį kartą tikrinta 2026-09-21): Europos vartotojų centras. <!-- F717 -->',
+  'Lošimų priežiūros tarnyba (atnaujinta 2026-02-18): nemokamos konsultacijos. <!-- F720 -->',
+  'LRT (2025-07-04), remiantis policija: piramidės ir jų masalai, ką pasitikrinti. <!-- F719 -->',
+  'Lietuvos bankas, SEB, Lietuvos bankų asociacija ir Pinigų plovimo prevencijos kompetencijų centras: investicinis sukčiavimas, pelnas ekrane, mokestis už atsiėmimą, įmonių sąrašas. <!-- F103 F104 F118 F348 F350 F351 F353 F458 F462 F463 F466 F469 F470 F473 -->',
+  'Lietuvos bankas: su banku susisiek per jo programėlę ar svetainę, nemokėk siūlantiems susigrąžinti pinigus; policija: pranešti per epolicija.lt. <!-- F13 F14 F15 F2 -->',
+];
+---
+<Page
+  title="Trading kursai ir signalai: ką patikrinti prieš mokant – Suktas"
+  description="Mokamas prekybos kursas, signalų grupė ar „mentorius“, žadantis greitą pelną? Trys ženklai ir du patikrinimai prieš mokant."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Socialiniuose tinkluose kas nors rodo pinigų krūvas ir ekrano nuotraukas su pelnu. <!-- F714 F719 --> Kviečia į mokamą kursą, į uždarą grupę, kurioje siunčia signalus – ką ir kada pirkti, arba į nemokamą grupę „išmokti investuoti“. <!-- F713 F103 F458 M -->')} />
+          <p set:html={nbHtml('Po tuo slypi trys skirtingi dalykai: <!-- M -->')} />
+          <ol class="row-list row-list--num">
+            {tiers.map((s) => <li set:html={nbHtml(s)} />)}
+          </ol>
+          <p set:html={nbHtml('Lietuvos bankas rašo, kad kai kurie „finfluenceriai“ siūlo mokamus mokymus ar rinkos įžvalgas, kurios neretai būna nepatikrintos ar netgi klaidinančios. <!-- F713 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Prieš mokant už kursą ar grupę, sužinok, kas juos parduoda.')} />
+        <p set:html={nbHtml('Jei nerandi pardavėjo pavadinimo ir kontaktų, nemokėk. <!-- F716 M --> VVTAT ir VMI pataria patikrinti, ar nurodyti pardavėjo kontaktai, ir pasidomėti kitų pirkėjų atsiliepimais apie pardavėją. <!-- F716 --> Lietuvoje prekiaujantis žmogus turėtų būti įregistravęs veiklą ar įmonę; jei žinai pardavėjo pavadinimą ar kodą, VMI svetainės skiltyje „Mokesčių mokėtojų informacija“ gali patikrinti, ar veikla registruota. <!-- F716 M --> Pardavėjo iš kitos ES šalies ten nerasi, ir tai savaime nieko blogo nereiškia. <!-- M -->')} />
+        <p class="move__line" set:html={nbHtml('Jei kas nors siūlo prekiauti už tave ar siunčia į platformą, prieš pervedant pinigus patikrink įmonę <a href="https://www.lb.lt/lt/finansu-rinku-dalyviai">Lietuvos banko finansų rinkos dalyvių sąraše</a>. <!-- F118 F469 -->')} />
+        <p set:html={nbHtml('Jei jos ten nėra, nepervesk ir pasitark su savo banku ar policija. <!-- F469 F466 M --> Plačiau: <a href="/scenarijai/netikras-brokeris/">netikras brokeris</a>.')} />
+        <p set:html={nbHtml('Kalbėdama apie investicines piramides, policija pataria, kilus įtarimų dėl pasiūlymo investuoti, pasitarti su specialistais, pasitikrinti informaciją ir įsitikinti, ar veikla registruota ir prižiūrima. <!-- F719 --> Plačiau: <a href="/zodynas/piramide/">Kas yra finansinė piramidė</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau sumokėjai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note" set:html={nbHtml('Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. „Jis“ čia – tas, kuris kursą ar grupę naudoja kaip masalą; kas tik parduoda kursą, toks nėra. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.')} />
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Ne mokesčio už kursą, o tavo santaupų. <!-- M --> Kvietimas sužinoti, kaip pelningai investuoti, jam tėra būdas gauti tavo duomenis ir paskambinti. <!-- F458 --> Paskui pelnas ekrane auga, bet jis netikras, o tave ragina investuoti vis daugiau, net skolintis. <!-- F462 --> <strong class="stop">Sustabdymo vieta:</strong> kai siūlo prekiauti už tave ar perkelti pinigus į platformą. Patikrink įmonę sąraše. <!-- F118 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, ką jam parodai tu: kad domiesi investavimu, nes paspaudei reklamą, užpildei formą ar įstojai į grupę. <!-- F458 M --> Kalbėdamas jis klausia apie santaupas ir pajamas, domisi, ar galėtum pasiskolinti. <!-- F463 --> <strong class="stop">Sustabdymo vieta:</strong> klausimai apie tavo santaupas ir paskolas – ženklas, ne rūpestis. <!-- F463 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Kalbėdama apie investicines piramides, policija sako, kad pagrindiniai sukčių įrankiai yra grąža, greiti rezultatai ir spaudimas, o padeda jiems tariamos sėkmės istorijos, pažįstamų rekomendacijos ir įtikinamai atrodantys įrašai socialiniuose tinkluose. <!-- F719 --> <strong class="stop">Sustabdymo vieta:</strong> nuotrauka su pinigais neįrodo, kad jie uždirbti prekiaujant. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>O tas, kuris tik parduoda kursą?</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kas pardavinėja kursus ir signalus, uždirba iš pardavimo, o ne iš prekybos. <!-- M --> 2022 m. VMI pareigūnas papasakojo apie nuomonės formuotoją, kuris fotografavosi su pinigais, neva laimėtais lažybose ir prekiaujant kriptovaliutomis. <!-- F714 --> Žmonės pirko šio nuomonės formuotojo patarimus, kur statyti ir į ką investuoti, o pajamos per tam tikrą laikotarpį viršijo 200 tūkst. eurų. <!-- F714 --> VMI kalbėjo apie nesumokėtus mokesčius; ar kas nors dėl patarimų prarado pinigų, šaltinis nesako. <!-- F714 --> <strong class="stop">Sustabdymo vieta:</strong> pinigų nuotrauka neįrodo, kad patarimai uždirba pirkėjams. <!-- M -->')} />
+            <p set:html={nbHtml('ESMA ir Lietuvos bankas nuomonės formuotojų prašo pasakyti, jei jiems naudinga, kad kiti pirktų. <!-- F712 --> Ką tai reiškia tau: <!-- M -->')} />
+            <ul class="row-list">
+              {seller.map((s) => <li set:html={nbHtml(s)} />)}
+            </ul>
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/netikras-brokeris/">{nb('Užpildei formą, o skambina „brokeris“')}</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/investicijos-telegram/">{nb('Reklama kviečia į „Telegram“, o ten auga „pelnas“')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/nelegalus-kazino/">{nb('Kas yra nelegalus kazino')}</a>, <a href="/zodynas/piramide/">{nb('Kas yra finansinė piramidė')}</a>, <a href="/zodynas/lazybu-prognozes/">{nb('Kas yra mokamos lažybų prognozės')}</a>, <a href="/zodynas/greito-uzdarbio-kursai/">{nb('Kas yra greito uždarbio kursai')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

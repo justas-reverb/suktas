@@ -1,0 +1,242 @@
+---
+/**
+ * Žodynas: Kas yra mokamos lažybų prognozės, the fifth glossary entry with a page of its own. The copy is
+ * docs/copy/zodynas/lazybu-prognozes.md, word for word; the source tags stay as comments and the build
+ * strips them. It wears the scenario template, as /zodynas/nelegalus-kazino/ does.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'betting tips, tipster, fixed matches'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Žada „garantuotą“ ar „tikrą“ laimėjimą.', ' Australijos sukčiavimo prevencijos svetainė Scamwatch žadamą garantuotą laimėjimą vadina sukčiavimo ženklu. <!-- F766 --> Didžiojoje Britanijoje reklamos priežiūros institucija nurodo, kad prognozių pardavėjai neturi teigti ar leisti suprasti, kad sėkmė „garantuota“. <!-- F769 -->'],
+  ['Siūlo „sutartas rungtynes“ ar „vidinę informaciją“.', ' Scamwatch „vidinius patarimus“ mini tarp to, kuo vilioja sukčiai. <!-- F766 --> Jei kas nors tikrai žinotų rezultatą, jam nereikėtų jo tau parduoti. <!-- F767 M -->'],
+  ['Rodo prabangų gyvenimą, neva uždirbtą lažybomis.', ' Prancūzijos vartotojų apsaugos tarnyba, kaip 2023 m. rašė spauda, nustatė, kad kai kurių pardavėjų prabanga iš tiesų apmokama iš prenumeratų pinigų. <!-- F764 -->'],
+  ['Skubina: „liko kelios vietos“.', ' Australijos vartotojų apsaugos institucija 2013 m., įspėdama dėl „garantuotų“ lažybų sistemų, rašė, kad sukčiai dažnai spaudžia sakydami, jog vietų skaičius griežtai ribotas. <!-- F767 -->'],
+  ['Prašo primokėti, kad atsiimtum laimėjimą.', ' Scamwatch, rašydama apie netikras lažybų ir lošimų svetaines, įspėja: jei spaudžia mokėti vis naujas nedideles sumas, kad atsiimtum laimėjimą, tai sukčiavimo ženklas. <!-- F766 -->'],
+];
+
+const risks = [
+  ['Mokesčiu už prognozę.', ' Moki už patarimą, o ne už laimėjimą. <!-- M -->'],
+  ['Statymų pinigais.', ' Patarimas statymo saugesnio nepadaro: nepralaimimo statymo nebūna. <!-- F767 -->'],
+  ['Lošimo kontrole.', ' LPT rašo, kad desperatiškas bandymas atsilošti – ženklas, jog su lošimu yra rimtų problemų. <!-- F771 --> Mintį „aš galiu atsilošti praloštus pinigus, kadangi turiu strategiją“ LPT vadina klaidinga nuostata, kuri dažnai veda į nebekontroliuojamą lošimą. <!-- F772 --> Mokama prognozė atsilošti nepadeda. <!-- M -->'],
+  ['Antra apgaule.', ' Kas siūlo už mokestį susigrąžinti prarastus pinigus, apgaudinėja dar kartą. <!-- F14 F15 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.'],
+];
+
+const steps = [
+  '<strong>Daugiau nemokėk</strong> – nei už kitą prognozę, nei tam, kas žada „atgauti, ką praradai“. <!-- F15 M -->',
+  '<strong>Kuo skubiau susisiek su banku</strong> ar kitu mokėjimo paslaugų teikėju: kai kuriais atvejais jie dar gali sustabdyti mokėjimą. <!-- F252 --> Kortele atliktą mokėjimą kartais galima užginčyti, tačiau tam yra terminai, o ar tai pavyksta mokant už prognozes, nė vienas mūsų rastas šaltinis nesako. <!-- F770 M -->',
+  '<strong>Išsaugok susirašinėjimą</strong>, mokėjimų išrašus ir grupės nuorodą. <!-- F4 M -->',
+  '<strong>Pranešk policijai per epolicija.lt.</strong> <!-- F2 -->',
+  '<strong>Pardavėjas – įmonė kitoje ES šalyje?</strong> Europos vartotojų centras tavo šalyje gali padėti draugiškai susitarti su užsienio prekiautoju, bet pirmiausia reikia pabandyti ginčą išspręsti tiesiogiai su juo. <!-- F717 -->',
+  '<strong>Kas nors siūlo už mokestį susigrąžinti pinigus?</strong> Tai dar viena apgaulė. <!-- F14 F15 -->',
+  '<strong>Lošimas nebėra žaidimas</strong> tau ar artimam žmogui? LPT nemokamai konsultuoja ir lošiančius, ir jų artimuosius: <span class="nw">+370 5 233 62 41</span>. <!-- F720 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Rodomi laimėti statymai ir pinigai, bet ne pralaimėjimai. <!-- M -->'],
+  ['Autoritetas.', 'Atrodo, kad jis žino tai, ko nežino kiti: „vidinė informacija“, „sutartos rungtynės“. <!-- F766 F768 M -->'],
+  ['Skuba.', 'Vietų grupėje „liko nedaug“. <!-- F767 -->'],
+];
+
+const sides = [
+  ['„Garantuotas laimėjimas“', 'Nepralaimimo statymo nebūna. Nemokėk. <!-- F767 F766 -->'],
+  ['„Sutartos rungtynės“, „vidinė informacija“', 'Kas tikrai žinotų rezultatą, kam jam tai parduoti? <!-- F767 M -->'],
+  ['Prabangus gyvenimas nuotraukose', 'Jį gali apmokėti prenumeratos, o ne laimėjimai. <!-- F764 -->'],
+  ['„Liko tik kelios vietos“', 'Skuba – dažnas sukčių ženklas. Sustok. <!-- F767 M -->'],
+  ['Pirmi patarimai nemokamai, paskui – mokama grupė', 'Nemokami patarimai veda į prenumeratą. Prieš mokant užduok klausimą iš kortelės. <!-- F761 M -->'],
+];
+
+const sources = [
+  'ES direktyva 2005/29/EB, I priedo 16 punktas: tvirtinimas, kad produktas padeda laimėti atsitiktinumo principu grindžiamuose žaidimuose, bet kuriomis aplinkybėmis laikomas nesąžiningu. <!-- F760 -->',
+  'Prancūzijos vyriausybės atsakymas į parlamentaro klausimą (paskelbtas 2026-06-09): kaip veikia mokamos prognozės, bauda ir nuosprendis. <!-- F761 F762 -->',
+  'Prancūzijos nacionalinis vartotojų institutas INC (2024-07-11), perduodantis vartotojų apsaugos tarnybos DGCCRF ir lošimų priežiūros institucijos ANJ pranešimą: nemokami ir mokami patarimai, prabangus gyvenimas. <!-- F763 -->',
+  'DGCCRF, per MoneyVox (2023-11-02): prabangą apmoka prenumeratos. <!-- F764 -->',
+  'Australijos vartotojų apsaugos institucija ACCC (2013-10-31), apie „garantuotas“ lažybų sistemas ir programas: nepralaimimo statymo nebūna; kam parduoti tai, kas laimi. <!-- F767 -->',
+  'Scamwatch (ACCC), „Gambling and betting scams“ (be datos, skaityta 2026-11-07): sukčiavimo ženklai, ką daryti. <!-- F766 -->',
+  'Indijos policija, per Deccan Chronicle ir Telangana Today (2025-06-24): „sutartos rungtynės“ Telegram grupėse. <!-- F768 -->',
+  'Didžiosios Britanijos reklamos standartų tarnyba ASA, taisyklės prognozių pardavėjams (be datos, skaityta 2026-11-07). <!-- F769 -->',
+  'Europos vartotojų centrų tinklas ir Vokietijos vartotojų centras (be datos, skaityta 2026-11-07): kortele atlikto mokėjimo užginčijimas. <!-- F770 -->',
+  'Lošimų priežiūros tarnyba, „Konsultavimas“ (atnaujinta 2026-02-18) ir „Lietuviškas azartas“ (2024-01-16): bandymas atsilošti, klaidingos nuostatos, nemokama konsultacija. <!-- F771 F772 F720 -->',
+  '„Kauno diena“ (2022-04-27): VMI pareigūno pasakojimas apie patarimų pardavėją. <!-- F714 -->',
+  '„Your Europe“ (paskutinį kartą tikrinta 2026-09-21): Europos vartotojų centras. <!-- F717 -->',
+  'Lietuvos bankas (2020-02-12, 2024-10-28): nemokėk siūlantiems susigrąžinti pinigus. <!-- F14 F15 -->',
+  'Lietuvos bankas, „Pakliuvau sukčiams: ką daryti?“ (atnaujinta 2026-07-30): kuo skubiau kreiptis į banką. <!-- F252 -->',
+  'Policija (2026-02-05, atnaujinta 2026-04-23): pranešti per epolicija.lt. <!-- F2 -->',
+  'Kampanija „Padėk ragelį“ (LRT, policija, Lietuvos bankų asociacija, Lietuvos paštas): išsaugoti susirašinėjimą. <!-- F4 -->',
+];
+---
+<Page
+  title="Lažybų prognozės už pinigus: kaip atpažinti apgaulę – Suktas"
+  description="Siūlo „garantuotas“ lažybų prognozes ar „sutartas rungtynes“ už mokestį? Kodėl garantuoto laimėjimo nėra, kaip atpažinti apgaulę ir ką daryti, jei jau sumokėjai."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Kas yra mokamos lažybų prognozės')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Mokamos lažybų prognozės – tai patarimai, kur ir kaip statyti, parduodami už mokestį ar prenumeratą, dažnai uždaroje pokalbių grupėje. <!-- F761 F763 --> Laimėjimo jos negarantuoja: nepralaimimo statymo nebūna, primena Australijos vartotojų apsaugos institucija. <!-- F767 --> Prieš mokant paklausk: jei kas nors tikrai žinotų rezultatą, kam jam tai parduoti tau? <!-- F767 M --> ES teisė bet kuriomis aplinkybėmis laiko nesąžiningu tvirtinimą, kad produktas padeda laimėti atsitiktinumo principu grindžiamuose žaidimuose; Prancūzija šią taisyklę taiko ir sporto lažybų patarimams. <!-- F760 F761 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Socialiniuose tinkluose kas nors rodo pinigus ir prabangų gyvenimą, neva uždirbtus lažybomis, dalija patarimus nemokamai, o paskui kviečia mokėti. <!-- F761 F763 F714 --> Prancūzijos vyriausybė 2026 m. šį verslą aprašė taip: iš pradžių socialiniuose tinkluose nemokamai patariama apie rungtynes, kurių baigtis atrodo mažai rizikinga, o paskui per šifruotas pokalbių programėles žmogus įkalbamas užsisakyti mokamą prenumeratą. <!-- F761 -->')} />
+          <p set:html={nbHtml('Kartais siūlomos „sutartos rungtynės“ – neva iš anksto žinomas rezultatas. <!-- F768 --> Indijos spauda 2025 m. rašė, kad tenykštė policija išardė tinklą, kuris uždarose Telegram grupėse siūlė „sutartas rungtynes“ ir „garantuotas prognozes“ ir taip apgaudinėjo jaunus žmones; byloje buvo ir nelegalios lažybų svetainės. <!-- F768 -->')} />
+          <p set:html={nbHtml('Lietuvoje 2022 m., kaip rašė „Kauno diena“, VMI pareigūnas papasakojo apie nuomonės formuotoją, kuris fotografavosi su pinigais, neva laimėtais lažybose ir prekiaujant kriptovaliutomis, ir pardavinėjo informaciją, kur statyti ir į ką investuoti; ta istorija buvo apie nedeklaruotas pajamas. <!-- F714 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            {signs.map(([head, text]) => (
+              <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš mokant už prognozę ar „sutartas rungtynes“, paklausk savęs: jei kas nors tikrai žinotų rezultatą, kam jam tai parduoti tau? Jei žada garantuotą laimėjimą, nemokėk. <!-- F767 F766 M -->')} />
+        <p set:html={nbHtml('Šį klausimą prieš atiduodant pinigus dar 2013 m. siūlė užduoti Australijos vartotojų apsaugos institucija. <!-- F767 -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            {risks.map(([head, text]) => <li><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="sumokejai">
+        <h2 id="sumokejai">Jei jau sumokėjai</h2>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. „Jis“ čia – „garantuotų“ prognozių ar „sutartų rungtynių“ pardavėjas, kuris parduoda tai, ko neturi. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo mokesčio – už prognozę, prenumeratą ar „sutartas rungtynes“. <!-- F761 M --> Jis uždirba iš pardavimo, o ne iš statymų: Prancūzijos vartotojų apsaugos tarnyba, kaip rašė spauda, nustatė, kad kai kurių pardavėjų prabangų gyvenimą apmoka prenumeratos. <!-- F764 M --> <strong class="stop">Sustabdymo vieta:</strong> kas tikrai žinotų rezultatą, kam jam tai parduoti? <!-- F767 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, ką parodai: kad seki lažybų paskyras, statai, galbūt neseniai pralošei ir nori atsilošti. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> noras atsilošti – ne priežastis pirkti prognozę, o ženklas sustoti. <!-- F771 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> dešimt sekundžių ir vienas klausimas – kam parduoti tai, kas tikrai laimi? <!-- F767 M --> <a href="/sustok/desimt-sekundziu/">Kortelė</a>.')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>O tas, kuris tik parduoda patarimus?</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Ne kiekvienas prognozių pardavėjas yra sukčius: kai kurie tiesiog parduoda savo nuomonę apie rungtynes. <!-- M --> Bet tvirtinimą, kad produktas padeda laimėti atsitiktinumo principu grindžiamuose žaidimuose, ES teisė bet kuriomis aplinkybėmis laiko nesąžiningu, o Prancūzija šią taisyklę taiko ir sporto lažybų patarimams. <!-- F760 F761 --> Prancūzijoje 2025 m. lažybų patarimų įmonė už klaidinančią komercinę veiklą gavo 80 000 eurų baudą, o Paryžiaus teismas nuteisė nuomonės formuotoją už įvairią klaidinančią komercinę veiklą, tarp jos – už lažybų patarimų reklamą. <!-- F762 --> <strong class="stop">Sustabdymo vieta:</strong> patarimas – tai nuomonė, o ne žinojimas, kaip baigsis rungtynės. <!-- F767 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></li>
+          <li><strong>Scenarijai:</strong> <a href="/scenarijai/prekybos-kursai-ir-signalai/">{nb('Prekybos kursai ir signalai už pinigus')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/nelegalus-kazino/">{nb('Kas yra nelegalus kazino')}</a>, <a href="/zodynas/piramide/">{nb('Kas yra finansinė piramidė')}</a>, <a href="/zodynas/greito-uzdarbio-kursai/">{nb('Kas yra greito uždarbio kursai')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Lietuviškų šaltinių apie mokamų prognozių pirkėjus neradome, todėl šis puslapis remiasi kitų šalių institucijų ir spaudos šaltiniais ir kiekvieną jų įvardija. <!-- M --> Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

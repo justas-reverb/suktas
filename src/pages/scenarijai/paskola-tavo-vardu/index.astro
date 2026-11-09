@@ -1,0 +1,248 @@
+---
+/**
+ * Scenarijus: paskola tavo vardu, kurios neėmei. The copy is
+ * docs/copy/scenarijai/paskola-tavo-vardu.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Paskola tavo vardu, kurios neėmei');
+const meta = [
+  ['Kanalas', 'asmens duomenys, „Smart-ID“ kodai, telefonas'],
+  ['Ko jis nori', 'kad pinigus gautų jis, o skola liktų tau'],
+  ['Skaitymo laikas', '5 min.'],
+];
+
+const signs = [
+  ['Laiškas, skambutis ar atsakymas dėl skolos, kurios neturi.', 'Valstybinė duomenų apsaugos inspekcija tokius laiškus ir pranešimus vardija tarp tapatybės vagystės ženklų. Arba kreipiesi dėl paskolos, o tau atsako, kad jau kreipeisi, nors to nedarei. <!-- F577 --> Tačiau pats skambutis gali būti kita apgaulė, todėl tuo numeriu neskambink. <!-- F569 F13 M -->'],
+  ['Prašymas patvirtinti tai, ko nepradėjai.', 'Jei netikėtai gauni „Smart-ID“ ar kitą patvirtinimo užklausą, „Luminor“ sako jos netvirtinti. <!-- F583 --> Nuoroda iš žinutės prašo kodų? Nevesk. <!-- F565 M -->'],
+  ['Darbdavys ar pažįstamas prašo tavo kodų, telefono, banko prisijungimų ar paskolos.', 'Bankas „Citadele“ rašo, kad patikimas darbdavys neprašo nei skolintis, nei pervesti pinigų, nei atskleisti elektroninės bankininkystės prisijungimų. <!-- F570 -->'],
+];
+
+const before = [
+  ['Sąrašas galioja ir tau.', 'Kol esi sąraše, vartojimo kredito, įskaitant lizingą ir kredito korteles, negausi ir tu. <!-- F560 F563 --> Išsibraukti gali bet kada, tuo pačiu būdu. <!-- F562 --> Ragina išsibraukti iš sąrašo? Padėk ragelį. <!-- M -->'],
+  ['Sąrašas kodų neapsaugo.', 'Kas turi tavo kodus, gali veikti tavo vardu ir kitur, todėl kodų niekam nesakyk. <!-- F569 M -->'],
+  ['Terminas.', 'Laikotarpį pasirenki, ilgis neribojamas. Jei nenurodysi, įrašoma 2 metams. Terminui pasibaigus iš sąrašo išbraukiama, todėl pratęsk laiku: tai gali padaryti bet kada. <!-- F562 F584 M -->'],
+  ['Kredito istorija.', 'Lietuvos bankas rašo, kad įsirašymas jai įtakos neturi. <!-- F562 -->'],
+  ['Ko sąrašas neapima.', 'Būsto kredito, jau sudarytų sutarčių, kitų šalių (sąrašas galioja tik Lietuvoje) ir labai didelių paskolų (paprastai virš 75 000 eurų, nuo 2026 m. lapkričio 20 d. – virš 100 000). <!-- F563 F584 -->'],
+  ['Ko nežinome.', 'Per kiek valandų įrašas ima veikti ir per kiek laiko suveikia išsibraukimas: įstatyme apie įrašymą parašyta tik „nedelsiant“. <!-- F560 F584 --> Ruošiesi skolintis? Išsibrauk iš anksto. <!-- M -->'],
+];
+
+const steps = [
+  '<strong>Įdiegei jo programą ir leidai valdyti įrenginį?</strong> Pirma išjunk „Wi-Fi“ ir mobiliuosius duomenis, o bankui skambink iš kito, saugaus įrenginio (jei kito neturi, iš artimojo telefono). <!-- F305 M --> Žingsniai: <a href="/jei-apgavo/#nuotolinis">Įdiegiau programą ar leidau valdyti telefoną</a>.',
+  '<strong>Davei kodus, telefoną ar prisijungimus?</strong> Išsisaugok susirašinėjimą, nutrauk bendravimą su tuo žmogumi ir iškart skambink savo bankui numeriu iš oficialios programėlės ar svetainės. <!-- F580 F570 F13 M -->',
+  '<strong>Pinigai atėjo į tavo sąskaitą?</strong> Neišleisk ir niekam nepersiųsk, net atgal, kad ir ką sakytų tas, kuris liepia. Pasakyk kreditoriui, o ką daryti su pinigais, klausk savo banko. Jau persiuntei? Vis tiek pasakyk bankui ir policijai. <!-- F571 M --> Kodėl tai svarbu: <a href="/zodynas/pinigu-mulas/#sutikai">pinigų mulas</a>.',
+  '<strong>Įsirašyk į <a href="https://www.lb.lt/lt/stop-vartojimo-kreditams">sąrašą</a> iš saugaus įrenginio,</strong> kad naujo vartojimo kredito tau nebegalėtų suteikti. Jau paimtos paskolos sąrašas nepanaikina. <!-- F560 F563 M -->',
+  '<strong>Susisiek su kreditoriumi ir pasakyk, kad paskolos neėmei.</strong> „SB lizingas“ vadovas sako kreiptis nedelsiant. <!-- F569 --> Lietuvos bankas sako, kad finansų rinkos dalyviai privalo įsitikinti, kad paslaugą teikia tam, kuris jos prašo. <!-- F566 --> Paprašyk raštu atsiųsti sutartį ir parodyti, kaip ji pasirašyta. Rašyk adresu iš kreditoriaus oficialios svetainės, ne iš laiško. Nieko nemokėk pagal rekvizitus iš laiško ar skambučio. Tikro kreditoriaus laiško nepalik be atsakymo: vienoje byloje kreditorius įspėjo, kad jai nesutikus su pasiūlymu skolos išieškojimo nestabdys. <!-- F571 M -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt ir išsaugok laiškus, sutartį, žinutes. <!-- F2 F578 F569 M --> Pametei asmens dokumentą? Apie tai pranešk ir per MIGRIS. <!-- F582 F569 -->',
+  '<strong>Patikrink, ar paskolų nėra daugiau:</strong> <a href="https://www.lb.lt/lt/paskolu-rizikos-duomenu-baze">Lietuvos banko duomenų bazėje</a>, nemokamai. <!-- F575 -->',
+  '<strong>Kreditorius nepadeda?</strong> Rašyk skundą, o jei neatsako arba atsakymas netenkina, kreipkis į <a href="https://www.lb.lt/lt/spresk-pats-gincai">Lietuvos banką</a>. <!-- F579 -->',
+];
+
+const cases = [
+  ['2020 m., Lietuvos bankas.', 'Moteris pagal darbo skelbimą telefone įvedė el. parašo kodą, ir buvo pasirašyta sutartis; 1 900 eurų pervedė, kur liepta. Kreditorius sutiko atleisti tik nuo palūkanų ir mokesčių. Lietuvos bankas sutarties negaliojančia nepripažino: pasirašyta jos galiojančiu parašu, o duomenų, kad kreditorius žinojo ar galėjo žinoti apie apgaulę, nebuvo. <!-- F571 F572 --> Sprendimas rekomendacinio pobūdžio, teisė kreiptis į teismą liko. <!-- F571 -->'],
+  ['2018 m., teismas.', 'Kreditą paėmė „Lietuvos pašto“ darbuotoja, o žalą kreditų bendrovei teismas liepė atlyginti jai pačiai. <!-- F574 -->'],
+  ['2026 m., bankas „Citadele“.', 'Savo pranešime rašo, kad sukčiams dingus atsakomybė už skolą tenka tam, kurio vardu ji paimta. Tai banko, ne teismo žodžiai. <!-- F570 -->'],
+];
+
+const levers = [
+  ['Baimė.', '„Tavo duomenys nutekėjo“ arba „paskola jau paimta“: išsigandus lengviau patvirtinti. <!-- F583 F569 M -->'],
+  ['Autoritetas.', '„Banko darbuotojas“ telefonu ar darbdavys. <!-- F569 F570 M --> „Citadele“ aprašo atvejį, kai žmonės buvo registruojami oficialiai ir gaudavo atlyginimą, o įmonės valdytojas, gavęs prieigą prie jų elektroninės bankininkystės, jų vardu ėmė paskolas. Net tikras atlyginimas neįrodo, kad darbdaviui galima duoti prisijungimus. <!-- F570 M -->'],
+  ['Nauda.', 'Geras darbas ir atlyginimas. <!-- F570 F571 M -->'],
+  ['Gėda.', 'Paaiškėjus norisi tylėti ir tikėtis, kad išsispręs savaime. <!-- F570 -->'],
+];
+
+const sides = [
+  ['„Tavo duomenys nutekėjo, patvirtink tapatybę“', '„Luminor“ įspėja būtent apie tokį melą. Padėk ragelį ir jokių užklausų netvirtink. <!-- F583 M -->'],
+  ['Ateina „Smart-ID“ užklausa, kurios nepradėjai', 'Netvirtink ir nevesk PIN. <!-- F583 F569 -->'],
+  ['„Banko darbuotojas“ praneša, kad tavo vardu paimta paskola', 'Padėk ragelį. Bendruoju numeriu iš oficialios svetainės paskambink kreditoriui. <!-- F569 F13 M -->'],
+  ['Darbdavys nori tavo banko prisijungimų', '„Citadele“: „Teisėtai veikiančiai įmonei tokia informacija nėra reikalinga.“ Neduok. <!-- F570 -->'],
+  ['Darbdavys prašo pasiskolinti ar pervesti pinigų', '„Citadele“: patikimas darbdavys to neprašo. Atsisakyk ir pasitark su savo banku. <!-- F570 M -->'],
+  ['Pažįstamas prašo tavo telefono ir „Smart-ID“', 'Neduok. Bankų asociacija sako PIN kodų neperduoti kitiems. <!-- F573 F569 -->'],
+  ['Į sąskaitą atėjo pinigai, ir jis liepia juos persiųsti', 'Nepersiųsk. Pasakyk savo bankui. <!-- F571 M -->'],
+  ['Tikisi, kad sužinosi tik iš pranešimo apie pradelstą mokėjimą', 'Laiškų neignoruok, bet patikrink juos pas kreditorių oficialiu kontaktu. Savo paskolas gali pamatyti Lietuvos banko duomenų bazėje nemokamai. <!-- F565 F575 M -->'],
+];
+
+const sources = [
+  'Lietuvos bankas („STOP vartojimo kreditams“, atnaujinta 2024-09-17; 2024-06-10): sąrašas, kaip jis veikia, kaip įsirašyti, ko neapima; įspėjimas. <!-- F560 F561 F562 F563 F565 -->',
+  'Vartojimo kredito įstatymas, e-tar (21¹ straipsnis; nuo 2026-11-20 35 straipsnis): įrašymas į sąrašą, kredito riba. <!-- F584 -->',
+  'Lietuvos puslapiai ES e. teisingumo portale (atnaujinta 2025-08-01, 2023-04-07, 2019-10-21): nemokama teisinė pagalba, teismo įsakymas. <!-- F585 F586 F587 -->',
+  'Lietuvos bankas (2020-02-12, 2020-02-20): sprendimas byloje ir jo paaiškinimas. <!-- F571 F572 -->',
+  'Lietuvos bankas (2024-07-05, 2026-02-23, 2026-07-30): skundai, Paskolų rizikos duomenų bazė, ką daryti. <!-- F575 F579 F580 -->',
+  'Lietuvos bankų asociacija (tv3.lt, 2024-11-11) ir Lietuvos banko atstovė (15min, 2021-02-17): kaip paskola pasirašoma, kur kreiptis, ar pakanka duomenų. <!-- F568 F569 -->',
+  '„SB lizingas“ (tv3.lt, 2024-11-11): kur kreiptis. <!-- F569 -->',
+  '„Citadele“ (pranešimas spaudai, 15min, 2026-07-10) ir „Luminor“ (15min, 2026-05-28): darbo schema, užklausos, ką daryti. <!-- F570 F583 -->',
+  '„Creditinfo“ (pranešimas spaudai, 15min, 2026-05-28): duomenys. <!-- F567 -->',
+  'Policija (LRT, 2025-04-10; 15min, 2025-09-28), 15min (2018-10-20): atvejai. <!-- F573 F566 F574 -->',
+  'Valstybinė duomenų apsaugos inspekcija (2025-12-17), NKSC (2020-07-31), Migracijos departamentas (2022-12-14): ženklai, kur pranešti. <!-- F577 F578 F582 -->',
+  'LRT (2026-05-23): Registrų centro incidentas. „Luminor“ (alkas.lt, 2026-10-28): programa ir ryšio išjungimas. <!-- F105 F305 -->',
+  'Lietuvos bankas (2021-07-09): su banku susisiek oficialiais kanalais; policija (2026-02-05, atnaujinta 2026-04-23): epolicija.lt. <!-- F13 F2 -->',
+];
+---
+<Page
+  title="Paskola tavo vardu: ką daryti, kaip užblokuoti kreditus – Suktas"
+  description="Gavai laišką dėl paskolos, kurios neėmei, ar nerimauji dėl nutekėjusių duomenų? Trys ženklai, nemokamas Lietuvos banko sąrašas ir ką daryti."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-04</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <p set:html={nbHtml('Paskola jau paimta? Eik tiesiai į <a href="#jau-paimta">ką daryti</a>.')} />
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Gauni laišką ar skambutį dėl paskolos, kurios neėmei. <!-- F577 F569 --> Lietuvos bankas 2024 m. aprašė, kaip tai nutinka: sukčiai žmogaus vardu sudaro vartojimo kredito sutartį, pinigus pasiima sau, o žmogus apie ją sužino tik tada, kai kreditorius praneša apie pradelstą mokėjimą. <!-- F565 --> Aprašė ir kitą kelią: žinutėje ar el. laiške ateina nuoroda, atsivėrusiame puslapyje prašo „Smart-ID“ ar „Mobile-ID“ kodų, o iš tikrųjų jie patvirtina paraišką kreditui arba kredito sutartį. <!-- F565 -->')} />
+          <p set:html={nbHtml('Jei nerimauji dėl nutekėjusių duomenų: vien jie paskolos dar nereiškia. Kredito biuras „Creditinfo“ po 2026 m. Registrų centro incidento savo pranešime spaudai rašė, kad vien asmens duomenų paskolai gauti nepakanka. <!-- F567 --> Visai atmesti to negalima. Kalbėdama apie tuomet nutekėjusius vairuotojo pažymėjimų duomenis, Lietuvos banko atstovė 2021 m. sakė: „Negaliu sakyti, kad neįmanoma, bet tikimybė labai maža.“ <!-- F568 --> Nuotoliu paskola pasirašoma „Smart-ID“, „Mobile-ID“ ar panašia priemone, todėl sukčiui labiausiai reikia tavo kodų ir telefono. <!-- F569 M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Įsirašyk į nemokamą Lietuvos banko sąrašą ir kodų niekam nesakyk. <!-- F562 F569 M -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/kodai-ir-pin/">Kodų ir PIN niekam nesakyk</a>.')} />
+        <p set:html={nbHtml('<a href="https://www.lb.lt/lt/stop-vartojimo-kreditams">„STOP vartojimo kreditams“</a> yra Lietuvos banko sąrašas, skirtas ir tam, kad kiti nepaimtų kreditų tavo vardu. Žmogui, įrašytam į sąrašą, vartojimo kredito suteikti negalima: kreditoriai privalo sąrašą patikrinti prieš sudarydami sutartį, o sutartis su į sąrašą įrašytu žmogumi laikoma negaliojančia. <!-- F560 F584 --> Įsirašyti ir išsibraukti nemokama. <!-- F562 --> Paprasčiausia tai padaryti internetu, per Elektroninius valdžios vartus. Kiti būdai – tame pačiame puslapyje. <!-- F561 -->')} />
+        <p set:html={nbHtml('<strong>Gavai laišką ar skambutį dėl paskolos?</strong> Padėk ragelį ir neskambink numeriu iš laiško ar žinutės. Kreditoriaus numerį susirask oficialioje svetainėje ir paskambink bendruoju numeriu, kaip pataria Bankų asociacija. <!-- F569 F13 M -->')} />
+        <p set:html={nbHtml('<strong>Kreditorius sako, kad tokios paskolos nėra?</strong> Tada greičiausiai tai bandymas apgauti: nieko nemokėk ir daugiau su tuo žmogumi nekalbėk. Bandymą, kuris nieko nekainavo, gali pranešti Nacionaliniam kibernetinio saugumo centrui (NKSC). <!-- F2 M -->')} />
+        <p set:html={nbHtml('<strong>Sako, kad paskola yra, ar davei kodus?</strong> <a href="#jau-paimta">Štai ką daryti</a>. <!-- M -->')} />
+        <p set:html={nbHtml('<strong>Nori įsitikinti, ar paskolų nėra?</strong> Lietuvos banko <a href="https://www.lb.lt/lt/paskolu-rizikos-duomenu-baze">Paskolų rizikos duomenų bazėje</a> savo įsipareigojimus gali peržiūrėti nemokamai, per Elektroninius valdžios vartus. Duomenis ten teikia bankai, kredito unijos ir kreditoriai iš viešųjų Lietuvos banko sąrašų, todėl tuščias atsakymas visko neįrodo. Kaip greitai nauja paskola ten atsiranda, tas puslapis nesako. <!-- F575 M -->')} />
+        <p set:html={nbHtml('Prieš įsirašant į sąrašą žinok: <!-- M -->')} />
+        <ul>
+          {before.map(([head, text]) => (
+            <li><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="box" aria-labelledby="jau-paimta">
+        <h3 id="jau-paimta">Jei paskola jau paimta</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Veik iškart:')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+      </section>
+
+      <section class="box" aria-labelledby="mokesti">
+        <h3 id="mokesti">Ar teks mokėti?</h3>
+        <p set:html={nbHtml('Negalime pažadėti, kad skola dings. Bendro atsakymo neradome nei dėl paskolos, kurios žmogus visai nepatvirtino, nei dėl to, ar mokėti, kol viskas aiškinamasi. Prieš pasirašant ar sutinkant mokėti, pasitark su teisininku. <!-- M --> Nemokamą vienos valandos konsultaciją, kad ir kokios tavo pajamos, gali gauti bet kurioje savivaldybėje. <!-- F585 --> Nukentėjusieji nuo nusikaltimų, kad ir kokios jų pajamos, gali prašyti ir nemokamo advokato bylose dėl žalos atlyginimo; sprendžia Valstybės garantuojamos teisinės pagalbos tarnyba, ir ji gali atsisakyti. <!-- F585 F587 -->')} />
+        <p set:html={nbHtml('<strong>Gavai teismo įsakymą dėl skolos?</strong> Nelauk: prieštaravimą tam teismui raštu pateik per 20 dienų nuo pranešimo įteikimo, kitaip įsakymas įsiteisės. Priežasties nurodyti nereikia, o minėtoje konsultacijoje padės prieštaravimą parengti. Praleidai terminą dėl svarbios priežasties? Teismas gali tą terminą atnaujinti. <!-- F586 F585 -->')} />
+        <p set:html={nbHtml('Žinome tik atskirus atvejus: <!-- M -->')} />
+        <ul>
+          {cases.map(([head, text]) => (
+            <li><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></li>
+          ))}
+        </ul>
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/kodai-ir-pin/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kad pinigus gautų jis, o skola liktų tau. <!-- M --> 2025 m. policija pranešė apie vilnietį, kuris pažįstamam davė telefoną ir „Smart-ID“ kodų prisijungimus: to vilniečio vardu buvo paimtos ir išgrynintos 22,6 tūkst. eurų paskolos. <!-- F573 --> Tais pačiais metais Panevėžio rajone moteris pranešė policijai, kad kita moteris jos vardu galėjo paimti 92 362 eurų paskolą; kuo tyrimas baigėsi, nežinome. <!-- F566 --> 2018 m. rašyta apie „Lietuvos pašto“ darbuotoją, kuri pasinaudojo klientės duomenimis ir paėmė 1450 eurų greitąjį kreditą; kaip sutartis buvo pasirašyta, straipsnyje neparašyta. <!-- F574 --> <strong class="stop">Sustabdymo vieta:</strong> kiekvienas kodas ir kiekviena užklausa, kurios nepradėjai. <!-- F583 F569 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Gal ir tikrus tavo duomenis: 2026 m. Registrų centro incidente galėjo būti nukopijuota per 600 000 įrašų. <!-- F105 M --> „Creditinfo“ rašo, kad tokie duomenys tinka tikroviškiems scenarijams kurti. <!-- F567 --> Lietuvos bankas 2024 m. rašė, kad sukčiai taikosi į vienišus pensinio ar artėjančio prie pensinio amžiaus žmones. <!-- F565 --> <strong class="stop">Sustabdymo vieta:</strong> tikri tavo duomenys jo lūpose neįrodo, kad skambina bankas. Padėk ragelį. <!-- F13 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> nei tikras darbas, nei „banko“ skambutis nėra priežastis duoti kodus. O laiškas dėl skolos nėra gėda: tai priežastis skambinti. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a>, <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/slaptazodis-nutekejo/">{nb('Tavo slaptažodis nutekėjo')}</a>, <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a>, <a href="/scenarijai/uzduotys-uz-pinigus/">{nb('Užduotys už pinigus')}</a>, <a href="/scenarijai/parodyk-ekrana/">{nb('„Parodyk ekraną“')}</a>, <a href="/scenarijai/netikras-brokeris/">{nb('Užpildei formą, o skambina „brokeris“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-04. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

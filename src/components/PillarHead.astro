@@ -1,0 +1,17 @@
+---
+/** The head of a pillar page: name, what you learn here, the two moves; the day pool lit behind it. */
+import ArtBand from './ArtBand.astro';
+import { nb, nbHtml } from '../lib/typo.js';
+const { title, lead, actions } = Astro.props;
+---
+<section class="shead" aria-labelledby="h1">
+  <ArtBand mood="day" class="shead__art" sizes="(min-width: 60rem) 115vw, 120vw" eager />
+  <div class="wrap shead__body">
+    <h1 id="h1" class="pillar-h1">{nb(title)}</h1>
+    <h2 class="kicker">{nb('Ką čia sužinosi')}</h2>
+    <p class="shead__lead" set:html={nbHtml(lead)} />
+    <div class="shead__actions">
+      {actions.map(([label, href, kind]) => <a class:list={['btn', { 'btn--sos': kind === 'sos', 'btn--second': kind === 'second' }]} href={href}>{nb(label)}</a>)}
+    </div>
+  </div>
+</section>

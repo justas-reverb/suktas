@@ -1,0 +1,201 @@
+---
+/**
+ * Scenarijus: Žada pirmą vietą „Google“. The copy is docs/copy/scenarijai/zada-pirma-vieta-google.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Žada pirmą vietą „Google“');
+const meta = [
+  ['Kanalas', 'skambutis ar el. laiškas tavo verslui'],
+  ['Ko jis nori', 'vieno mokėjimo arba mokesčio kas mėnesį'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Kalba „Google“ vardu ir prašo pinigų.', 'Tikras „Google“ skambutis niekada neprašo mokėjimo duomenų ir negarantuoja ypatingos vietos. <!-- F678 --> „Google“ verslams kartais skambina, todėl ženklas – ne pats skambutis, o prašymas sumokėti. <!-- F678 -->'],
+  ['Garantuoja vietą.', 'Pirmą vietą, „ypatingus ryšius“ su „Google“ ar „prioritetinį pateikimą“. Pati „Google“ rašo, kad pirmos vietos niekas negali garantuoti. <!-- F670 --> Vieta vietinėje paieškoje dar priklauso nuo to, kur yra ieškantis žmogus. <!-- F677 -->'],
+  ['Siūlo atsiliepimų ar nuorodų už pinigus.', 'Apmokėtus atsiliepimus „Google“ šalina iš Žemėlapių, o svetainė, kuriai pirktos nuorodos, gali nukristi paieškoje ar visai iš jos dingti. <!-- F679 F680 --> O pasekmes jaus tavo svetainė, ne pardavėjo: „Google“ rašo, kad už samdomos įmonės veiksmus galiausiai atsakingas pats svetainės savininkas. <!-- F673 -->'],
+];
+
+const steps = [
+  '<strong>„Google“ vardu skambinusiam žmogui arba pasakei jam banko prisijungimo duomenis:</strong> iškart skambink savo bankui numeriu iš banko programėlės ar svetainės, o ne tuo, kurį davė skambinęs. <!-- F13 --> Jei pinigų jau netekai, pranešk policijai per epolicija.lt. <!-- F2 --> Tai ne tuščias perspėjimas: 2024 m. sukčiai, apsimetę „Google“, banko ir policijos atstovais, išviliojo vienos Vilniaus įmonės banko prisijungimo duomenis ir 50 tūkst. eurų. <!-- F682 -->',
+  '<strong>SEO pardavėjui, kuris nieko nepadarė:</strong> pasilik sutartį, sąskaitas ir susirašinėjimą. Ką šiuo atveju sako įstatymai, mes nepatikrinome, todėl teisinių patarimų čia neduodame. <!-- M --> Jei manai, kad tai buvo apgaulė, gali pranešti policijai per epolicija.lt. <!-- F2 -->',
+  '<strong>Už atsiliepimus ar nuorodas:</strong> daugiau jų nepirk. Apmokėtus atsiliepimus „Google“ šalina, o už pirktas nuorodas svetainė gali nukristi paieškoje. <!-- F679 F680 -->',
+];
+
+const levers = [
+  ['Autoritetas.', '„Google“ vardas skambutyje arba pardavėjo „ypatingi ryšiai“ su ja. <!-- F678 F670 M -->'],
+  ['Baimė.', 'Skambutis „Google“ vardu dėl tavo profilio verčia mokėti greičiau, nei spėji pasitikrinti. <!-- F678 M -->'],
+  ['Nauda.', 'Pirma vieta reiškia daugiau klientų, todėl pažadas garantuoti ją skamba kaip gera investicija. <!-- M -->'],
+];
+
+const sides = [
+  ['Skambina „Google“ vardu ir prašo sumokėti', 'Padėk ragelį ir nespausk jokių mygtukų. <!-- F678 -->'],
+  ['Prašo sumokėti už verslo profilį', '„Google“ jį teikia nemokamai. <!-- F681 -->'],
+  ['Garantuoja pirmą vietą', 'Niekas jos negali garantuoti. <!-- F670 -->'],
+  ['Sako turintis „ypatingų ryšių“ su „Google“', '„Google“ rašo, kad tokių pažadų reikia saugotis. <!-- F670 -->'],
+  ['Siūlo reklamą kaip kelią į paieškos rezultatų viršų', 'Reklama neturi įtakos tavo vietai neapmokamuose paieškos rezultatuose, o už vietą juose „Google“ pinigų neima. <!-- F675 -->'],
+  ['Siūlo atsiliepimų paketą', 'Apmokėtus atsiliepimus „Google“ šalina. <!-- F679 -->'],
+  ['Siūlo nuorodų paketą', 'Už pirktas nuorodas svetainė gali nukristi ar dingti iš paieškos. <!-- F680 -->'],
+  ['Nori, kad tavo svetainėje būtų nuoroda į jį', 'Pasak „Google“, to niekada neturėtų reikėti. <!-- F674 -->'],
+  ['Laiškas atėjo pats', 'Tokius laiškus gauna ir pati „Google“. <!-- F672 -->'],
+  ['Neaiškina, ką darys, o moki kas mėnesį', 'Prašyk raštu darbų sąrašo ir to, kas bus matuojama. <!-- F670 F671 M -->'],
+];
+
+const sources = [
+  '„Google Search Central“, „Do you need an SEO?“ (atnaujinta 2026-06-05, tik anglų kalba): niekas negali garantuoti pirmos vietos, ko tikėtis iš audito, nekviesti laiškai, savininko atsakomybė, nuorodos į pardavėją, kokie darbai naudingi, reklama ir paieškos rezultatai. <!-- F670 F671 F672 F673 F674 F675 F676 -->',
+  '„Google“ verslo profilio pagalba (be datos): vietinio reitingo nenusipirksi; ką daryti, jei skambina apsimetęs „Google“. <!-- F677 F678 -->',
+  '„Google Žemėlapių“ turinio taisyklės (be datos): apmokėti atsiliepimai šalinami. <!-- F679 -->',
+  '„Google Search Central“ šlamšto taisyklės (be datos): pirktos nuorodos. <!-- F680 -->',
+  '„Google“ tinklaraštis (2022-11-29): teismas dėl apsimetinėjimo „Google“ ir netikrų atsiliepimų, JAV. <!-- F681 -->',
+  'LRT (2024-11-22), remiantis policija: apsimetę „Google“, banko ir policijos atstovais, iš įmonės išviliojo 50 tūkst. eurų. <!-- F682 -->',
+  'Lietuvos bankas: su banku susisiek per jo programėlę ar svetainę; policija: pranešti per epolicija.lt. <!-- F13 F2 -->',
+];
+---
+<Page
+  title="SEO paslaugos: tušti pažadai ir netikras „Google“ – Suktas"
+  description="Skambina „Google“ dėl verslo profilio ar kas nors žada pirmą vietą paieškoje? Ką sako pati „Google“: trys ženklai ir du ėjimai."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-06</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+        <p class="scn-note" set:html={nbHtml('Atvirai: Suktą rašo Justas Vaičekauskas, kuris pats kuria svetaines ir teikia SEO paslaugas. Todėl čia nerekomenduojame jokio teikėjo, nė savęs, o viską, ką sakome apie SEO, imame iš pačios „Google“. <!-- pažadas -->')} />
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Turi nedidelį verslą: kirpyklą, sodybą, dirbtuves ar parduotuvę. <!-- M --> Skambina „Google“ atstovas ir prašo sumokėti už tavo verslo profilį arba siūlo už pinigus ypatingą vietą. <!-- F678 F681 --> Arba ateina laiškas, kurio neprašei, pavyzdžiui: „Garantuojame pirmą vietą „Google“ per mėnesį ir 50 atsiliepimų.“ <!-- F672 F670 M --> Pirmasis atvejis – apgavystė: pati „Google“ rašo, kad verslo profilį teikia nemokamai, o vietos neapmokamuose paieškos rezultatuose iš „Google“ nenusipirksi. <!-- F681 F677 F675 --> Antrasis atvejis kitoks: tai dažniausiai išmesti pinigai, o kartais ir rizika tavo svetainei. <!-- F670 F679 F680 M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Jei skambina „Google“ ir prašo sumokėti ar mokėjimo duomenų, padėk ragelį ir nespausk jokių mygtukų. <!-- F678 -->')} />
+        <p set:html={nbHtml('„Google“ nepriima pinigų už vietą neapmokamuose paieškos rezultatuose, o atsirasti juose nieko nekainuoja. <!-- F675 -->')} />
+        <p class="move__line" set:html={nbHtml('Iš SEO pardavėjo prašyk ne vietos, o raštu surašytų darbų ir to, kas bus matuojama. <!-- M -->')} />
+        <p set:html={nbHtml('Sąžiningas auditas pateikia realistišką įvertinimą, kiek galima pagerėti ir kiek darbo tam reikės. Jei pardavėjas garantuoja pirmą vietą, „Google“ pataria ieškoti kito. <!-- F671 --> Darbus, kuriuos galima surašyti ir patikrinti, „Google“ vardija pati: svetainės turinio ir sandaros peržiūra, techniniai patarimai, turinio kūrimas, raktažodžių paieška, mokymai. <!-- F676 --> Prieigą prie „Search Console“ iš pradžių duok tik peržiūrai. <!-- F671 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau sumokėjai ar ką nors pasakei</h3>
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>, <a href="/jei-apgavo/#kodai">pasakiau ar įvedžiau kodą</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">{nb('Atidaryk kortelę „Padėk ragelį ir skambink oficialiu numeriu“')}</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Pinigų: vieno mokėjimo už „patvirtinimą“ ar „vietą“ arba mokesčio kas mėnesį. <!-- F678 F681 M --> Bet netikras „Google“ atstovas gali siekti daugiau: Lietuvoje toks skambutis buvo dalis kelio į įmonės banko sąskaitą. <!-- F682 --> <strong class="stop">Sustabdymo vieta:</strong> prašymas sumokėti ar pasakyti banko duomenis „Google“ vardu. Padėk ragelį. <!-- F678 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tai, kas vieša: verslo pavadinimą, telefoną ir el. paštą, matomus profilyje ar svetainėje. <!-- M --> Jam to užtenka, nes jis rašo visiems iš eilės: tokius laiškus gauna net pati „Google“. <!-- F672 M --> <strong class="stop">Sustabdymo vieta:</strong> laiškas, kurio neprašei, dar nereiškia, kad kas nors tavo svetainę tikrino. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Be to, paieškos rezultatus sunku patikrinti, o keičiasi jie lėtai, todėl blogą mėnesį visada galima suversti „Google“. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> prašyk darbų, o ne vietos, nes darbus gali patikrinti. <!-- F671 M -->')} />
+            <p set:html={nbHtml('Ir ne tik čia: 2022 m. „Google“ JAV padavė į teismą žmones, kurie, jos teigimu, telefonu apsimesdami „Google“ bandė apgauti šimtus smulkių verslų, svetainėse siūlė pirkti netikrų atsiliepimų ir bandė imti pinigus už nemokamą verslo profilį. <!-- F681 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a>, <a href="/scenarijai/netikra-banko-reklama/">{nb('Netikra banko reklama paieškoje')}</a>, <a href="/scenarijai/netikras-laiskas/">{nb('Netikras laiškas iš „Sodros“, banko ar „Telia“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-06. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

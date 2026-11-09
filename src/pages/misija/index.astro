@@ -1,0 +1,98 @@
+---
+/**
+ * Misija: the two shades of "suktas", the line the site never crosses and how its pages are
+ * written. The copy is docs/copy/misija.md, word for word; the source tags stay as comments in the
+ * strings and the build strips them. A document page: no art, the section names in the margin
+ * (components/DocHead, styles/doc.css). That copy has no title or description of its own, so
+ * both below are the designer's.
+ */
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+
+const riba = [
+  'Rodome, ko užpuolikas nori, ką žino ir kodėl planas veikia. Nerodome įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. <!-- pažadas -->',
+  'Trumpą frazę galime pacituoti, kad atpažintum. Visą scenarijų – niekada. <!-- pažadas -->',
+  'Mokome ieškoti informacijos tik apie save: savo vardo ir savo paskyrų. <!-- pažadas -->',
+  'Čia nėra įsilaužimo kursų, laboratorijų ar pratimų, kuriuose taikinys būtų kitas žmogus. <!-- pažadas -->',
+  'Nerašome tikrų aukų ar kaltininkų vardų. Atvejus ir skaičius imame tik iš oficialių šaltinių ir rašome jų datą. <!-- pažadas -->',
+  'Nekaltiname apgautųjų. Tai gali nutikti bet kam. <!-- pažadas -->',
+  'Sakome, ko nežinome, ir datuojame tai, ką žinome. <!-- pažadas -->',
+];
+
+const rasome = [
+  '<strong>Pirmiausia trumpai.</strong> Kiekvienas scenarijus prasideda tuo, kaip tai atrodo, trimis ženklais ir vienu ėjimu. Jei sustoji čia, jau turi, ko reikia. <!-- pažadas -->',
+  '<strong>Po to – jo pusė.</strong> Sluoksnis „Kaip tai daro jis“ aiškina, ko jis nori ir kodėl jam pavyksta. Kiekviena pastraipa baigiasi vieta, kur jį sustabdyti, arba ją išmetame. <!-- pažadas -->',
+  '<strong>Faktai turi datą ir šaltinį.</strong> Kiekvienas teiginys užrašytas <a href="/saltiniai/">Šaltiniuose</a> su diena, kai jį patikrinome. <!-- pažadas -->',
+  '<strong>Penki žingsniai ir penki kabliukai yra mūsų pačių modelis,</strong> ne oficialus. Taip ir sakome. <!-- M -->',
+  '<strong>Be kaltinimo ir be gąsdinimo.</strong> Rašome, kaip tai atrodo ir ką daryti, ne „kaip galėjai nepastebėti“.',
+];
+---
+<Page
+  title="Misija – Suktas"
+  description="Ką reiškia „suktas“, kur yra riba, kurios ši svetainė nekerta, ir kaip čia rašome."
+>
+  <DocHead
+    title="Misija"
+    actions={[
+      ['Parodyk man triuką', '/scenarijai/skambutis-is-banko/'],
+      ['Perskaityk, kaip rašome', '#kaip-rasome', 'second'],
+    ]}
+  />
+
+  <article class="wrap doc">
+    <section class="doc-sec" aria-labelledby="dvi-puses">
+      <h2 id="dvi-puses">Dvi žodžio „suktas“ pusės</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Žodis „suktas“ turi du atspalvius: gudrus ir apsukrus, bet ir nesąžiningas. <!-- M --> Mes imame abu ir aiškiai juos atskiriame. Sukčius apgauna kitą žmogų. Gyventi suktai reiškia nepasiduoti apgavikui.')} />
+        <p set:html={nbHtml('Todėl čia kiekvieną pavojų pirmiausia parodome iš sukčiaus pusės: ką jis gali apie tave žinoti, ko nori ir kodėl jo scenarijus veikia. Kai matai planą, jo kalba nustoja skambėti įtikinamai. Žiūrime jo akimis tik tam, kad galėtume jam pastoti kelią.')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="balsas">
+      <h2 id="balsas">Suktas – balsas, ne lytis</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Suktas yra ne žmogus ir ne vyras. Tai balsas tavo galvoje, kuris pirmas paklausia: „O jei čia apgaulė?“ Vardas turi vyriškąją galūnę, nes tokia žodžio „suktas“ forma. Tavęs nevadiname nei „suktu“, nei „sukta“: kreipiamės veiksmažodžiais – „pagalvok“, „sustok“, „pasitikrink“. „Suktai“ – prieveiksmis, jis tinka visiems: „Gyvenk suktai.“')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="riba">
+      <h2 id="riba">Mūsų riba</h2>
+      <div class="doc-sec__body">
+        <p class="doc-say" set:html={nbHtml('Ši svetainė dirba tik gynybai. Taisyklė viena: ar tai galima panaudoti prieš kitą žmogų ar prieš tai, kas ne tavo? Jei taip, išmetame. <!-- pažadas -->')} />
+        <ul class="doc-list doc-list--rule">
+          {riba.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kaip-rasome">
+      <h2 id="kaip-rasome">Kaip čia rašome</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {rasome.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="kam">
+      <h2 id="kam">Kam tai skirta</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Visiems, kam skambina ir rašo – ir tėvų, ir senelių kartai. Pirmas sluoksnis suprantamas be jokio kito. Gilesnis – smalsiems.')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="susije">
+      <h2 id="susije">Susiję</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-links doc-links--dot">
+          <li><a href="/scenarijai/">Scenarijai</a></li>
+          <li><a href="/apie/">Apie</a></li>
+          <li><a href="/saltiniai/">Šaltiniai</a></li>
+        </ul>
+      </div>
+    </section>
+  </article>
+</Page>

@@ -1,0 +1,61 @@
+---
+/**
+ * Šaltiniai: one entry per fact the pages use. The copy is docs/copy/saltiniai.md and this page
+ * reads it at build time instead of retyping 84 entries, so the page and the copy cannot drift:
+ * each entry line is cut into its parts (number, claim, source link, kind, dates, pages) and laid
+ * out; a line that does not fit, or a link that is not https: or on this site, stops the build
+ * (src/lib/saltiniai.js). The head's sentences are written out below, from the same copy.
+ */
+import fs from 'node:fs';
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import { readSources } from '../../lib/saltiniai.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+
+const { entries, gaps } = readSources(fs.readFileSync('docs/copy/saltiniai.md', 'utf8'));
+
+const lead = 'Čia kiekvienas faktas, kuriuo remiasi puslapiai: teiginys, šaltinis, ar jis pirminis (pačios institucijos puslapis), kada jį perskaitėme ir kuriuose puslapiuose jis naudojamas. <!-- pažadas --> Daugumą perskaitėme 2026-10-24, o vėliau perskaitytų data nurodyta prie jų; jei šaltinį perskaitėme tik iš dalies, tai pažymėta prie jo. <!-- pažadas --> Penki žingsniai ir penki kabliukai čia neįrašyti, nes tai mūsų pačių modelis, o ne šaltinis. <!-- pažadas -->';
+---
+<Page
+  title="Šaltiniai – Suktas"
+  description="Kiekvienas teiginys su šaltiniu, data ir puslapiais, kuriuose jis naudojamas."
+>
+  <DocHead
+    title="Šaltiniai"
+    lead={lead}
+    actions={[
+      ['Rask puslapį', '/turinys/'],
+      ['Pranešk apie klaidą', '/apie/#kaip-pataisyti-mus', 'second'],
+    ]}
+  />
+
+  <div class="wrap doc">
+    <ul class="doc-srcs" role="list">
+      {entries.map((e) => (
+        <li class="doc-src" id={e.id}>
+          <p class="doc-src__id">{e.id}.</p>
+          <div class="doc-src__body">
+            <p class="doc-src__claim"><Fragment set:html={nbHtml(e.claim)} /> <span class="doc-src__source"><span class="doc-src__label">Šaltinis:</span> <a href={e.srcUrl}>{nb(e.srcName)}</a>.</span></p>
+            <p class="doc-src__meta"><span class:list={['doc-src__kind', { 'doc-src__kind--second': e.kind.startsWith('Antrinis') }]}>{e.kind}<span class="vh">.</span></span>{e.date && <> Šaltinio data: {e.date}.</>} Perskaityta <span class="nw">{e.read}</span>.</p>
+            <p class="doc-src__used">Naudojama: {e.used.map(([label, href], i) => <>{i > 0 && ', '}<a href={href}>{nb(label)}</a></>)}.</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <section class="doc-sec" aria-labelledby="ko-neradome">
+      <h2 id="ko-neradome">Ko neradome</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {gaps.map((g) => (
+            <li id={g.id}>
+              <strong>{g.id}.</strong> <Fragment set:html={nbHtml(g.claim)} /> Naudojama: {g.used.map(([label, href], i) => <>{i > 0 && ', '}<a href={href}>{nb(label)}</a></>)}.
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
+</Page>

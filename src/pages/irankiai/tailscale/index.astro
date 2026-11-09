@@ -1,0 +1,123 @@
+---
+/**
+ * Įrankiai: Tailscale, a tool article. The copy is docs/copy/irankiai/tailscale.md, word for word;
+ * the source tags stay as comments and the build strips them. Same shape as /irankiai/mullvad/.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const uses = [
+  ['Pasiekti savo įrenginius iš bet kur.', ' Per šį tinklą juos pasiekti gali tik prie jo prijungti įrenginiai. <!-- F961 -->'],
+  ['Viešas „Wi-Fi“.', ' Vieną savo įrenginį namuose gali paversti išėjimo mazgu (angl. <em>exit node</em>): tada visas telefono ar kompiuterio srautas eina per jį, kaip per įprastą VPN. <!-- F962 --> „Tailscale“ pateikia pavyzdį – kavinė su nepatikimu „Wi-Fi“. <!-- F962 -->'],
+  ['Paslauga, veikianti tik tavo šalyje.', ' Kitas „Tailscale“ pavyzdys – keliaujant užsienyje pasiekti paslaugą, kuri veikia tik tavo šalyje, pavyzdžiui, banko. <!-- F962 -->'],
+];
+
+const limits = [
+  ['Neslepia tavęs nuo interneto.', ' Su išėjimo mazgu namuose svetainės mato tavo namų interneto adresą. <!-- M F962 -->'],
+  ['Nėra anonimiškas.', ' Kiekviena „Tailscale“ paskyra susieta su el. pašto ar „GitHub“ paskyra. <!-- F969 --> Net per „Tailscale“ jungiant „Mullvad“ priedą, „Tailscale“ žino, kuri „Mullvad“ paskyra kuriam naudotojui priklauso. <!-- F969 --> Jei nori <a href="/irankiai/mullvad/">„Mullvad“</a> be vardo, naudok jo paties programėlę. <!-- M -->'],
+  ['Nuo apgaulės neapsaugo.', ' Jis saugo ryšį tarp įrenginių, o ne tavo sprendimus. <!-- M -->'],
+];
+
+const steps = [
+  ['Parsisiųsk tik iš', ' <a href="https://tailscale.com/download">tailscale.com/download</a>: yra „Windows“, „macOS“, „Linux“, „Android“ ir „iOS“ versijos. <!-- F963 -->'],
+  ['Prisijunk esama paskyra.', ' „Tailscale“ slaptažodžių neturi: jungiamasi per „Google“, „Microsoft“, „Apple“ ar „GitHub“ paskyrą. <!-- F968 -->'],
+  ['Tą paskyrą apsaugok antru žingsniu.', ' Įjungtas ten, antras žingsnis galios ir jungiantis prie „Tailscale“. <!-- F968 --> Kaip tai padaryti: <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>.'],
+  ['Junk tik savo įrenginius.', ' Viskas, ką prijungsi prie savo tinklo, galės pasiekti tavo įrenginius. <!-- M F961 -->'],
+  ['Išėjimo mazgą įjunk tada, kai reikia', ', pavyzdžiui, viešame „Wi-Fi“ tinkle. <!-- F962 M -->'],
+];
+
+const watch = [
+  ['Nemokamas tik asmeniniam naudojimui.', ' Planas „Personal“ tinka tik nekomerciniam naudojimui: iki 6 žmonių, įrenginių – neribotai. <!-- F964 -->'],
+  ['Kas yra bendrovė.', ' Senesnės paskyros sudarytos su „Tailscale Inc.“ (Kanada), naujos nuo 2024-09-03 – su „Tailscale US Inc.“ (JAV). <!-- F966 -->'],
+  ['„Mullvad“ priedas', ' dar bandomasis ir kainuoja 5 USD per mėnesį už 5 įrenginius. <!-- F969 F964 -->'],
+];
+
+const sources = [
+  '„Tailscale“ dokumentacija („What is Tailscale?“, 2025-09-30; „Exit nodes“, 2025-12-15; „Mullvad exit nodes“, 2026-01-09; prisijungimo paslaugos, 2026-01-05): ką daro, išėjimo mazgai, „Mullvad“ priedas, prisijungimas. <!-- F961 F962 F968 F969 -->',
+  '„Tailscale“ (atsisiuntimas, kainos, atviras kodas, „How Tailscale works“; naudojimo sąlygos ir privatumo politika, 2026-08-25): platformos, kaina, licencija, bendrovė, ką mato. <!-- F963 F964 F965 F966 F967 -->',
+];
+
+const list = (items) => items.map(([head, text]) => `<li><strong>${nbHtml(head)}</strong>${nbHtml(text)}</li>`).join('');
+---
+<Page
+  title="Tailscale: privatus tinklas tavo įrenginiams – Suktas"
+  description="Kas yra „Tailscale“, kuo jis skiriasi nuo VPN paslaugos, kada pravers ir ką saugoti, kad tavo įrenginių tinklas liktų tik tavo."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/irankiai/">Įrankiai</a></p>
+        <h1>{nb('Tailscale: privatus tinklas tavo įrenginiams')}</h1>
+        <dl class="meta">
+          <div><dt>Skaitymo laikas</dt><dd>3 min.</dd></div>
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('„Tailscale“ sujungia tavo įrenginius – telefoną, nešiojamąjį ir namų kompiuterį – į privatų tinklą, kuriame jie vienas kitą pasiekia iš bet kur. <!-- F961 M --> Ryšys tarp jų užšifruotas „WireGuard“ protokolu. <!-- F961 --> Tai ne VPN paslauga privatumui: pagal nutylėjimą tavo naršymo internete jis neliečia. <!-- F962 --> Asmeniniam naudojimui jis nemokamas. <!-- F964 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kam jis pravers</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(uses)} /></div>
+      </div>
+
+      <div class="row">
+        <h2>Ko jis nedaro</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(limits)} /></div>
+      </div>
+
+      <div class="row">
+        <h2>Ką mato „Tailscale“</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Tavo srauto turinys užšifruotas nuo galo iki galo, ir „Tailscale“ jo pasiekti negali; tarpiniai serveriai jo irgi neiššifruoja. <!-- F967 --> Bet bendrovė renka metaduomenis: įrenginio pavadinimą, IP adresą, prisijungimo laikus ir ryšių žurnalus. <!-- F967 --> Programėlių kodas daugiausia atviras (BSD-3), o serveris, kuris koordinuoja ryšius, – uždaras. <!-- F965 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip pradėti</h2>
+        <div class="row__body"><ol class="row-list" set:html={list(steps)} /></div>
+      </div>
+
+      <div class="row">
+        <h2>Ką stebėti</h2>
+        <div class="row__body"><ul class="row-list" set:html={list(watch)} /></div>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="/irankiai/#k-tailscale">Kortelė Įrankiuose</a>
+        <a class="btn btn--second" href="/irankiai/">Visi įrankiai</a>
+      </div>
+    </section>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Įrankiai:</strong> <a href="/irankiai/mullvad/">Mullvad VPN</a>, <a href="/irankiai/grapheneos/">GrapheneOS</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/irenginiai/">{nb('Įrenginiai ir tinklas')}</a>, <a href="/temos/slaptazodziai/">{nb('Slaptažodžiai ir prieigos raktai')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

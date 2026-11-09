@@ -1,0 +1,202 @@
+---
+/**
+ * Scenarijus: SMS apie baudą. The copy is docs/copy/scenarijai/sms-apie-bauda.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('SMS apie baudą');
+const meta = [
+  ['Kanalas', 'žinutė'],
+  ['Ko jis nori', 'tavo kortelės ar banko duomenų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Žinutėje yra nuoroda sumokėti ar prisijungti.', ' „Unipark“ sako, kad nesiunčia SMS su aktyviomis mokėjimo nuorodomis, o Vilniaus „JUDU“ – kad nesiunčia SMS su nuorodomis į mokėjimo puslapius. <!-- F292 F296 --> Policija nesiunčia SMS su nuorodomis, per kurias reikėtų jungtis prie banko dėl baudos. <!-- F299 -->'],
+  ['Siuntėjas ar adresas tik panašus į tikrą.', ' „e.p.olicija“, „Unip4rk“, „uniparklit“, adresas su papildomais brūkšneliais ar baigiantis .com. <!-- F294 F298 F299 --> Tikras „Unipark“ adresas yra unipark.lt, o „Regitros“ – regitra.lt ir eregitra.lt. <!-- F294 F298 --> Dažnai tekstas būna be lietuviškų raidžių ar su klaidomis, bet ir taisyklingai parašyta žinutė gali būti sukčių. <!-- F294 F298 F299 M -->'],
+  ['„Baudą“ skiria tas, kas baudų neskiria.', ' „JUDU“ baudų neišrašo: už neapmokėtą stovėjimą Vilniuje mokama vietinė rinkliava. <!-- F296 --> „Regitra“ sako, kad baudos nėra jos paslauga, ir mokėti už stovėjimą neprašo. <!-- F298 -->'],
+];
+
+const steps = [
+  '<strong>Įvedei kortelės duomenis? Iškart užblokuok kortelę</strong> banko programėlėje ar interneto banke arba paskambink bankui numeriu iš oficialios banko svetainės. Pasakyk ir apie mokėjimus, kurių nedarei: blokavimas jau atliktų mokėjimų neatšaukia. <!-- F7 F13 F6 -->',
+  '<strong>Įvedei banko prisijungimo duomenis ar patvirtinai „Smart-ID“ užklausą?</strong> Skambink bankui numeriu iš oficialios svetainės ir paprašyk užblokuoti prieigą prie interneto banko. <!-- F6 F13 F30 F7 -->',
+  '<strong>Dingo pinigai – pranešk policijai</strong> per epolicija.lt. Jei pinigai nedingo, apie žinutę pranešk NKSC. <!-- F2 F18 -->',
+  '<strong>Paspaudei nuorodą, bet nieko neįvedei?</strong> Uždaryk puslapį ir nieko jame neįvesk. Apie žinutę pranešk NKSC. <!-- F18 M -->',
+];
+
+const levers = [
+  ['Autoritetas.', 'Žinutė prisidengia policijos, „Regitros“ ar „Unipark“ vardu, o siuntėjo vardas tik panašus į tikrą. <!-- F294 F298 F299 -->'],
+  ['Baimė.', 'Delspinigiai, atimtas vairuotojo pažymėjimas ar bloga kredito istorija atrodo blogiau nei pati bauda. <!-- F293 M -->'],
+  ['Skuba.', '„Galutinis pranešimas“: atrodo, kad laiko patikrinti nebėra. <!-- F292 M -->'],
+];
+
+const sides = [
+  ['SMS „Unipark“ vardu apie neapmokėtą stovėjimą', '„Unipark“ nesiunčia SMS su aktyviomis mokėjimo nuorodomis; skolą tikrink „Unipark“ programėlėje ar unipark.lt. <!-- F292 F293 -->'],
+  ['„Bauda“ už stovėjimą Vilniaus zonoje', '„JUDU“ baudų neišrašo; tikras pranešimas apmokamas per oficialią „JUDU“ svetainę, nurodžius automobilio ir pranešimo numerius. <!-- F296 F297 -->'],
+  ['„ePolicijos“ protokolas su nuoroda', 'Policija tokių nuorodų nesiunčia; informacijos ieškok oficialiose institucijų svetainėse. <!-- F299 F301 -->'],
+  ['„Regitros“ žinutė apie baudą ar techninę apžiūrą', '„Regitra“ siunčia tik informacinio pobūdžio žinutes, o baudos ir techninė apžiūra nėra jos paslaugos. Jos svetainės – tik regitra.lt ir eregitra.lt. <!-- F298 -->'],
+  ['VMI „bauda“ ar „permoka“ su konkrečia suma', 'VMI niekada nesiunčia SMS su nuorodomis ir konkrečiomis sumomis; tai matyti tik prisijungus prie „Mano VMI“. <!-- F140 -->'],
+  ['Adresas, panašus į tikrą (unipark.lt-kv-k334.com)', 'Tikras adresas – unipark.lt be papildomų brūkšnelių ar simbolių. <!-- F294 --> Bet panašų adresą užregistruoti nesunku, todėl svetainę atsidaryk tu, ne iš žinutės. <!-- M -->'],
+  ['Prašo „Smart-ID“ kodų ar kortelės numerio', 'Klaipėdos apskrities policija primena: jokia oficiali tarnyba niekada neprašys „Smart-ID“ kodų, prisijungimo duomenų ar banko kortelės numerio. <!-- F300 --> Kortelės duomenis vesk tik svetainėje, kurią atsidarai tu. <!-- M -->'],
+  ['Ta pati žinutė pasiekia daug žmonių', 'Pranešk NKSC: apie svetainę formoje „Pranešti apie svetainę“, apie žinutę – formoje „Pranešti apie žinutę / skambutį“. To paties prašo „Unipark“ ir „JUDU“; „Unipark“ sako, kad su NKSC stengiasi tokias nuorodas kuo greičiau nustatyti ir užblokuoti. <!-- F17 F18 F293 F296 -->'],
+];
+
+const sources = [
+  '„Unipark“ (tv3.lt, 2025-08-22, 2026-08-28 ir 2026-10-03): tokių žinučių nesiunčia, aktyvių mokėjimo nuorodų nėra; klientų pranešimai kasdien; ką gąsdina žinutės; skolos programėlėje dažniausiai nėra. <!-- F291 F292 F293 -->',
+  '„Unipark“ (tv3.lt, 2025-10-15, 2025-11-12 ir 2026-01-19): panašūs adresai ir vardai; tikras adresas unipark.lt. <!-- F294 -->',
+  '„JUDU“ (judu.lt, 2025-11-25): nesiunčia SMS su nuorodomis į mokėjimo puslapius, baudų neišrašo; „JUDU“ mokėjimo būdai: pranešimas su registracijos numeriu. <!-- F296 F297 -->',
+  '„Regitros“ kibernetinio saugumo ekspertai (tv3.lt, 2026-10-13): tik informacinės žinutės, baudos ne jos paslauga, adresai regitra.lt ir eregitra.lt. <!-- F298 -->',
+  'Zarasų rajono ir Panevėžio apskrities policija (tv3.lt, 2026-10-08): „ePolicijos“ vardu siunčiamos žinutės, du atvejai ir jų nuostoliai. <!-- F299 -->',
+  'Klaipėdos apskrities policija (tv3.lt, 2026-10-14): daugiau nei 1 000 eurų nuostolis; jokia tarnyba neprašo „Smart-ID“ kodų ar kortelės numerio. <!-- F300 -->',
+  'Policijos departamentas (tv3.lt, 2026-05-31): institucijos nesiunčia SMS su nuorodomis; informacijos ieškoti oficialiose svetainėse. <!-- F301 -->',
+  'VMI (2026-08): nesiunčia SMS su nuorodomis ir sumomis; tikrinti „Mano VMI“. <!-- F140 -->',
+  'SEB: kortelę užblokuoti programėlėje, interneto banke ar telefonu; Lietuvos bankas: banką pasiekti per oficialią programėlę ar svetainę; bankų patarimas užblokuoti ir prieigą prie interneto banko. <!-- F7 F13 F6 -->',
+  '„Smart-ID“: netvirtinti operacijos, kurios nepradėjai. <!-- F30 -->',
+  'Policija ir NKSC: pranešti per epolicija.lt; bandymą, kuris nieko nekainavo, ir sukčių svetainę – NKSC formose. <!-- F2 F17 F18 -->',
+];
+---
+<Page
+  title="SMS apie baudą: „Unipark“, „ePolicija“, „Regitra“ – Suktas"
+  description="Gavai SMS apie neapmokėtą stovėjimą ar baudą su nuoroda sumokėti? Taip sukčiai bando išvilioti kortelės ir banko duomenis. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-01</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Telefone pasirodo SMS: „galutinis pranešimas apie nesumokėtus parkavimo mokesčius“, o jei nesumokėsi, esą prasidės „administracinis patikrinimas“. <!-- F292 --> Kai kurios dar gąsdina delspinigiais, vairuotojo pažymėjimo atėmimu ar bloga kredito istorija. <!-- F293 --> Kitos rašo apie „ePolicijos“ protokolą, baudą už greičio viršijimą ar „Regitros“ baudą. <!-- F298 F299 F301 --> Nuoroda veda į puslapį, kuris prašo kortelės ar banko prisijungimo duomenų. <!-- F299 F300 --> 2026 m. spalį policija aprašė tris tokius atvejus: Klaipėdos apskrities policijos duomenimis, vyras per akimirką prarado daugiau nei 1 000 eurų; Panevėžio rajone žmogus neteko apie 14 899 eurų, o įmonė, apie kurią pranešė Zarasų rajono policija, – 22 368 eurų. <!-- F299 F300 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Nespausk nuorodos. Ar tikrai turi ką nors sumokėti, tikrink oficialioje programėlėje ar svetainėje, kurią atsidarai tu.')} />
+        <p set:html={nbHtml('<!-- F292 F301 --> „Unipark“ sako, kad besikreipiantys klientai „Unipark“ programėlėje dažniausiai jokios skolos nemato. <!-- F293 --> Tikras Vilniaus pranešimas apie neapmokėtą stovėjimą turi registracijos numerį: jį su automobilio numeriu įvedi oficialioje „JUDU“ svetainėje judu.lt, o ne per nuorodą žinutėje. <!-- F296 F297 --> Kortelė: <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. Žinutė gąsdina tuo, kas tikrai būna: bauda ar skola už stovėjimą. <!-- M -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kortele">Jei tave apgavo: pasakiau kortelės duomenis</a>, <a href="/jei-apgavo/#kodai">pasakiau ar įvedžiau kodą</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo kortelės ar banko prisijungimo duomenų, kuriuos įvesi jo puslapyje. <!-- F299 F300 --> „Bauda“ tėra priedanga, kad mokėjimas atrodytų privalomas ir skubus. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nuoroda žinutėje. „Unipark“, „JUDU“ ir policija sako, kad tokių nuorodų nesiunčia. <!-- F292 F296 F299 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Paprastai nieko, ir jam to nereikia. <!-- M --> Žinučių siunčiama tiek daug, kad vien „Unipark“ apie jas iš klientų gauna vidutiniškai 50 ir daugiau pranešimų per dieną. <!-- F293 --> Jam užtenka, kad kuris nors gavėjas neseniai statė automobilį mokamoje zonoje ar važiavo greičiau nei leidžiama. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> oficiali programėlė ar svetainė, kurią atsidarai tu, o ne nuoroda žinutėje. <!-- F293 F301 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja tris iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Be to, bauda ar skola už stovėjimą yra tikras dalykas, todėl žinutė gali atrodyti tikėtina. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> patikrinti oficialioje programėlėje ar svetainėje užtrunka kelias minutes, o tikra skola per tą laiką niekur nedings. <!-- M F297 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/zinute-su-nuoroda/">{nb('Žinutė su nuoroda')}</a>, <a href="/scenarijai/netikras-qr-kodas/">{nb('Netikras QR kodas')}</a>, <a href="/scenarijai/skambutis-is-vmi/">{nb('Skambutis iš „VMI“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-01. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

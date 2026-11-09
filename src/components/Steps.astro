@@ -1,0 +1,131 @@
+---
+import { nb, nbHtml } from '../lib/typo.js';
+
+/* The five steps. The facts are those in docs/LANDING.md, with its dates; the words are the
+   designer's. `why` is the line the joke hangs on, `doo` the short instruction, `paths` what
+   unfolds: the exact menus, which are the part that goes stale first. */
+const steps = [
+  {
+    n: 1,
+    title: 'Naršyklė',
+    time: 'apie 4 min.',
+    why: 'Reklamos seka iš paskos kaip uodai vasarą. Ši naršyklė – tavo repelentas.',
+    doo: '<strong>Kompiuteryje:</strong> „Firefox“ ir papildinys „uBlock Origin“. <strong>Telefone:</strong> „Brave“ – arba „Android“ telefone „Firefox“ su „uBlock Origin“. Jie blokuoja reklamas ir sekliukus, kurie lydi tave iš svetainės į svetainę, o puslapiai dar ir greičiau kraunasi.',
+    paths: [
+      '<strong>Kompiuteryje.</strong> „Firefox“ lietuviškai: <a href="https://www.mozilla.org/lt/firefox/" rel="noopener">mozilla.org/lt/firefox/</a>. Papildinį „uBlock Origin“ rasi <a href="https://addons.mozilla.org/" rel="noopener">addons.mozilla.org</a> – ten jis pažymėtas kaip „<span lang="en">Recommended</span>“.',
+      '<strong>Telefone.</strong> „Brave“ („Android“ ir iPhone) pagal numatytuosius nustatymus blokuoja reklamas ir sekimo priemones. Arba „Android“ telefone – „Firefox“ su „uBlock Origin“: jis veikia ir „Firefox“, skirtoje „Android“.',
+      '<strong>Kodėl ne „Chrome“?</strong> „Chrome“ kuria „Google“, o „Google“ gyvena iš reklamos. Be to, senasis „uBlock Origin“ ten nebeveikia: naujos plėtinių taisyklės („<span lang="en">Manifest V3</span>“) 2025 m. liepą, su „Chrome 138“, išjungė jį visiems. Yra lengvesnis „uBlock Origin Lite“, bet pats jo autorius sako, kad tai ne visavertė pamaina.',
+    ],
+  },
+  {
+    n: 2,
+    title: 'Paieška',
+    time: 'apie 1 min.',
+    why: '„Google“ tavo paieškas rašo į paskyrą kaip į dienyną – bent jau kol esi prisijungęs.',
+    doo: 'Nustatyk „DuckDuckGo“ kaip numatytąją paieškos sistemą. Jis teigia, kad su tavimi susietos paieškų istorijos nelaiko – lieka tik anoniminės paieškos užklausos rezultatams gerinti.',
+    paths: [
+      '<strong>„Firefox“:</strong> ☰ → „Nuostatos“ → „Paieška“ → „Numatytoji ieškyklė“ → „DuckDuckGo“.',
+      '<strong>„Brave“:</strong> Lietuvoje jis pradeda su „Google“ paieška, tad nustatymuose pakeisk ją į „DuckDuckGo“ arba „Brave Search“.',
+    ],
+  },
+  {
+    n: 3,
+    title: '„Google“ ir „Facebook“ atmintis',
+    time: 'apie 5 min.',
+    why: 'Šie įrašai – kuras, kuriuo varomos reklamos, besivaikančios tavęs po internetą. Išvalyti juos nieko nekainuoja.',
+    doo: '<strong>„Google“:</strong> išjunk paieškų istoriją, „YouTube“ istoriją ir suasmenintas reklamas. <strong>„Facebook“ ir „Instagram“:</strong> paspausk jungiklį, kuris nutraukia „Meta“ gaunamą informaciją apie tavo veiklą kitose svetainėse – kol jis dar yra.',
+    paths: [
+      '<strong>„Google“</strong> (<a href="https://myactivity.google.com/" rel="noopener">myactivity.google.com</a>): išjunk „Paieškos paslaugų istorija“ (iki 2026 m. gegužės ji vadinosi „Žiniatinklio ir programų veikla“) paspausdamas „Išjungti ir ištrinti veiklą“. Arba palik ją ir nustatyk „Automatinis ištrynimas“ – 3 mėnesiai. Tą patį padaryk su „YouTube“ istorija.',
+      'Patikrink, ar išjungta „Laiko skalė“ („<span lang="en">Timeline</span>“, senoji vietos istorija): pagal numatytuosius nustatymus ji išjungta ir saugoma telefone. Tada išjunk suasmenintas reklamas „Mano skelbimų centre“ (<a href="https://myadcenter.google.com/" rel="noopener">myadcenter.google.com</a>).',
+      '<strong>„Facebook“ ir „Instagram“:</strong> „Meta“ paskyrų centre (<span lang="en">Accounts Center</span>), skiltyje apie tavo informaciją ir leidimus, ieškok jungiklio, valdančio „Meta“ gaunamą informaciją apie tavo veiklą kitose svetainėse ir programose. Jei jis yra – ištrink ankstesnę veiklą ir atjunk būsimą. Jei vietoj jo matai kitų įmonių veiklą – išjunk jos naudojimą reklamoms.',
+      '„Meta“ 2026 m. birželio 9 d. paskelbė, kad šį jungiklį panaikins: JAV – nuo 2026 m. liepos, vėliau – ir kitose šalyse; ES nepaminėta. Tad taisyklė paprasta: kol dar yra – paspausk.',
+    ],
+  },
+  {
+    n: 4,
+    title: 'Telefonas',
+    time: 'apie 3 min.',
+    why: 'Reklamavimo ID – tai vardo kortelė, kurią programos rodo viena kitai: „čia tas pats žmogus“. Ištrink ją.',
+    doo: '<strong>„Android“:</strong> ištrink reklamavimo ID. Vietą leisk tik naudojant programą, o mikrofoną, fotoaparatą ir kontaktus atimk iš tų, kurioms jų nereikia. <strong>iPhone:</strong> išjunk programų sekimą ir suasmenintas „Apple“ reklamas.',
+    paths: [
+      '<strong>„Android“</strong> (veikia ir „Pixel“, ir „Samsung“): Nustatymai → „Google“ → „Visos paslaugos“ → „Privatumas ir sauga“ → „Skelbimai“ → „Ištrinti reklamavimo ID“. Nustatymų paieška randa jį pagal „skelbim“.',
+      'Tada: Nustatymai → „Sauga ir privatumas“ → „Privatumas“ → „Leidimų tvarkytuvė“. Skiltyse „Vietovė“, „Mikrofonas“, „Fotoaparatas“ ir „Kontaktai“ rinkis „Leisti tik naudojant programą“ arba „Neleisti“. „Samsung“ meniu skiriasi.',
+      '<strong>iPhone</strong> (lietuviškai nuo iOS 18): Nustatymai → „Privatumas ir saugumas“ → „Sekimas“ → išjunk „Leisti programoms prašyti leidimo sekti“. Tada „Apple“ reklamos → išjunk „Suasmenintos reklamos“.',
+    ],
+  },
+  {
+    n: 5,
+    title: 'Nuotraukos',
+    time: 'apie 1 min.',
+    why: 'Nuotraukoje gali būti įrašytas tikslus GPS taškas, kur ji padaryta: tavo namai, vaiko mokykla.',
+    doo: 'Fotoaparato nustatymuose išjunk vietos žymėjimą. Socialiniai tinklai vietą kitiems paprastai paslepia – bet patys ją gauna.',
+    paths: [
+      '<strong>„Pixel“:</strong> Fotoaparatas → Nustatymai → „Daugiau nustatymų“ → išjunk „Išsaugoti vietovę“. <strong>„Samsung“:</strong> fotoaparato nustatymuose išjunk vietos žymas (<span lang="en">location tags</span>). <strong>iPhone:</strong> „<span lang="en">Location Services</span>“ („Vietos nustatymo paslaugos“) → „<span lang="en">Camera</span>“ → „<span lang="en">Never</span>“.',
+      '<strong>Kur vieta vis tiek lieka?</strong> Žinučių programos („WhatsApp“, „Telegram“, „Signal“, „Messenger“) paprastai nuvalo ją nuo įprastos nuotraukos. Bet „WhatsApp“ ir „Telegram“ palieka, jei nuotrauką išsiunti kaip failą, o el. laiško priede ji išlieka. Sakome „paprastai“, nes pačios bendrovės to neaprašo – tai, ką pastebi spauda ir naudotojai.',
+    ],
+  },
+];
+---
+<section class="steps" id="pradek" aria-labelledby="pradek-h">
+  <div class="wrap">
+    <div class="steps__head">
+      <h2 id="pradek-h"><span>{nb('Penki žingsniai.')}</span> <span>{nb('Penkiolika minučių.')}</span> <span>{nb('Nė vienos naujos paskyros.')}</span></h2>
+      <p>{nb('Padaryk juos iš eilės ir paliksi mažiau pėdsakų. Jei kuris žingsnis atrodo painus – atverk „Tikslūs žingsniai“.')}</p>
+    </div>
+
+    <ol class="steps__list" role="list">
+      {steps.map((s) => (
+        <li class="step" id={`zingsnis-${s.n}`}>
+          <div class="step__mark" aria-hidden="true">
+            <img
+              src="/art/marker-112.png"
+              srcset="/art/marker-112.png 112w, /art/marker-208.png 208w"
+              sizes="(min-width: 80em) 102px, (min-width: 47.5em) 8vw, 61px"
+              width="102"
+              height="102"
+              alt=""
+              decoding="async"
+            />
+            <span class="step__n"></span>
+          </div>
+          <span class="step__trail" aria-hidden="true"></span>
+
+          <div class="step__body">
+            <div class="step__story">
+              <div class="step__title">
+                <h3>{nb(s.title)}</h3>
+                <span class="step__time">{nb(s.time)}</span>
+              </div>
+              <p class="step__why" set:html={nbHtml(s.why)} />
+              <p class="step__do" set:html={nbHtml(s.doo)} />
+            </div>
+            <div class="step__menus">
+              <details class="fold" open>
+                <summary>Tikslūs žingsniai<span class="sr">: {s.title}</span></summary>
+                <div class="fold__in">
+                  {s.paths.map((p) => <p set:html={nbHtml(p)} />)}
+                </div>
+              </details>
+              <label class="tick">
+                <input type="checkbox" />
+                <span class="tick__box" aria-hidden="true"></span>
+                <span>Padaryta<span class="sr">: {s.title}</span></span>
+                <span class="tick__done" aria-hidden="true">Pėdsakas užmaskuotas. Perkrovus puslapį jis sugrįš: mes nieko neįsimename.</span>
+              </label>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<script>
+  // The exact menus are open for everyone who has no script and on wide screens, where the
+  // second column has room for them; on a phone they fold, so the page stays easy to scan.
+  const wide = matchMedia('(min-width: 56em)');
+  const folds = [...document.querySelectorAll('.fold')];
+  const set = () => folds.forEach((d) => { d.open = wide.matches; });
+  set();
+  wide.addEventListener('change', set);
+</script>

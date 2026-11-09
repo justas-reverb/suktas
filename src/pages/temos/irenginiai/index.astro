@@ -1,0 +1,205 @@
+---
+/**
+ * Įrenginiai ir tinklas: the pillar for what reaches your phone and computer uninvited. The copy is
+ * docs/copy/temos/irenginiai.md, word for word; the source tags stay as comments and the build
+ * strips them. Same template as the other pillars. The browser leads (blocker, tracking, links and
+ * files), then the three device basics; the Chrome warning sits under the choices, not among them.
+ */
+import Page from '../../../layouts/Page.astro';
+import PillarHead from '../../../components/PillarHead.astro';
+import PillarStage from '../../../components/PillarStage.astro';
+import Sides from '../../../components/Sides.astro';
+import PillarFoot from '../../../components/PillarFoot.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/scenario.css';
+import '../../../styles/pillar.css';
+
+const choose = [
+  ['Kompiuteryje: „Firefox“ ir „uBlock Origin“.', '„Firefox“ šį priedą žymi kaip rekomenduojamą, o tokį ženklą gauna tik saugumo ir greičio reikalavimus atitinkantys priedai. <!-- F127 -->'],
+  ['„Android“ telefone: „Brave“ arba „Firefox“ su „uBlock Origin“.', '„Brave“ reklamas ir stebėjimo elementus blokuoja iš karto, nieko nenustatant. <!-- F129 --> „uBlock Origin“ veikia ir „Firefox“ naršyklėje „Android“ telefone. <!-- F127 -->'],
+  ['„iPhone“: „uBlock Origin Lite“ naršyklei „Safari“.', 'Nemokamas, „App Store“, reikia „iOS 18.5“ ar naujesnės. <!-- F128 -->'],
+];
+
+const stranger = [
+  ['Nuoroda.', 'Nespausk – atsidaryk paslaugos programėlę arba įvesk jos adresą savo rankomis. <!-- F26 --> Kortelė: <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>.'],
+  ['Programėlė per nuorodą ar reklamą.', '2026 m. liepą „Luminor“ perspėjo apie netikrą „TikTok“ programėlę, platinamą per neoficialias parduotuves ir socialinių tinklų reklamas: ją įsidiegus, sukčiai gali matyti viską, kas vyksta telefone, ir išvilioti banko prisijungimus bei „Smart-ID“ PIN kodus. <!-- F133 --> Programėles siųskis tik iš oficialios parduotuvės, pavyzdžiui, „Google Play“, ir niekada nesuteik joms perteklinių leidimų – ypač pritaikymo neįgaliesiems, SMS ar įrenginio administratoriaus. <!-- F133 --> „Google“ pati perspėja, kad programos iš nežinomų šaltinių gali kelti pavojų tavo įrenginiui ir asmens informacijai. <!-- F134 -->'],
+  ['Failas laiške ar žinutėje.', '„Sąskaita“, „ataskaita“ ar „dokumentas“, kurio nelaukei, – ženklas sustoti. <!-- F26 M --> Jei siuntėjas pažįstamas, paklausk jo kitu būdu, ar tikrai siuntė. <!-- F137 M --> Jei „Office“ dokumentas prašo „įjungti turinį“ ar makrokomandas, neįjunk: „Windows“ kompiuteryje „Microsoft“ pati blokuoja makrokomandas internetu gautuose failuose. <!-- F135 M --> „Windows“ kompiuteryje verta įsijungti failų vardų plėtinių rodymą, kad matytum, ar „PDF“ iš tikrųjų nėra programa. <!-- F136 M -->'],
+];
+
+const basics = [
+  ['Atnaujinimai.', 'Įjunk automatinius: daugelis atnaujinimų sukurti saugumo spragoms taisyti. <!-- F77 -->'],
+  ['Ekrano užraktas.', 'PIN kodas, piešinys ar slaptažodis saugo telefoną nuo svetimų rankų. <!-- F78 -->'],
+  ['Namų maršrutizatorius.', 'Pakeisk jo prisijungimo slaptažodį, atnaujink jo programinę įrangą ir išjunk WPS. <!-- F74 -->'],
+];
+
+const tricks = [
+  ['Reklama su žinomu veidu', '/scenarijai/reklama-su-zinomu-veidu/', 'netikra investavimo reklama, kurią blokatorius paslepia. <!-- F50 F125 -->'],
+  ['Netikra banko reklama', '/scenarijai/netikra-banko-reklama/', 'paieškos reklama banko vardu, kurią blokatorius paslepia. <!-- F213 F125 -->'],
+  ['Programėlė iš nuorodos ar reklamos', '/scenarijai/programele-is-nuorodos/', 'netikra programėlė, kuri perima telefoną ir prieigą prie banko. <!-- F224 -->'],
+  ['Žinutė su nuoroda', '/scenarijai/zinute-su-nuoroda/', '„siuntinys“, „mokestis“ ir nuoroda į netikrą formą. <!-- F39 -->'],
+];
+
+const sides = [
+  ['Nupirkta paieškos ar socialinio tinklo reklama', 'Reklamų blokatorius; banko adresą įvesk savo rankomis. <!-- F125 F138 -->'],
+  ['Stebėjimo elementai, kurie seka tave tarp svetainių', 'Naršyklės apsauga nuo stebėjimo – palik ją įjungtą. <!-- F129 F130 F131 -->'],
+  ['Nuoroda žinutėje', 'Nespausk; atsidaryk programėlę ar įvesk adresą savo rankomis. <!-- F26 -->'],
+  ['Programėlė iš nuorodos ar reklamos', 'Tik iš oficialios parduotuvės; jokių perteklinių leidimų. <!-- F133 F134 -->'],
+  ['Netikėtas failas', 'Neatidaryk; paklausk siuntėjo kitu būdu. <!-- F132 F137 -->'],
+  ['Dokumentas, prašantis „įjungti turinį“', 'Neįjunk. <!-- F135 M -->'],
+];
+
+const helps = [
+  ['„uBlock Origin“', 'reklamų blokatorius „Firefox“ naršyklei kompiuteryje ir „Android“ telefone. Parsisiųsk tik iš <a href="https://addons.mozilla.org/lt/firefox/addon/ublock-origin/">addons.mozilla.org</a>. <!-- F127 -->'],
+  ['„Brave“', 'naršyklė, kuri reklamas ir stebėjimo elementus blokuoja iš karto. <a href="https://brave.com/">brave.com</a>. <!-- F129 -->'],
+  ['„uBlock Origin Lite“', 'lengvesnė versija „iPhone“ naršyklei „Safari“, „App Store“. <!-- F128 -->'],
+];
+
+const related = [
+  ['Kitos temos:', '<a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>, <a href="/temos/kaip-veikia-atakos/">Kaip veikia atakos</a>, <a href="/temos/privatumas/">Privatumas</a>'],
+  ['Kortelės:', '<a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>, <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>'],
+  ['Patikra:', '<a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>'],
+  ['Įrankiai:', '<a href="/irankiai/mullvad/">Mullvad VPN</a>, <a href="/irankiai/tailscale/">Tailscale</a>, <a href="/irankiai/grapheneos/">GrapheneOS</a>'],
+  ['Jei jau įsidiegei:', '<a href="/jei-apgavo/#nuotolinis">Jei tave apgavo: įdiegiau programą ar leidau valdyti telefoną</a>'],
+];
+
+const sources = [
+  'FBI IC3, 2022-12-21: sukčių paieškos reklamos; patarimas naudoti reklamų blokatorių. <!-- F125 -->',
+  '„Chrome“ kūrėjų puslapis, atnaujintas 2026-09-09: senojo tipo priedai išjungti ir pašalinti. <!-- F126 -->',
+  'addons.mozilla.org, „uBlock Origin Lite“ DUK ir „App Store“, „Brave“: kur kuris blokatorius veikia. <!-- F127 F128 F129 -->',
+  '„Firefox“ lietuviška sąsaja ir „Apple“: apsauga nuo stebėjimo. <!-- F130 F131 -->',
+  'Lietuvos bankas, 2021-02-26: kenkėjiškas kodas dokumentuose ir paslėptos nuorodos. <!-- F132 -->',
+  'LRT, 2026-07-09 (cituoja „Luminor“): netikra „TikTok“ programėlė. <!-- F133 -->',
+  '„Google“ lietuviškai: programos iš nežinomų šaltinių; „Google Play Protect“. <!-- F134 -->',
+  '„Microsoft“: makrokomandos internetu gautuose failuose; failų vardų plėtiniai. <!-- F135 F136 -->',
+  'NCSC (JK) ir NKSC: tikrink kitu būdu; atsargiai su nuorodomis. <!-- F137 -->',
+  'Šiaulių bankas, 2025-01-14: suklastotos bankų reklamos „Facebook“. <!-- F138 -->',
+  '„Cyberscoop“, 2021-01-14: ne kiekvienas blokatorius blokuoja viską. <!-- F139 -->',
+  'CISA, „Google“, „Apple“, Lietuvos bankas, RRT: atnaujinimai, ekrano užraktas, maršrutizatorius, žinutės. <!-- F26 F39 F74 F77 F78 -->',
+];
+---
+<Page
+  title="Reklamų blokatorius ir sekimas: kaip apsaugoti telefoną – Suktas"
+  description="Kodėl reklamų blokatorius yra saugumo, o ne patogumo dalykas, kurį rinktis 2026 m. ir kodėl nespausti nuorodų bei neatidaryti failų iš nepažįstamų."
+  current="temos"
+>
+  <article class="scn topic">
+    <PillarHead
+      title="Įrenginiai ir tinklas"
+      lead="Kaip sukčius patenka į tavo telefoną ar kompiuterį ne per duris, o per ekraną: per reklamą, per nuorodą ir per failą. <!-- M --> Ir trys įpročiai, kurie jam tas duris uždaro. <!-- pažadas -->"
+      actions={[
+        ['Kurį blokatorių rinktis', '#kuri-rinktis'],
+        ['Jei tave ką tik apgavo', '/jei-apgavo/', 'second'],
+      ]}
+    />
+
+    <section class="layer wrap" aria-labelledby="siandien">
+      <section class="move">
+        <h2 id="siandien">Vienas dalykas šiandien</h2>
+        <p class="move__line" set:html={nbHtml('Įsidiek tikrą reklamų blokatorių.')} />
+        <p set:html={nbHtml('<!-- F125 --> Kompiuteryje – „Firefox“ naršyklė su „uBlock Origin“ priedu. <!-- F127 --> „Android“ telefone – „Brave“ arba „Firefox“ su tuo pačiu priedu. <!-- F127 F129 --> „iPhone“ – „uBlock Origin Lite“ naršyklei „Safari“. <!-- F128 --> Užtrunka penkias minutes, o reklamos su netikrais bankais ir „investicijomis“ tavęs nebepasieks taip lengvai. <!-- M -->')} />
+      </section>
+    </section>
+
+    <section class="part wrap" aria-labelledby="kodel-blokatorius">
+      <h2 id="kodel-blokatorius" class="layer__title">{nb('Kodėl blokatorius – saugumo, o ne patogumo dalykas')}</h2>
+      <p class="part__intro" set:html={nbHtml('Reklama – vienintelė vieta internete, kur sukčius gali sumokėti, kad jo nuoroda atsidurtų tiesiai prieš tavo akis. <!-- F125 M --> JAV federalinis tyrimų biuras (FBI) 2022 m. gruodį perspėjo, kad sukčiai perka paieškos reklamas, apsimeta žinomomis bendrovėmis ir veda į svetaines, kurios atrodo kaip tikros. <!-- F125 --> Jo patarimas paprastas: ieškant internete naudoti reklamų blokavimo priedą, o banko ar parduotuvės adresą įvesti savo rankomis. <!-- F125 -->')} />
+      <p class="part__more" set:html={nbHtml('Lietuvoje tas pats vyksta socialiniuose tinkluose. Šiaulių bankas 2025 m. sausį rašė, kad „Facebook“ plinta suklastotos bankų reklamos, o nuoroda, kuri prašo prisijungti, beveik neabejotinai yra apgaulė. <!-- F138 --> Lietuvos bankas perspėja apie netikras investavimo reklamas su žinomais veidais. <!-- F50 --> Tai mūsų scenarijus <a href="/scenarijai/reklama-su-zinomu-veidu/">Reklama su žinomu veidu</a>.')} />
+      <p class="part__more" set:html={nbHtml('Blokatorius neatpažįsta apgaulės – jis tiesiog nerodo reklamų. <!-- M --> Bet kai reklamos nėra, nėra ir to vieno paspaudimo, nuo kurio prasideda visa istorija. <!-- M -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="kuri-rinktis">
+      <h2 id="kuri-rinktis" class="layer__title">Kurį rinktis</h2>
+      <ul class="good" role="list">
+        {choose.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+      <p class="part__more" set:html={nbHtml('<strong>„Chrome“ naršyklėje tikrasis „uBlock Origin“ nebeveikia.</strong> Nuo 2025 m. liepos „Chrome“ išjungė senojo tipo priedus visiems naudotojams, o 2026 m. rugpjūčio 31 d. pašalino juos iš savo parduotuvės. <!-- F126 --> Yra lengvesnė versija „uBlock Origin Lite“, bet jos autorius pats sako, kad ji per daug skiriasi, kad būtų automatinis pakaitalas. <!-- F128 -->')} />
+      <p class="part__more" set:html={nbHtml('Rinkis blokatorių, kurio pavadinimą žinai, ir siųskis jį tik iš naršyklės priedų parduotuvės. <!-- M --> Ne kiekvienas „blokatorius“ blokuoja viską: apie kai kuriuos rašoma, kad jie ima pinigus iš reklamuotojų ir jų reklamas praleidžia. <!-- F139 -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="sekimas">
+      <h2 id="sekimas" class="layer__title">{nb('Sekimas: kas tave stebi tarp svetainių')}</h2>
+      <p class="part__intro" set:html={nbHtml('Kai atidarai svetainę, kartu su ja dažnai įsikrauna ir svetimi elementai, kurie užsirašo, kur buvai ir ką darei. <!-- F130 --> „Firefox“ juos lietuviškai vadina stebėjimo elementais ir skirsto taip: socialinių tinklų stebėjimo elementai, tarp svetainių veikiantys stebėjimo slapukai, skaitmeninių atspaudų stebėjimas ir kriptovaliutų kasėjai. <!-- F130 -->')} />
+      <p class="part__more" set:html={nbHtml('Gera žinia: daugumą darbo naršyklė jau atlieka. „Firefox“ stebėjimo elementus blokuoja automatiškai, nieko nenustatant, „Brave Shields“ apsauga įjungta kiekvienoje svetainėje, o „Safari“ sekimo prevencija įjungta numatytai. <!-- F130 F129 F131 --> Tavo darbas – jų neišjungti. <!-- M -->')} />
+      <p class="part__more" set:html={nbHtml('Kodėl tai rūpi ne tik dėl privatumo? Kuo daugiau reklamų tinklas apie tave žino, tuo tiksliau jis gali parodyti tau skirtą reklamą – ir tą, kurią nupirko sukčius. <!-- M --> Mažiau duomenų apie tave reiškia mažiau taiklų jauką. <!-- M -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="nuorodos-ir-failai">
+      <h2 id="nuorodos-ir-failai" class="layer__title">{nb('Nuorodos ir failai iš nepažįstamų')}</h2>
+      <p class="part__intro" set:html={nbHtml('<strong>Taisyklė viena: ko neprašei, to neatidaryk.</strong> <!-- M --> NKSC pataria būti atsargiems su nuorodomis, gautomis el. paštu ar SMS. <!-- F137 --> Lietuvos bankas primena, kad po įprastai atrodančia nuoroda dažnai slepiasi visai kita, o kenkėjišką kodą galima įterpti į įvairaus formato dokumentus. <!-- F132 -->')} />
+      <ul class="good" role="list">
+        {stranger.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+      <p class="part__more" set:html={nbHtml('Abejoji, ar žinutė tikra? Susisiek su įstaiga pagal kontaktus jos oficialioje svetainėje, o ne pagal tuos, kurie yra žinutėje. <!-- F137 -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="dar-trys">
+      <h2 id="dar-trys" class="layer__title">{nb('Dar trys dalykai tavo įrenginiui')}</h2>
+      <ul class="good" role="list">
+        {basics.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+      <p class="part__more" set:html={nbHtml('Pirmus du rasi <a href="/patikra/15-minuciu/">Patikroje per 15 minučių</a>. <!-- pažadas -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="triukai">
+      <h2 id="triukai" class="layer__title">Triukai, kuriuos čia matome</h2>
+      <ul class="cards" role="list">
+        {tricks.map(([title, href, text]) => (
+          <li class="tcard">
+            <h3><a href={href}>{nb(title)}</a></h3>
+            <p class="tcard__text" set:html={nbHtml(text)} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <PillarStage note="Šis sluoksnis uždarytas ir atsidaro paspaudus. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Kaip jis tai daro, čia nerašome. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.">
+      <div class="row">
+        <h3>Ko jis nori</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Kad jo duris atidarytum tu – paspaustum, įsidiegtum, įjungtum. <!-- M --> Užrakinto telefono jam laužti nereikia, jei tu jį atrakini savo rankomis. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nieko, ko neprašei, neatidaryk ir neįdiek. <!-- F133 F137 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Ką jis apie tave žino</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Iš pradžių – nieko. Jam užtenka reklamos tinklo, kuris parodo jo skelbimą tinkamiems žmonėms, ir žinučių, išsiųstų tūkstančiams. <!-- F125 F39 M --> <strong class="stop">Sustabdymo vieta:</strong> blokatorius ir įjungta apsauga nuo stebėjimo atima jam ir rodymą, ir taiklumą. <!-- F125 F130 M -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Kodėl tai veikia</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Reklama atrodo kaip įprasto puslapio dalis, nuoroda – kaip tikras adresas, failas – kaip dokumentas. <!-- F125 F132 --> Veikia <a href="/temos/kaip-veikia-atakos/">autoritetas ir nauda</a>: žinomas bankas, žinomas veidas, žadamas pelnas ar „neapmokėta sąskaita“. <!-- F50 F138 M --> <strong class="stop">Sustabdymo vieta:</strong> adresą įvesk savo rankomis, o kilus abejonių – skambink oficialiu numeriu. <!-- F125 F137 -->')} />
+        </div>
+      </div>
+      <Sides heads={['Jo triukas', 'Tavo atsakymas']} rows={sides} />
+      <div class="row row--last">
+        <h3>Ko čia nerasi</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+        </div>
+      </div>
+    </PillarStage>
+
+    <section class="part wrap" aria-labelledby="padeda">
+      <h2 id="padeda" class="layer__title">Padeda</h2>
+      <ul class="good" role="list">
+        {helps.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+    </section>
+
+    <PillarFoot
+      related={related}
+      intro="Patikrinta: 2026-10-30. Faktai surašyti <a href='/saltiniai/'>Šaltiniuose</a>:"
+      sources={sources}
+    />
+  </article>
+</Page>

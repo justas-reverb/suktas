@@ -1,0 +1,285 @@
+/* ------------------------------------------------------------------------------------
+   Pradžia. A scene and a repair kit, not a topic grid.
+   Daylight is the reader's. The stage (one band) is his plan. Colour carries the meaning all
+   the way down: an indigo bar over a card means a trick of his, mint means your move, coral is
+   the emergency button and nothing else.
+   ------------------------------------------------------------------------------------ */
+
+/* ---- Hero: the question, with the ringing phone behind it ---- */
+
+.hero { position: relative; isolation: isolate; }
+
+.hero h1 {
+  max-width: 11ch;
+  font-size: clamp(2.9rem, 1.15rem + 6.4vw, 6.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hero__lead {
+  max-width: 30rem;
+  margin-top: 1.25rem;
+  font-size: var(--lead);
+  line-height: 1.45;
+}
+/* phone: a stack (button, its sentence, then the emergency link); desktop: one row of two equal buttons, the sentence under both */
+.hero__cta { display: flex; flex-direction: column; align-items: flex-start; gap: 0.7rem; margin-top: 1.75rem; }
+.hero__sub { max-width: 28rem; order: 1; margin-bottom: 0.4rem; color: var(--ink-2); font-size: var(--small); line-height: 1.5; }
+.hero .btn--sos { order: 2; }
+@media (max-width: 39.99rem) { .hero .btn--big, .hero .btn--sos { align-self: stretch; justify-content: center; text-align: center; } }
+
+.hero .btn--big, .hero .btn--sos { min-height: 3.75rem; padding-inline: 2rem; font-size: 1.25rem; }
+.hero .btn--sos { border-color: var(--coral-deep); background: transparent; color: var(--coral-deep); }
+.hero .btn--sos:hover { background: var(--coral-deep); border-color: var(--coral-deep); color: #fff; }
+
+@media (min-width: 60rem) {
+  .hero h1 { max-width: 9ch; }
+  .hero__cta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
+  .hero__sub { order: 2; flex: 1 0 100%; max-width: none; margin: 0.5rem 0 0; padding-right: max(0px, calc(100% - 28rem)); }
+  .hero + .ask { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+}
+
+/* ---- Kas tau nutiko? (the chooser itself is in way.css) ---- */
+
+.ask { padding-top: var(--section); }
+.ask h2, .habits h2, .think h2, .pair h2, .promise h2 { font-size: var(--h2); }
+
+.more { margin-top: 1.25rem; }
+.more a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  font-weight: 700;
+}
+.more a::after {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+@media (min-width: 52rem) {
+  .tricks__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  .trick { padding-top: 1.75rem; }
+}
+
+/* ---- Kaip jis galvoja: his plan, on the stage ---- */
+
+/* his plan has its own ground, wine where the hero is indigo (the shader's edge, src/art/hero/t.frag.glsl, is the same colour) */
+.think {
+  --stage: #0a2630;
+  --stage-deep: #061a22;
+  position: relative;
+  isolation: isolate;
+  margin-top: var(--section);
+  background: var(--stage);
+  color: var(--on-stage);
+  overflow: hidden;
+}
+.think a:not(.btn) { color: var(--mint-lt); }
+.think :focus-visible { outline-color: var(--mint-lt); }
+.think .think__art { aspect-ratio: 2.2 / 1; margin-bottom: -2.25rem; }
+.think .think__art img, .think .think__art canvas { object-position: 100% 0; display: block; }
+.think.is-live .think__art canvas { opacity: 1; }
+.think .think__art::after { background: linear-gradient(to top, var(--stage) 0, rgb(10 38 48 / 0) 68%); }
+.think__in { position: relative; padding-bottom: clamp(2.5rem, 6vw, 5rem); }
+.think h2 { color: var(--on-stage); width: fit-content; max-width: 100%; }
+.think__intro p { max-width: 32rem; margin-top: 0.8rem; color: var(--on-stage-2); font-size: var(--lead); line-height: 1.4; }
+
+/* the five beats are one road: a rail on a phone, a line across a desktop */
+.beats { counter-reset: beat; display: grid; margin-top: 2rem; }
+.beats li {
+  counter-increment: beat;
+  position: relative;
+  padding: 0 0 1.6rem 3.4rem;
+  border-left: 2px solid var(--line-stage);
+  margin-left: 1.15rem;
+  line-height: 1.5;
+}
+.beats li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.beats li::before {
+  content: counter(beat);
+  position: absolute;
+  left: -1.3rem;
+  top: -0.15rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid var(--mint-lt);
+  border-radius: 50%;
+  background: var(--stage);
+  color: var(--mint-lt);
+  font: 400 1.3rem / 1 var(--font-display);
+}
+/* the road: a mint fill travels along the line from ring to ring and each ring fills as it is reached. The classes come
+   from src/art/thinkroad.js (is-go: this step's stretch of road runs; is-done: this step is reached), so none of it
+   appears without JavaScript or under reduced motion. The text never changes. transform and opacity only. */
+.beats li::before { z-index: 1; }
+.beats li::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--mint-lt);
+  transform: scaleY(0);
+  transform-origin: top;
+  pointer-events: none;
+}
+.beats li:last-child::after { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .beats li::after { transition: transform 0.85s cubic-bezier(0.45, 0, 0.55, 1); }
+  .beats li::before { transition: background-color 0.35s ease-out, color 0.35s ease-out, box-shadow 0.5s ease-out; }
+}
+.beats li.is-go::after { transform: scaleY(1); }
+.beats li.is-done::before { background: var(--mint-lt); color: var(--stage-deep); animation: beat-pop 0.45s ease-out; }
+.beats li:last-child.is-done::before { box-shadow: 0 0 0 0.3rem rgb(from var(--mint-lt) r g b / 0.28); }
+@keyframes beat-pop { 0% { transform: scale(1); } 45% { transform: scale(1.09); } 100% { transform: scale(1); } }
+@media print {
+  .beats li::after { display: none; }
+  .beats li.is-done::before { background: var(--stage); color: var(--mint-lt); animation: none; }
+}
+.beats strong { display: block; margin-bottom: 0.15rem; color: var(--on-stage); font: 400 1.45rem / 1.2 var(--font-display); }
+.beats li:last-child span { color: var(--on-stage); }
+.think__more { margin-top: 2.25rem; width: fit-content; }
+
+.think .btn--stage { border-color: var(--mint-lt); background: transparent; color: var(--mint-lt); }
+.think .btn--stage:hover { border-color: var(--mint-lt); background: var(--mint-lt); color: var(--stage-deep); }
+
+@media (min-width: 60rem) {
+  .think .think__art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+  .think .think__art::after {
+    background:
+      linear-gradient(to right, var(--stage) 0, rgb(10 38 48 / 0) 30%),
+      linear-gradient(to top, var(--stage) 0, rgb(10 38 48 / 0) 22%);
+  }
+  .beats li::after { left: 0; right: -1.25rem; top: -2px; bottom: auto; width: auto; height: 2px; transform: scaleX(0); transform-origin: left; }
+  .beats li.is-go::after { transform: scaleX(1); }
+  .think__in { padding-top: clamp(3rem, 6vw, 5rem); }
+  .beats { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 1.25rem; margin-top: 4.5rem; }
+  .beats li {
+    margin: 0;
+    padding: 2.4rem 0 0;
+    border-left: 0;
+    border-top: 2px solid var(--line-stage);
+  }
+  .beats li:last-child { border-top-color: var(--line-stage); padding-bottom: 0; }
+  .beats li::before { left: 0; top: -1.3rem; }
+  .think__more { margin-top: 3rem; }
+}
+
+/* ---- Įpročiai: your moves, in mint ---- */
+
+.habits { display: grid; gap: 1.5rem 3rem; padding-top: var(--section); }
+.habits__intro p { margin-top: 0.7rem; max-width: 26rem; }
+.habits__list { display: grid; gap: 0.75rem; }
+.habit {
+  position: relative;
+  padding: 1rem clamp(1rem, 2.5vw, 1.4rem) 1.1rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+  transition: transform 0.18s ease-out;
+}
+.habit:hover { transform: translateX(3px); }
+/* the moved card still covers the strip it left, so a slow pointer on its edge does not flicker it */
+.habit:hover::after { content: ''; position: absolute; right: 100%; top: 0; bottom: 0; width: calc(0.4rem + 3px); }
+.habit h3 { font-size: 1.3rem; line-height: 1.2; }
+.habit h3 a { color: var(--ink); text-decoration: none; }
+.habit h3 a::after { content: ''; position: absolute; inset: 0; }
+.habit:has(a:focus-visible) { outline: 3px solid var(--indigo-2); outline-offset: 3px; }
+.habit a:focus-visible { outline: none; }
+.habit p { margin-top: 0.3rem; color: var(--ink); }
+
+@media (min-width: 60rem) {
+  .habits { grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); align-items: start; }
+  .habits__intro { position: sticky; top: 1.5rem; }
+  .habits__list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+}
+
+/* ---- Penkiolika minučių, and the family ---- */
+
+.pair__in { display: grid; gap: 1rem; }
+.mins, .family { display: grid; align-content: start; gap: 1rem; }
+.pair h2 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.5rem); }
+.mins p, .family p { max-width: 30rem; }
+.family p:not(:last-child) { font-size: 1.25rem; line-height: 1.5; }
+.pair .btn { margin-top: 0.25rem; }
+
+@media (min-width: 52rem) {
+  .pair__in { grid-template-columns: 1.15fr 1fr; gap: 1.5rem 0; }
+  .family { padding-left: clamp(2rem, 4vw, 4rem); border-left: 2px solid var(--line); }
+  .mins { padding-right: clamp(1rem, 3vw, 3rem); }
+}
+
+/* ---- Ko čia nerasi ---- */
+
+.promise__in {
+  display: grid;
+  gap: 0.9rem 3rem;
+  padding-top: 1.75rem;
+  border-top: 2px solid var(--line);
+}
+.promise h2 { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.3rem); }
+.promise__body { max-width: 40rem; }
+.promise__links { margin-top: 0.9rem; }
+.promise__links a { display: inline-block; padding-block: 0.4rem; font-weight: 700; }
+
+@media (min-width: 60rem) {
+  .promise__in { grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); }
+}
+
+/* ---- Print: the page on paper ---- */
+
+@media print {
+  .think__art, .hero__cta .btn--sos { display: none !important; }
+  .hero h1 { font-size: 28pt; max-width: none; }
+  .think { background: #fff; color: #000; margin-top: 0.8cm; }
+  .think a:not(.btn), .think h2, .think__intro p, .beats strong, .beats li:last-child span { color: #000; }
+  .beats li::before { background: #fff; color: #000; border-color: #000; }
+  .beats li, .beats li:last-child { border-color: #999; }
+  .trick, .habit { background: #fff; border: 1px solid #000; break-inside: avoid; }
+  .mins, .family { break-inside: avoid; }
+  .tricks__list { grid-template-columns: repeat(3, 1fr); }
+  .btn--stage { color: #000; border-color: #000; }
+  .pair.band, .promise.band { background: none; }
+}
+
+/* ---- Side padding that moves (src/art/gutters.js). Two designs behind one address. ---- */
+/* --cut is registered so writing it restyles nothing but the panel's own clip */
+@property --cut { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
+/* the resting page, with no script at all: bands are panels with a real gutter, the text columns have one too (screen only) */
+@media screen and (min-width: 60rem) and (hover: hover) {
+  main { --band-g: clamp(0.75rem, 3.6vw, 4.5rem); }
+  /* one pixel in from top and bottom: a panel's edge then never shows a layer's rounding step */
+  .band { --band-r: 1.5rem; --cut: var(--band-g); clip-path: inset(1px var(--cut) 1px round var(--band-r)); }
+  .hfx.band { margin-top: 0.5rem; }
+  main .wrap { padding-inline: calc(var(--pad) + var(--band-g)); }
+  .ask .chooser, .ask .chooser * { min-width: 0; }
+}
+
+/* the light bands: a ground a shade under the page, so the panel's edge reads */
+.pair.band, .promise.band { background: var(--day-2); }
+.pair.band { margin-top: var(--section); padding-block: clamp(2rem, 5vw, 4rem); }
+.promise.band { margin-top: var(--section); padding-block: clamp(2rem, 5vw, 3.5rem); }
+.promise.band .promise__in { border-top: 0; padding-top: 0; }
+
+/* the phone: bands run edge to edge and are separated by a hairline; blocks settle in once (the padding does not move) */
+@media (max-width: 59.99rem), (hover: none) {
+  .think { border-block: 1px solid var(--line-stage); }
+  .pair.band, .promise.band { border-block: 1px solid var(--line); }
+}
+@media (max-width: 51.99rem) { .family { padding-top: 1.5rem; border-top: 2px solid var(--line); } }
+@media screen { .is-armed { opacity: 0; } }
+@media screen and (prefers-reduced-motion: reduce) { .is-armed { opacity: 1; } }

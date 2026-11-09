@@ -1,0 +1,185 @@
+---
+/**
+ * Scenarijus: Skambutis iš „VMI“. The copy is docs/copy/scenarijai/skambutis-is-vmi.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Skambutis iš „VMI“');
+const meta = [
+  ['Kanalas', 'skambutis'],
+  ['Ko jis nori', 'pinigų, kortelės ir prieigos prie banko'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Skola, bauda ar permoka – ir viską reikia sutvarkyti dabar, telefonu.', 'VMI sako, kad mokesčių, permokų ir baudų sumas rasi tik prisijungus prie „Mano VMI“ – ten ir pasitikrink. <!-- F140 M -->'],
+  ['Žino tavo vardą ar asmens kodą.', 'Tai nieko neįrodo: VMI yra užfiksavusi sukčių pranešimų su vardu ir asmens kodu iš galimai nelegalių duomenų bazių. <!-- F141 -->'],
+  ['Perduoda tave „policijai“ arba prašo prisijungti prie banko, pasakyti kodus ar kortelės duomenis.', 'Pareigūnai telefonu neprašo asmens kodo, bankininkystės slaptažodžių ar kortelės duomenų. <!-- F25 F143 -->'],
+];
+
+const levers = [
+  ['Autoritetas.', 'Su mokesčių inspekcija paprastai nesiginčijama, o kai įsijungia ir „policija“, spaudimas dar didesnis. <!-- M F143 -->'],
+  ['Baimė.', 'Skola ar bauda skamba kaip bėda, kurią reikia išspręsti tuoj pat. <!-- M F140 -->'],
+  ['Nauda.', 'Permoka skamba kaip tavo pinigai, kuriuos tik reikia atsiimti. <!-- M --> VMI įspėja ir apie pranešimus, raginančius susigrąžinti permoką. <!-- F141 --> <strong class="stop">Sustabdymo vieta:</strong> kuo labiau skubina, tuo drąsiau padėk ragelį ir pasitikrink „Mano VMI“. <!-- M -->'],
+];
+
+const sides = [
+  ['Prisistato VMI darbuotoju, numeris ekrane atrodo tikras', 'Numerį galima suklastoti. Padėk ragelį ir, jei reikia, skambink VMI numeriu iš vmi.lt. <!-- F145 F140 -->'],
+  ['Žino tavo vardą ar asmens kodą', 'Tai ne įrodymas: tokie duomenys gali būti iš galimai nelegalių duomenų bazių. <!-- F141 -->'],
+  ['Skola, bauda ar permoka, kurią neva reikia sutvarkyti tuoj pat', 'Sumas rasi tik „Mano VMI“; pasitikrink ten, o vmi.lt į naršyklę įvesk ranka. <!-- F140 F142 -->'],
+  ['Įsijungia „policijos pareigūnas“', 'Tas pats triukas. Pareigūnai telefonu neprašo asmens kodo, slaptažodžių ar kortelės duomenų; jei įtari netikrą pareigūną – 112. <!-- F143 F25 F4 -->'],
+  ['Siunčia nuorodą „pasitikrinti“ ar svetainę randi paieškoje', 'VMI nesiunčia SMS su nuorodomis ir sumomis ir nesireklamuoja paieškoje; visi VMI adresai baigiasi .vmi.lt. <!-- F140 F142 -->'],
+  ['Prašo prisijungti prie banko kartu, įdiegti programą ar atiduoti kortelę', 'Neprisijunk, neįdiek ir nieko neatiduok. <!-- F27 F51 M -->'],
+];
+
+const sources = [
+  'VMI pranešimas, 2026-08-27: SMS su nuorodomis ir sumomis VMI nesiunčia, sumas rasi tik „Mano VMI“. <!-- F140 -->',
+  'VMI pranešimas, 2023-04-18: pranešimai apie permokas ir skolas, nelegalių duomenų bazių duomenys. <!-- F141 -->',
+  'VMI pranešimas, 2025-04-03: VMI adresai baigiasi .vmi.lt, VMI nesireklamuoja paieškoje. <!-- F142 -->',
+  'Vilniaus policija per ELTA, 2026-05-14: skambinusieji prisistatė policijos pareigūnais ir VMI darbuotojais. <!-- F143 -->',
+  'NKSC, 2024-10-07: suklastotas numeris; kilus abejonių, baik pokalbį ir paskambink patikimu kontaktu. <!-- F145 -->',
+  'LRT pagal VMI, 2026-05-06: kiek gyventojų deklaravo pajamas ir permoką. <!-- F146 -->',
+  'LRT, 2026-05-23: galimas Registrų centro duomenų nutekėjimas ir VDAI įspėjimas. <!-- F105 -->',
+  'Kampanija „Padėk ragelį“ (LRT, policija, Bankų asociacija, Lietuvos paštas): pareigūnai neprašo duomenų telefonu; įtarus netikrą pareigūną – 112. <!-- F4 F25 -->',
+  'Bankų asociacija: nuotolinio prisijungimo programos ir prisijungimas prie bankininkystės „kartu“. <!-- F27 F51 -->',
+];
+---
+<Page
+  title="Skambutis iš „VMI“: sukčiai apsimeta mokesčių inspekcija – Suktas"
+  description="Kaip atrodo netikro VMI darbuotojo skambutis, trys jo ženklai ir vienas ėjimas, kuris sustabdo planą."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-30</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Skambina žmogus, kuris prisistato Valstybinės mokesčių inspekcijos (VMI) darbuotoju. <!-- F143 --> Jis gali kalbėti apie tavo mokesčius: neva tau priskaičiuota skola ar bauda, arba priklauso permoka. <!-- M F140 F141 --> Jis gali žinoti tavo vardą ir net asmens kodą, o numeris ekrane gali atrodyti tikras. <!-- F141 F145 --> Kartu gali skambinti ir „policijos pareigūnas“, o tavęs paprašoma prisijungti prie banko, pasakyti kodus ar atiduoti kortelę. <!-- F143 F141 M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį.')} />
+        <p set:html={nbHtml('Savo mokesčius pasitikrink „Mano VMI“: vmi.lt į naršyklę įvesk ranka. Jei skambino ir „pareigūnas“ – skambink 112. <!-- F140 F142 F4 --> Jei nori pasikalbėti su VMI, skambink numeriu iš vmi.lt, o ne tuo, kuris rodėsi ekrane. <!-- F140 F145 --> Kortelė: <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Jei jau pasakei duomenis, atidavei kortelę ar išsiuntei pinigus, pirmiausia skambink bankui. <!-- F4 M --> Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jam reikia tavo pinigų, kortelės ar prisijungimo prie banko – ir kad viską padarytum tu. <!-- F141 F143 M --> Mokesčių inspekcijos vardas jam patogus, nes mokesčiai liečia beveik kiekvieną: 2025 m. pajamas deklaravo daugiau nei 1,5 mln. gyventojų, o beveik 850 tūkst. iš jų deklaravo permoką. <!-- F146 --> <strong class="stop">Sustabdymo vieta:</strong> VMI sako, kad sumas rasi tik „Mano VMI“, todėl apie skolą ar permoką telefonu nieko nespręsk: padėk ragelį ir pasitikrink „Mano VMI“. <!-- F140 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kartais daugiau, nei tikiesi. VMI vardu siųstuose pranešimuose būta žmonių vardų ir asmens kodų ar jų dalių iš galimai nelegalių duomenų bazių. <!-- F141 --> 2026 m. gegužę, po galimo Registrų centro duomenų nutekėjimo, Valstybinė duomenų apsaugos inspekcija įspėjo, kad sukčiai gali prisidengti ir VMI vardu. <!-- F105 --> Visa kita jis bando išgirsti iš tavęs. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> tai, ką jis žino apie tave, neįrodo, kas jis; neatsakinėk į klausimus ir padėk ragelį. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Veikia trys kabliukai, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>:')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a>, <a href="/scenarijai/zinute-su-nuoroda/">{nb('Žinutė su nuoroda')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-30. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

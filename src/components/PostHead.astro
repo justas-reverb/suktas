@@ -1,0 +1,31 @@
+---
+/**
+ * The head of the three post pages (/pranesk/, /triukai/ and a weekly letter): the page's name, an optional
+ * sentence or two, the buttons, a painted stamp beside them. `split` sets a title's text before its first
+ * ": " as a small line above the rest, the words unchanged. `art` lays the day rings behind it, as the shelf
+ * heads do; `fade` also thins the band's top edge out (for a head with something above it); `column` sets the head in
+ * the letter's sheet column; `stamp={false}` leaves the stamp to the page. Buttons are [label, href, kind] with kind undefined (main), 'second' or 'sos' (the emergency one).
+ */
+import ArtBand from './ArtBand.astro';
+import PostArt from './PostArt.astro';
+import { nb, nbHtml } from '../lib/typo.js';
+const { title, lead, actions = [], art = false, split = false, stamp = true, fade = false, column = false } = Astro.props;
+const cut = split ? title.indexOf(': ') : -1;
+const pre = cut > 0 ? title.slice(0, cut + 1) : '';
+const rest = cut > 0 ? title.slice(cut + 2) : title;
+---
+<section class:list={['shead', 'post-head', { 'shead--plain': !art, 'post-head--art': art, 'post-head--fade': fade, 'post-head--col': column }]} aria-labelledby="h1">
+  {art && <ArtBand mood="day" class="shead__art" sizes="(min-width: 60rem) 115vw, 120vw" eager />}
+  <div class="wrap shead__body post-head__body">
+    {stamp && <PostArt class="post-head__stamp" />}
+    <div class="post-head__text">
+      <h1 id="h1" class="post-h1">{pre && <span class="post-h1__pre">{nb(pre)}{' '}</span>}{nb(rest)}</h1>
+      {lead && <p class="shead__lead post-lead" set:html={nbHtml(lead)} />}
+      {actions.length > 0 && (
+        <div class="shead__actions">
+          {actions.map(([label, href, kind]) => <a class:list={['btn', { 'btn--second': kind === 'second' || kind === 'sos', 'btn--sos': kind === 'sos' }]} href={href}>{nb(label)}</a>)}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>paint share image</title>
+<link rel="stylesheet" href="/src/styles/fonts.css">
+<style>
+  html, body { margin: 0; background: #fff; }
+  #card { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #F4F6FC; }
+  #c { position: absolute; inset: 0; width: 1200px; height: 630px; }
+  .txt { position: absolute; left: 64px; top: 40px; color: #1D1A45; }
+  .wm { display: flex; align-items: center; gap: 12px; font: 400 150px/1 'Young Serif', serif; letter-spacing: -0.015em; }
+  .wm img { display: block; width: 221px; height: 236px; }
+  .hiss { display: inline-flex; align-items: baseline; color: #07091C; font: italic 800 126px/1 'Atkinson Hyperlegible Next', sans-serif; letter-spacing: -0.02em; margin-right: 16px; transform: translateY(-0.2em); }
+  .hiss i { font-style: inherit; }
+  .hiss i:nth-child(2) { font-size: 0.84em; }
+  .hiss i:nth-child(3) { font-size: 0.7em; }
+  .tag { margin: 6px 0 0 8px; font: 650 46px/1.15 'Atkinson Hyperlegible Next', sans-serif; }
+  .line { margin: 12px 0 0 8px; font: italic 560 32px/1.3 'Atkinson Hyperlegible Next', sans-serif; max-width: 700px; }
+</style>
+</head>
+<body>
+<div id="card">
+  <canvas id="c" width="1200" height="630"></canvas>
+  <div class="txt">
+    <div class="wm"><img src="/art-src/mark-share.png" alt=""><span class="hiss"><i>S</i><i>s</i><i>s</i></span><span>Suktai</span></div>
+    <div class="tag">Privatumo gidas lietuviškai</div>
+    <div class="line">Būk suktesnis už tuos, kurie tave seka.</div>
+  </div>
+</div>
+<script type="module">
+  /* The share image (1200 x 630): the hero's painting, drawn by the same shader at this size,
+     with the name over the sky. Run by tools/paint-art.mjs, never by the site. */
+  import { createEngine } from '/src/art/engine.js';
+  import { scene } from '/src/art/presets.js';
+
+  window.paintShare = async (job) => {
+    const c = document.getElementById('c');
+    const eng = createEngine(c, {});
+    if (!eng) throw new Error('no webgl2');
+    eng.resize(1200, 630);
+    eng.setScene(scene('morning', 'wide', { fade: 0, mistStrength: 0, ...(job.over || {}) }));
+    eng.draw(0, null);
+    eng.gl.finish();
+    await document.fonts.ready;
+    await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = r; i.onerror = r; }))));
+    return {};
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

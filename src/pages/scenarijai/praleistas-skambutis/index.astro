@@ -1,0 +1,186 @@
+---
+/**
+ * Scenarijus: „Praleistas skambutis iš užsienio“ (wangiri). The copy is docs/copy/scenarijai/praleistas-skambutis.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Praleistas skambutis iš užsienio');
+const meta = [
+  ['Kanalas', 'skambutis'],
+  ['Ko jis nori', 'kad perskambintum'],
+  ['Skaitymo laikas', '2 min.'],
+];
+
+const signs = [
+  ['Numeris prasideda ne +370.', 'Pirmieji skaitmenys rodo šalies kodą. Jei ten nieko nepažįsti ir skambučio nelaukei, labai tikėtina, kad tai sukčiai. <!-- F177 -->'],
+  ['Suskambo taip trumpai, kad nespėjai atsiliepti.', 'Taip ir suplanuota: programa padeda ragelį po vieno ar dviejų signalų. <!-- F175 F173 -->'],
+  ['Lieka tik praleistas skambutis.', 'Kam tavęs tikrai reikia, tas gali parašyti, kas skambino ir ko reikia. Šis numeris tik palieka pėdsaką ir laukia. <!-- M -->'],
+];
+
+const levers = [
+  ['Smalsumas.', 'Praleistas skambutis – neatsakytas klausimas, o į jį norisi kuo greičiau atsakyti. <!-- M -->'],
+  ['Mandagumas.', 'O jei kam nors tikrai reikėjo pagalbos? Neperskambinti atrodo nemandagu. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kas tavęs tikrai ieško, tas parašys. <!-- M -->'],
+];
+
+const sides = [
+  ['Praleistas skambutis iš nepažįstamo užsienio numerio', 'Neperskambink. Jei laukei skambučio iš užsienio, parašyk tam žmogui ten, kur jau bendraujate. <!-- F173 M -->'],
+  ['Tas pats numeris skambina vėl ir vėl', 'Užblokuok jį telefone. <!-- F175 F177 F178 -->'],
+  ['Nepažįstamas šalies kodas', 'Pirmieji skaitmenys rodo šalį: jei ne +370, skambino iš užsienio. Šalį gali sužinoti suvedus numerį į paieškos laukelį. <!-- F177 F178 -->'],
+  ['Numeris prasideda +2, +5, +6 ar +9', 'Tokie kodai dažniausiai žymi Afrikos, Pietų Amerikos ar Azijos šalis; „Telia“ pataria tokiems numeriams ypač neperskambinti. <!-- F175 -->'],
+  ['Atsiliepei, o skambutis iškart nutrūko', 'Nieko blogo: Lietuvoje už atsiliepimą nemokėsi, o problema prasideda tik perskambinus. <!-- F175 F177 -->'],
+  ['Perskambinai ir kažkas atsiliepė', 'Padėk ragelį: minutė gali kainuoti porą eurų, o jis bando tave išlaikyti kuo ilgiau. <!-- F178 F177 -->'],
+  ['Nepažįstami žmonės perskambina ir sako, kad matė tavo numerį, nors tu jiems neskambinai', 'Tavo numeris galėjo būti suklastotas; pranešk savo ryšio operatoriui. <!-- F182 -->'],
+  ['Nežinomų numerių nutildymas telefone', 'Gali padėti, bet kartu nutildys ir kurjerį ar polikliniką. <!-- F173 -->'],
+];
+
+const sources = [
+  'RRT, vartotojų teisės: praleistas skambutis iš nelietuviško numerio gali būti spąstai; kaip ginčyti sąskaitą. <!-- F172 F183 -->',
+  'RRT, DUK apie sukčiavimą: neatsiliepti ir neperskambinti; telefono filtras gali nutildyti ir teisėtus skambučius. <!-- F173 -->',
+  'RRT, DUK: kur pranešti – NKSC, bankas, policija per epolicija.lt. <!-- F174 -->',
+  'RRT, sukčiavimo prevencija: jei žmonės perskambina dėl skambučio, kurio neatlikai. <!-- F182 -->',
+  '„Telia“ pranešimas (tv3.lt, 2023-11-14; LRT, 2023-07-12): kaip veikia „wangiri“, kiek kainuoja perskambinti, kiek skambučių užblokuota. <!-- F175 F176 -->',
+  '„Bitė“, 2020-05-15: perskambinus – brangiausių paslaugų tinklas; kaip atpažinti pagal šalies kodą. <!-- F177 -->',
+  '„Tele2“, 2021-09-02: minutės kaina, numerio šalies paieška, blokavimas. <!-- F178 -->',
+  'Laikas.lt, 2026-02-02, „Telia“ duomenys: 2026 m. sausį iki mėnesio pabaigos užblokuota apie 550 tūkst. „wangiri“ skambučių. <!-- F179 -->',
+];
+---
+<Page
+  title="Praleistas skambutis iš užsienio: ar perskambinti? – Suktas"
+  description="Nežinomas užsienio numeris suskambo kartą ir nutilo? Tai „wangiri“: sukčius laukia, kad perskambintum, nes už skambutį mokėsi tu. Kaip atpažinti ir ką daryti."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-31</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Telefone – praleistas skambutis iš numerio, kuris prasideda ne +370. <!-- F177 F172 --> Telefonas suskambo vieną ar du kartus ir nutilo, gal jau ne pirmą kartą. <!-- F175 --> Šalies kodo nepažįsti. <!-- F175 F176 --> Smalsu, kas ieškojo, ir atrodo, kad paprasčiausia perskambinti. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Neperskambink nežinomam užsienio numeriui.')} />
+        <p set:html={nbHtml('<!-- F173 F175 F178 --> Jei laukei skambučio iš užsienio, parašyk tam žmogui ten, kur jau bendraujate. <!-- M --> Įkyrų numerį užblokuok telefone. <!-- F177 F178 --> Kortelė: <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Jei perskambinai, pasitikrink, ar sąskaitoje neatsirado tarptautinio skambučio mokesčio. <!-- M --> Jei mokestis atsirado ir su juo nesutinki, argumentuotai kreipkis į savo ryšio operatorių: vien nesumokėti sąskaitos dar nereiškia ją ginčyti. <!-- F183 --> Jei pokalbio metu pasakei banko prisijungimo ar kortelės duomenis arba pervedei pinigus, iškart kreipkis į banką ir policiją per epolicija.lt. <!-- F174 --> Apie skambutį gali pranešti NKSC. <!-- F174 --> Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kad perskambintum. <!-- F175 --> Tada mokėsi tu: už tarptautinio skambučio sujungimą, kurio dalį gauna jis, arba už pokalbį brangiausių paslaugų tinkle užsienyje. <!-- F175 F177 --> Vien sujungimo mokestis gali siekti nuo kelių iki kelių dešimčių eurų, priklausomai nuo šalies. <!-- F175 --> O pokalbis dar skaičiuojamas už minutę, todėl jis stengiasi tave išlaikyti ryšyje kuo ilgiau. <!-- F177 F178 --> <strong class="stop">Sustabdymo vieta:</strong> neperskambink. <!-- F173 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko. Programa renka atsitiktinius įvairių šalių numerius, ir tavasis – tik vienas iš jų. <!-- F175 M --> Vien atsiliepus Lietuvoje mokėti nereikia, tačiau jei skambučio nelaukei, geriau neatsiliepti: sukčiai gali bandyti įtraukti į pokalbį ir išgauti tavo duomenis. <!-- F175 F173 --> <strong class="stop">Sustabdymo vieta:</strong> nelauktam užsienio numeriui neatsiliepk ir neperskambink. <!-- F173 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Čia nenaudojamas nė vienas iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: nei skuba, nei baimė. <!-- M --> Jam užtenka dviejų paprastų dalykų:')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Operatoriai tokius skambučius blokuoja: 2023 m. pirmąjį pusmetį „Telia“ jų sustabdė 148 tūkst., o 2026 m. sausį, „Telia“ duomenimis, dar iki mėnesio pabaigos jų buvo užblokuota apie 550 tūkst. <!-- F176 F179 --> Tačiau filtras nėra šimtaprocentinis, todėl dalis skambučių vis tiek prasimuša. <!-- F176 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a>, <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-banko/">{nb('Skambutis iš „banko“')}</a>, <a href="/scenarijai/skambutis-is-vmi/">{nb('Skambutis iš „VMI“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-31. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

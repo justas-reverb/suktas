@@ -1,0 +1,419 @@
+/* ------------------------------------------------------------------------------------
+   Scenarijus: one attack, two layers.
+   Layer 1 ("Trumpai") is daylight and the reader's. Layer 2 ("Kaip tai daro jis") is the
+   stage: the same room lit from his side. The Dvi pusės table sits across both, dark on the
+   left (his list) and daylight on the right (your answer).
+   ------------------------------------------------------------------------------------ */
+
+/* ---- The head ---- */
+
+.scn-head { position: relative; isolation: isolate; }
+.scn-head .scn-head__art {
+  aspect-ratio: 4 / 1;
+  margin-bottom: -1.5rem;
+}
+.scn-head .scn-head__art::after {
+  background: linear-gradient(to top, var(--day) 0, rgb(243 242 251 / 0) 62%);
+}
+.scn-head__body { position: relative; padding-bottom: clamp(1rem, 4vw, 3rem); }
+
+.crumb { margin-bottom: 0.4rem; }
+.crumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  color: var(--ink-2);
+  font-weight: 700;
+  text-decoration: none;
+}
+.crumb a::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(2px, -2px);
+}
+.crumb a:hover { color: var(--indigo); }
+
+.meta {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  max-width: 44rem;
+}
+.meta div { display: flex; flex-wrap: wrap; gap: 0 0.45rem; padding-left: 0.7rem; border-left: 3px solid var(--mint); }
+.meta dt { color: var(--ink-2); font-size: var(--small); line-height: 1.5; }
+.meta dd { font-weight: 700; line-height: 1.5; }
+/* the link is a lone target, not part of a sentence: a 24 px box at least (WCAG 2.5.8) */
+.meta dd a { padding-block: 0.2rem; font-weight: 400; }
+
+@media (min-width: 40rem) {
+  .meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.25rem; margin-top: 1.5rem; }
+  .meta div { display: block; padding-left: 0.9rem; }
+  .meta dt { line-height: 1.3; }
+  .meta dd { margin-top: 0.1rem; line-height: 1.35; }
+}
+/* a page's own disclosure under the meta, as the pillars' model note */
+.scn-note {
+  max-width: 44rem;
+  margin-top: 1rem;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--line);
+  color: var(--ink-2);
+  font-size: var(--small);
+  font-style: italic;
+}
+
+@media (min-width: 60rem) {
+  .scn-head { padding-top: clamp(1rem, 3vw, 2.5rem); }
+  .scn-head .scn-head__art {
+    position: absolute;
+    inset: 0 0 0 calc(50% - 8rem);
+    aspect-ratio: auto;
+    margin: 0;
+  }
+  .scn-head .scn-head__art::after {
+    background:
+      linear-gradient(to right, var(--day) 0, rgb(243 242 251 / 0) 55%),
+      linear-gradient(to top, var(--day) 0, rgb(243 242 251 / 0) 38%);
+  }
+  .scn-head__body { padding-top: 0.5rem; padding-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+  .meta { grid-template-columns: repeat(4, auto); justify-content: start; gap: 1rem 2.25rem; max-width: none; }
+}
+
+/* ---- Rows: a small heading on the left, the words on the right ---- */
+
+.layer { padding-top: clamp(1.25rem, 3vw, 2.5rem); }
+.layer__title {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.layer__title::after { content: ''; flex: 1; height: 2px; background: var(--line); }
+
+.row {
+  display: grid;
+  gap: 0.6rem 3rem;
+  padding-block: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+.row--last { padding-bottom: 0; }
+.row > :is(h2, h3) { align-self: start; }
+.row__body { max-width: 40rem; }
+.row__body > * + * { margin-top: 1rem; }
+.lead { font-size: var(--lead); line-height: 1.5; }
+.row-list { display: grid; gap: 0.6rem; padding-left: 1.25rem; list-style: disc; }
+.row-list--num { list-style: decimal; }
+
+@media (min-width: 52rem) {
+  .row { grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr); gap: 0 3rem; padding-block: 2.25rem; }
+  .row > :is(h2, h3) { position: sticky; top: 1.5rem; }
+}
+
+/* Trys ženklai */
+.signs { counter-reset: sign; display: grid; gap: 0.25rem; }
+.signs li {
+  counter-increment: sign;
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0 0.75rem;
+  padding-block: 0.7rem;
+}
+.signs li + li { border-top: 1px solid var(--line); }
+.signs li::before {
+  content: counter(sign);
+  color: var(--indigo);
+  font: 400 2.6rem / 0.95 var(--font-display);
+}
+.signs strong { display: block; font-size: 1.1em; }
+
+/* Tavo ėjimas: the one move, the largest sentence on the page */
+.move {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-left: 0.5rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+}
+.move :is(h2, h3) { color: var(--mint); font-size: var(--h3); }
+.move__line {
+  max-width: 24ch;
+  margin: 0.5rem 0 1.25rem;
+  font: 400 clamp(2rem, 1.2rem + 3.4vw, 4rem) / 1.08 var(--font-display);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.move p:not(.move__line) + .move__line { margin-top: 2rem; }
+.move p:not(.move__line) { max-width: 42rem; }
+.move:has(> ul) p:not(.move__line) + p, .box:has(> ul) p + p { margin-top: 0.75rem; }
+.move ul, .box ul { display: grid; gap: 0.5rem; max-width: 42rem; margin-block: 0.75rem; padding-left: 1.25rem; list-style: disc; }
+
+/* Jei jau prisigavai */
+.box {
+  margin-top: 1.25rem;
+  padding: 1.25rem clamp(1.1rem, 3vw, 2rem);
+  border-left: 0.5rem solid var(--coral);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--coral-wash);
+}
+.box :is(h2, h3) { margin-bottom: 0.4rem; color: var(--coral-deep); }
+.box a { color: var(--coral-deep); font-weight: 700; }
+.box p { max-width: 42rem; }
+.box ol { display: grid; gap: 0.5rem; max-width: 42rem; margin-block: 0.75rem; padding-left: 1.5rem; list-style: decimal; }
+.box li::marker { color: var(--coral-deep); font-weight: 700; }
+
+.cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+.cta .btn { flex: 1 1 14rem; max-width: 20rem; text-align: center; }
+
+/* ---- The stage: his side ---- */
+
+.stage {
+  position: relative;
+  isolation: isolate;
+  margin-top: var(--section);
+  background: var(--stage);
+  color: var(--on-stage);
+  overflow: hidden;
+}
+.stage a { color: var(--mint-lt); }
+.stage :focus-visible { outline-color: var(--mint-lt); }
+.stage > summary { list-style: none; position: relative; z-index: 2; }
+.stage > summary::-webkit-details-marker { display: none; }
+.stage__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: calc(var(--wrap) + 2 * var(--pad));
+  min-height: 3.5rem;
+  margin-inline: auto;
+  padding: clamp(1.25rem, 3vw, 2.25rem) var(--pad) 0.5rem;
+  color: var(--on-stage);
+}
+.stage__title::after {
+  content: '';
+  flex: none;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.4rem;
+  border-right: 3px solid var(--mint-lt);
+  border-bottom: 3px solid var(--mint-lt);
+  transform: rotate(-135deg) translate(-2px, -2px);
+  transition: transform 0.2s ease-out;
+}
+.stage:not([open]) .stage__title::after { transform: rotate(45deg) translate(-2px, -2px); }
+.stage:not([open]) .stage__title { padding-bottom: clamp(1.25rem, 3vw, 2.25rem); }
+
+.stage .stage__art {
+  aspect-ratio: 2.6 / 1;
+  margin-top: 0.5rem;
+  z-index: 0;
+}
+.stage .stage__art::after {
+  background: linear-gradient(to top, var(--stage) 0, rgb(27 20 112 / 0) 62%);
+}
+.stage__in { position: relative; z-index: 1; padding-bottom: clamp(2.5rem, 6vw, 5rem); }
+.stage__note {
+  max-width: 34rem;
+  margin: -1rem 0 1.5rem;
+  color: var(--on-stage-2);
+  font-style: italic;
+}
+
+.stage .row { border-top-color: var(--line-stage); }
+.stage h3 { color: var(--on-stage); }
+.stop { color: var(--mint-lt); }
+.stop::before {
+  content: '';
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: 0 0.45rem 0 0.3rem;
+  border-radius: 50%;
+  background: var(--mint-lt);
+  box-shadow: 0 0 0 0.14rem var(--stage), 0 0 0 0.22rem var(--mint-lt);
+  vertical-align: 0.12em;
+}
+
+.levers { display: grid; gap: 0.35rem; }
+.levers li {
+  padding: 0.9rem 0 0.9rem 1rem;
+  border-left: 3px solid var(--line-stage);
+}
+.levers strong { display: block; color: var(--on-stage); font: 400 1.35rem / 1.2 var(--font-display); }
+
+@media (min-width: 60rem) {
+  .stage__title { padding-right: var(--readout); }
+  .stage .stage__art {
+    position: absolute;
+    inset: 0 0 auto calc(50% - 6rem);
+    height: 24rem;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+  .stage .stage__art::after {
+    background:
+      linear-gradient(to right, var(--stage) 0, rgb(27 20 112 / 0) 52%),
+      linear-gradient(to top, var(--stage) 0, rgb(27 20 112 / 0) 48%);
+  }
+  /* the rows use the whole width, so they start below the band's main row; only the title and the note stay beside it */
+  .stage__note { margin-top: 0; min-height: 11rem; }
+  .levers { grid-template-columns: 1fr; }
+}
+
+/* ---- Dvi pusės: his list against your answer ---- */
+
+.sides { padding-block: 1.75rem 2.25rem; border-top: 1px solid var(--line-stage); }
+.sides h3 { margin-bottom: 1.25rem; }
+.sides h3 + p { margin-bottom: 1.25rem; }
+.sides table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.sides thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.sides tbody, .sides tr, .sides td { display: block; }
+.sides tr { margin-bottom: 1rem; border-radius: var(--radius); overflow: hidden; }
+.sides td { padding: 1rem 1.15rem; }
+.sides td::before {
+  content: attr(data-label);
+  display: block;
+  margin-bottom: 0.25rem;
+  font: 400 1.0625rem / 1.2 var(--font-display);
+}
+.sides td:first-child { background: var(--stage-deep); color: var(--on-stage); box-shadow: inset 0 0 0 1px var(--line-stage); border-radius: var(--radius) var(--radius) 0 0; }
+.sides td:first-child::before { color: var(--on-stage-2); }
+.sides td:last-child { background: var(--day); color: var(--ink); border-top: 4px solid var(--mint-lt); border-radius: 0 0 var(--radius) var(--radius); }
+.sides td:last-child::before { color: var(--mint); }
+.sides td:last-child a { color: var(--fox-deep); }
+.sides td:last-child a:hover { color: var(--ink); }
+
+@media (min-width: 52rem) {
+  .sides thead { position: static; width: auto; height: auto; overflow: visible; clip-path: none; display: table-header-group; }
+  .sides tbody { display: table-row-group; }
+  .sides tr { display: table-row; margin: 0; overflow: visible; }
+  .sides td { display: table-cell; width: 50%; vertical-align: top; padding: 1.1rem 1.5rem; }
+  .sides td::before { display: none; }
+  .sides th {
+    padding: 0.9rem 1.5rem;
+    text-align: left;
+    font: 400 var(--h3) / 1.2 var(--font-display);
+  }
+  .sides th:first-child { background: var(--stage-deep); color: var(--on-stage-2); border-radius: var(--radius) 0 0 0; box-shadow: inset 1px 0 0 var(--line-stage), inset 0 1px 0 var(--line-stage); }
+  .sides th:last-child { background: var(--day); color: var(--mint); border-radius: 0 var(--radius) 0 0; }
+  .sides td:first-child { border-radius: 0; box-shadow: inset 1px 0 0 var(--line-stage); border-bottom: 1px solid var(--line-stage); }
+  .sides td:last-child { border-top: 0; border-radius: 0; border-left: 4px solid var(--mint-lt); border-bottom: 1px solid var(--line); }
+  .sides tr:last-child td:first-child { border-radius: 0 0 0 var(--radius); }
+  .sides tr:last-child td:last-child { border-radius: 0 0 var(--radius) 0; }
+}
+
+/* ---- The foot ---- */
+
+.scn-foot {
+  display: grid;
+  gap: 2rem 4rem;
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+.scn-foot h2 { margin-bottom: 0.9rem; font-size: clamp(1.5rem, 1.25rem + 0.9vw, 2rem); }
+.related li { padding-block: 0.4rem; }
+/* The sources are a ledger: a "checked" strip, then one ruled row per source with its number hanging
+   in a small box. The list keeps its disc (so Safari keeps it a list); the marker is emptied and the
+   number is the row's ::before, taken from a counter. */
+.sources > p, .sources ul { max-width: 42rem; }
+.sources > p {
+  margin-top: 0;
+  padding: 0.7rem 1rem;
+  background: var(--mint-wash);
+  border-left: 4px solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: var(--small);
+  line-height: 1.5;
+}
+.sources ul { counter-reset: src; margin: 1.35rem 0 0; padding: 0; list-style: disc; border-top: 2px solid var(--ink); }
+.sources li { counter-increment: src; position: relative; padding: 0.85rem 0 0.85rem 2.9rem; border-bottom: 1px solid var(--line); }
+.sources li::marker { content: ''; color: transparent; }
+.src-name { font-weight: 700; color: var(--ink); }
+.sources li::before {
+  content: counter(src, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.95rem;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  min-width: 2.15rem;
+  height: 1.55rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  border-radius: 0.35rem;
+  background: var(--day-2);
+  color: var(--ink-2);
+  font: 700 0.8125rem / 1 var(--font-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.printnote { color: var(--ink-2); font-size: var(--small); }
+.scn-foot > .share { margin-top: 0; }
+
+@media (min-width: 60rem) {
+  .scn-foot { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); }
+  .scn-foot > .share { grid-column: 1 / -1; }
+}
+
+/* ---- Print: both layers, in ink, with the table drawn as a table ---- */
+
+@media print {
+  .scn-head__art, .stage__art { display: none !important; }
+  .scn-head { padding: 0; }
+  .scn-head__body { padding-bottom: 0.5cm; }
+  .meta div { border-left: 2px solid #000; }
+  .stage { background: #fff; color: #000; margin-top: 0.8cm; overflow: visible; }
+  .stage a, .sides td:last-child a, .stop, .stage h3, .stage__note, .stage__title, .levers strong { color: #000; }
+  .stage__title { padding: 0.6cm 0 0.2cm; }
+  .stage__title::after, .stop::before { display: none; }
+  .stage > summary { display: block; }
+  .stage__in { padding-bottom: 0; }
+  .scn .wrap { max-width: none; padding-inline: 0; }
+  .stage > summary .stage__title { display: block; min-height: 0; margin: 0; padding: 0.6cm 0 0.2cm; max-width: none; }
+  .stage__note { margin-top: 0; }
+  .row__body p:has(+ ul) { break-after: avoid; }
+  .move { background: #fff; border: 2px solid #000; border-left-width: 6px; }
+  .move :is(h2, h3), .box :is(h2, h3), .box a { color: #000; }
+  .move__line { font-size: 20pt; }
+  .box { background: #fff; border: 1px solid #000; border-left-width: 6px; }
+  .row { display: block; padding-block: 0.5cm; border-top: 1px solid #999; }
+  .stage .row { border-top-color: #999; }
+  .row > :is(h2, h3) { position: static; margin-bottom: 0.15cm; }
+  .sides { border-top: 1px solid #999; padding-block: 0.5cm; }
+  .sides thead { position: static; width: auto; height: auto; overflow: visible; clip-path: none; display: table-header-group; }
+  .sides table { display: table; border-collapse: collapse; }
+  .sides tbody { display: table-row-group; }
+  .sides tr { display: table-row; margin: 0; border: 0; overflow: visible; break-inside: avoid; }
+  .sides td, .sides th { display: table-cell; width: 50%; padding: 0.22cm 0.3cm; border: 1px solid #000 !important; border-radius: 0 !important; background: #fff !important; color: #000 !important; box-shadow: none !important; vertical-align: top; text-align: left; }
+  .sides th { font: 700 11.5pt / 1.3 var(--font-text); }
+  .sides td::before { display: none; }
+  .levers li { border-left: 2px solid #000; }
+  .scn-foot { display: block; padding-top: 0.6cm; }
+  .scn-foot section { margin-bottom: 0.5cm; }
+  .sources > p { background: none; border-left: 2px solid #000; padding: 0.1cm 0.3cm; }
+  .sources ul { margin-top: 0.4cm; border-top: 1px solid #000; }
+  .sources li { padding: 0.15cm 0 0.15cm 1cm; border-bottom: 0.5pt solid #999; break-inside: avoid; }
+  .sources li::before { top: 0.2cm; display: block; min-width: 0; height: auto; border: 0; background: none; color: #000; font-size: 9pt; text-align: left; }
+}
+
+@media (forced-colors: active) {
+  .sources > p { border-left-color: CanvasText; }
+  .sources li::before { border-color: CanvasText; }
+}
+
+/* ---- The Sustok card: the same parts, one layer, its section heads one level up ---- */
+
+.card :is(.row, .move, .box) > h2 { font-size: var(--h3); line-height: 1.2; }
+.card .scn-foot { grid-template-columns: none; }
+.card .move + .row { margin-top: clamp(1.25rem, 3vw, 2rem); }
+@media print { .card :is(.row, .move, .box) > h2 { font-size: 13pt; } }
+
+/* A stop label inside a numbered list (the chain on slaptazodis-nutekejo) stays in the line. */
+.signs strong.stop { display: inline; font-size: inherit; }
+.stage .signs li::before { color: var(--on-stage-2); }
+.stage .signs li + li { border-top-color: var(--line-stage); }
+@media print { .stage .signs li::before { color: #000; } }

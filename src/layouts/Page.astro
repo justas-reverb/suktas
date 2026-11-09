@@ -1,0 +1,54 @@
+---
+/**
+ * The frame of every content page: skip link, header, main, footer, and the two small scripts
+ * (the phone menu and the painted bands). Nothing here is specific to one kind of page.
+ */
+import Base from './Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/fonts.css';
+import '../styles/system.css';
+import '../styles/syntax.css';
+import '../styles/way.css';
+import ScenarioWay from '../components/ScenarioWay.astro';
+import ScenarioNext from '../components/ScenarioNext.astro';
+import { locate } from '../lib/catalogue.js';
+
+import ysLatinExt from '../../node_modules/@fontsource/young-serif/files/young-serif-latin-ext-400-normal.woff2?url';
+import ysLatin from '../../node_modules/@fontsource/young-serif/files/young-serif-latin-400-normal.woff2?url';
+import atkLatinExt from '../../node_modules/@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2?url';
+import atkLatin from '../../node_modules/@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: 'scenarijai' | 'sustok' | 'temos' | 'patikra' | '';
+}
+const { title, description, current = '' } = Astro.props;
+const spot = locate(Astro.url.pathname);
+---
+<Base title={title} description={description}>
+  <Fragment slot="head">
+    <link rel="preload" href={ysLatinExt} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={ysLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={atkLatinExt} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={atkLatin} as="font" type="font/woff2" crossorigin />
+  </Fragment>
+  <slot name="head" slot="head" />
+  <a class="skip" href="#main">Pereiti prie turinio</a>
+  <SiteHeader />
+  <main id="main">
+    {spot && <ScenarioWay spot={spot} />}
+    <slot />
+    {spot && <ScenarioNext spot={spot} />}
+  </main>
+  <SiteFooter />
+  <script>
+    import { startHeroFx } from '../art/herofx.js';
+    import { wireMenu } from '../lib/menu.js';
+    import { wireFind } from '../lib/find.js';
+    wireMenu();
+    wireFind();
+    document.querySelectorAll('.art[data-herofx]').forEach(startHeroFx);
+  </script>
+</Base>

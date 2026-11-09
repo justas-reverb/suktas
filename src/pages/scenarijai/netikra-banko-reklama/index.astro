@@ -1,0 +1,203 @@
+---
+/**
+ * Scenarijus: Netikra banko reklama paieškoje. The copy is docs/copy/scenarijai/netikra-banko-reklama.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Netikra banko reklama paieškoje');
+const meta = [
+  ['Kanalas', 'paieškos ar socialinio tinklo reklama'],
+  ['Ko jis nori', 'tavo prisijungimo duomenų ir patvirtinimo'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Į banką atėjai per reklamą ar pirmą paieškos nuorodą.', 'Žymė „Remiama“ reiškia tik tiek, kad tai reklama: ji neįrodo, kad svetainė tikra, ir policija pataria aklai nepasitikėti nei pirmuoju paieškos rezultatu, nei reklama. <!-- F218 F217 F220 -->'],
+  ['Adresas ne visai tavo banko.', 'Jis skiriasi viena raide ar simboliu, būna ilgesnis ar keistai baigiasi. <!-- F216 F213 F214 --> Spynelė ir „https://“ nieko neįrodo. <!-- F213 -->'],
+  ['Prisijungus puslapis vis „kraunasi“, o telefone – užklausa, kurios nesitikėjai.', 'Ypač jei prašoma PIN2: prisijungiant reikia tik PIN1, o PIN2 tvirtina mokėjimus ir parašus. <!-- F214 F215 F216 F165 -->'],
+];
+
+const steps = [
+  '<strong>Netvirtink jokios užklausos ir iškart skambink savo bankui</strong> numeriu iš banko programėlės arba iš svetainės, kurios adresą įvedi ranka (ne iš paieškos): bankas gali užblokuoti interneto banką ir kortelę. <!-- F214 F220 F223 F13 --> 2025 m. viena „Artea“ klientė gavo apie 20 PIN2 užklausų, viena jų – 4110 eurų pavedimui. Ji nė vienos nepatvirtino, paskambino bankui ir užblokavo visas sąskaitas. <!-- F215 -->',
+  '<strong>Užklausas, kurių nepradėjai, atšauk.</strong> Spausk „Atšaukti“, kad ir kiek jų ateitų, o jei jos vis ateina, pasakyk bankui. <!-- F166 F213 F215 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt, jei dingo pinigai, o apie netikrą svetainę – NKSC, kuris rūpinasi tokių svetainių blokavimu. <!-- F2 F214 F17 -->',
+  '<strong>Pranešk apie reklamą „Google“</strong>, kai jau paskambinai bankui: prie reklamos spausk „Daugiau“ arba „Informacija“, tada „Pranešti apie skelbimą“, ir gali nurodyti, kokia svetaine ji apsimeta. Pranešus reklama iš karto nedingsta, todėl jos vis tiek nespausk. <!-- F222 -->',
+];
+
+const levers = [
+  ['Autoritetas.', 'Nuoroda paieškos viršuje, banko vardas ir kone tobula puslapio kopija atrodo kaip pats bankas. <!-- F213 F221 M --> Spynelė prie adreso įspūdį tik sustiprina, nors nieko neįrodo. <!-- F213 -->'],
+  ['Skuba.', 'Užklausos telefone ateina viena po kitos, o puslapis tuo metu „tikrina“, todėl lengviau patvirtinti nei sustoti ir perskaityti. <!-- F215 F214 M -->'],
+];
+
+const sides = [
+  ['Perka tavo banko pavadinimą reklamai ir jo nuoroda paieškoje – pirmoji', 'Banko neieškok: atsidaryk programėlę, išsaugotą nuorodą arba adresą įvesk ranka. <!-- F213 F219 -->'],
+  ['Prie nuorodos parašyta „Remiama“', 'Tai tik reklama: ji neįrodo, kad svetainė oficiali. <!-- F218 -->'],
+  ['„Facebook“ reklama banko vardu su nuoroda prisijungti', 'Nespausk: tokia nuoroda beveik neabejotinai yra apgaulė. <!-- F138 -->'],
+  ['Adresas skiriasi viena raide ar keistai baigiasi', 'Nelygink raidžių, junkis savo keliu. <!-- F216 F221 M -->'],
+  ['Spynelė ir „https://“', 'Tai neįrodo, kad svetainė tikra. <!-- F213 -->'],
+  ['Įvedus duomenis puslapis „kraunasi“ ar „tikrina klientą“', 'Uždaryk jį ir skambink bankui. <!-- F214 F215 F220 -->'],
+  ['Jungiesi, o telefone prašoma PIN2 ar patvirtinti pavedimą', 'Prisijungiant PIN2 niekada nereikia: spausk „Atšaukti“. <!-- F216 F214 F166 -->'],
+  ['Užklausos ateina viena po kitos', 'Netvirtink nė vienos ir skambink bankui. <!-- F215 F213 -->'],
+];
+
+const sources = [
+  '„Luminor“ (alkas.lt, 2026-08-15): banko vardai perkami kaip reklaminiai raktažodžiai, duomenys naudojami realiu laiku, spynelė nieko neįrodo, adresą geriausia įvesti ranka. <!-- F213 -->',
+  'SEB pranešimas spaudai (kmintys.lt, 2026-03-02): netikros svetainės reklamuojamos tarp pirmųjų paieškos rezultatų, besisukantis ženklas, ką daryti įvedus duomenis. <!-- F214 -->',
+  '„Artea“ ir jos klientės pasakojimas (respublika.lt, 2025-08-13): pirmos „Google“ pozicijos, daugiau nei 100 užblokuotų nuorodų, PIN2 prisijungiant neprašomas. <!-- F215 F216 -->',
+  'Policija: septyni tyrimai per vieną dieną (rinkosaikste.lt, 2026-10-29), „Remiama“ nereiškia oficialumo (tv3.lt, 2026-10-12), Tauragės atvejis (silutesnaujienos.lt, 2026-08-12); pranešti per epolicija.lt. <!-- F217 F218 F219 F2 -->',
+  '„Citadele“ saugumo puslapis (be datos): skambinti bankui, bankas užblokuos kortelę ir interneto banką. <!-- F220 -->',
+  '„Swedbank“ (ELTA per sekunde.lt, 2026-10-27): suvedus duomenis – susisiekti oficialiais kontaktais. <!-- F223 -->',
+  'Lietuvos bankų asociacija, atpazinksukciu.lt: kone tobuli svetainių dublikatai. <!-- F221 -->',
+  'Šiaulių bankas (dabar „Artea“; alkas.lt, 2025-01-14): netikros bankų reklamos „Facebook“. <!-- F138 -->',
+  '„Smart-ID“ DUK: neįvesk PIN, jei užklausos nepradėjai, spausk „Atšaukti“. <!-- F166 -->',
+  'FBI (2022-12-21): ieškant internete naudoti reklamų blokatorių. <!-- F125 -->',
+  '„Google“ pagalba: kaip pranešti apie reklamą; NKSC forma netikrai svetainei. <!-- F222 F17 -->',
+];
+---
+<Page
+  title="Netikra banko svetainė paieškoje: reklama „Remiama“ – Suktas"
+  description="Ieškai banko per „Google“ ir spaudi pirmą nuorodą? Ji gali vesti į suklastotą banko svetainę. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-31</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Nori prisijungti prie banko, todėl „Google“ surenki jo pavadinimą ir spaudi pirmą nuorodą. <!-- F219 F213 --> Prie jos parašyta „Remiama“: tai reklama, kurią sukčius nusipirko su tavo banko vardu. <!-- F218 F213 F216 --> Puslapis – kone tobula banko kopija. <!-- F221 --> Įvedi prisijungimo duomenis, puslapis vis „kraunasi“ ar „tikrina klientą“, o telefone pasirodo patvirtinimo užklausos. <!-- F214 F215 --> Tuo metu sukčius tavo duomenimis jungiasi prie tikro banko. <!-- F214 F213 --> Netikros banko reklamos plito ir „Facebook“: 2025 m. pradžioje apie jas įspėjo Šiaulių bankas. <!-- F138 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Prie banko junkis tik savo keliu: per jo programėlę, išsaugotą nuorodą naršyklėje ar adresą, kurį įvedi ranka. Niekada – per paieškos ar socialinio tinklo reklamą.')} />
+        <p set:html={nbHtml('Klastotės gali ir nepastebėti, todėl saugiau ne ieškoti skirtumų, o savo banko paieškoje visai neieškoti. <!-- F221 M --> Ieškant internete padeda reklamų blokatorius: 2022 m. JAV FBI patarė jį naudoti būtent dėl tokių reklamų, o blokatorius paslepia ir šį masalą (<a href="/temos/irenginiai/#kuri-rinktis">kurį rinktis</a>). <!-- F125 M -->')} />
+        <p set:html={nbHtml('Išbandyk tai saugiai: <a href="/treniruote/banko-paieska/">treniruotėje</a> su išgalvotu banku spaudi ten, kur spaustum iš tikrųjų, ir pamatai, ką tuo metu daro sukčius. <!-- pažadas -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau įvedei duomenis</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: vien 2026 m. spalio 27 d. policija pradėjo septynis tyrimus dėl atvejų, kai žmonės banko prisijungimo duomenis suvedė netikrose „Regitros“, „Sodros“, E. sveikatos ar „Artea“ svetainėse. <!-- F217 --> Svarbiausia – greitis: dar neišsiųstą mokėjimą galima sustabdyti ar atšaukti, o momentinis pavedimas įvykdomas akimirksniu, todėl pinigus susigrąžinti gali būti labai sunku. <!-- F214 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kodai">Jei tave apgavo: pasakiau ar įvedžiau kodą</a>, <a href="/jei-apgavo/#pinigai">išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo prisijungimo duomenų ir tavo patvirtinimo telefone: su jais jis iškart jungiasi prie tikro tavo banko ir bando pervesti pinigus. <!-- F214 F213 --> Kol jis tai daro, tu matai besisukantį ženklą, tarsi puslapis dar krautųsi. <!-- F214 --> <strong class="stop">Sustabdymo vieta:</strong> užklausa, kurios nepradėjai. Atšauk ją. <!-- F213 F166 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko, ir jam nereikia. <!-- M --> Jis nesitaiko į tave: perka banko pavadinimą kaip reklaminį raktažodį ir laukia, kas jo ieškos. <!-- F213 F216 --> Kuriame banke esi, jis sužino tik iš to, ką surinkai paieškoje. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> banko neieškok paieškoje, nes jis tavęs ten ir laukia. <!-- F213 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> savo pasirinktas kelias į banką apsaugo ir tada, kai klastotės neatskiri. <!-- F219 F221 M -->')} />
+            <p set:html={nbHtml('„Artea“ 2025 m. rugpjūtį sakė nuo metų pradžios užblokavusi daugiau nei 100 tokių nuorodų, o „Luminor“ 2026 m. rugpjūtį perspėjo, kad tokių reklamų „Google“ paieškoje daugėja. <!-- F216 F213 --> Ir pirma paieškos nuoroda ne visada veda į banką: 2026 m. rugpjūtį Tauragės policija pranešė apie vyrą, kuris, pasirinkęs pirmą paieškos nuorodą į savo banką, neteko 447,78 euro. <!-- F219 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a>, <a href="/temos/irenginiai/">{nb('Įrenginiai ir tinklas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a>, <a href="/scenarijai/netikra-parduotuve/">{nb('Netikra el. parduotuvė')}</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/netikra-valstybes-svetaine/">{nb('Netikra valstybės svetainė')}</a>, <a href="/scenarijai/zada-pirma-vieta-google/">{nb('Žada pirmą vietą „Google“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-31. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

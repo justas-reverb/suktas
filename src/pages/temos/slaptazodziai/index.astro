@@ -1,0 +1,144 @@
+---
+/**
+ * Slaptažodžiai ir prieigos raktai: the pillar for the doors he tries to open. The copy is
+ * docs/copy/temos/slaptazodziai.md, word for word; the source tags stay as comments and the build
+ * strips them. Same template as the other pillars; what is good now is a grid of your moves (mint),
+ * the order of second steps is the numbered list of the scenario pages.
+ */
+import Page from '../../../layouts/Page.astro';
+import PillarHead from '../../../components/PillarHead.astro';
+import PillarStage from '../../../components/PillarStage.astro';
+import Sides from '../../../components/Sides.astro';
+import PillarFoot from '../../../components/PillarFoot.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/scenario.css';
+import '../../../styles/pillar.css';
+
+const good = [
+  ['Ilgis svarbiau už mišinį.', 'Slaptažodis, kuris vienas saugo paskyrą, turi būti bent 15 ženklų ilgio. Jei jis tik viena iš kelių prisijungimo dalių, užtenka 8. <!-- F55 -->'],
+  ['Simbolių mišinio nereikia.', 'NIST draudžia paslaugoms reikalauti skirtingų ženklų rūšių. <!-- F56 -->'],
+  ['Kas kelis mėnesius keisti nereikia.', 'Keisk, kai yra požymių, kad slaptažodis nutekėjo. <!-- F57 -->'],
+  ['Slaptažodis neturi būti dažnai naudojamas ar nutekėjęs.', 'Paslaugos turi tikrinti naujus slaptažodžius pagal tokių sąrašą. <!-- F58 -->'],
+  ['Slaptažodžiai tvarkyklėje.', 'NIST reikalauja, kad paslaugos leistų naudoti slaptažodžių tvarkykles ir automatinį užpildymą. <!-- F59 --> Lietuviškai „Google“ tai vadina slaptažodžių tvarkykle, o NKSC – slaptažodžių valdymo įrankiais. <!-- F72 F71 --> Pasirinkimas: <a href="/irankiai/">Įrankiai</a>.'],
+];
+
+const second = [
+  ['Prieigos raktas ar fizinis raktas.', 'Naršyklė ir operacinė sistema susieja raktą su tikra paslauga, todėl tau nereikia spręsti, ar svetainė tikra. <!-- F60 -->', '„Google“ ir „Microsoft“ lietuviškai rašo, kad prieigos raktai yra labiau apsaugoti nuo duomenų išviliojimo ir atsparūs sukčiavimo apsimetant atakoms. <!-- F61 F62 --> CISA nurodo, kad vienintelis plačiai prieinamas apgaulei atsparus būdas yra FIDO, o prieigos raktai ir fiziniai raktai jį naudoja. <!-- F64 F60 --> Jungtinės Karalystės Nacionalinis kibernetinio saugumo centras (NCSC) 2026 m. balandžio 23 d. paskelbė, kad prieigos raktai dabar turėtų būti pirmasis naudotojų pasirinkimas visose skaitmeninėse paslaugose; jei paslauga jų nesiūlo, jis pataria naudoti slaptažodžių tvarkyklę ir antrą prisijungimo žingsnį. <!-- F111 -->'],
+  ['Programėlė.', 'Jos kodas geresnis nei SMS, bet jį vis tiek galima išvilioti, todėl niekam jo nesakyk. <!-- F66 -->'],
+  ['SMS.', 'CISA sako, kad SMS nėra atsparus apgaulei, o SIM kortelės pakeitimas – kai sukčiai įtikina operatorių perkelti tavo numerį – yra vienas iš būdų jį apeiti. <!-- F65 F66 --> NIST tokį kodą laiko ribotu būdu: paslauga, kuri jį siūlo, turi siūlyti ir kitą. <!-- F67 --> Jei paslauga siūlo tik SMS, įjunk ir jį: NKSC pataria naudoti daugiaveiksnį autentifikavimą, o kad SMS geriau nei nieko – jau mūsų išvada. <!-- F68 M -->'],
+];
+
+const tricks = [
+  ['Tavo slaptažodis nutekėjo', '/scenarijai/slaptazodis-nutekejo/', 'nutekėjimas, pakartotinis naudojimas, perėmimas. <!-- F69 F71 -->'],
+  ['Žinutė su kodu', '/scenarijai/zinute-su-kodu/', 'kodas, kurį jis išvilioja, kad įeitų į tavo paskyrą. <!-- F41 -->'],
+];
+
+const sides = [
+  ['Tas pats slaptažodis daugelyje paskyrų', 'Skirtingas kiekvienai; tvarkyklė juos įsimena. <!-- F71 F72 -->'],
+  ['Trumpas, nuspėjamas ar nutekėjęs slaptažodis', 'Ilgas; bent 15 ženklų, jei jis vienas saugo paskyrą. <!-- F55 F58 -->'],
+  ['Silpnas antras žingsnis (SMS)', 'Prieigos raktas ar fizinis raktas; jei jų nėra – programėlė. <!-- F60 F64 F66 -->'],
+  ['Kodas, kurį pasakai tu', 'Niekam nesakyk ir neįvesk ten, kur paprašė svetimas; NKSC pataria niekada neatskleisti SMS kodų ir PIN. <!-- F42 -->'],
+  ['El. paštas kaip raktas į kitas paskyras', 'Pirmiausia saugok jį. <!-- F83 -->'],
+];
+
+const related = [
+  ['Kitos temos:', '<a href="/temos/kaip-veikia-atakos/">Kaip veikia atakos</a>, <a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>'],
+  ['Patikra:', '<a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>'],
+  ['Įrankiai:', '<a href="/irankiai/">Slaptažodžių tvarkyklės</a>'],
+  ['Žodynas:', '<a href="/zodynas/#slaptazodziu-tvarkykle">Slaptažodžių tvarkyklė</a>, <a href="/zodynas/#antras-prisijungimo-zingsnis">Antras prisijungimo žingsnis</a>, <a href="/zodynas/#sim-korteles-pakeitimas">SIM kortelės pakeitimas</a>'],
+];
+
+const sources = [
+  'NIST SP 800-63B-4: ilgis, jokių sudėties taisyklių, jokių periodinių keitimų, tikrinimas pagal sąrašą, tvarkyklės. <!-- F54 F55 F56 F57 F58 F59 -->',
+  '„Google“ ir „Microsoft“ lietuviški puslapiai: prieigos raktas, duomenų išviliojimas, slaptažodžių tvarkyklė. <!-- F61 F62 F72 -->',
+  'FIDO bendruomenė (passkeys.dev) ir CISA: kodėl prieigos raktai atsparūs apgaulei; SMS ir SIM kortelės pakeitimas. <!-- F60 F64 F65 F66 -->',
+  'NIST 800-63B-4: telefono tinklas kaip ribotas būdas. <!-- F67 -->',
+  'NKSC: daugiaveiksnis autentifikavimas; patikra; slaptažodžių valdymo įrankiai. <!-- F42 F68 F71 -->',
+  'Have I Been Pwned: nemokama nutekėjimų patikra. <!-- F69 -->',
+  'NCSC (JK): el. paštas kaip raktas į kitas paskyras; 2026-04-23: prieigos raktai – pirmasis pasirinkimas. <!-- F83 F111 -->',
+];
+---
+<Page
+  title="Slaptažodžiai ir prieigos raktai – Suktas"
+  description="Kaip uždaryti duris, kurias bando atidaryti sukčius: ilgas slaptažodis, tvarkyklė ir antras prisijungimo žingsnis tinkama tvarka."
+  current="temos"
+>
+  <article class="scn topic">
+    <PillarHead
+      title="Slaptažodžiai ir prieigos raktai"
+      lead="Kaip atrodo geras slaptažodis šiandien, kodėl pirmiausia reikia saugoti el. paštą ir kokį antrą prisijungimo žingsnį rinktis. <!-- pažadas -->"
+      actions={[
+        ['Pradėk nuo el. pašto', '/patikra/15-minuciu/#pirmas-zingsnis'],
+        ['Pasirink tvarkyklę', '/irankiai/', 'second'],
+      ]}
+    />
+
+    <section class="layer wrap" aria-labelledby="siandien">
+      <section class="move">
+        <h2 id="siandien">Vienas dalykas šiandien</h2>
+        <p class="move__line" set:html={nbHtml('Savo el. pašto paskyrai nustatyk ilgą slaptažodį, kurio nenaudoji niekur kitur.')} />
+        <p set:html={nbHtml('<!-- F55 F71 F83 --> Kas patenka į tavo el. paštą, gali atkurti ir kitų paskyrų slaptažodžius. <!-- F83 --> Žingsniai: <a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>.')} />
+      </section>
+    </section>
+
+    <section class="part wrap" aria-labelledby="gerai">
+      <h2 id="gerai" class="layer__title">Kas dabar laikoma gera praktika</h2>
+      <ul class="good" role="list">
+        {good.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="part wrap" aria-labelledby="antras">
+      <h2 id="antras" class="layer__title">Antras žingsnis: kuris geriausias</h2>
+      <p class="part__intro" set:html={nbHtml('Pirmas – <strong>prieigos raktas ar fizinis raktas</strong>. Antras – <strong>programėlė</strong>. <strong>SMS</strong> – tik jei nieko kito nėra. <!-- F60 F64 F66 F111 -->')} />
+      <ol class="signs ladder" role="list">
+        {second.map(([head, text, more]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p>{more && <p set:html={nbHtml(more)} />}</li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="part wrap" aria-labelledby="triukai">
+      <h2 id="triukai" class="layer__title">Triukai, kuriuos čia matome</h2>
+      <ul class="cards" role="list">
+        {tricks.map(([title, href, text]) => (
+          <li class="tcard">
+            <h3><a href={href}>{nb(title)}</a></h3>
+            <p class="tcard__text" set:html={nbHtml(text)} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <PillarStage note="Šis sluoksnis uždarytas ir atsidaro paspaudus. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Kaip jis tai daro, čia nerašome. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.">
+      <div class="row">
+        <h3>Ko jis nori</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Jam reikia ne tavęs, o tos paskyros, kuri atveria daugiausia. <!-- M --> El. paštas jam geriausias pasirinkimas, nes per jį galima atkurti kitų paskyrų slaptažodžius. <!-- F83 --> <strong class="stop">Sustabdymo vieta:</strong> el. paštui – ilgas, niekur kitur nenaudotas slaptažodis ir prieigos raktas ar kitas antras žingsnis. <!-- F55 F83 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Ką jis apie tave žino</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Pradžiai – tai, kas nutekėjo iš kurios nors paslaugos: tavo el. pašto adresą, o kartais ir slaptažodį. <!-- M --> Ar tavo adresas nutekėjo, gali patikrinti ir tu. <!-- F69 --> Jis nežino, ar tą patį slaptažodį naudoji kitur. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> patikrink, ar tavo adresas nenutekėjo, ir kiekvienai paskyrai turėk skirtingą slaptažodį. <!-- F71 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Kodėl tai veikia</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Veikia jo silpnų vietų sąrašas: pakartotas slaptažodis, antras žingsnis, kurį galima išvilioti, ir kodas, kurį išduodi tu. <!-- M --> Kiekviena jų sutrumpina kelią iki tavo paskyros; svarbiausia grandinė aprašyta <a href="/temos/kaip-veikia-atakos/">čia</a>. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kiekvienai silpnai vietai – savo atsakymas lentelėje žemiau.')} />
+        </div>
+      </div>
+      <Sides heads={['Jo sąrašas', 'Tavo atsakymas']} rows={sides} />
+    </PillarStage>
+
+    <PillarFoot
+      related={related}
+      intro="Patikrinta: 2026-10-25. Faktai surašyti <a href='/saltiniai/'>Šaltiniuose</a>:"
+      sources={sources}
+    />
+  </article>
+</Page>

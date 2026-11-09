@@ -1,0 +1,130 @@
+---
+/**
+ * Žodynas: the six terms the launch pages use. The copy is docs/copy/zodynas.md, word for word;
+ * the source tags stay as comments in the strings and the build strips them. Each entry's heading
+ * carries the anchor the other pages link to (#antras-prisijungimo-zingsnis and the rest), so the
+ * ids below are the copy's {#...} ids exactly. The labels (Terminas, Paprastai, ...) are the copy's
+ * bold lead-ins set as labels over their text, without the colon.
+ */
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+
+const terms = [
+  {
+    id: 'antras-prisijungimo-zingsnis',
+    name: 'Antras prisijungimo žingsnis',
+    letter: 'A',
+    term: 'antras prisijungimo žingsnis (angl. second factor, 2FA, MFA; NKSC rašo „daugiaveiksnis autentifikavimas“). <!-- F68 F42 -->',
+    plain: 'tai dar vienas dalykas po slaptažodžio: prieigos raktas, fizinis raktas, programėlės kodas ar SMS kodas. <!-- F60 F64 F66 -->',
+    where: '<a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>, <a href="/scenarijai/zinute-su-kodu/">Žinutė su kodu</a>.',
+    move: 'rinkis prieigos raktą ar fizinį raktą, o jei jų nėra – programėlę; SMS tik jei nieko kito nėra. <!-- F60 F64 F66 --> <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>.',
+    why: '<em>Kodėl tai veikia ir kur neapsaugo.</em> CISA sako, kad vienintelis plačiai prieinamas apgaulei atsparus būdas yra FIDO, o SMS nėra atsparus apgaulei. <!-- F64 F66 --> Programėlės kodas geresnis už SMS, bet jį vis tiek galima išvilioti. <!-- F66 -->',
+    stop: 'jokio kodo niekam nesakyk. <!-- F42 -->',
+    source: 'CISA, NKSC; 2026-10-24. <!-- F64 F66 F68 -->',
+  },
+  {
+    id: 'nuotolinis-prisijungimas',
+    name: 'Nuotolinis prisijungimas',
+    letter: 'N',
+    term: 'nuotolinis prisijungimas (prie kito kompiuterio; angl. remote access). <!-- F51 -->',
+    plain: 'kai kitas žmogus per programą prisijungia prie tavo kompiuterio. Bankų asociacija sako, kad sukčių prašomos įdiegti programos dažnai yra būtent tokios. <!-- F51 -->',
+    where: '<a href="/scenarijai/skambutis-is-banko/">Skambutis iš „banko“</a>, <a href="/scenarijai/skambutis-is-policijos/">Skambutis iš „policijos“</a>.',
+    move: 'neįdiek programos, kurios prašo skambinantis, ir neprisijunk prie bankininkystės „kartu“. <!-- F51 F27 --> <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.',
+    source: 'Bankų asociacija, 2022-10-27; 2026-10-24. <!-- F51 -->',
+  },
+  {
+    id: 'prieigos-raktas',
+    name: 'Prieigos raktas',
+    letter: 'P',
+    term: 'prieigos raktas (angl. passkey). Lietuviškai taip jį vadina „Google“ ir „Microsoft“. <!-- F61 F62 -->',
+    plain: 'prisijungimo būdas vietoj slaptažodžio. „Google“ rašo, kad prieigos raktų negalima bendrinti, kopijuoti, užrašyti ar netyčia perduoti kitam, todėl jie yra labiau apsaugoti nuo duomenų išviliojimo. <!-- F61 -->',
+    where: '<a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>, <a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>.',
+    move: 'kur paslauga siūlo prieigos raktą, rinkis jį. <!-- F60 F64 --> <a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>.',
+    why: '<em>Kodėl tai veikia ir kur neapsaugo.</em> Naršyklė ir operacinė sistema susieja raktą su tikra paslauga, todėl tau nereikia spręsti, ar svetainė tikra. <!-- F60 --> „Microsoft“ sako, kad prieigos raktai atsparūs sukčiavimo apsimetant atakoms, nes remiasi fiziniu įrenginiu. <!-- F62 --> Jie atsparūs, o ne neįveikiami, todėl rašome „atsparūs“. <!-- M -->',
+    stop: 'kur paslauga prieigos rakto nesiūlo, lieka ilgas slaptažodis ir antras žingsnis. <!-- F55 F66 -->',
+    source: 'FIDO bendruomenė (passkeys.dev), „Google“ ir „Microsoft“ lietuviški puslapiai, CISA; 2026-10-24. <!-- F60 F61 F62 F64 -->',
+  },
+  {
+    id: 'sim-korteles-pakeitimas',
+    name: 'SIM kortelės pakeitimas',
+    letter: 'S',
+    term: 'SIM kortelės pakeitimas (angl. SIM swap). <!-- F65 -->',
+    plain: 'sukčiai įtikina operatorių perkelti tavo numerį į savo SIM kortelę. <!-- F65 --> Tada SMS kodai ateina jiems. <!-- M -->',
+    where: '<a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>.',
+    move: 'SMS kodą naudok tik jei kito antro žingsnio nėra. <!-- F66 F67 --> Ar Lietuvos operatoriai siūlo apsaugą nuo šio triuko, šaltiniuose neradome. <!-- F79 -->',
+    source: 'CISA; NIST SP 800-63B-4; 2026-10-24. <!-- F65 F66 F67 -->',
+  },
+  {
+    id: 'slaptazodziu-tvarkykle',
+    name: 'Slaptažodžių tvarkyklė',
+    letter: 'S',
+    term: 'slaptažodžių tvarkyklė (angl. password manager). „Google“ lietuviškai taip ją vadina; NKSC rašo „slaptažodžių valdymo įrankis“. <!-- F72 F71 -->',
+    plain: 'programa, kuri įsimena slaptažodžius už tave; „Google“ tvarkyklė saugo ir prieigos raktus. <!-- F72 -->',
+    where: '<a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>, <a href="/irankiai/">Įrankiai</a>.',
+    move: 'kiekvienai paskyrai – skirtingas ilgas slaptažodis, kurį įsimena tvarkyklė. <!-- F55 F71 --> NIST reikalauja, kad paslaugos leistų naudoti tvarkykles ir automatinį užpildymą. <!-- F59 --> <a href="/irankiai/">Įrankiai</a>.',
+    source: '„Google“ lietuviškas puslapis, NKSC, NIST; 2026-10-24. <!-- F59 F71 F72 -->',
+  },
+  {
+    id: 'sukciavimas-apsimetant',
+    name: 'Sukčiavimas apsimetant',
+    letter: 'S',
+    term: 'sukčiavimas apsimetant (angl. phishing). „Google“ lietuviškai rašo „duomenų išviliojimas“, o „Microsoft“ – „sukčiavimo apsimetant atakos“. <!-- F61 F62 --> Plačiau: <a href="/zodynas/phishing/">Kas yra phishing</a>.',
+    plain: 'kai kas nors apsimeta banku, pareigūnu ar paslauga, kad išviliotų kodą ar slaptažodį arba priverstų tave ką nors padaryti. <!-- M -->',
+    where: '<a href="/scenarijai/skambutis-is-banko/">Skambutis iš „banko“</a>, <a href="/scenarijai/zinute-su-nuoroda/">Žinutė su nuoroda</a>, <a href="/scenarijai/zinute-su-kodu/">Žinutė su kodu</a>.',
+    move: 'padaryk tik tai, ką pradėjai tu, oficialioje programėlėje. <!-- F26 --> <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>.',
+    why: '<em>Kaip tai daro jis.</em> Jis siekia, kad veiksmą atliktum tu: pasakytum kodą, paspaustum nuorodą ar įsileistum jį į savo įrenginį. <!-- F25 F26 F51 -->',
+    stop: 'jei veiksmą pradėjai ne tu, nutrauk. <!-- F26 -->',
+    source: '„Google“ ir „Microsoft“ lietuviški puslapiai, Lietuvos bankas; 2026-10-24. <!-- F26 F61 F62 -->',
+  },
+];
+
+// Finansinė piramidė, Greito uždarbio kursai, Lažybų prognozės, Nelegalus kazino, Phishing and Pinigų mulas have pages of their own, Socialinė inžinerija is a topic; the index lists them in their places among the terms.
+const index = terms.map((t) => [t.name, `#${t.id}`, t.letter]);
+index.splice(2, 0, ['Phishing', '/zodynas/phishing/', 'P'], ['Pinigų mulas', '/zodynas/pinigu-mulas/', 'P']);
+index.splice(7, 0, ['Socialinė inžinerija', '/temos/socialine-inzinerija/', 'S']);
+index.splice(1, 0, ['Nelegalus kazino', '/zodynas/nelegalus-kazino/', 'N']);
+index.splice(1, 0, ['Finansinė piramidė', '/zodynas/piramide/', 'F']);
+index.splice(2, 0, ['Lažybų prognozės', '/zodynas/lazybu-prognozes/', 'L']);
+index.splice(2, 0, ['Greito uždarbio kursai', '/zodynas/greito-uzdarbio-kursai/', 'G']);
+---
+<Page
+  title="Sukčiavimo terminai paprastais žodžiais – Suktas"
+  description="Šeši terminai, kuriuos naudoja svetainė: kas tai paprastais žodžiais ir ką daryti."
+>
+  <DocHead
+    title="Žodynas"
+    lead="Tik tie terminai, kuriuos naudoja svetainė. <!-- pažadas -->"
+    actions={[
+      ['Atversk žodyną', '#antras-prisijungimo-zingsnis'],
+      ['Į scenarijus', '/scenarijai/', 'second'],
+    ]}
+  />
+
+  <div class="wrap doc">
+    <ul class="doc-index" role="list">
+      {index.map(([name, href, letter]) => <li><a href={href} data-l={letter}>{nb(name)}</a></li>)}
+    </ul>
+
+    {terms.map((t) => (
+      <section class="doc-sec" aria-labelledby={t.id}>
+        <h2 id={t.id}>{t.name}</h2>
+        <div class="doc-sec__body">
+          <dl class="doc-dl">
+            <div class="is-aside"><dt>Terminas</dt><dd><p set:html={nbHtml(t.term)} /></dd></div>
+            <div class="is-plain"><dt>Paprastai tariant</dt><dd><p set:html={nbHtml(t.plain)} /></dd></div>
+            <div><dt>Kur susidursi</dt><dd><p set:html={nbHtml(t.where)} /></dd></div>
+            <div class="is-move"><dt>Tavo ėjimas</dt><dd><p set:html={nbHtml(t.move)} /></dd></div>
+          </dl>
+          {t.why && <p class="doc-why" set:html={nbHtml(t.why)} />}
+          {t.stop && <p class="doc-stop"><strong>Sustabdymo vieta:</strong> <Fragment set:html={nbHtml(t.stop)} /></p>}
+          <dl class="doc-dl">
+            <div class="is-src"><dt>Šaltinis ir patikrinta</dt><dd><p set:html={nbHtml(t.source)} /></dd></div>
+          </dl>
+        </div>
+      </section>
+    ))}
+  </div>
+</Page>

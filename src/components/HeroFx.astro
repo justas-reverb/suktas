@@ -1,0 +1,73 @@
+---
+/**
+ * The home page's hero: B by default (the owner's choice, 2026-11-06), HERO=a|c builds a parked
+ * direction. The promise, the lead and the main button come first; then
+ * the line about who made the site; the reel sits beside them on a wide screen and under them on a
+ * phone. The art is a painted still (an <img>) with a canvas over it (src/art/herofx.js).
+ */
+import { nb } from '../lib/typo.js';
+import '../styles/hero-fx.css';
+
+interface Props { dir: 'a' | 'b' | 'c'; }
+const { dir } = Astro.props;
+const dark = dir !== 'a';
+// the reel plays from the site (owner, 2026-11-06); HERO_REELS=0 shows its poster instead
+const reels = process.env.HERO_REELS !== '0';
+// HERO_CHANNEL=1 adds the YouTube link; off while the channel has no films
+const channel = process.env.HERO_CHANNEL === '1';
+const wide = [1280, 1920, 2880].map((w) => `/art/hero-${dir}-wide-${w}.webp ${w}w`).join(', ');
+const tall = [780, 1170].map((w) => `/art/hero-${dir}-tall-${w}.webp ${w}w`).join(', ');
+---
+<section class:list={['hero', 'hfx', 'band', `hfx--${dir}`, dark && 'hfx--dark']} aria-labelledby="h1" data-herofx={dir}>
+  <div class="hfx__art" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 59.99rem)" type="image/webp" srcset={tall} sizes="100vw" />
+      <img src={`/art/hero-${dir}-wide-1920.webp`} srcset={wide} sizes="(min-width: 60rem) max(100vw, 120svh)" width="1920" height="800" alt="" decoding="async" fetchpriority="high" />
+    </picture>
+    <canvas></canvas>
+  </div>
+  <div class="wrap hfx__body">
+    <div class="hfx__card hfx__text">
+      <div class="hfx__q">
+        <h1 id="h1">O&nbsp;jei čia apgaulė?</h1>
+        <canvas class="hfx__ink" aria-hidden="true"></canvas>
+      </div>
+      <div class="hfx__a">
+        <p class="hero__lead">{nb('Suktas yra balsas tavo galvoje, kuris pirmas pastebi triuką. Čia išmokysime jį kalbėti garsiau.')}</p>
+        <div class="hero__cta">
+          <a class="btn btn--big" href="/scenarijai/skambutis-is-banko/">{nb('Parodyk man triuką')}</a>
+          <p class="hero__sub">{nb('Trys minutės. Pamatysi, kaip netikras skambutis atrodo iš sukčiaus pusės ir kur jį sustabdyti.')}</p>
+        </div>
+        <p class="hfx__line">{nb('Sukūrė susirūpinęs pilietis. Informacija apie Lietuvą – tiksli ir patikrinta: kiekvieną faktą gali susirasti ir pasitikrinti pats. Nemokama visiems ir visam laikui.')}</p>
+      </div>
+    </div>
+    <div class="hfx__stage">
+      <div class="hfx__snake" aria-hidden="true">
+        <img src="/brand/snake-stage.webp" width="366" height="373" alt="" decoding="async" />
+        <canvas></canvas>
+      </div>
+      <figure class="hfx__reel">
+        {reels ? (
+          <>
+            <video controls preload="none" playsinline poster="/reels/r02-poster.webp" width="720" height="1280" aria-label="Filmukas: praleistas skambutis iš užsienio">
+              <source src="/reels/r02-praleistas-skambutis.mp4" type="video/mp4" />
+            </video>
+            <figcaption>
+              <span class="hfx__cap">Praleistas skambutis iš užsienio? Filmukas, 45&nbsp;s.</span>
+              {channel && <a class="hfx__more" href="https://www.youtube.com/@Suktas-lt" rel="noopener">{nb('Daugiau trumpų filmukų – YouTube kanale')}</a>}
+            </figcaption>
+          </>
+        ) : (
+          <img src="/reels/r02-poster.webp" width="720" height="1280" alt="" decoding="async" />
+        )}
+      </figure>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { startHeroFx } from '../art/herofx.js';
+  import { arrive } from '../art/heroarrive.js';
+  import { startSnake } from '../art/snakeloop.js';
+  document.querySelectorAll('.hfx[data-herofx]').forEach((el) => { startHeroFx(el); arrive(el); const sn = el.querySelector('.hfx__snake'); if (sn) startSnake(sn); });
+</script>

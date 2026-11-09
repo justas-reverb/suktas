@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+design/
+*.log
+.claude/
+
+# Playwright MCP page snapshots
+.playwright-mcp/

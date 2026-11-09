@@ -1,0 +1,204 @@
+/* ------------------------------------------------------------------------------------
+   Savaitės triukas: the home and archive (/triukai/, tk-) and one weekly letter (tl-), the shape every
+   letter shares (src/components/TriukLetter.astro). A letter is one sheet, one column, as it would be
+   forwarded to somebody's mother: where we know it from (quiet), the reader's move (mint, the loudest block),
+   his plan (the stage colour, the attacker's side), what gives it away (a checklist, on paper again), then the
+   two quiet closing sections. Shared head, stamp and envelope are in post.css.
+   ------------------------------------------------------------------------------------ */
+
+.tl-pre { color: var(--ink-2); font-weight: 400; }
+
+/* ---- The letter: one sheet ---- */
+
+.tl { --tl-pad: clamp(1.1rem, 4vw, 2.25rem); padding-block: 0.5rem var(--section); }
+/* the frame is the sheet's column; the stamp lies across its top right corner, half on the sheet */
+.tl-frame { position: relative; max-width: 44rem; margin-inline: auto; padding-top: 3.3rem; }
+.tl-stamp { position: absolute; z-index: 2; top: 0; right: 0; width: 7rem; height: auto; aspect-ratio: 200 / 150; }
+@media (min-width: 46rem) {
+  .tl-frame { padding-top: 5.6rem; }
+  .tl-stamp { right: 1.2rem; width: 12.5rem; }
+}
+.tl-sheet {
+  max-width: 44rem;
+  margin-inline: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: 0 1px 0 rgb(25 19 79 / 0.06), 0 1.1rem 2rem -1.4rem rgb(25 19 79 / 0.4);
+  overflow: clip;
+}
+/* on a phone the sheet runs to the screen's edges: the width is the reading */
+@media (max-width: 39.99rem) {
+  .tl-sheet { margin-inline: calc(-1 * var(--pad)); border-inline: 0; border-radius: 0; }
+}
+
+.tl-sec { padding: 1.6rem var(--tl-pad) 1.8rem; }
+.tl-sec + .tl-sec { border-top: 1px solid var(--line); }
+.tl-body { min-width: 0; }
+.tl-body > * + * { margin-top: 1rem; }
+
+/* the two quiet sections carry a small label, not a heading's size */
+.tl-source h2, .tl-again h2, .tl-report h2 {
+  margin-bottom: 0.6rem;
+  color: var(--ink-2);
+  font: 800 var(--small) / 1.3 var(--font-text);
+  letter-spacing: 0;
+}
+
+.tl-link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--line);
+  border-left: 0.35rem solid var(--indigo);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--day);
+  font-weight: 700;
+}
+
+/* ---- Your move: the loudest block ---- */
+
+.tl-move {
+  position: relative;
+  padding-block: 2rem 2.2rem;
+  padding-left: calc(var(--tl-pad) + 0.55rem);
+  border-top-color: transparent;
+  background: var(--mint-wash);
+}
+.tl-move::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 0.55rem; background: var(--mint); }
+.tl-move h2 {
+  margin-bottom: 0.8rem;
+  color: var(--mint);
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.6rem);
+  line-height: 1.1;
+}
+.tl-say {
+  font: 400 clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem) / 1.28 var(--font-display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.tl-urgent {
+  padding: 0.8rem 1rem 0.9rem;
+  border: 2px solid var(--coral);
+  border-radius: var(--radius);
+  background: #fff;
+}
+.tl-urgent a {
+  display: inline-block;
+  margin-block: -0.5rem;
+  padding-block: 0.5rem;
+  color: var(--coral-deep);
+  font-weight: 800;
+}
+
+/* ---- How he does it: his side, on the stage colour (the rings foot went with the rings engine, 3041a32) ---- */
+
+.tl-plan { padding: 0; }
+.tl-stage {
+  position: relative;
+  padding: 1.9rem var(--tl-pad) 2.4rem;
+  background: var(--stage);
+  color: var(--on-stage);
+}
+.tl-stage h2 { margin-bottom: 0.8rem; color: var(--on-stage); font-size: clamp(1.6rem, 1.3rem + 1.3vw, 2.2rem); line-height: 1.12; }
+.tl-stage a { color: var(--mint-lt); }
+.tl-stage :focus-visible { outline-color: var(--mint-lt); }
+
+.tl-signsbox { padding: 1.7rem var(--tl-pad) 1.9rem; }
+/* the scenario pages' numbered signs: a ring with its number, rules between, nothing that looks pressable */
+.tl-signs { counter-reset: sign; display: grid; }
+.tl-signs li {
+  position: relative;
+  counter-increment: sign;
+  padding: 0.8rem 0 0.8rem 3rem;
+}
+.tl-signs li + li { border-top: 1px solid var(--line); }
+.tl-signs li::before {
+  content: counter(sign);
+  position: absolute;
+  left: 0;
+  top: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 2px solid var(--indigo);
+  border-radius: 50%;
+  color: var(--indigo);
+  font: 400 1.2rem / 1 var(--font-display);
+}
+@media (forced-colors: active) { .tl-signs li::before { border-color: CanvasText; } }
+.tl-note {
+  padding: 0.8rem 1rem 0.9rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+  font-weight: 700;
+}
+
+/* ---- The foot: the line to forward ---- */
+
+.tl-fwd {
+  padding-top: 1.1rem;
+  border-top: 2px dashed var(--line);
+  font: 400 clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem) / 1.25 var(--font-display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* ---- /triukai/: the newest letter, and the ledger ---- */
+
+.tk-new {
+  position: relative;
+  margin-bottom: 1.1rem;
+  padding: 1.4rem clamp(1rem, 2.5vw, 1.6rem) 1.5rem;
+  padding-right: 7rem;
+  border: 1px solid var(--line);
+  border-top: 0.4rem solid var(--indigo);
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #fff;
+  box-shadow: 0 0.45rem 0 -0.2rem var(--day-3), 0 0.9rem 0 -0.4rem var(--day-2);
+}
+.tk-new .post-art { position: absolute; top: 0.7rem; right: 0.7rem; width: 5.5rem; height: auto; }
+@media (min-width: 40rem) {
+  .tk-new { padding-right: 10.5rem; }
+  .tk-new .post-art { top: 0.9rem; right: 1rem; width: 8rem; }
+}
+.tk-new__title { font: 400 clamp(1.6rem, 1.25rem + 1.7vw, 2.4rem) / 1.15 var(--font-display); letter-spacing: -0.01em; }
+.tk-new__title a { text-decoration: none; overflow-wrap: break-word; }
+.tk-new__title a::after { content: ''; position: absolute; inset: 0; }
+.tk-new .tl-pre { display: block; margin-bottom: 0.35rem; color: var(--indigo); font: 800 var(--small) / 1.3 var(--font-text); }
+@media (hover: hover) {
+  .tk-new { transition: transform 0.15s ease-out; }
+  .tk-new:hover { transform: translateY(-2px); }
+  .tk-new__title a:hover { text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.18em; }
+}
+
+.tk-ask strong { display: block; margin-bottom: 0.5rem; font: 400 clamp(1.4rem, 1.15rem + 1vw, 1.85rem) / 1.25 var(--font-display); text-wrap: balance; }
+
+.tk-ledger { border-top: 2px solid var(--ink); }
+.tk-row {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  min-height: 3.25rem;
+  padding: 0.85rem 0.35rem;
+  border-bottom: 1px solid var(--line);
+  line-height: 1.4;
+}
+.tk-row__date { color: var(--indigo); font-weight: 800; font-variant-numeric: tabular-nums; }
+.tk-row a { flex: 1 1 13rem; margin-left: 0.4rem; min-width: 0; font-weight: 700; text-decoration: none; overflow-wrap: break-word; }
+.tk-row a::after { content: ''; position: absolute; inset: 0; }
+.tk-row a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+@media (hover: hover) { .tk-row:hover { background: var(--day-2); } }
+
+@media print {
+  .tl-sheet { box-shadow: none; border-color: #000; }
+  .tl-move, .tl-signs li, .tl-note, .tl-urgent, .tk-new { background: #fff; }
+  .tl-stage { background: #fff; color: #000; }
+  .tl-stage::after { display: none; }
+  .tl-stage a, .tl-stage h2 { color: #000; }
+  .tk-new .post-art { display: none; }
+}

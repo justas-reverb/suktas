@@ -1,0 +1,61 @@
+---
+/**
+ * A weekly letter on its page: docs/copy/triukai/sodros-sms.md, word for word; the mail is made from the
+ * same file (tools/mail/sargyba.py letter). Published in src/lib/triukai.js. The shape every letter shares is
+ * src/components/TriukLetter.astro: a letter's page is its words in the six slots, no markup of its own.
+ */
+import Page from '../../../layouts/Page.astro';
+import TriukLetter from '../../../components/TriukLetter.astro';
+import { nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/post.css';
+import '../../../styles/triukai.css';
+
+const zenklai = [
+  'Adresas baigiasi .net, .com, .eu, .info ar .online, turi papildomą brūkšnį ar kitas raides, pavyzdžiui, „esodra“ ar „sodralit“. <!-- F427 -->',
+  'Žinutė atėjo iš užsienio numerio. <!-- F428 -->',
+  'Žinutė prašo pervesti pinigus, patvirtinti banko operaciją, pateikti kortelės duomenis ar suvesti PIN kodą. <!-- F428 -->',
+];
+---
+<Page
+  title="Savaitės triukas: SMS „Sodros“ vardu – Suktas"
+  description="„Jūsų asmens duomenys dar nėra atnaujinti“: SMS „Sodros“ vardu su nuoroda, panašia į tikrą. Kaip ją atpažinti ir ką daryti."
+>
+  <link slot="head" rel="alternate" type="application/rss+xml" title="Suktas: Savaitės triukas" href="/triukai/feed.xml" />
+  <TriukLetter
+    title="Savaitės triukas: SMS „Sodros“ vardu"
+    actions={[['Pranešti apie apgavystę', '/pranesk/'], ['Visi laiškai', '/triukai/', 'second']]}
+    heads={{ source: 'Iš kur žinome', move: 'Tavo ėjimas', plan: 'Kaip tai daro jis', again: 'Ar tai naujas triukas?', report: 'Parodyk mums' }}
+  >
+    <Fragment slot="source">
+      <p set:html={nbHtml('„Sodra“ 2026 m. spalio 22 d. perspėjo: žmonės gauna SMS žinutes apie neva neatnaujintus duomenis, pavyzdžiui, „Jūsų asmens duomenys dar nėra atnaujinti“. <!-- F426 --> Šalia yra nuoroda, panaši į „Sodros“ svetainės adresą. <!-- F426 -->')} />
+      <p><a class="tl-link" href="https://sodra.lt/naujienos/sukciai-siaucia-toliau-sodros-vardu-siuncia-sms-zinutes-ir-praso-atnaujinti-duomenis">„Sodros“ perspėjimas</a></p>
+    </Fragment>
+
+    <Fragment slot="move">
+      <p class="tl-say" set:html={nbHtml('<strong>Nespausk nuorodos. Naršyklėje įvesk www.sodra.lt ir prisijunk iš ten.</strong> <!-- F428 -->')} />
+      <p class="tl-urgent" set:html={nbHtml('Jei jau įvedei duomenis, nelauk: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+    </Fragment>
+
+    <Fragment slot="plan">
+      <p set:html={nbHtml('„Neatnaujinti duomenys“ skamba kaip smulkmena, kurią sutvarkysi per minutę, todėl atrodo, kad nėra ko galvoti. <!-- M --> Nuoroda veda į jo puslapį, o ten jis laukia tavo prisijungimo prie paskyros ar interneto banko duomenų. <!-- F426 -->')} />
+    </Fragment>
+
+    <Fragment slot="signs">
+      <p set:html={nbHtml('Tikras adresas yra www.sodra.lt, o gyventojų paskyros – gyventojai.sodra.lt. <!-- F427 --> Iš ko atpažinsi, kad tai ne „Sodra“:')} />
+      <ul class="tl-signs">
+        {zenklai.map((t) => <li set:html={nbHtml(t)} />)}
+      </ul>
+      <p class="tl-note" set:html={nbHtml('Jei nė vieno ženklo nematai, tai dar nieko neįrodo: nuorodos vis tiek nespausk. <!-- M -->')} />
+    </Fragment>
+
+    <Fragment slot="again">
+      <p set:html={nbHtml('Ne, keičiasi tik žinutės žodžiai. <!-- M --> Kaip tai veikia nuo pradžios iki galo: <a href="/scenarijai/zinute-su-nuoroda/">Žinutė su nuoroda</a>.')} />
+    </Fragment>
+
+    <Fragment slot="report">
+      <p set:html={nbHtml('Gavai tokią ar kitokią žinutę? Atsiųsk: <a href="/pranesk/">Pranešk</a>. <!-- pažadas -->')} />
+      <p class="tl-fwd" set:html={nbHtml('Persiųsk šį laišką tam, kas paspaustų.')} />
+    </Fragment>
+  </TriukLetter>
+</Page>

@@ -1,0 +1,59 @@
+---
+/**
+ * Print and send, for every page that prints (the Sustok cards, the scenarios, /seima/). Without
+ * JavaScript the reader still gets the print hint and two plain links (e-mail, SMS) that open
+ * their own app with the address filled in. With it: a print button, the phone's own share sheet
+ * where the browser has one (Messenger, Viber, WhatsApp live there), and copy-the-link. Nothing is
+ * sent anywhere by the page itself, and nothing is stored. Words: docs/copy/seima.md, *Siųsk ar
+ * spausdink*.
+ */
+import { nb } from '../lib/typo.js';
+
+interface Props { hash?: string; mail?: string; print?: string; }
+const { hash = '', mail, print = 'Spausdink' } = Astro.props;
+const url = new URL(Astro.url.pathname + hash, 'https://suktas.lt').href;
+const body = `${mail ?? 'Pažiūrėk, verta žinoti:'} ${url}`;
+const subject = mail ? 'Laiškas tau apie sukčius' : 'Verta žinoti';
+const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+const sms = `sms:?&body=${encodeURIComponent(body)}`;
+---
+<div class="share noprint" data-share data-url={url} data-text={body}>
+  <p class="printnote share__hint">{nb('Spausdink iš naršyklės – puslapis tam paruoštas.')}</p>
+  <ul class="share__row" role="list" aria-label="Siųsk ar spausdink">
+    <li data-js hidden><button type="button" class="share__btn" data-act="print">{nb(print)}</button></li>
+    <li data-js hidden data-native><button type="button" class="share__btn" data-act="share">{nb('Siųsk')}</button></li>
+    <li><a class="share__btn" href={mailto}>{nb('El. paštu')}</a></li>
+    <li><a class="share__btn" href={sms}>{nb('SMS žinute')}</a></li>
+    <li data-js hidden><button type="button" class="share__btn" data-act="copy">{nb('Kopijuok nuorodą')}</button></li>
+  </ul>
+  <p class="share__status" role="status"></p>
+</div>
+
+<script>
+  for (const box of document.querySelectorAll<HTMLElement>('[data-share]')) {
+    const url = box.dataset.url!;
+    const text = box.dataset.text!;
+    const status = box.querySelector<HTMLElement>('.share__status')!;
+    box.classList.add('share--js');
+    for (const li of box.querySelectorAll<HTMLElement>('[data-js]')) {
+      if (li.hasAttribute('data-native') && !navigator.share) continue;
+      if (li.querySelector('[data-act="copy"]') && !navigator.clipboard) continue;
+      li.hidden = false;
+    }
+    box.addEventListener('click', async (e) => {
+      const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
+      if (act === 'print') window.print();
+      if (act === 'share') {
+        try { await navigator.share({ title: document.title, text, url }); } catch { /* the reader closed the sheet */ }
+      }
+      if (act === 'copy') {
+        try {
+          await navigator.clipboard.writeText(url);
+          status.textContent = 'Nuoroda nukopijuota. Įklijuok ją žinutėje.';
+        } catch {
+          status.textContent = `Nepavyko nukopijuoti. Nuoroda: ${url}`;
+        }
+      }
+    });
+  }
+</script>

@@ -1,0 +1,74 @@
+---
+/**
+ * Patikra: the index of self-audits. The copy is docs/copy/patikra/index.md, word for word; the
+ * source tags stay as comments and the build strips them. The one audit is a card of yours (mint)
+ * with five boxes to tick on paper: nothing on the page is scored, saved or sent.
+ */
+import Page from '../../layouts/Page.astro';
+import ArtBand from '../../components/ArtBand.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+
+const steps = [
+  ['El. pašto paskyra (4 min.).', 'Ilgas, niekur kitur nenaudotas slaptažodis ir antras prisijungimo žingsnis. Jis pirmas, nes per el. paštą galima atkurti kitų paskyrų slaptažodžius. <!-- F55 F66 F83 -->'],
+  ['Nutekėjimų patikra (3 min.).', 'Pasižiūri, ar tavo el. pašto adresas buvo tarp nutekėjusių duomenų. Jei buvo ir slaptažodį naudojai dar kur nors, pirmiausia pakeisk jį svarbiausiose paskyrose. <!-- F69 F71 -->'],
+  ['Telefonas (3 min.).', 'Automatiniai atnaujinimai ir ekrano užraktas. Daugelis atnaujinimų taiso saugumo spragas. <!-- F77 F78 -->'],
+  ['Dienos limitai banko programėlėje (3 min.).', 'Iš anksto sumažini limitus, todėl per vieną dieną iš sąskaitos galima išsiųsti mažiau. <!-- F26 M -->'],
+  ['Šeimos žodis (2 min.).', 'Žodis ar frazė, kurią žinote tik jūs, kad suklastotas ar skubus balsas neapgautų. Tai JAV FBI patarimas; Lietuvos institucijos, kuri tai rekomenduotų, neradome. <!-- F80 F81 F82 -->'],
+];
+---
+<Page
+  title="Patikrink savo paskyras ir telefoną per 15 minučių – Suktas"
+  description="Penki žingsniai per 15 minučių su tavo paskyromis ir telefonu: patikrink save taip, kaip tikrintų sukčius. Nieko nesaugome."
+  current="patikra"
+>
+  <section class="shead" aria-labelledby="h1">
+    <ArtBand mood="day" class="shead__art" sizes="(min-width: 60rem) 115vw, 120vw" eager />
+    <div class="wrap shead__body">
+      <h1 id="h1">{nb('Patikra')}</h1>
+      <h2 class="shead__say">{nb('Patikrink save, kaip tikrintų jis')}</h2>
+      <p class="shead__lead" set:html={nbHtml('Patikra – tai trumpas sąrašas dalykų, kuriuos gali padaryti su jau turimomis paskyromis ir telefonu. <!-- pažadas -->')} />
+      <ul class="promises" role="list">
+        <li set:html={nbHtml('Nieko čia neskaičiuojama, jokių balų nėra. <!-- pažadas -->')} />
+        <li set:html={nbHtml('Puslapis nieko nesaugo ir niekur nesiunčia: žingsnius žymėk ant popieriaus arba spausdink iš naršyklės. <!-- pažadas -->')} />
+      </ul>
+      <p class="shead__for" set:html={nbHtml('Ji skirta kiekvienam, kas turi el. pašto paskyrą, telefoną ir banko programėlę. Nieko naujo registruoti nereikia: patikrinsi tai, ką jau turi. <!-- pažadas -->')} />
+      <div class="shead__actions">
+        <a class="btn" href="/patikra/15-minuciu/">{nb('Pradėk patikrą per 15 minučių')}</a>
+        <a class="btn btn--sos" href="/jei-apgavo/">{nb('Jei tave ką tik apgavo')}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pick wrap" aria-labelledby="pasirink">
+    <h2 id="pasirink">{nb('Pasirink patikrą')}</h2>
+    <ul role="list">
+      <li class="audit">
+        <h3><a href="/patikra/15-minuciu/">{nb('Patikra per 15 minučių')}</a></h3>
+        <p class="audit__text" set:html={nbHtml('penki žingsniai: el. paštas, nutekėjimų patikra, telefonas, banko dienos limitai ir šeimos žodis. Svarbiausi – pirmieji. <!-- pažadas -->')} />
+        <p class="audit__time">15 min.</p>
+        <ol class="audit__boxes" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li></ol>
+      </li>
+    </ul>
+    <p class="sec-text" set:html={nbHtml('Kol kas yra viena patikra. Kitos atsiras vėliau. <!-- pažadas -->')} />
+    <p class="sec-text" set:html={nbHtml('Nori pamatyti sukčiaus triuką iš arti? <a href="/treniruote/">Treniruotėje</a> jį išbandai saugiai: puslapiai netikri, o įvesti juose nieko neįmanoma. <!-- pažadas -->')} />
+  </section>
+
+  <div class="shelf wrap">
+    <section aria-labelledby="kodel-jis">
+      <h2 id="kodel-jis" class="sec">{nb('Kodėl „kaip tikrintų jis“')}</h2>
+      <p class="sec-text" set:html={nbHtml('Dažnai jam nesvarbu, kas tu: jam reikia silpnos vietos. <!-- M --> Todėl žiūri, ar yra paskyra, kuri atveria kitas, ar nutekėjęs slaptažodis neatidaro durų ir kitur, ar telefonas neatnaujintas, ar iš sąskaitos per vieną dieną galima išsiųsti daug ir ar yra balsas, kuriuo patikėsi. <!-- M --> Patikra eina per tuos pačius penkis dalykus, tik tavo pusėje, ir kiekvienas žingsnis vieną iš tų kelių uždaro arba susiaurina. <!-- M --> Tai ne garantija, o būdas atimti iš jo lengviausius kelius. <!-- M -->')} />
+    </section>
+
+    <section aria-labelledby="ka-apima">
+      <h2 id="ka-apima" class="sec">{nb('Ką apima penki žingsniai')}</h2>
+      <p class="sec-text" set:html={nbHtml('Žingsnių tvarka ne atsitiktinė: svarbiausi – pirmieji. <!-- pažadas --> Minutės – mūsų pačių įvertis. <!-- M -->')} />
+      <ol class="path" role="list">
+        {steps.map(([label, text]) => (
+          <li><strong set:html={nbHtml(label)} /><span set:html={nbHtml(text)} /></li>
+        ))}
+      </ol>
+      <p class="sec-text" set:html={nbHtml('Kodėl kiekvienas žingsnis svarbus ir kur jis sustabdo sukčių, rasi <a href="/patikra/15-minuciu/#kodel">patikros puslapio gale</a>. <!-- pažadas -->')} />
+    </section>
+  </div>
+</Page>

@@ -1,0 +1,255 @@
+/* ------------------------------------------------------------------------------------
+   The document pages: /misija/, /apie/, /privatumo-pranesimas/, /kas-pasikeite/,
+   /saltiniai/, /zodynas/, /irankiai/. Pages to read, not to look things up on a shelf: calm,
+   one column of text at about 70 characters, the name of each section in the margin beside it
+   (above it on a phone), no art. Every class here starts with doc- so it cannot meet one of the
+   shelves' or the scenarios' (a shared name once pushed a head 18 px down).
+   Colour keeps its meaning: mint is the reader's move (a step to take, a stop, a tool to
+   choose), indigo is for links, and nothing here is coral.
+   ------------------------------------------------------------------------------------ */
+
+/* ---- The head ---- */
+
+.doc-head .doc-h1 {
+  font-size: clamp(2.2rem, 0.9rem + 5.6vw, 4.4rem);
+  line-height: 1.02;
+  overflow-wrap: break-word;
+}
+.doc-head .doc-lead { max-width: 38rem; font-size: clamp(1.1rem, 1.04rem + 0.35vw, 1.3rem); }
+
+/* ---- Sections: name in the margin, text beside it ---- */
+
+.doc { padding-bottom: var(--section); }
+
+.doc-sec {
+  display: grid;
+  gap: 0.75rem 3rem;
+  padding-block: 1.6rem 2rem;
+  border-top: 2px solid var(--line);
+}
+.doc-sec > h2 {
+  align-self: start;
+  font-size: clamp(1.5rem, 1.25rem + 0.9vw, 1.95rem);
+  line-height: 1.15;
+  overflow-wrap: break-word;
+}
+.doc-sec > h2 time { white-space: nowrap; }
+.doc-sec__body { min-width: 0; max-width: 38rem; }
+.doc-sec__body > * + * { margin-top: 1rem; }
+.doc-sec--wide > .doc-sec__body { max-width: none; }
+.doc-sec--wide > .doc-sec__body > p { max-width: 38rem; }
+
+@media (min-width: 60rem) {
+  .doc-sec {
+    grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+    padding-block: 2.25rem 3rem;
+  }
+  .doc-sec > h2 { position: sticky; top: 1.5rem; }
+  .doc-sec--wide { grid-template-columns: 1fr; }
+  .doc-sec--wide > h2 { position: static; }
+}
+
+/* ---- Text ---- */
+
+.doc-say {
+  font: 400 clamp(1.4rem, 1.15rem + 1vw, 1.85rem) / 1.3 var(--font-display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.doc-list { display: grid; gap: 0.6rem; padding-left: 1.25rem; list-style: disc; }
+.doc-list li::marker { color: var(--ink-2); }
+.doc-list--rule { gap: 0; padding-left: 0; list-style: none; }
+.doc-list--rule li { padding-block: 0.8rem; }
+.doc-list--rule li + li { border-top: 1px solid var(--line); }
+.doc-list--rule li:first-child { padding-top: 0.2rem; }
+
+.doc-small { color: var(--ink-2); font-size: var(--small); }
+
+/* Links that stand alone in a line get a full-size target. */
+.doc-links { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
+.doc-links li > a { display: flex; align-items: center; min-height: 2.75rem; padding-block: 0.3rem; font-weight: 700; }
+.doc-links--dot { gap: 0; }
+.doc-links--dot li + li::before { content: '·';
+  content: '·' / ''; margin-inline: 0.7rem; color: var(--ink-2); }
+.doc-links--dot li { display: flex; align-items: center; }
+
+/* ---- Ordered steps you take yourself: mint, because checking is your move ---- */
+
+.doc-steps { counter-reset: step; }
+.doc-steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 0.35rem 0 1.5rem 3.5rem;
+}
+.doc-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--mint);
+  color: #fff;
+  font: 400 1.2rem / 2.4rem var(--font-display);
+  text-align: center;
+}
+.doc-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 1.1rem;
+  top: 2.6rem;
+  bottom: 0.2rem;
+  width: 2px;
+  background: var(--line);
+}
+.doc-steps li:last-child { padding-bottom: 0; }
+
+/* ---- Labelled rows: a term, a source, a card ---- */
+
+.doc-dl { display: grid; gap: 1.1rem; }
+.doc-dl > div { display: grid; gap: 0.1rem; min-width: 0; }
+.doc-dl dt { color: var(--ink-2); font-size: 0.95rem; font-weight: 800; line-height: 1.4; }
+.doc-dl dd { margin: 0; }
+.doc-dl dd > p { margin: 0; }
+.doc-dl dd.is-link a { display: inline-block; padding-block: 0.65rem; overflow-wrap: anywhere; }
+.doc-dl dd.is-link { margin-block: -0.65rem; }
+.doc-dl dd::first-letter { text-transform: uppercase; }
+.doc-dl dd.is-link::first-letter { text-transform: none; }
+.doc-dl .is-plain dd { font-size: clamp(1.2rem, 1.1rem + 0.45vw, 1.4rem); line-height: 1.45; }
+.doc-dl .is-aside dd { color: var(--ink-2); font-size: var(--small); }
+.doc-dl .is-move {
+  padding: 0.8rem 1rem 0.9rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+}
+.doc-dl .is-move dt { color: var(--mint); }
+.doc-dl .is-src { padding-top: 0.9rem; border-top: 1px solid var(--line); }
+.doc-dl .is-src dd { color: var(--ink-2); font-size: var(--small); }
+
+.doc-why em { font-style: italic; font-weight: 700; }
+.doc-stop {
+  padding: 0.7rem 1rem 0.8rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+  font-size: var(--small);
+  line-height: 1.45;
+}
+.doc-stop strong { display: block; color: var(--mint); font-weight: 800; }
+
+/* ---- The glossary's index ---- */
+
+.doc-index { display: grid; gap: 0.5rem 1.5rem; padding-block: 0.5rem 1rem; }
+.doc-index a {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 3.25rem;
+  padding: 0.4rem 0.9rem 0.4rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.doc-index a::before {
+  content: attr(data-l);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 0.5rem;
+  background: var(--day-2);
+  color: var(--indigo);
+  font: 400 1.25rem / 1 var(--font-display);
+}
+.doc-index a:hover { border-color: var(--indigo); }
+@media (min-width: 40rem) { .doc-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60rem) { .doc-index { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ---- Tool cards ---- */
+
+.doc-cards { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+.doc-card {
+  max-width: 60rem;
+  padding: 1.25rem clamp(1rem, 2.5vw, 1.6rem) 1.15rem;
+  border: 1px solid var(--line);
+  border-top: 0.4rem solid var(--mint);
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #fff;
+}
+.doc-card h3 { margin-bottom: 1rem; font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem); }
+.doc-card .doc-dl { gap: 0.85rem; }
+.doc-card__checked {
+  margin-top: 1.1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+  font-size: var(--small);
+}
+@media (min-width: 52rem) {
+  .doc-card .doc-dl > div { grid-template-columns: 10.5rem minmax(0, 40rem); gap: 0 1.5rem; }
+  .doc-card .doc-dl dt { padding-top: 0.2rem; }
+}
+
+/* ---- The log ---- */
+
+.doc-log time {
+  display: block;
+  width: fit-content;
+  margin-bottom: 0.3rem;
+  padding: 0.05em 0.45em 0.1em;
+  border-radius: 0.4rem;
+  background: var(--day-2);
+  color: var(--indigo);
+}
+
+/* ---- The sources ---- */
+
+.doc-srcs { margin-top: 0.5rem; }
+.doc-src {
+  display: grid;
+  gap: 0.35rem 1.5rem;
+  padding-block: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+.doc-src__id { font: 400 1.6rem / 1.1 var(--font-display); color: var(--ink); }
+.doc-src__body { min-width: 0; max-width: 42rem; }
+.doc-src__body > * + * { margin-top: 0.55rem; }
+.doc-src__claim { line-height: 1.55; }
+/* The source sits inside the claim's paragraph (one block of text) but is set on its own line. */
+.doc-src__source { display: block; margin-top: 0.55rem; font-weight: 700; }
+.doc-src__label { color: var(--ink-2); font-weight: 800; font-size: 0.95rem; }
+.doc-src__source a { overflow-wrap: anywhere; }
+.doc-src__meta, .doc-src__used { color: var(--ink-2); font-size: var(--small); line-height: 1.5; }
+.doc-src__used a { display: inline-block; padding-block: 0.45rem; margin-block: -0.45rem; }
+.doc-src__kind {
+  display: inline-block;
+  padding: 0.05em 0.55em 0.1em;
+  border-radius: 0.3rem;
+  background: var(--day-3);
+  color: var(--ink);
+  font-weight: 800;
+}
+.doc-src__kind--second { background: var(--day-2); font-weight: 700; }
+@media (min-width: 52rem) {
+  .doc-src { grid-template-columns: 4.5rem minmax(0, 1fr); }
+}
+
+/* ---- On paper ---- */
+
+@media print {
+  .doc-head .doc-lead { font-size: 12pt; }
+  .doc-sec { break-inside: avoid-page; display: block; }
+  .doc-sec > h2 { position: static; margin-bottom: 0.5rem; }
+  .doc-src, .doc-card, .doc-dl > div { break-inside: avoid; }
+  .doc-card { background: #fff; border-color: #000; border-radius: 0; }
+  .doc-dl .is-move, .doc-stop { background: #fff; border-left-color: #000; }
+  .doc-steps li::before { background: #fff; border: 1px solid #000; color: #000; }
+  .doc-index a { background: #fff; border-color: #000; }
+}

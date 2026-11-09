@@ -1,0 +1,204 @@
+---
+/**
+ * Privatumas: the pillar for what is collected about you, what leaks, and your rights. The copy is
+ * docs/copy/temos/privatumas.md, word for word; the source tags stay as comments and the build
+ * strips them. Same template as the other pillars. The argument leads (every true detail he holds
+ * makes his call more believable), then what is collected, five steps, the reader's rights, and
+ * the /irankiai/ tools for whoever wants to go further.
+ */
+import Page from '../../../layouts/Page.astro';
+import PillarHead from '../../../components/PillarHead.astro';
+import PillarStage from '../../../components/PillarStage.astro';
+import Sides from '../../../components/Sides.astro';
+import PillarFoot from '../../../components/PillarFoot.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/shelf.css';
+import '../../../styles/scenario.css';
+import '../../../styles/pillar.css';
+
+const collected = [
+  ['Telefone.', 'Reklamavimo ID – numeris, pagal kurį programos ir reklamų tinklai gali tave atpažinti. <!-- F900 F904 M --> Programos dar prašo leidimų: vietovės, mikrofono, fotoaparato. <!-- F902 -->'],
+  ['Paskyrose.', '„Google“ gali saugoti tavo paieškų ir kitų paslaugų istoriją, o įjungus Laiko skalę – ir tikslią vietovę telefone. <!-- F906 F908 --> „Meta“ 2026 m. birželį paskelbė, kad kitų įmonių atsiųstą informaciją apie tavo veiklą naudos ir tam, ką matai sraute bei dirbtinio intelekto atsakymuose: pirma JAV ir keliose kitose šalyse, vėliau ir kitur. <!-- F910 --> Ar ir kada tai bus Lietuvoje, „Meta“ nenurodė. <!-- F910 -->'],
+  ['Nuotraukose.', 'Telefono fotoaparatas į nuotraukos failą gali įrašyti vietą, kur ji padaryta. <!-- F911 F912 --> Nuotrauka iš namų gali išduoti namų adresą. <!-- M -->'],
+  ['Įmonėse.', 'Parduotuvė, klinika, bankas ar registras laiko tavo duomenis, ir iš jų duomenys kartais nuteka. <!-- F921 F923 -->'],
+  ['Programėlėse, kurios rodo, kas skambina.', '„GetContact“ savo privatumo politikoje rašo, kad gavusi leidimą gali įkelti vardus ir telefono numerius iš tavo kontaktų knygos. <!-- F930 --> Tai ne tik tavo, bet ir tavo pažįstamų duomenys. <!-- M --> Neleisk prieigos prie kontaktų programėlėms, kurioms jos nereikia. <!-- F902 M -->'],
+];
+
+const steps = [
+  ['Naršyklė (2 min).', 'Reklamų blokatorius ir apsauga nuo stebėjimo. Kurią naršyklę ir priedą rinktis, rašome <a href="/temos/irenginiai/#kuri-rinktis">Įrenginiuose ir tinkle</a>. <!-- F127 F130 -->'],
+  ['Telefonas (3 min).', '„Android“: ištrink reklamavimo ID (žr. aukščiau), tada Nustatymai → „Sauga ir privatumas“ → „Privatumas“ → „Leidimų tvarkytuvė“. Vietovei, mikrofonui ir fotoaparatui rinkis „Leisti tik naudojant programą“ arba „Neleisti“. <!-- F900 F902 --> „Samsung“ ir kitų gamintojų telefonuose meniu gali vadintis kiek kitaip. <!-- M --> „iPhone“: išjunk sekimo prašymus (žr. aukščiau), tada Nustatymai → „Privatumas ir saugumas“ → „Apple“ reklama → išjunk „Individualizuota reklama“. <!-- F903 F905 --> Reklamų gali nesumažėti, bet jos mažiau remsis tavimi. <!-- F905 M -->'],
+  ['„Google“ paskyra (5 min).', 'Puslapyje myactivity.google.com išjunk „Paieškos paslaugų istorija“ (jei jos dar nematai – „Žiniatinklio ir programų veikla“: „Google“ nustatymus keičia palaipsniui) arba įjunk „Automatinis ištrynimas“, kad sena veikla trintųsi pati. <!-- F906 F907 --> Patikrink, ar išjungta „Laiko skalė“; pagal numatytuosius nustatymus ji išjungta. <!-- F908 --> „Mano skelbimų centre“ gali išjungti suasmenintus skelbimus. <!-- F909 -->'],
+  ['„Facebook“ ir „Instagram“ (3 min).', '„Meta“ šiuos nustatymus keičia. Jei dar matai „Your activity off Meta technologies“, ten gali atsieti kitų įmonių atsiųstą veiklą nuo savo paskyros; šis nustatymas nyksta. <!-- F910 --> Nustatyme „Activity from other businesses“ pasirink neleisti: tada „Meta“ šios informacijos nenaudos tau rodomoms reklamoms ir kitam turiniui, nors įmonės ją vis tiek siunčia. <!-- F910 --> Lietuviškų šių nustatymų pavadinimų neradome, todėl jų nespausdiname. <!-- F910 -->'],
+  ['Nuotraukų vieta (2 min).', '„Pixel“: Fotoaparatas → Nustatymai → Daugiau nustatymų → išjunk „Išsaugoti vietovę“. <!-- F911 --> „iPhone“: Nustatymai → „Privatumas ir saugumas“ → vietos nustatymo paslaugos (Location Services) → Fotoaparatas (Camera) → Niekada (Never). Lietuviškų šio kelio pavadinimų neradome. <!-- F912 --> Kituose telefonuose ieškok vietos žymėjimo fotoaparato nustatymuose. <!-- M -->'],
+];
+
+const rights = [
+  ['Paklausk.', 'Parašyk įmonei ir paprašyk susipažinti su savo duomenimis. <!-- F916 -->'],
+  ['Atsakymas – per mėnesį ir paprastai nemokamai.', '<!-- F913 F914 --> Sudėtingais atvejais terminą galima pratęsti dar dviem mėnesiams, bet apie tai tau turi būti pranešta per pirmąjį mėnesį. <!-- F913 -->'],
+  ['Paprašyk ištrinti.', 'Kai yra BDAR nurodytas pagrindas, gali reikalauti, kad tavo duomenys būtų ištrinti be nepagrįsto delsimo. <!-- F917 --> Ši teisė galioja ne visada, todėl įmonė gali ir atsisakyti, bet turi pasakyti kodėl. <!-- F915 F917 -->'],
+  ['Atsisakyk rinkodaros.', 'Gali bet kada nesutikti, kad tavo duomenys būtų naudojami tiesioginei rinkodarai, ir tada jie jai nebenaudojami. <!-- F918 --> Rinkodaros žinutėms SMS ar el. paštu paprastai reikia tavo išankstinio sutikimo; be jo gali rašyti nebent įmonė, iš kurios pirkai, apie panašias prekes ar paslaugas, ir tik jei leidžia nemokamai atsisakyti. <!-- F932 --> Atsisakyti rinkodaros SMS turi būti paprasta: VDAI atsakymą „STOP“ laiko tinkamu būdu, jei už jį nereikia mokėti. <!-- F931 --> Atsakyk tik į žinutę iš įmonės, kurios klientas esi; į įtartiną SMS neatsakyk. <!-- M -->'],
+  ['Jei neatsako ar atsisako.', 'Atsisakymą įmonė turi pagrįsti ir pasakyti, kad gali skųstis VDAI. <!-- F915 --> VDAI prašo pirma pabandyti išspręsti klausimą su pačia įmone, o tada teikti <a href="https://vdai.lrv.lt/lt/veiklos-sritys-1/skundu-nagrinejimas/">skundą</a>. <!-- F919 F115 --> 2026 m. gegužę VDAI pranešė, kad atskirų skundų dėl Registrų centro nutekėjimo nenagrinės, nes tyrimas jau pradėtas. <!-- F925 --> Jei tave apgavo, kreipkis į banką ir policiją – <a href="/jei-apgavo/">ką daryti</a>.'],
+];
+
+const tricks = [
+  ['Paskola tavo vardu', '/scenarijai/paskola-tavo-vardu/', 'nutekėję duomenys ir sandoriai, kurių nesudarei. <!-- F924 F567 -->'],
+  ['Skambutis iš „banko“', '/scenarijai/skambutis-is-banko/', 'skambintojas žino tavo vardą ir adresą, todėl atrodo tikras. <!-- F928 -->'],
+  ['Netikras laiškas iš „Sodros“, banko ar „Telia“', '/scenarijai/netikras-laiskas/', 'laiškas įstaigos vardu, ypač po žinios apie nutekėjimą. <!-- F924 M -->'],
+  ['Tavo slaptažodis nutekėjo', '/scenarijai/slaptazodis-nutekejo/', 'kita nutekėjimo pusė: slaptažodžiai. <!-- M -->'],
+  ['Grasina paviešinti', '/scenarijai/grasina-paviesinti/', 'kai sukčius grasina paviešinti tavo privačias nuotraukas. <!-- M -->'],
+  ['Programėlė iš nuorodos ar reklamos', '/scenarijai/programele-is-nuorodos/', 'programėlė, kuri prašo per daug leidimų. <!-- F902 M -->'],
+];
+
+const sides = [
+  ['Skambina žinodamas tavo vardą, adresą ar asmens kodą', 'Tai nieko neįrodo: nutrauk pokalbį ir skambink oficialiu numeriu. <!-- F927 F928 -->'],
+  ['Remiasi naujiena apie nutekėjimą', 'Netvirtink jokios netikėtos „Smart-ID“ užklausos. <!-- F583 F924 -->'],
+  ['Bando sudaryti sandorį tavo vardu', 'Pasak „Creditinfo“, vien asmens duomenų paskolai gauti nepakanka; ką daryti, rašome <a href="/scenarijai/paskola-tavo-vardu/">Paskoloje tavo vardu</a>. <!-- F567 -->'],
+  ['Naudojasi viskuo, kas apie tave sukaupta', 'Mažink, kas renkama: atjunk reklamavimo ID. <!-- F900 F903 M -->'],
+  ['Nuotrauka išduoda, kur gyveni', 'Išjunk vietą fotoaparate. <!-- F911 F912 -->'],
+];
+
+const helps = [
+  ['Mano „Google“ veikla', 'kur „Google“ paskyroje matyti ir ištrinti savo veiklą. <a href="https://myactivity.google.com/">myactivity.google.com</a>. <!-- F907 -->'],
+  ['VDAI skundai', 'kur kreiptis, jei įmonė neatsako. <a href="https://vdai.lrv.lt/lt/veiklos-sritys-1/skundu-nagrinejimas/">vdai.lrv.lt</a>. <!-- F919 -->'],
+  ['„Mullvad VPN“ ir „GrapheneOS“', 'mūsų <a href="/irankiai/#tinklas-ir-telefonas">įrankių</a> puslapyje. <!-- F950 F970 -->'],
+];
+
+const related = [
+  ['Kitos temos:', '<a href="/temos/irenginiai/">Įrenginiai ir tinklas</a>, <a href="/temos/slaptazodziai/">Slaptažodžiai</a>, <a href="/temos/kaip-veikia-atakos/">Kaip veikia atakos</a>'],
+  ['Kortelės:', '<a href="/sustok/padek-ragely/">Padėk ragelį</a>, <a href="/sustok/kodai-ir-pin/">Kodai ir PIN</a>'],
+  ['Jei jau atsitiko:', '<a href="/jei-apgavo/">Jei tave apgavo</a>'],
+];
+
+const sources = [
+  '„Google“ lietuviškai: reklamavimo ID, leidimai, veiklos istorija, Laiko skalė, skelbimų centras, „Pixel“ fotoaparato vieta. <!-- F900 F901 F902 F906 F907 F908 F909 F911 -->',
+  '„Apple“: sekimo leidimai, „Apple“ reklama, vietos duomenys nuotraukose. <!-- F903 F904 F905 F912 -->',
+  '„Meta“, 2026-06-08: veiklos kitose įmonėse nustatymų pakeitimai. <!-- F910 -->',
+  'BDAR (EUR-Lex, lietuviškai), 12, 15, 17 ir 21 straipsniai. <!-- F913 F914 F915 F916 F917 F918 -->',
+  'VDAI: skundai, 2025 m. ataskaita, 2026 m. I pusmečio apžvalga, tapatybės vagystė, rinkodara. <!-- F919 F921 F922 F923 F926 F931 F932 -->',
+  'LRT, 2026-05-22 – 2026-06-27: Registrų centro nutekėjimas, VDAI perspėjimas, „Telia“ ir „Luminor“ komentarai, bauda klinikai. <!-- F105 F923 F924 F925 F927 F928 -->',
+  '15min, 2026-05-28 („Creditinfo“ ir „Luminor“): nutekėję duomenys ir paskolos. <!-- F567 F583 -->',
+  '„GetContact“ privatumo politika, 2026-11-01. <!-- F930 -->',
+  '„Mullvad“, „Tailscale“, „GrapheneOS“, SK ID Solutions, NKSC, EFF: VPN ir telefono sistema. <!-- F950 F952 F962 F969 F970 F971 F975 F980 F981 F982 -->',
+];
+---
+<Page
+  title="Privatumas: ką apie tave renka ir kaip tai sumažinti – Suktas"
+  description="Kodėl kuo daugiau apie tave surinkta ar nutekėję, tuo įtikinamiau skamba sukčius, penki žingsniai per 15 minučių ir kaip paklausti įmonės, ką ji apie tave turi."
+  current="temos"
+>
+  <article class="scn topic">
+    <PillarHead
+      title="Privatumas"
+      lead="Kodėl tavo vardas, adresas ir asmens kodas yra sukčiaus žaliava, net jei jie ne paslaptis. <!-- F927 F928 M --> Kas apie tave renkama telefone, paskyrose ir nuotraukose, ir kaip tai sumažinti per penkiolika minučių. <!-- pažadas --> Ir kaip paklausti įmonės, ką ji apie tave turi. <!-- F916 -->"
+      actions={[
+        ['Visi penki žingsniai', '#zingsniai'],
+        ['Jei tave ką tik apgavo', '/jei-apgavo/', 'second'],
+      ]}
+    />
+
+    <section class="layer wrap" aria-labelledby="siandien">
+      <section class="move">
+        <h2 id="siandien">Vienas dalykas šiandien</h2>
+        <p class="move__line" set:html={nbHtml('Atjunk telefono reklamavimo ID.')} />
+        <p set:html={nbHtml('„Android“ telefone: Nustatymai → Privatumas → Skelbimai → „Ištrinti reklamavimo ID“ (kai kuriuose telefonuose Privatumas yra skiltyje „Sauga ir privatumas“). <!-- F900 F902 --> Programos vietoj jo gaus tik nulių eilutę. <!-- F901 --> „iPhone“: Nustatymai → „Privatumas ir saugumas“ → „Sekimas“ ir išjunk „Leisti programoms teikti sekimo prašymą“. <!-- F903 --> Užtrunka dvi minutes. <!-- M --> Reklamų nedings, bet jos nebesirems šiuo numeriu. <!-- F900 --> Skambučio, jei tavo duomenys jau nutekėję, tai nesustabdys; tada saugo viena taisyklė: tikslūs duomenys nieko neįrodo. <!-- M F928 -->')} />
+      </section>
+    </section>
+
+    <section class="part wrap" aria-labelledby="kodel">
+      <h2 id="kodel" class="layer__title">{nb('Kodėl privatumas – saugumo dalykas')}</h2>
+      <p class="part__intro" set:html={nbHtml('Sukčiui, kuris skambina „iš banko“, reikia vieno: kad patikėtum. <!-- M --> „Luminor“ rašo: kai sukčius jau žino tavo vardą, pavardę, adresą ar kitą asmeninę informaciją, jis gali atrodyti kur kas patikimesnis. <!-- F928 --> „Telia“ kibernetinio saugumo vadovas Darius Povilaitis sako, kad gavę asmens kodo, vardo, pavardės ir adreso rinkinį sukčiai geba kurti neįtikėtinai tikroviškas apgaulės schemas. <!-- F927 -->')} />
+      <p class="part__more" set:html={nbHtml('2026 m. gegužę iš Registrų centro galėjo būti nukopijuota daugiau nei 600 tūkst. įrašų. <!-- F105 --> Valstybinė duomenų apsaugos inspekcija (VDAI) tada perspėjo, kad piktavaliai naudojasi ir naujienomis apie incidentus, ir pačiais nutekėjusiais duomenimis: jie gali apsimesti Registrų centro, bankų, policijos, VMI ar „Sodros“ atstovais, antstoliais ar notarais. <!-- F924 --> Nutekėję tapatybės duomenys gali būti panaudoti bandant sudaryti sandorius tavo vardu. <!-- F924 --> Apie tai – mūsų scenarijus <a href="/scenarijai/paskola-tavo-vardu/">Paskola tavo vardu</a>.')} />
+      <p class="part__more" set:html={nbHtml('Ir tai ne vienintelis atvejis. 2025 m. VDAI gavo 223 pranešimus apie asmens duomenų saugumo pažeidimus, juose nurodyti 1 249 409 paveikti duomenų subjektai Lietuvoje (tas pats žmogus galėjo patekti į kelis pažeidimus). <!-- F921 M --> Vien 2026 m. pirmąjį pusmetį – 140 pranešimų ir 1 647 399 paveikti duomenų subjektai. <!-- F922 --> Birželį VDAI skyrė 450 tūkst. eurų baudą sveikatos priežiūros įmonei, kurios sistemose buvo užšifruoti beveik 400 tūkst. žmonių duomenys; prisijungimams iš išorės ji netaikė kelių veiksnių autentifikavimo. <!-- F923 -->')} />
+      <p class="part__more" set:html={nbHtml('Tavo duomenys gali nutekėti ne dėl tavo kaltės. <!-- M --> Todėl tau lieka du dalykai: kuo mažiau apie save išdalinti ir neleisti, kad tikslūs duomenys skambintojo lūpose taptų įrodymu. <!-- F926 F928 -->')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="kas-renkama">
+      <h2 id="kas-renkama" class="layer__title">{nb('Kas apie tave renkama')}</h2>
+      <ul class="good" role="list">
+        {collected.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="part wrap" aria-labelledby="zingsniai">
+      <h2 id="zingsniai" class="layer__title">{nb('Penki žingsniai per 15 minučių')}</h2>
+      <ol class="signs ladder" role="list">
+        {steps.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="part wrap" aria-labelledby="teises">
+      <h2 id="teises" class="layer__title">{nb('Tavo teisės: paklausk, ką apie tave turi')}</h2>
+      <p class="part__intro" set:html={nbHtml('Įmonė, kuri tvarko tavo duomenis, paprašius privalo pasakyti, ar juos tvarko, ir leisti su jais susipažinti. <!-- F916 --> Tai nustato Bendrasis duomenų apsaugos reglamentas (BDAR). <!-- F916 -->')} />
+      <ul class="good" role="list">
+        {rights.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="part wrap" aria-labelledby="toliau">
+      <h2 id="toliau" class="layer__title">{nb('Jei nori eiti toliau')}</h2>
+      <p class="part__intro" set:html={nbHtml('<strong>VPN.</strong> Jis užšifruoja tavo interneto srautą, kad interneto tiekėjas nematytų, ką darai, bet net „Mullvad“ rašo, kad privatumui vien VPN neužtenka. <!-- F950 --> Viešame „Wi-Fi“ NKSC (2020 m.) pataria banko ir kitoms svarbioms operacijoms naudoti savo mobilųjį internetą arba VPN. <!-- F981 --> JAV organizacija EFF rašo, kad VPN reklamos jų naudą smarkiai perdeda, o programėlė oficialioje parduotuvėje dar nereiškia, kad ji patikima. <!-- F982 --> „Mullvad“, kuri pati parduoda VPN, rašo, kad „nemokamos“ paslaugos beveik visada kažkiek kainuoja, pavyzdžiui, tavo duomenimis. <!-- F952 --> „Tailscale“ – ne privatumo VPN: pagal numatytuosius nustatymus jis jungia tik tavo įrenginius, o su „Mullvad“ priedu nėra anoniminis. <!-- F962 F969 M --> Plačiau – <a href="/irankiai/mullvad/">„Mullvad“</a> ir <a href="/irankiai/tailscale/">„Tailscale“</a>.')} />
+      <p class="part__more" set:html={nbHtml('<strong>Telefonas.</strong> „GrapheneOS“ – privatumui ir saugumui skirta telefono sistema be „Google“ paslaugų, su kuria veikia „Android“ programėlės, bet ji tinka tik „Pixel“ telefonams. <!-- F970 F971 --> „Google Play“ joje galima įsidiegti atskirai, be jokių ypatingų teisių. <!-- F975 --> Prieš keičiant sistemą verta žinoti, kad „Smart-ID“ neveikia telefone su „root“ teisėmis ir gali nepraeiti saugumo patikros, jei telefono nustatymai atrodo neįprasti; „Smart-ID“ apie „GrapheneOS“ nieko nerašo. <!-- F980 --> Plačiau – <a href="/irankiai/grapheneos/">„GrapheneOS“</a>.')} />
+    </section>
+
+    <section class="part wrap" aria-labelledby="triukai">
+      <h2 id="triukai" class="layer__title">Triukai, kuriuos čia matome</h2>
+      <ul class="cards" role="list">
+        {tricks.map(([title, href, text]) => (
+          <li class="tcard">
+            <h3><a href={href}>{nb(title)}</a></h3>
+            <p class="tcard__text" set:html={nbHtml(text)} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <PillarStage note="Šis sluoksnis uždarytas ir atsidaro paspaudus. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Kaip jis tai daro, čia nerašome. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.">
+      <div class="row">
+        <h3>Ko jis nori</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Kad patikėtum, jog jis – tavo bankas, įstaiga ar kurjeris. <!-- M --> Tikri duomenys apie tave tam – trumpiausias kelias. <!-- F927 F928 --> <strong class="stop">Sustabdymo vieta:</strong> tai, kad jis žino tavo vardą ar adresą, nieko neįrodo – nutrauk pokalbį ir paskambink oficialiu numeriu. <!-- F928 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Ką jis apie tave žino</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Tai, kas nutekėjo iš įmonių, ir tai, ką paskelbei viešai. <!-- F924 M --> O kuo daugiau apie tave sukaupta programėlėse ir reklamų tinkluose, tuo daugiau gali nutekėti. <!-- M --> VDAI rašo, kad užtenka vos vardo, adreso ir gimimo datos, kad būtų galima sukurti kitą „tave“. <!-- F926 --> <strong class="stop">Sustabdymo vieta:</strong> kuo mažiau apie save išdalini, tuo mažiau jis turi. <!-- F926 -->')} />
+        </div>
+      </div>
+      <div class="row">
+        <h3>Kodėl tai veikia</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Žmogus, kuris žino tikslius duomenis, atrodo kaip tas, kuris turi teisę juos žinoti. <!-- F927 M --> O naujiena apie nutekėjimą jam – proga paskambinti ar parašyti. <!-- F924 F583 --> Veikia <a href="/temos/kaip-veikia-atakos/">autoritetas ir skuba</a>. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> oficialios institucijos telefonu, SMS žinute ar el. paštu neprašo atskleisti prisijungimo kodų, banko slaptažodžių ar patvirtinti finansinių operacijų. <!-- F924 -->')} />
+        </div>
+      </div>
+      <Sides heads={['Jo triukas', 'Tavo atsakymas']} rows={sides} />
+      <div class="row row--last">
+        <h3>Ko čia nerasi</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+        </div>
+      </div>
+    </PillarStage>
+
+    <section class="part wrap" aria-labelledby="padeda">
+      <h2 id="padeda" class="layer__title">Padeda</h2>
+      <ul class="good" role="list">
+        {helps.map(([head, text]) => (
+          <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+        ))}
+      </ul>
+    </section>
+
+    <PillarFoot
+      related={related}
+      intro="Patikrinta: 2026-11-07. Faktai surašyti <a href='/saltiniai/'>Šaltiniuose</a>:"
+      sources={sources}
+    />
+  </article>
+</Page>

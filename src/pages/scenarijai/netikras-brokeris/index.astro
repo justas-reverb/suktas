@@ -1,0 +1,212 @@
+---
+/**
+ * Scenarijus: forma internete, paskui skambina „brokeris“. The copy is
+ * docs/copy/scenarijai/netikras-brokeris.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Užpildei formą, o skambina „brokeris“');
+const meta = [
+  ['Kanalas', 'forma internete, skambutis, „Telegram“'],
+  ['Ko jis nori', 'kad „investuotum“ vis daugiau'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Investuoti siūlo žmogus, kuris pats skambina ar rašo.', 'Bankų asociacija sako, kad finansų įstaigos atsitiktinių pasiūlymų investuoti telefonu neteikia. <!-- F468 --> Forma paaiškina, iš kur jis turi tavo numerį, bet neįrodo, kas jis. <!-- M --> Dažnai kalbama rusiškai, tačiau tai, kad skambinantysis kalba lietuviškai, irgi nieko neįrodo. <!-- F460 F470 -->'],
+  ['Mažas „bandymas“ ir greitas pelnas.', 'Lietuvos bankas rašo, kad po gan trumpo laiko, pavyzdžiui, po savaitės, paskyroje rodomi labai pelningi rezultatai, ir priduria: „Jie netikri“. <!-- F462 --> Net pervesta „grąža“ nieko neįrodo: SEB rašo, kad sukčiai ją kartais perveda. <!-- F471 -->'],
+  ['Liepia įsidiegti programą, o atsiimti pinigus leidžia tik susimokėjus.', 'Prašymą įsidiegti „AnyDesk“ Pinigų plovimo prevencijos kompetencijų centro atstovė vadina ypač pavojingu signalu. <!-- F464 --> 2025 m. policija pranešė apie 70 metų vilnietį: sukčiai nuotoline programa prisijungė prie vyro kompiuterio ir „padėjo“ investuoti netikroje platformoje; per pusmetį vyras neteko 235 tūkst. eurų. <!-- F694 --> Jei atsiimti neleidžia, o spaudžia investuoti daugiau, tu jau sukčių spąstuose, sako Lietuvos bankas. <!-- F465 F348 -->'],
+];
+
+const steps = [
+  '<strong>Daugiau nė cento ir jokių pokalbių su juo,</strong> kad ir ką žadėtų: neatsakyk į jo skambučius ir žinutes. <!-- F466 F351 F190 --> Mokestis už atsiėmimą yra ta pati apgaulė: net jį sumokėjus pinigų atgauti nepavyks. <!-- F353 -->',
+  '<strong>Įdiegei jo programą ir leidai valdyti įrenginį?</strong> Pirma išjunk „Wi-Fi“ ir mobiliuosius duomenis, o bankui skambink iš kito, saugaus įrenginio (jei kito neturi, iš artimojo telefono) ir pasakyk, kokią prieigą suteikei. <!-- F305 M --> Žingsniai: <a href="/jei-apgavo/#nuotolinis">Įdiegiau programą</a>, <a href="/scenarijai/parodyk-ekrana/">„Parodyk ekraną“</a>.',
+  '<strong>Skambink bankui</strong> (ar kitai įstaigai, per kurią mokėjai) numeriu iš oficialios programėlės ar svetainės ir prašyk sustabdyti pavedimus. <!-- F13 F474 --> Lietuvos bankas sako, kad kai kuriais atvejais tai dar įmanoma. <!-- F474 --> Kuo anksčiau, tuo geriau, ir skambink, net jei pervedei seniau. <!-- M --> Papasakok viską, ir ką jis liepė sakyti. Jungeisi prie banko kartu su juo ar davei prisijungimo duomenis? Pasakyk ir tai. <!-- F464 F466 M -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt ir išsaugok, ką turi: susirašinėjimą, platformos adresą, jo numerį. <!-- F2 M --> Apie tą svetainę <a href="https://www.lb.lt/lt/pakliuvau-sukciams-ka-daryti">pranešk ir Lietuvos bankui</a>: Lietuvos bankas gali blokuoti neteisėtas investavimo svetaines. <!-- F474 F190 -->',
+  '<strong>Pasakyk artimam žmogui.</strong> Iš vidaus viską objektyviai įvertinti sunku, ypač kai tai trunka ilgai. <!-- F466 -->',
+  '<strong>Nemokėk tiems, kas siūlo pinigus susigrąžinti.</strong> Lietuvos bankas sako, kad tai dar viena apgaulė. <!-- F14 F15 --> SEB rašo apie klientą, į sukčių pinkles patekusį šešis kartus: bent pusė atvejų buvo pažadai padėti susigrąžinti pinigus. <!-- F475 --> Plačiau: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>.',
+];
+
+const levers = [
+  ['Nauda.', 'Pelnas ekrane priverčia skaičiuoti, o ne abejoti. <!-- F461 F462 M -->'],
+  ['Autoritetas.', 'Žodis „brokeris“, profesionali platforma, vaizdo skambučiai atrodo kaip įrodymas. <!-- F461 F467 F471 M -->'],
+  ['Skuba.', 'Pasiūlymas esą galioja tik iki rytojaus. <!-- F472 M -->'],
+  ['Gėda.', 'Po nuostolio norisi tylėti. Norą viską atgauti dar vienu mokėjimu Lietuvos bankas vadina sunkiai prarastų sąnaudų klaida. <!-- F348 F350 M -->'],
+];
+
+const sides = [
+  ['Skambina, nes palikai numerį formoje', 'Forma neįrodo, kas jis. Padėk ragelį ir įmonę patikrink Lietuvos banko sąraše. <!-- F118 M -->'],
+  ['„Pabandyk nuo 100 eurų“', 'Maža suma ir yra kabliukas. Nepervesk nė jos. <!-- F461 M -->'],
+  ['Didelis pelnas be rizikos', 'Lietuvos bankas: „Didelės grąžos be rizikos nebūna.“ Normalus uždarbis, rašo bankas, dažnai yra 5–10 % per metus, ir tai ne pažadas. Kas žada daugiau be rizikos, tam nepervesk. <!-- F104 F473 M -->'],
+  ['Pelnas auga platformoje', 'Lietuvos bankas sako, kad tokie rezultatai netikri. Skaičius ekrane nėra pinigai: daugiau nepervesk. <!-- F462 M -->'],
+  ['Pervedė dalį pinigų atgal', 'Tai dar neįrodo, kad platforma tikra: taip kuriamas pasitikėjimas. Daugiau nepervesk ir patikrink įmonę. <!-- F465 F471 M --> Plačiau: <a href="/zodynas/piramide/">Kas yra finansinė piramidė</a>.'],
+  ['Pasiūlymas galioja tik šiandien', 'Skubinimas yra ženklas, ne priežastis. Padėk ragelį ir patikrink įmonę. Lietuvos banko atstovas sako, kad rimtos bendrovės niekada nesiūlo didelio pelno be rizikos. <!-- F472 M -->'],
+  ['Viskas tik žodžiu, per „Telegram“, „WhatsApp“ ar „Viber“', 'SEB: dokumentai turi būti raštu ir valstybine kalba. Centro atstovė: tikros investicijos per „WhatsApp“ ar „Viber“ nevyksta, o skambutis per tokias programėles turi kelti įtarimą. Padėk ragelį. <!-- F471 F470 M --> Kaip tai vyksta „Telegram“ grupėse: <a href="/scenarijai/investicijos-telegram/">Reklama kviečia į „Telegram“, o ten auga „pelnas“</a>. <!-- F740 -->'],
+  ['Prašo įsidiegti programą ar kartu prisijungti prie banko', 'Neįsidiek ir nesijunk: Bankų asociacija sako, kad taip jis pats atlieka pavedimus. <!-- F464 -->'],
+  ['Ragina pasiskolinti', 'Lietuvos bankas: „Jokiu būdu neinvestuokite skolintų lėšų!“ <!-- F473 -->'],
+  ['Moko, ką sakyti bankui', 'SEB: joks finansų brokeris nemokys, kaip kalbėti su banko specialistais. Papasakok bankui viską. <!-- F471 M -->'],
+  ['Prašo niekam nesakyti', 'Tai gali būti ženklas, kad jis sukčius, sako SEB. Pasitark su artimu žmogumi. <!-- F471 F466 -->'],
+  ['Kad atsiimtum, reikia sumokėti mokestį', 'Nemokėk. Net sumokėjus pinigų atgauti nepavyks. <!-- F351 F353 -->'],
+  ['Skambina „teisininkas“ ir siūlo susigrąžinti pinigus', 'Kas geriau žino tavo nuostolį, jei ne patys sukčiai ar su jais susiję žmonės? Nemokėk. <!-- F466 F14 F15 -->'],
+];
+
+const sources = [
+  'SEB (2024-10-07, 2023-10-23): formos ir skambučiai, sukčiai, apsimetantys brokeriais, pervedama „grąža“, dokumentai, aukų duomenys. <!-- F458 F471 F475 -->',
+  'Policija (tv3.lt, 2026-10-31; LRT, 2026-09-25 ir 2026-10-23; Kauno diena, 2026-07-01; tv3.lt, 2025-08-30): atvejai. <!-- F459 F460 F694 -->',
+  'Živilė Kielienė, Pinigų plovimo prevencijos kompetencijų centras (15min, 2026-09-10; LRT, 2025-08-29): kaip schema auga, ko klausia, ką daryti, sumos. <!-- F461 F463 F464 F465 F466 F467 F470 -->',
+  'Lietuvos bankas (2017-07-28, 2020-02-12, 2020-06-03, 2023-07-03, 2024-10-28, 2025-12-15, 2026-03-27, 2026-04-14, 2026-04-16, 2026-07-30): netikri rezultatai, kas gali teikti paslaugas, finansų rinkos dalyvių sąrašas, mokesčiai, skolintos lėšos, ką daryti, antras apgavimas. <!-- F14 F15 F104 F118 F190 F348 F350 F351 F462 F465 F467 F469 F473 F474 -->',
+  'Lietuvos bankų asociacija (2022-10-27, 2023-12-15, 2024-10-11): programos, grąžinama dalis pinigų, skolinimasis, pasiūlymai telefonu. <!-- F464 F465 F467 F468 F472 -->',
+  '„Swedbank“: mokesčiai pinigų negrąžina (be datos); apie 2 % atgauta (aina.lt, 2025-08-28). <!-- F353 F194 -->',
+  '„Luminor“ (alkas.lt, 2026-10-28): programa ir ryšio išjungimas. <!-- F305 -->',
+  'Lietuvos bankas (2021-07-09): su banku susisiek oficialiais kanalais; policija (2026-02-05, atnaujinta 2026-04-23): epolicija.lt. <!-- F13 F2 -->',
+];
+---
+<Page
+  title="Investiciniai sukčiai: skambina „brokeris“ – Suktas"
+  description="Užpildei formą apie investavimą, o dabar skambina „brokeris“ ir siūlo pradėti nuo 100 eurų? Trys ženklai ir vienas ėjimas."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-07</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Internete pamatai kvietimą sužinoti, kaip pelningai investuoti, ir užpildai formą. <!-- F458 F459 --> Paskui skambina nepažįstamas žmogus, „brokeris“ ar „konsultantas“. <!-- F458 F459 F467 --> Būna, kad skambutis ateina ir be jokios formos. <!-- F460 -->')} />
+          <p set:html={nbHtml('Jis siūlo pradėti nuo nedidelės sumos, 100 ar 250 eurų. <!-- F461 --> Profesionaliai atrodančioje platformoje ima augti „pelnas“, o jis nuolat skambina ir ragina pervesti daugiau. <!-- F461 --> Kai nori pinigus atsiimti, atsiranda „mokesčiai“: sumokėk dar šiek tiek, ir atsiimsi viską. <!-- F465 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį ir patikrink įmonę. <!-- F466 M -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.')} />
+        <p set:html={nbHtml('Jei niekur nesikreipei, o nepažįstamas žmogus skambina, siūlo investuoti ir žada didelę grąžą, centro atstovė sako aiškiai: tai sukčiai. <!-- F466 -->')} />
+        <p set:html={nbHtml('Ar įmonė turi leidimą teikti investicines paslaugas, patikrink <a href="https://www.lb.lt/lt/finansu-rinku-dalyviai">Lietuvos banko finansų rinkos dalyvių sąraše</a>, o ne per jo atsiųstas nuorodas. <!-- F118 F466 --> Sukčiai gali prisistatyti ir žinomų bendrovių atstovais, todėl pavadinimas sąraše dar neįrodo, kad skambino būtent ši įmonė. <!-- F467 M --> Jei sąraše jos nėra, nepervesk, net jei jis sako, kad leidimą turi iš kitos ES šalies: pasitark su savo banku ar policija. <!-- F469 F466 M --> Jei įmonė sąraše yra, susisiek su ja oficialiais kontaktais, ne jo duotu numeriu ar nuoroda. <!-- M -->')} />
+        <p set:html={nbHtml('<strong>Jei tik užpildei formą,</strong> pinigai dar tavo. <!-- M --> SEB rašo, kad šie sukčiai neretai dalijasi savo aukų duomenimis, tad tavo numeris gali keliauti toliau. <!-- F475 M --> Paskambins dar kartą – vėl padėk ragelį. <!-- M --> Į formą įvedei kortelės ar banko duomenis? Iškart skambink bankui numeriu iš oficialios programėlės ar svetainės. <!-- F13 M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau pervedei pinigus</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Veik iškart:')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Pažadėti negalime: „Swedbank“ paskelbtais Pinigų plovimo prevencijos kompetencijų centro duomenimis, 2025 m. pirmąjį pusmetį iš visos investavimo apgaulių žalos susigrąžinta apie 2 %. Tai bendras skaičius, ne tavo šansas, ir bankui skambinti vis tiek verta. <!-- F194 M -->')} />
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Kad pinigus pervestum tu, ir ne vieną kartą. <!-- F461 M --> Maža pradinė suma, sako centro atstovė Živilė Kielienė, yra būdas įgyti pasitikėjimą ir tik tada išvilioti gerokai daugiau; 100 ar 250 eurų „pabandymas“ gali virsti dešimčių ar net šimtų tūkstančių eurų nuostoliais. <!-- F461 --> 2026 m. policija pranešė apie tokius atvejus: žmogui internete „užpildžius skelbimą“ apie investicines paslaugas (suprantame, kad tai forma), su juo susisiekė nepažįstamieji. 1942 m. gimusi moteris neteko apie 20 tūkst. eurų, kita gyventoja 35,6 tūkst., 1969 m. gimęs vyras 100 tūkst. <!-- F459 F458 M --> Centro duomenimis, 2025 m. dėl investicinio sukčiavimo gyventojai prarado daugiau kaip 4 mln. eurų; rūšys gali persidengti, pavyzdžiui, telefoninis sukčiavimas gali būti tokios schemos dalis. <!-- F467 M --> <strong class="stop">Sustabdymo vieta:</strong> kiekvienas pavedimas. Sustoti galima ir po dešimto. <!-- F466 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Iš formos – tai, ką įrašei, ir tai, kad domiesi investavimu. <!-- F458 M --> Kitką sužino kalbėdamas: klausia apie santaupas ir pajamas, vertina, ar tu gali pasiimti paskolą, ar turi ką parduoti, ar gali iš ko pasiskolinti. <!-- F463 --> <strong class="stop">Sustabdymo vieta:</strong> nepažįstamam žmogui telefonu nesakyk, kiek turi ir kiek uždirbi. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Forma padeda jam labiausiai: skambutis nebeatrodo netikėtas. <!-- M --> Be to, jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> skaičius platformoje nėra pinigai. Net tai, kas grįžo į tavo sąskaitą, neįrodo, kad likusieji yra tikri. <!-- F462 F471 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/piramide/">{nb('Kas yra finansinė piramidė')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/padesime-atsiimti-pensija/">{nb('„Padėsime atsiimti pensiją“')}</a>, <a href="/scenarijai/parodyk-ekrana/">{nb('„Parodyk ekraną“')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a>, <a href="/scenarijai/prekybos-kursai-ir-signalai/">{nb('Prekybos kursai ir signalai už pinigus')}</a>, <a href="/scenarijai/investicijos-telegram/">{nb('Reklama kviečia į „Telegram“, o ten auga „pelnas“')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-07. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

@@ -1,0 +1,80 @@
+---
+/**
+ * Temos: the map of pillars. The copy is docs/copy/temos/index.md, word for word; the source tags
+ * stay as comments and the build strips them. The key is the one stage band (his plan); the
+ * pillars below are cards of his, grouped by what he is after. A pillar that is not written yet
+ * is a dashed line of words, never a link.
+ */
+import Page from '../../layouts/Page.astro';
+import ArtBand from '../../components/ArtBand.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+
+const targets = [
+  ['Tavęs', [
+    ['Apgaulė ir sukčiavimas', '/temos/apgaule/', 'triukai, kuriais sukčius apgauna žmogų: skambutis, žinutė, reklama. Čia rasi penkis scenarijus (skambutį iš „banko“, skambutį iš „policijos“, žinutę su nuoroda, žinutę su kodu ir reklamą su žinomu veidu), vieną veiksmą šiandien – sustoti dešimčiai sekundžių – ir lentelę, kur kiekvieną triuką sustabdyti. <!-- pažadas -->'],
+    ['Socialinė inžinerija', '/temos/socialine-inzinerija/', 'kas tai yra ir kodėl tarp NKSC registruojamų incidentų ji dažniausia. Čia: kokių formų ji būna (nuo skambučio iš „banko“ iki laiško darbe neva nuo direktoriaus), kaip ją atpažinti ir koks vienas ėjimas sustabdo daugumą jų. <!-- F651 pažadas -->'],
+    ['Ką apie tave žino svetimas', null, 'Bus apie tai, ką svetimas gali sudėti apie tave pagal tavo vardą ir paskyras ir kaip tai patikrinti bei sumažinti; tik apie tave, ne apie kitus. <!-- pažadas -->'],
+  ]],
+  ['Tavo paskyros', [
+    ['Slaptažodžiai ir prieigos raktai', '/temos/slaptazodziai/', 'kaip uždaryti duris, kurias jis bando atidaryti. Čia: kas dabar laikoma gera slaptažodžio praktika (ilgis svarbiau už simbolių mišinį), kodėl pirmiausia reikia saugoti el. paštą, kokia tvarka rinktis antrą prisijungimo žingsnį – prieigos raktą, programėlę ar SMS – ir du scenarijai: nutekėjęs slaptažodis ir žinutė su kodu. <!-- pažadas -->'],
+    ['Privatumas', '/temos/privatumas/', 'kas apie tave renkama ir kaip to sumažinti. Čia: kodėl tavo vardas, adresas ir asmens kodas yra sukčiaus žaliava, penki žingsniai per 15 minučių telefonui, paskyroms ir nuotraukoms ir kaip paklausti įmonės, ką ji apie tave turi. <!-- pažadas -->'],
+  ]],
+  ['Tavo įrenginio ir tinklo', [
+    ['Įrenginiai ir tinklas', '/temos/irenginiai/', 'kas į tavo telefoną ar kompiuterį ateina nekviesta. Čia: kodėl reklamų blokatorius – saugumo, o ne patogumo dalykas, ir kurį rinktis, kaip naršyklė saugo nuo sekimo, kodėl neatidaryti nuorodų ir failų iš nepažįstamų ir trys dalykai įrenginiui: atnaujinimai, ekrano užraktas ir maršrutizatorius. <!-- pažadas -->'],
+  ]],
+];
+---
+<Page
+  title="Sukčių apgaulės pagal tai, ko jie siekia – Suktas"
+  description="Temų žemėlapis pagal tai, ko siekia sukčius: tavęs, tavo paskyros ar tavo įrenginio. Pradėk nuo rakto, kaip jis galvoja."
+  current="temos"
+>
+  <section class="shead shead--plain" aria-labelledby="h1">
+    <div class="wrap shead__body">
+      <h1 id="h1">{nb('Temos')}</h1>
+      <p class="shead__lead" set:html={nbHtml('Kiekviena tema – vieta, kurioje surinkti scenarijai, vienas veiksmas šiandien ir žvilgsnis iš sukčiaus pusės. <!-- pažadas --> Temos sugrupuotos pagal tai, ko jis siekia: tavęs, tavo paskyros ar tavo įrenginio. <!-- pažadas --> Pirmiausia – raktas į visas.')} />
+      <div class="shead__actions">
+        <a class="btn" href="/temos/kaip-veikia-atakos/">{nb('Skaityk, kaip jis galvoja')}</a>
+        <a class="btn btn--sos" href="/jei-apgavo/">{nb('Jei tave ką tik apgavo')}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="key" aria-labelledby="raktas">
+    <ArtBand mood="stage" class="key__art" sizes="(min-width: 60rem) 55vw, 120vw" />
+    <div class="wrap key__in">
+      <h2 id="raktas">{nb('Raktas į visas temas')}</h2>
+      <p class="key__title"><a href="/temos/kaip-veikia-atakos/">{nb('Kaip veikia atakos')}</a></p>
+      <p class="key__text" set:html={nbHtml('penki žingsniai, iš kurių susideda beveik kiekvienas triukas, penki kabliukai, kuriais jis gaudo, ir grandinė, pagal kurią vyksta techninė ataka: nutekėjimas, pakartotinis naudojimas, perėmimas, kita paskyra. Čia aprašyta vieną kartą, o scenarijai tik nukreipia čia. <!-- pažadas -->')} />
+    </div>
+  </section>
+
+  <section class="aims wrap" aria-labelledby="siekia">
+    <h2 id="siekia">{nb('Ko jis siekia')}</h2>
+    <div class="targets">
+      {targets.map(([name, items]) => (
+        <section class="target" aria-labelledby={`t-${name}`}>
+          <h3 id={`t-${name}`}>{nb(name)}</h3>
+          <ul role="list">
+            {items.map(([title, href, text]) => href ? (
+              <li class="tcard pillar">
+                <h4><a href={href}>{nb(title)}</a></h4>
+                <p class="tcard__text" set:html={nbHtml(text)} />
+              </li>
+            ) : (
+              <li class="soon"><strong set:html={nbHtml(title)} /> <span>{nb('netrukus.')}</span> <span set:html={nbHtml(text)} /></li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </section>
+
+  <section class="shelf wrap" aria-labelledby="nuo-ko">
+    <h2 id="nuo-ko" class="sec">{nb('Nuo ko pradėti')}</h2>
+    <p class="sec-text" set:html={nbHtml('Nežinai, kurią temą rinktis? Pradėk nuo <a href="/temos/kaip-veikia-atakos/">rakto</a>: jis vieną kartą paaiškina, kaip sukčius galvoja, o kitos temos tik nurodo atgal. <!-- pažadas --> Tada rinkis pagal tai, kas neramina: jei tau skambina ir rašo – <a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>, jei bijai dėl paskyrų – <a href="/temos/slaptazodziai/">Slaptažodžiai ir prieigos raktai</a>, jei dėl to, kiek apie tave surinkta – <a href="/temos/privatumas/">Privatumas</a>, jei dėl telefono ar kompiuterio – <a href="/temos/irenginiai/">Įrenginiai ir tinklas</a>. <!-- pažadas -->')} />
+    <p class="sec-text" set:html={nbHtml('Kiekvienoje temoje yra vienas dalykas, kurį gali padaryti šiandien. <!-- pažadas --> Joje yra ir uždarytas sluoksnis „Kaip tai daro jis“, kuris atsidaro paspaudus: tik tai, ko jis nori ir kodėl jam pavyksta, be įrankių ir be instrukcijų. <!-- pažadas --> Nori ne skaityti, o ką nors padaryti dabar? Eik į <a href="/patikra/15-minuciu/">Patikrą per 15 minučių</a>. <!-- pažadas -->')} />
+    <p class="sec-text" set:html={nbHtml('Jei tai jau nutiko, temos palauks: pirmiausia – <a href="/jei-apgavo/">Jei tave apgavo</a>. <!-- pažadas -->')} />
+  </section>
+</Page>

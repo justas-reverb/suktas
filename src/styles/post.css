@@ -1,0 +1,160 @@
+/* ------------------------------------------------------------------------------------
+   The post pages: /pranesk/, /triukai/ and a weekly letter (triukai.css). Pages about writing to us and
+   being written to, so the one image is mail: a painted stamp and postmark (tools/paint-post.mjs) and an
+   airmail-striped envelope, in the site's colours. Colour keeps its meaning: mint is the reader's move,
+   indigo is the page's own ink, the stage is his plan (letters only), and coral is the emergency and
+   nothing else: here it is the line sending someone already caught to /jei-apgavo/. Classes start with
+   post-, pk- (the report box) or tl-/tk- (triukai.css), so none meets another page's.
+   ------------------------------------------------------------------------------------ */
+
+/* ---- The head: the name, a few words, the buttons; the stamp above on a phone, beside on a wide screen ---- */
+
+.post-head__body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem 2rem; }
+.shead .post-head__stamp {
+  justify-self: end;
+  width: 8rem;
+  height: auto;
+  max-width: none;
+  aspect-ratio: 200 / 150;
+  margin-bottom: -0.25rem;
+}
+.shead .post-head__text { max-width: 40rem; min-width: 0; }
+.shead .post-h1 {
+  font-size: clamp(2.4rem, 1.2rem + 4.8vw, 4.8rem);
+  line-height: 1.03;
+  overflow-wrap: break-word;
+}
+.post-h1__pre {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--indigo);
+  font: 800 var(--small) / 1.3 var(--font-text);
+  letter-spacing: 0;
+}
+.post-lead a { font-weight: 700; }
+
+/* with the rings behind the head, the stamp sits in the band on a phone instead of adding a row */
+@media (max-width: 45.99rem) {
+  .post-head--art .post-head__stamp { position: absolute; top: -5.4rem; right: var(--pad); margin: 0; }
+}
+
+@media (min-width: 46rem) {
+  .post-head__body { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  .shead .post-head__stamp { grid-column: 2; grid-row: 1; width: 12.5rem; margin: 0; }
+  .shead .post-head__text { grid-column: 1; grid-row: 1; }
+}
+
+/* the head of a letter sits in the sheet's column; the stamp is the sheet's (triukai.css) */
+.shead.post-head--col .post-head__body { max-width: calc(44rem + 2 * var(--pad)); padding-bottom: 0.25rem; }
+@media (min-width: 46rem) {
+  .shead.post-head--col .post-head__body { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* under a strip the band's top edge thins out too, so it has no edge to meet the strip's */
+.shead.post-head--fade .shead__art::after {
+  background:
+    linear-gradient(to bottom, var(--day) 0, rgb(243 242 251 / 0) 45%),
+    linear-gradient(to top, var(--day) 0, rgb(243 242 251 / 0) 62%);
+}
+@media (min-width: 60rem) {
+  .shead.post-head--fade .shead__art::after {
+    background:
+      linear-gradient(to bottom, var(--day) 0, rgb(243 242 251 / 0) 42%),
+      linear-gradient(to right, var(--day) 0, rgb(243 242 251 / 0) 52%),
+      linear-gradient(to top, var(--day) 0, rgb(243 242 251 / 0) 34%);
+  }
+}
+
+/* The stamp lands once, as a press: transform and opacity only, 0.5 s, and not at all for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .shead .post-head__stamp, .tl-stamp { animation: post-press 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.12s both; }
+  @keyframes post-press {
+    from { opacity: 0; transform: scale(1.12) rotate(-4deg); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+.shead .btn--sos { border-width: 2px; }
+
+/* ---- The envelope: where to write. An airmail border of the site's two inks, the address large ---- */
+
+.post-env {
+  padding: 1.35rem clamp(1rem, 2.5vw, 1.6rem) 1.5rem;
+  border: 7px solid transparent;
+  border-radius: 0.5rem;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    repeating-linear-gradient(-45deg, var(--indigo) 0 12px, #fff 12px 20px, var(--mint) 20px 32px, #fff 32px 40px) border-box;
+  font-size: var(--text);
+  line-height: 1.55;
+}
+.post-env__addr {
+  display: inline-block;
+  margin-block: -0.55rem;
+  padding-block: 0.55rem;
+  font-size: 1.3em;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* ---- /pranesk/: the line for someone already caught, before everything else ---- */
+
+.pk-urgent { padding-top: clamp(1rem, 3vw, 1.75rem); }
+.pk-urgent p {
+  max-width: 52rem;
+  padding: 1rem 1.15rem 1.1rem;
+  border: 2px solid var(--coral);
+  border-left-width: 0.5rem;
+  border-radius: var(--radius);
+  background: var(--coral-wash);
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+  line-height: 1.45;
+}
+.pk-urgent strong { font-weight: 800; }
+.pk-urgent a {
+  color: var(--coral-deep);
+  font-weight: 800;
+  text-decoration-thickness: 0.14em;
+}
+
+/* ---- /pranesk/: what to send and what not to, side by side on a wide screen ---- */
+
+.pk { padding-top: 0.5rem; }
+.pk-pair { display: grid; gap: 1.25rem; padding-block: 1rem 2rem; }
+.pk-card { min-width: 0; padding: 1.25rem clamp(1rem, 2.5vw, 1.6rem) 1.4rem; border-radius: var(--radius); }
+.pk-card h2 { margin-bottom: 0.7rem; font-size: clamp(1.5rem, 1.25rem + 0.9vw, 1.95rem); line-height: 1.15; }
+.pk-card--send {
+  border: 1px solid var(--line);
+  border-top: 0.4rem solid var(--mint);
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #fff;
+}
+.pk-card--send h2 { color: var(--mint); }
+.pk-card--not { border: 2px dashed var(--ink-2); background: var(--day-2); }
+.pk-list > li { padding-block: 0.8rem; }
+.pk-list > li + li { border-top: 1px solid var(--line); }
+.pk-list > li:first-child { padding-top: 0.2rem; }
+.pk-list > li:last-child { padding-bottom: 0; }
+.pk-list strong { display: block; font-weight: 800; }
+.pk-card--send .pk-list strong { color: var(--mint); }
+@media (min-width: 56rem) {
+  .pk-pair { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1.5rem; }
+}
+
+.pk-note {
+  margin-top: 1.25rem;
+  padding: 1rem 1.15rem 1.1rem;
+  border: 1px solid var(--line);
+  border-left: 0.4rem solid var(--indigo);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: #fff;
+  font-size: var(--small);
+  line-height: 1.55;
+}
+
+.pk-quiet .doc-small { max-width: 34rem; }
+
+@media print {
+  .post-head__stamp, .tl-stamp { display: none; }
+  .post-env, .pk-urgent p, .pk-card, .pk-note { border-color: #000; background: #fff; }
+}

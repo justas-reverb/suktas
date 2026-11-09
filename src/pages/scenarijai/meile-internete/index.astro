@@ -1,0 +1,202 @@
+---
+/**
+ * Scenarijus: meilė internete, kuri prašo pinigų. The copy is
+ * docs/copy/scenarijai/meile-internete.md, word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Meilė internete, kuri prašo pinigų');
+const meta = [
+  ['Kanalas', 'socialinis tinklas, pažinčių svetainė ar programėlė'],
+  ['Ko jis nori', 'tavo pinigų, o kartais ir tavo banko sąskaitos'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const signs = [
+  ['Pažintis tik internete, o susitikti vis nepavyksta.', ' Susitikimui sutrukdo nelaimė, o per vaizdo skambutį vis „neveikia kamera“ ar „nėra interneto“. <!-- F329 F330 F342 --> Jo pasakojimai neatitinka profilio, arba apie jį beveik nieko nerasi. <!-- F330 --> Vaizdo skambutis padeda, bet nieko neįrodo: sukčiai jau naudoja netikrus, labai tikroviškus vaizdo skambučius. <!-- F337 -->'],
+  ['Jis prašo pereiti į „WhatsApp“, „Telegram“ ar el. paštą.', ' „Luminor“ tai vadina pirmu rimtesniu signalu: ten mažiau apsaugų, o sukčiui lengviau likti anonimiškam. <!-- F337 -->'],
+  ['Jis prašo pinigų ar tavo sąskaitos.', ' Pinigų gydymui, bilietams, muitui, „užstatui“ ar „investicijai“. Kartais – dovanų kortelių ar net kad dėl jo paimtum paskolą. <!-- F331 F337 F340 F341 --> Arba prašo priimti pinigus į tavo sąskaitą ir persiųsti kitur. <!-- F345 F346 --> Jei prašo meluoti bankui – tai akivaizdus pavojus. <!-- F338 -->'],
+];
+
+const steps = [
+  '<strong>Nesiųsk daugiau nieko</strong>, kad ir kokią naują istoriją jis papasakotų. Išsaugok susirašinėjimą ir jo profilio nuorodą, tada nutrauk bendravimą ir užblokuok jo kontaktus. <!-- F343 M -->',
+  '<strong>Iškart kreipkis į savo banką</strong> numeriu iš oficialios svetainės ar programėlės. Kartais pavedimą dar galima sustabdyti ar atsekti. Kai pinigai jau sukčių sąskaitoje, toliau spręsti gali policija, todėl kreipkis ir į ją. Mokėjai kortele? Pasakyk bankui – tokį mokėjimą atgauti lengviau. <!-- F339 F344 F334 F186 F13 -->',
+  '<strong>Priėmei į savo sąskaitą jo pinigų ar persiuntei juos kitur?</strong> Sustabdyk visus jo nurodytus mokėjimus ir pranešk bankui bei policijai. <!-- F345 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt. Pridėk išsaugotą susirašinėjimą ir mokėjimų duomenis. <!-- F2 F339 M -->',
+  '<strong>Kas nors siūlo už mokestį atgauti prarastus pinigus?</strong> Tai kita apgaulė: <a href="/scenarijai/susigrazinti-pinigus/">„Padėsime susigrąžinti pinigus“</a>. <!-- F186 -->',
+];
+
+const levers = [
+  ['Nauda.', 'Dėmesys, meilė ir bendras gyvenimas, kurio norisi. Kartais ir „turtai“, kuriais jis žada pasidalinti, kai tik atvyks. <!-- F343 F347 M -->'],
+  ['Baimė.', 'Ne dėl savęs, o dėl jo: jis sužeistas, sulaikytas oro uoste ar įstrigęs be pinigų. <!-- F332 F340 F347 -->'],
+  ['Skuba.', 'Ilgai jis niekur neskuba, bet kai ateina prašymas, pinigų reikia skubiai. <!-- F329 F340 -->'],
+  ['Gėda.', 'Po nuostolio sunku pripažinti, kad meilė buvo netikra, todėl dalis nukentėjusiųjų niekam nepasako ir nepraneša policijai. <!-- F344 F346 F342 -->'],
+];
+
+const sides = [
+  ['Kariškis misijoje, gydytojas ar naftos platformos mechanikas, kuris negali paskambinti', 'Paprašyk vaizdo skambučio; „neveikia kamera“ ar „nėra interneto“ yra ženklas. Profilio nuotraukas patikrink atvirkštine vaizdų paieška. <!-- F330 F342 F347 -->'],
+  ['„Pereikime į kitą programėlę“', 'Prašymas pereiti į kitą programėlę yra pirmas rimtesnis signalas. <!-- F337 -->'],
+  ['Susitikimui vis sutrukdo nelaimė: liga, sulaikymas oro uoste, sužeidimas', 'Tai ne ženklas padėti, o ženklas sustoti: susitikti nepavyksta, o pinigų prireikia. <!-- F329 F332 F340 -->'],
+  ['„Atsiunčiau tau siuntinį, tik sumokėk muitą“', 'Siuntinys, kurį reikia išpirkti, yra dar vienas prašymas pinigų. <!-- F332 F331 -->'],
+  ['„Pasiimk paskolą, aš grąžinsiu“', 'Paskolą grąžinti teks tau. <!-- F341 M -->'],
+  ['„Priimk pinigus į savo sąskaitą ir persiųsk“', 'Neleisk naudotis savo sąskaita: taip gali prisidėti prie pinigų plovimo. <!-- F345 F346 -->'],
+  ['„Investuok kartu su manimi“', 'Platforma, į kurią jis kviečia, būna netikra, net jei pinigai keliauja per tikrą keityklą. <!-- F337 F336 -->'],
+  ['„Bankui sakyk, kad pinigai kitam reikalui“', 'Jei bankas sustabdo mokėjimą ir klausia, ar darai jį savo valia, pasakyk visą tiesą. <!-- F338 F344 F334 -->'],
+  ['Bendravimas, kurį slepi nuo artimųjų', 'Papasakok artimam žmogui: specialistai ragina neslėpti tokio bendravimo nuo artimųjų. <!-- F341 F333 M -->'],
+  ['Po nuostolio: „padėsime atgauti pinigus“ už mokestį', 'Tai kita apgaulė. <!-- F186 -->'],
+];
+
+const sources = [
+  'Lietuvos bankas (lb.lt, atnaujinta 2024-10-25): kaip prasideda ir kaip virsta pinigais; ženklai ir patikrinimai; trys atvejai. <!-- F329 F330 F331 F332 F333 F334 -->',
+  'Lietuvos bankas („Padėk ragelį“, 2025-12-15; naujiena, 2023-07-14): kas gali tapti taikiniu; sumos ir kaukės. <!-- F335 F336 -->',
+  '„Luminor“ (laikas.lt, 2026-01-29; luminor.lt, 2025-03-24): kita programėlė, dovanų kortelės, melas bankui; kaukės ir 2024 m. duomenys. <!-- F337 F338 F339 F347 -->',
+  '„Swedbank“, Pinigų plovimo prevencijos kompetencijų centras ir policija (tv3.lt, 2026-02-12): „medikės iš Filipinų“ atvejis; centro 2025 m. skaičiai; paskolos. <!-- F340 F341 -->',
+  'Pinigų plovimo prevencijos kompetencijų centras (amlcenter.lt, 2025-02-14; tv3.lt, 2026-04-12): ženklai, ką daryti, kortelė ar pavedimas. <!-- F342 F343 F344 -->',
+  'Lietuvos bankas („Pinigų mulai“, atnaujinta 2024-10-28) ir policija (alkas.lt, 2020-02-14): tavo sąskaita jo pinigams. <!-- F345 F346 -->',
+  'Lietuvos bankas, „Luminor“ ir policija: banką pasiekti per oficialią programėlę ar svetainę; „atgavimas“ už mokestį; pranešti per epolicija.lt. <!-- F13 F186 F2 -->',
+];
+---
+<Page
+  title="Romantiniai sukčiai: meilė internete, kuri prašo pinigų – Suktas"
+  description="Pažintis internete virto meile, o dabar reikia pinigų gydymui, bilietui ar „užstatui“? Taip veikia romantiniai sukčiai. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-02</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Socialiniame tinkle, pažinčių svetainėje ar programėlėje tau parašo malonus žmogus. <!-- F329 F335 --> Su pinigais jis neskuba: ilgai kalbasi, domisi tavimi, giria, greitai prisipažįsta įsimylėjęs ir kalba apie susitikimą ar net santuoką. <!-- F329 F343 F346 --> Dažnai jis prisistato kariškiu misijoje, gydytoju ar naftos platformos mechaniku, todėl neva negali paskambinti. <!-- F336 F342 F347 --> Bet susitikimui vis kas nors sutrukdo, ir prireikia pinigų: gydymui, bilietui, muitui ar „užstatui“. <!-- F329 F331 F332 F340 --> „Swedbank“ aprašė atvejį, kai 62 metų vilnietis pažinčių svetainėje susipažino su „28 metų medike iš Filipinų“; pinigų prireikė jos močiutės operacijai ir skoloms, o skrydžio dieną ji neva buvo sulaikyta oro uoste ir paprašė 3 000 eurų „užstatui“. Pinigai iškart buvo pervesti; pasak „Swedbank“, tokiais atvejais anketa po to užblokuojama ir žmogus dingsta. <!-- F340 --> Lietuvos bankas aprašė 71 metų moterį, kuri „Šveicarijos kariškiui Sirijoje“ pervedė beveik 16 tūkst. eurų – gydymui, paskui už siuntą, „užstrigusią muitinėje“. Jis dingo, kai sužinojo, kad pinigų jai nebeliko. <!-- F332 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /><Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Nesiųsk pinigų ir neleisk naudotis savo sąskaita žmogui, su kuriuo dar nesusitikai gyvai. Abejoji – papasakok artimam žmogui.')} />
+        <p set:html={nbHtml('<!-- F338 F345 F341 --> Lietuvos banko aprašytu atveju būtent giminaitė iš karto suprato, kas vyksta, ir apgaulė baigėsi. <!-- F333 --> Kad ir kokia graži istorija, prašymas pinigų yra ta vieta, kur ją nutrauki. <!-- F331 M -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam, ir tai nėra gėda. <!-- F339 F343 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/jei-apgavo/#pinigai">Jei jau pervedei</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo pinigų – kuo daugiau ir kuo ilgiau. <!-- M --> Romantinis sukčiavimas gali trukti savaites ar net metus, o išviliojamos sumos neretai didesnės nei kitose apgaulėse. <!-- F343 F336 --> Pinigų plovimo prevencijos kompetencijų centro duomenimis, kuriuos pateikė tv3.lt, 2025 m. Lietuvoje užfiksuoti 456 tokie atvejai, o nuostoliai siekė beveik 800 tūkst. eurų. <!-- F341 --> Kartais jam reikia ir tavo banko sąskaitos, per kurią keliautų kitų aukų pinigai. <!-- F345 F346 --> <strong class="stop">Sustabdymo vieta:</strong> pirmas prašymas pinigų. <!-- F331 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Iš pradžių – tik tai, ką rodo tavo profilis. <!-- M --> Paskui – viską, ką papasakoji per ilgus pokalbius: kas tau svarbu, ko trūksta, kiek turi. <!-- M --> Taikiniu gali tapti bet kas, nepaisant lyties, amžiaus ar išsilavinimo, net ir didelę gyvenimišką patirtį turintys žmonės. <!-- F343 F335 --> „Luminor“ duomenimis, 2024 m. 93 proc. šio banko klientų, nukentėjusių nuo romantinių sukčių, buvo moterys, bet tai nutinka ir vyrams, kurie tai rečiau pripažįsta. <!-- F347 F342 --> <strong class="stop">Sustabdymo vieta:</strong> artimas žmogus. Iš šono matyti tai, ko nematai tu. <!-- F333 F341 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja keturis iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> istorija gali būti graži ir ilga, bet taisyklė trumpa – pinigų žmogui, su kuriuo nesusitikai gyvai, nesiunti. <!-- F338 -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">{nb('Sustok dešimčiai sekundžių')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/draugas-praso-pinigu/">{nb('„Draugas“ prašo pinigų')}</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">{nb('Reklama su žinomu veidu')}</a>, <a href="/scenarijai/susigrazinti-pinigus/">{nb('„Padėsime susigrąžinti pinigus“')}</a>, <a href="/scenarijai/grasina-paviesinti/">{nb('„Mokėk arba paviešinsiu tavo nuotraukas“')}</a>, <a href="/scenarijai/bureja-praso-dar/">{nb('Būrėja prašo vis daugiau pinigų')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/pinigu-mulas/">{nb('Kas yra pinigų mulas')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-02. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

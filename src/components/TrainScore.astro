@@ -1,0 +1,63 @@
+---
+/**
+ * The training games' score: a way to win. Every choice button carries data-round (the step it answers)
+ * and data-safe if it is the safe move; the first choice in each step counts. When every step is answered
+ * the verdict shows: a win if every first choice was safe. Kept in memory only, never stored or sent; a
+ * reload or "Bandyk iš naujo" starts over. Without JavaScript the box stays hidden and the game works as
+ * before (the answers are popovers). Words: docs/copy/treniruote/index.md, *Rezultatas*.
+ */
+import { nb } from '../lib/typo.js';
+
+interface Props { rounds: number; }
+const { rounds } = Astro.props;
+---
+<section class="tr-score" data-score={rounds} aria-labelledby="h-rezultatas" hidden>
+  <h2 id="h-rezultatas">{nb('Rezultatas')}</h2>
+  <p class="tr-score__line" role="status"></p>
+  <div class="tr-score__end" hidden>
+    <p class="tr-score__verdict"></p>
+    <button type="button" class="btn btn--second" data-again>{nb('Bandyk iš naujo')}</button>
+  </div>
+</section>
+
+<script>
+  const box = document.querySelector<HTMLElement>('[data-score]');
+  if (box) {
+    const n = Number(box.dataset.score);
+    const picks = new Map<string, boolean>();
+    const line = box.querySelector<HTMLElement>('.tr-score__line')!;
+    const end = box.querySelector<HTMLElement>('.tr-score__end')!;
+    const verdict = box.querySelector<HTMLElement>('.tr-score__verdict')!;
+    for (const el of document.querySelectorAll<HTMLElement>('[data-score-hint]')) el.hidden = false;
+    box.hidden = false;
+    const show = () => {
+      const safe = [...picks.values()].filter(Boolean).length;
+      const left = n - picks.size;
+      line.textContent = left
+        ? `Saugūs ėjimai: ${safe} iš ${n}. Liko žingsnių: ${left}.`
+        : `Saugūs ėjimai: ${safe} iš ${n}.`;
+      end.hidden = left > 0;
+      if (left) return;
+      const lost = n - safe;
+      box.classList.toggle('tr-score--won', lost === 0);
+      verdict.textContent = lost === 0
+        ? 'Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.'
+        : `Sukčiui pavyko ${lost} ${lost === 1 ? 'kartą' : 'kartus'} iš ${n}. Bandyk dar kartą ir rinkis kelią, kuriame jis tavęs nelaukia.`;
+    };
+    document.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('[data-round]');
+      if (!b || picks.has(b.dataset.round!)) return;
+      picks.set(b.dataset.round!, b.hasAttribute('data-safe'));
+      show();
+    });
+    box.querySelector('[data-again]')!.addEventListener('click', () => {
+      picks.clear();
+      box.classList.remove('tr-score--won');
+      show();
+      window.scrollTo({ top: 0 });
+      const h1 = document.querySelector<HTMLElement>('h1');
+      if (h1) { h1.tabIndex = -1; h1.focus({ preventScroll: true }); }
+    });
+    show();
+  }
+</script>

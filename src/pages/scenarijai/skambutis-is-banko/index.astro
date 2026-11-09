@@ -1,0 +1,188 @@
+---
+/**
+ * Scenarijus: Skambutis iš „banko“. The copy is docs/copy/scenarijai/skambutis-is-banko.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Skambutis iš „banko“');
+const meta = [
+  ['Kanalas', 'skambutis'],
+  ['Ko jis nori', 'pinigų, kodų ir prieigos'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Skubina ir gąsdina.', 'Banko darbuotojai nesiunčia nuorodų ir neverčia skubėti. <!-- F25 -->'],
+  ['Prašo kodų, PIN ar kortelės duomenų.', 'Mokėjimo paslaugų teikėjai neprašo prisijungimo duomenų, o „Smart-ID“ sako, kad niekada neprašo PIN kodų, net „tik paskutinių dviejų skaitmenų“. <!-- F26 F30 -->'],
+  ['Prašo įdiegti programą ar prisijungti kartu.', 'Bankų asociacija sako, kad tokios programos dažnai skirtos nuotoliniam prisijungimui prie kito žmogaus kompiuterio ir kad sukčiai gali prašyti prie bankininkystės prisijungti „kartu“. <!-- F51 -->'],
+];
+
+const levers = [
+  ['Autoritetas.', 'Skambina „bankas“, o ekrane rodomas pavadinimas tą įspūdį sustiprina. <!-- M --> Pavadinimas ar numeris neįrodo, kas skambina. <!-- F38 F39 -->'],
+  ['Baimė.', 'Pasakojimas apie įtartinas operacijas ir blokavimą skirtas tam, kad imtum bijoti dėl savo pinigų. <!-- F24 M -->'],
+  ['Skuba.', 'Tikras bankas neskubina, o skubėjimas atima laiko pagalvoti. <!-- F25 M -->'],
+];
+
+const sides = [
+  ['Pavadinimas ar numeris ekrane', 'Tai ne įrodymas. Padėk ragelį. <!-- F38 F39 -->'],
+  ['Taisyklinga lietuvių kalba, pažįstamas balsas, net vaizdas', 'Nei garsas, nei vaizdas nebėra tikrovės įrodymas; menkiausios abejonės atveju baik pokalbį ir patikrink oficialiais kanalais. <!-- F97 -->'],
+  ['„Paskyra bus užblokuota“, „būtina patvirtinti“', 'Bankas neskubina ir nesiunčia nuorodų; atsidaryk oficialią programėlę. <!-- F24 F25 -->'],
+  ['Nuoroda, kurią reikia atsidaryti', 'Oficialioje programėlėje daryk tik tas operacijas, kurias pradėjai tu. <!-- F26 -->'],
+  ['Kodas, slaptažodis ar PIN', 'Tikras bankas, pareigūnas ar „Smart-ID“ jų neprašo. <!-- F25 F26 F30 -->'],
+  ['„Smart-ID“ prašymas, kurio nepradėjai', 'Neįvesk PIN, spausk „Atšaukti“. <!-- F32 --> Prieš įvedant bet kokį PIN, patikrink, ar programėlėje rodomi veiksmas ir paslauga sutampa su tais, kuriuos pradėjai. <!-- F32 F35 -->'],
+  ['Programa ar bendras prisijungimas', 'Neįdiek ir neprisijunk kartu. <!-- F51 -->'],
+  ['Prašo pervesti pinigus į kitą sąskaitą', 'Nuo 2025 m. spalio 9 d. prieš pervedimą bankas parodo gavėjo patikros atsakymą: pavadinimas sutampa, beveik sutampa, nesutampa arba jo nepavyksta patikrinti; sprendi tu. <!-- F98 --> „Nesutampa“ – priežastis nemokėti; o „sutampa“ dar neįrodo, kad gavėjas sąžiningas, nes sukčius gali nurodyti tikrą savo valdomos sąskaitos savininko vardą. <!-- M --> Apie šią paslaugą teikėjai SMS ar laiškų nesiunčia. <!-- F98 -->'],
+];
+
+const sources = [
+  'Kampanija „Padėk ragelį“ (LRT, policija, Bankų asociacija, Lietuvos paštas): penkios schemos, frazės, patarimai. <!-- F23 F24 F25 -->',
+  'Lietuvos bankas, 2021-07-09: kreiptis į banką per oficialią programėlę ar svetainę; mokėjimo paslaugų teikėjai neprašo prisijungimo duomenų. <!-- F13 F26 -->',
+  '„Smart-ID“ (SK ID Solutions): PIN kodų neprašo; nepradėtas prašymas – „Atšaukti“. <!-- F30 F32 F35 -->',
+  'RRT, 2023-10-20 ir 2026-08-10: suklastoti numeriai ir kaip sukčiai skambina dabar. <!-- F38 F39 -->',
+  'Bankų asociacija, 2022-10-27: nuotolinio prisijungimo programos. <!-- F51 -->',
+  'Bankų asociacija, 2026-03-16: taisyklinga kalba be akcento, vertimas realiuoju laiku, balsas iš keliolikos sekundžių įrašo, avatarai vaizdo skambutyje; nei vaizdas, nei garsas nėra įrodymas. <!-- F97 -->',
+  'Lietuvos bankas su kampanijos „Padėk ragelį“ partneriais, 2025-12-15: įtarus sukčiavimą ar nukentėjus – iškart 112; šokas, spaudimas, skuba – baik pokalbį. <!-- F96 -->',
+  'Lietuvos bankas: gavėjo patikros paslauga, galioja nuo 2025-10-09. <!-- F98 -->',
+  'Lietuvos bankas, 2026-07-07: atvejis, kai 150 000 € atiduota netikram pareigūnui ir „bankui“. <!-- F108 -->',
+];
+---
+<Page
+  title="Skambina „bankas“: kaip atpažinti telefoninius sukčius – Suktas"
+  description="Kaip atrodo netikras skambutis iš banko, trys jo ženklai ir vienas ėjimas, kuris sustabdo planą."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-10-25</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Skamba telefonas. Ekrane gali rodytis banko pavadinimas ar žinomas numeris, bet tai nieko neįrodo. <!-- F38 F39 --> Balsas mandagus ir kalba taip, lyg viską žinotų: esą tavo sąskaitoje yra „įtartinos operacijos“, „paskyra bus užblokuota“, „būtina patvirtinti“. <!-- F23 F24 --> Dabar ir kalba, ir balsas gali būti nepriekaištingi: Bankų asociacija sako, kad sukčiai kalba taisyklinga lietuvių kalba be akcento, naudoja vertimą realiuoju laiku, gali nukopijuoti balsą iš vos keliolikos sekundžių aiškaus įrašo, o vaizdo skambutyje pasirodyti kaip avatarai – „pareigūnai“. <!-- F97 --> Todėl gera lietuvių kalba nebėra ženklas, kad skambina tikras žmogus. <!-- F97 M --> Tada ima prašyti kodo ar PIN, siunčia nuorodą arba liepia įdiegti programą. <!-- F25 F26 F30 F51 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Padėk ragelį ir skambink oficialiu numeriu.')} />
+        <p set:html={nbHtml('Atsidaryk savo banko programėlę ar svetainę ir skambink iš jų paimtu numeriu, o ne tuo, kurį tau davė skambinęs žmogus. <!-- F13 --> Jei skambutis kelia šoką, spaudimą ar skubą, baik pokalbį; o jei įtari sukčiavimą ar jau nukentėjai, iškart skambink 112. <!-- F96 --> Kortelė: <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau prisigavai</h3>
+        <p set:html={nbHtml('Jei jau išsiuntei pinigus ar atskleidei duomenis, pirmiausia skambink bankui. Žingsniai: <a href="/jei-apgavo/#pinigai">Jei tave apgavo: išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jam reikia, kad veiksmą atliktum tu: išsiųstum pinigus, pasakytum kodą, patvirtintum operaciją ar įsileistum jį į savo įrenginį. <!-- F25 F26 F30 F51 --> Be tavo veiksmo jam sunku pasiekti pinigus, todėl jis ir kalbina tave. <!-- M --> Tai nėra smulkmena: Lietuvos bankas 2026 m. liepą aprašė atvejį, kai netikram policijos pareigūnui ir „bankui“ atiduota 150 000 €. <!-- F108 --> <strong class="stop">Sustabdymo vieta:</strong> oficialioje programėlėje daryk tik tas operacijas, kurias pradėjai tu. <!-- F26 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Pradžiai jam užtenka mažai: banko pavadinimo ir numerio, kuriuo tave pasiekti. <!-- M --> Skambindamas jis net nežino, ar tavo sąskaita yra tame banke: jam pakanka kartais pataikyti, o banko pavadinimas, kurį išgirsti, tik sukuria įspūdį, kad jis tave pažįsta. <!-- M --> Kuo daugiau pokalbio metu išgirsta, tuo tikresnis atrodo, todėl nieko jam nepasakyk. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> nutrauk pokalbį, kol dar nieko nepasakei.')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Veikia trys kabliukai, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>:')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/padek-ragely/">{nb('Padėk ragelį ir skambink oficialiu numeriu')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a></li>
+          <li><strong>Tema:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/skambutis-is-policijos/">{nb('Skambutis iš „policijos“')}</a>, <a href="/scenarijai/zinute-su-kodu/">{nb('Žinutė su kodu')}</a>, <a href="/scenarijai/programele-is-nuorodos/">{nb('Programėlė iš nuorodos ar reklamos')}</a>, <a href="/scenarijai/zada-pirma-vieta-google/">{nb('Žada pirmą vietą „Google“')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-10-25. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

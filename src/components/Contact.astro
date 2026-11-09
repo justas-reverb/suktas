@@ -1,0 +1,109 @@
+---
+/**
+ * "Parašyk mums" as a popup. The page itself sends nothing and keeps nothing (form-action is 'none'
+ * in the CSP, and the build's privacy gate refuses any <form>, so the fields sit in a plain div): it writes the letter for the reader and hands it to their
+ * own mail app, to Gmail in a new tab, or to the clipboard. Without JavaScript the dialog never opens
+ * and the plain mailto link on the page still works. Openers: any link matching `openers`.
+ * Words: docs/copy/apie.md, *Parašyk mums*.
+ */
+import { nb, nbHtml } from '../lib/typo.js';
+
+interface Props { openers: string; }
+const { openers } = Astro.props;
+const to = 'info@suktas.lt';
+const topics = ['Radau klaidą ar pasenusį faktą', 'Turiu pasiūlymą', 'Kita'];
+---
+<dialog class="contact" id="rasyk" aria-labelledby="rasyk-h" data-contact={openers} data-to={to}>
+  <div class="contact__form">
+    <div class="contact__top">
+      <h2 id="rasyk-h">{nb('Parašyk mums')}</h2>
+      <button type="button" class="contact__x" data-close aria-label="Uždaryk">×</button>
+    </div>
+    <p class="contact__lead" set:html={nbHtml('Parašyk čia, o laišką mums atidarysime tavo pašte jau parašytą: liks paspausti „Siųsti“. <!-- pažadas --> Svetainė pati nieko neišsiunčia ir nieko nesaugo. <!-- pažadas -->')} />
+
+    <fieldset class="contact__topics">
+      <legend>{nb('Apie ką?')}</legend>
+      {topics.map((t, i) => (
+        <label><input type="radio" name="topic" value={t} checked={i === 0} /> {nb(t)}</label>
+      ))}
+    </fieldset>
+
+    <label class="contact__field">
+      <span>{nb('Ką nori pasakyti?')}</span>
+      <textarea name="text" rows="5" required maxlength="1500"></textarea>
+    </label>
+    <label class="contact__field">
+      <span>{nb('Kuris puslapis? (nebūtina)')}</span>
+      <input name="page" type="text" inputmode="url" autocomplete="off" />
+    </label>
+    <p class="contact__warn" set:html={nbHtml('<strong>Nerašyk slaptažodžių, kodų, PIN ir kortelės numerio.</strong> Jų mums nereikia. <!-- pažadas -->')} />
+
+    <p class="contact__error" role="alert"></p>
+    <div class="contact__send">
+      <button type="button" class="btn" data-how="app">{nb('Atidaryk laišką pašte')}</button>
+      <button type="button" class="btn btn--second" data-how="gmail">{nb('Rašyk per „Gmail“')}</button>
+      <button type="button" class="btn btn--second" data-how="copy">{nb('Kopijuok laišką')}</button>
+    </div>
+    <p class="contact__status" role="status"></p>
+    <p class="contact__addr" set:html={nbHtml(`Adresas: <strong>${to}</strong>. Atsakome per kelias dienas. <!-- pažadas -->`)} />
+  </div>
+</dialog>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('dialog[data-contact]');
+  if (dlg && typeof dlg.showModal === 'function') {
+    const to = dlg.dataset.to!;
+    const err = dlg.querySelector<HTMLElement>('.contact__error')!;
+    const status = dlg.querySelector<HTMLElement>('.contact__status')!;
+    const text = dlg.querySelector<HTMLTextAreaElement>('textarea[name="text"]')!;
+    const pageField = dlg.querySelector<HTMLInputElement>('input[name="page"]')!;
+    for (const a of document.querySelectorAll<HTMLAnchorElement>(dlg.dataset.contact!)) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        err.textContent = status.textContent = '';
+        dlg.showModal();
+        text.focus();
+      });
+    }
+    dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+
+    dlg.addEventListener('click', async (e) => {
+      const how = (e.target as HTMLElement).closest<HTMLElement>('[data-how]')?.dataset.how;
+      if (!how) return;
+      const body = text.value.trim();
+      if (!body) {
+        err.textContent = 'Parašyk bent kelis žodžius.';
+        text.setAttribute('aria-invalid', 'true');
+        text.focus();
+        return;
+      }
+      text.removeAttribute('aria-invalid');
+      err.textContent = '';
+      const page = pageField.value.trim();
+      const topic = dlg.querySelector<HTMLInputElement>('input[name="topic"]:checked')?.value ?? 'Kita';
+      const subject = `Suktas: ${topic}`;
+      const letter = page ? `${body}\n\nPuslapis: ${page}` : body;
+      const q = (s: string) => encodeURIComponent(s);
+      if (how === 'app') {
+        const url = `mailto:${to}?subject=${q(subject)}&body=${q(letter)}`;
+        // shortcut: some Windows mail apps cut a mailto past ~2000 characters; then we steer to Gmail or copy, not a server send
+        if (url.length > 2000) {
+          status.textContent = 'Laiškas per ilgas pašto programai. Rinkis „Gmail“ arba nukopijuok laišką.';
+          return;
+        }
+        location.href = url;
+        status.textContent = 'Jei pašto programa neatsidarė, rinkis „Gmail“ arba nukopijuok laišką.';
+      } else if (how === 'gmail') {
+        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${q(to)}&su=${q(subject)}&body=${q(letter)}`, '_blank', 'noopener');
+      } else {
+        try {
+          await navigator.clipboard.writeText(`${to}\n${subject}\n\n${letter}`);
+          status.textContent = `Nukopijuota. Įklijuok laišką savo pašte ir siųsk adresu ${to}.`;
+        } catch {
+          status.textContent = `Nepavyko nukopijuoti. Rašyk adresu ${to}.`;
+        }
+      }
+    });
+  }
+</script>

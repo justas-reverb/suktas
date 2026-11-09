@@ -1,0 +1,150 @@
+---
+/**
+ * Šeimai: the page one family member sends to another. The copy is docs/copy/seima.md, word for
+ * word; the source tags stay as comments in the strings and the build strips them. Order: a note
+ * to the sender, the letter (one page in large type; it is the only thing that prints), the four
+ * habits, the "naujas numeris" trick, where to go if it happened anyway, the sources.
+ * The letter's blanks (the name, the family word, the signature) are lines to write on, never
+ * fields: the page asks for nothing and keeps nothing.
+ */
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import Share from '../../components/Share.astro';
+import { nb, nbHtml, sourceHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+import '../../styles/seima.css';
+
+const points = [
+  {
+    head: 'Skambina „bankas“ ar „policija“? Padėk ragelį.',
+    text: 'Pareigūnai neprašo asmens kodo, bankininkystės slaptažodžių ar kortelės duomenų telefonu, o banko darbuotojai nesiunčia nuorodų ir neskubina. <!-- F25 --> Padėk ragelį. Atsidaryk savo banko programėlę ir skambink iš jos paimtu numeriu. <!-- F13 --> Jei įtari netikrą pareigūną, skambink 112. <!-- F4 -->',
+  },
+  {
+    head: 'Kodų ir PIN niekam nesakyk.',
+    text: 'Mokėjimo paslaugų teikėjai neprašo prisijungimo duomenų. <!-- F26 --> „Smart-ID“ sako, kad niekada neprašo PIN kodų, net „tik paskutinių dviejų skaitmenų“. <!-- F30 -->',
+  },
+  {
+    head: 'Žinutėje yra nuoroda? Jos nespausk.',
+    text: 'Netikros žinutės apie siuntinį prašo „mokesčio“ per nuorodą; tikros Lietuvos pašto žinutės tiesioginės mokėjimo nuorodos neturi. <!-- F44 --> Atsidaryk programėlę ar svetainę tiesiogiai. <!-- F26 -->',
+  },
+  {
+    head: 'Susitarkime dėl žodžio.',
+    text: 'Susitarkime dėl žodžio ar frazės, kurią žinome tik mes. <!-- F80 F81 --> Jei kas nors mano vardu skubiai prašo pinigų ar pagalbos, paprašyk to žodžio ir pirmiausia pabandyk susisiekti su manimi kitu būdu. <!-- F81 --> Net jei balsas skamba kaip mano, tai nieko neįrodo: balsą dabar galima nukopijuoti iš vos keliolikos sekundžių aiškaus įrašo. <!-- F97 --> Jei kyla bent menkiausia abejonė, kas kalba, baik pokalbį ir susisiek su manimi kitu būdu. <!-- F106 -->',
+    word: true,
+  },
+];
+
+const habits = [
+  ['Padėk ragelį ir skambink oficialiu numeriu', '/sustok/padek-ragely/'],
+  ['Kodų ir PIN niekam nesakyk', '/sustok/kodai-ir-pin/'],
+  ['Nespausk nuorodos – atsidaryk programėlę ar svetainę', '/sustok/nuoroda-ne-is-zinutes/'],
+  ['Susitarkite šeimoje dėl žodžio', '/sustok/seimos-zodis/'],
+];
+
+const sources = [
+  'Kampanija „Padėk ragelį“: pareigūnų ir banko elgesys, 112. <!-- F4 F25 -->',
+  'Lietuvos bankas, 2021-07-09: oficiali programėlė, prisijungimo duomenys. <!-- F13 F26 -->',
+  '„Smart-ID“: PIN niekada neprašomas. <!-- F30 -->',
+  'Lietuvos paštas, 2022-06-14: netikros žinutės apie siuntinius. <!-- F44 -->',
+  'FBI IC3, 2024-12-03 ir 2025-12-05: šeimos žodis. <!-- F80 F81 -->',
+  'Policija, 2026-02-05: pranešimas per epolicija.lt; bankai: kortelės blokavimas. <!-- F2 F6 -->',
+  'Bankų asociacija, 2026-03-16: balsas iš keliolikos sekundžių įrašo; nei vaizdas, nei garsas nėra įrodymas. <!-- F97 -->',
+  'Policijos virtualusis patrulis per TV3, 2024-01-20: perimtos paskyros prašo paskolinti pinigų. <!-- F156 -->',
+  'Policijos virtualus patrulis per 15min, 2025-05-23: tariama artimojo nelaimė. <!-- F491 -->',
+  'LRT, 2026-07-29 (cituoja policiją): skambutis su sesers nuotrauka, vardu ir numeriu; abejonės atveju baik pokalbį ir susisiek kitu būdu. <!-- F106 -->',
+];
+---
+<Page
+  title="Kaip apsaugoti artimuosius nuo sukčių – Suktas"
+  description="Laiškas artimajam apie sukčius: vienas lapas didelėmis raidėmis, keturi dalykai, kuriuos užtenka prisiminti, ir šeimos žodis."
+>
+  <DocHead title="Šeimai" />
+
+  <article class="wrap doc sm-main">
+    <section class="sm-note noprint" aria-labelledby="siunti">
+      <h2 id="siunti">Jei šį puslapį siunti tėvams</h2>
+      <p set:html={nbHtml('Nusiųsk jiems nuorodą: <strong>suktas.lt/seima/</strong>. Tai paprastas tekstas, o ne failas, todėl atsidaro bet kuriame telefone. <!-- pažadas --> Puslapis nieko nesaugo ir nieko neprašo: nei vardo, nei el. pašto. <!-- pažadas --> Jei jie nori popierinio lapo, spausdink: išspausdinamas tik laiškas. <!-- pažadas --> Laiškas žemiau parašytas taip, kad jį galima siųsti nieko nekeičiant; tik įrašyk vardą ir šeimos žodį.')} />
+      <div class="sm-note__actions">
+        <a class="btn" href="#laiskas">{nb('Atsidaryk laišką')}</a>
+        <a class="btn btn--second" href="/sustok/seimos-zodis/">{nb('Atsidaryk kortelę')}</a>
+      </div>
+      <Share hash="#laiskas" print="Spausdink laišką" mail="Siunčiu tau trumpą laišką apie sukčius. Šeimos žodį sutarsime susitikę." />
+    </section>
+
+    <section class="sm-letter-sec" aria-labelledby="laiskas">
+      <h2 id="laiskas" class="noprint">Laiškas tėvams</h2>
+      <p class="doc-small noprint" set:html={nbHtml('Šis laiškas spausdinamas atskirai: didelės raidės, vienas lapas. <!-- pažadas -->')} />
+
+      <div class="sm-letter" role="group" aria-labelledby="laiskas">
+        <p class="sm-hello">Labas, <span class="sm-blank" aria-hidden="true"><span class="vh">________</span></span></p>
+        <p set:html={nbHtml('Siunčiu tau šį lapą, nes man svarbu, kad žinotum keturis dalykus. Jie padeda, kai skambina ar rašo svetimas.')} />
+
+        <ol class="sm-points">
+          {points.map((p) => (
+            <li>
+              <h3>{nb(p.head)}</h3>
+              <p set:html={nbHtml(p.text)} />
+              {p.word && <p class="sm-word">Mūsų žodis: <span class="sm-blank sm-blank--word" aria-hidden="true"></span></p>}
+            </li>
+          ))}
+        </ol>
+
+        <p set:html={nbHtml('Jei vis dėlto kas nors nutiks, nebijok man pasakyti. Tai gali nutikti bet kam. <!-- pažadas --> Tavęs nekaltinsiu.')} />
+        <p class="sm-sign">Su meile,<span class="sm-blank sm-blank--sign" aria-hidden="true"></span></p>
+      </div>
+      <Share hash="#laiskas" print="Spausdink laišką" mail="Siunčiu tau trumpą laišką apie sukčius. Šeimos žodį sutarsime susitikę." />
+    </section>
+
+    <div class="noprint">
+      <section class="doc-sec" aria-labelledby="keturi">
+        <h2 id="keturi">Keturi dalykai, kuriuos užtenka prisiminti</h2>
+        <div class="doc-sec__body">
+          <p set:html={nbHtml('Kiekvienas turi savo kortelę, kuri telpa į vieną lapą. <!-- pažadas -->')} />
+          <ol class="sm-habits">
+            {habits.map(([label, href]) => <li><a href={href}>{nb(label)}</a></li>)}
+          </ol>
+          <p class="doc-small" set:html={nbHtml('Šeimos žodis – JAV FBI patarimas; Lietuvos institucijos, kuri jį rekomenduotų, neradome. <!-- F80 F81 F82 -->')} />
+        </div>
+      </section>
+
+      <section class="doc-sec" aria-labelledby="naujas-numeris">
+        <h2 id="naujas-numeris">„Čia aš, naujas numeris“</h2>
+        <div class="doc-sec__body">
+          <p class="sm-move" set:html={nbHtml('Kai artimojo vardu nepažįstamas numeris skubiai prašo pagalbos ar pinigų, pirmiausia paprašyk šeimos žodžio ir pabandyk susisiekti su artimuoju kitu būdu: tuo numeriu, kurį jau turi. <!-- F81 M --> Pinigų nesiųsk, kol nesusisieksi. <!-- F81 -->')} />
+          <p set:html={nbHtml('Net kai ekrane rodomas artimojo vardas, nuotrauka ir numeris, o balsas skamba kaip jo, tai gali būti ne jis: LRT 2026 m. liepą aprašė vilnietį, kuriam taip paskambino „sesuo“; perskambinęs jis sužinojo, kad sesuo neskambino, ir pinigų neprarado. <!-- F106 --> Policija pataria: jei kyla bent menkiausia abejonė, kas kalba, baik pokalbį ir susisiek su artimuoju kitu būdu. <!-- F106 -->')} />
+          <p set:html={nbHtml('LRT 2023 m. lapkritį rašė apie žinutes, kuriose „vaikas“ praneša, kad pasikeitė jo numeris, ir prašo jį išsisaugoti; pinigų, pavyzdžiui, nuomai ar telefono sąskaitai, prašoma vėliau. <!-- F119 --> „Telia“ ekspertas patarė pirmiausia paskambinti vaikui senuoju numeriu. <!-- F119 -->')} />
+          <p set:html={nbHtml('Tas pats prašymas gali ateiti ir iš draugo ar artimojo „Facebook“ paskyros, kurią perėmė sukčiai: <a href="/scenarijai/draugas-praso-pinigu/">„Draugas“ prašo pinigų</a>. <!-- F156 -->')} />
+          <p set:html={nbHtml('Kitas pretekstas – artimojo nelaimė. Skambina ir sako, kad sūnus ar dukra pateko į avariją ir skubiai reikia pinigų: <a href="/scenarijai/artimojo-avarija/">„Tavo sūnus pateko į avariją“</a>. <!-- F491 -->')} />
+        </div>
+      </section>
+
+      <section class="doc-sec" aria-labelledby="nutiko">
+        <h2 id="nutiko">Jei vis dėlto nutiko</h2>
+        <div class="doc-sec__body">
+          <ul class="doc-list doc-list--rule">
+            <li set:html={nbHtml('<strong>Jei apgavo tave ar artimąjį:</strong> pirmiausia užblokuok kortelę ir pasakyk bankui, tada pranešk policijai per epolicija.lt. <!-- F2 F6 --> Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+            <li set:html={nbHtml('<strong>Jei padedi artimajam:</strong> <a href="/jei-apgavo/#artimas">Jei tave apgavo: apgavo artimą žmogų</a>. <!-- pažadas -->')} />
+          </ul>
+        </div>
+      </section>
+
+      <section class="doc-sec" aria-labelledby="kas-savaite">
+        <h2 id="kas-savaite">Kas savaitę: vienas laiškas tau</h2>
+        <div class="doc-sec__body">
+          <p set:html={nbHtml('<strong>Kai šeimoje kažkas neveikia, skambina tau?</strong> Tada ir klausimas „ar čia sukčiai?“ ateis pas tave. <!-- pažadas --> Kartą per savaitę – vienas laiškas: koks triukas dabar sklando, kaip jį atpažinti ir ką daryti. Laišką persiųsi tam, kas paspaustų nuorodą. <!-- pažadas --> Be reklamos. <!-- pažadas --> Prisijungti galima vienu žodžiu: <a href="/triukai/#prisijunk">Savaitės triukas</a>. <!-- pažadas -->')} />
+        </div>
+      </section>
+
+      <section class="doc-sec" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <div class="doc-sec__body">
+          <p class="doc-small" set:html={nbHtml('Patikrinta: 2026-10-25. Faktai surašyti <a href="/saltiniai/">Šaltiniuose</a>:')} />
+          <ul class="doc-list doc-small">
+            {sources.map((t) => <li set:html={sourceHtml(t)} />)}
+          </ul>
+        </div>
+      </section>
+    </div>
+  </article>
+</Page>

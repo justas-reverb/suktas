@@ -1,0 +1,200 @@
+---
+/**
+ * Scenarijus: netikra valstybės svetainė. The copy is docs/copy/scenarijai/netikra-valstybes-svetaine.md,
+ * word for word; the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const title = nb('Netikra valstybės svetainė');
+const meta = [
+  ['Kanalas', 'paieška ar nuoroda žinutėje'],
+  ['Ko jis nori', 'tavo banko prisijungimo ir PIN2'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const signs = [
+  ['Į valstybės svetainę atėjai per paiešką, reklamą ar nuorodą žinutėje.', 'Policija ir Sveikatos apsaugos ministerija pataria adresą įvesti ranka, o ne rinktis iš paieškos rezultatų. <!-- F276 F358 --> VMI savo vardu paieškoje ir socialiniuose tinkluose nesireklamuoja. <!-- F142 -->'],
+  ['Adresas ne visai tas.', 'Tikri adresai baigiasi „.lt“: regitra.lt ir eregitra.lt, sodra.lt, esveikata.lt, o VMI svetainių adresai baigiasi „.vmi.lt“ (www.vmi.lt, deklaravimas.vmi.lt). <!-- F298 F357 F358 F142 --> „Sodra“ perspėja: papildomas brūkšnys, raidės ar žodžiai jos adrese (pavyzdžiui, esodra ar sodralit) ir galūnės .com, .net, .eu, .info ar .online rodo, kad tai ne „Sodra“. <!-- F356 --> Spynelė ir „https://“ nieko neįrodo. <!-- F213 -->'],
+  ['Jungiantis prašoma PIN2.', 'Prisijungiant prie valstybės paslaugos per banką ar Elektroninius valdžios vartus paprastai užtenka PIN1, o PIN2 tvirtina mokėjimus ir parašus. <!-- F359 F165 --> Vilniaus policija įspėja: jungiantis prie sukčių svetainių visada prašoma ir PIN2. <!-- F276 -->'],
+];
+
+const steps = [
+  '<strong>Netvirtink jokios užklausos ir iškart skambink savo bankui</strong> numeriu iš banko programėlės arba iš svetainės, kurios adresą įvedi ranka. <!-- F13 F220 --> Bankas gali užblokuoti interneto banką ir kortelę. <!-- F220 -->',
+  '<strong>Užklausas, kurių nepradėjai, atšauk.</strong> Spausk „Atšaukti“, kad ir kiek jų ateitų. <!-- F166 -->',
+  '<strong>Pakeisk atskleistus prisijungimo duomenis.</strong> Jei svetainėje suvedei „Smart-ID“ PIN kodus, jų pakeisti negalima: „Smart-ID“ paskyrą reikia ištrinti ir susikurti iš naujo. <!-- F360 F165 -->',
+  '<strong>Pranešk policijai</strong> per epolicija.lt arba telefonu 112. <!-- F358 F2 --> Apie netikrą svetainę pranešk ir NKSC, kad ji būtų užblokuota. <!-- F358 F17 -->',
+];
+
+const levers = [
+  ['Autoritetas.', '„Regitros“, „Sodros“ ar E. sveikatos vardas ir pažįstamas prisijungimas per banką atrodo kaip pati valstybė. <!-- F217 F356 M --> Spynelė prie adreso įspūdį tik sustiprina, nors nieko neįrodo. <!-- F213 -->'],
+];
+
+const sides = [
+  ['Pirmas paieškos rezultatas ar reklama „Regitros“, „Sodros“ ar E. sveikatos vardu', 'Adresą įvesk ranka, o ne rinkis iš paieškos rezultatų. <!-- F358 F276 -->'],
+  ['VMI svetainė paieškos reklamoje', 'VMI savo vardu paieškoje nesireklamuoja. <!-- F142 -->'],
+  ['SMS „Sodros“ vardu: „Jūsų asmens duomenys dar nėra atnaujinti“ su nuoroda', 'Nespausk: „Sodra“ SMS žinutėmis neprašo suvesti PIN kodų ar patvirtinti banko operacijų. <!-- F356 -->'],
+  ['Adresas, kuris nors raide skiriasi nuo tikrojo, ar galūnė .com, .net, .online', 'Palygink su tikru: regitra.lt, eregitra.lt, sodra.lt, esveikata.lt, …vmi.lt. Visų galūnė – „.lt“. <!-- F298 F357 F358 F142 F356 -->'],
+  ['Spynelė ir „https://“', 'Tai neįrodo, kad svetainė tikra. <!-- F213 -->'],
+  ['Jungiantis „Smart-ID“ prašo PIN2', 'Spausk „Atšaukti“: prisijungimui paprastai užtenka PIN1. <!-- F359 F166 -->'],
+  ['Puslapis prašo susimokėti už paslaugą', 'Mokėti gali tekti ir tikroje svetainėje, todėl svarbu, kaip į ją patekai: adresą įvesk ranka. <!-- F366 F358 M -->'],
+];
+
+const sources = [
+  '„Sodra“ (2026-10-22 ir 2025-11-07): SMS „Sodros“ vardu, panašūs adresai, ko „Sodra“ SMS žinutėmis neprašo, adresas baigiasi „.lt“. <!-- F356 F357 -->',
+  'Sveikatos apsaugos ministerija ir Registrų centras (2025-01-08): esveikata.lt adresą įvesti patiems, pranešti NKSC ir policijai. <!-- F358 -->',
+  'Policija: klonuotos „Regitros“, „Sodros“, VMI ir E. sveikatos svetainės, PIN1 ir PIN2 (tv3.lt, 2026-10-29 ir 2025-01-08), septyni tyrimai per vieną dieną (rinkosaikste.lt, 2026-10-29), Tauragės apskrities savaitės apžvalga (2026-10-26), Šiaulių apskrities atvejai (jp.lt, 2026-10-27). <!-- F276 F359 F217 F362 F363 -->',
+  '„Sodros“ atvejis su PIN1 ir PIN2 (2026-07-13). <!-- F320 -->',
+  'Socialinės apsaugos ir darbo ministerija (2026-04-07): atskleistus prisijungimo duomenis nedelsiant pakeisti. <!-- F360 -->',
+  'VMI (alkas.lt, 2025-04-03): visi adresai baigiasi „.vmi.lt“, paieškoje nesireklamuoja. <!-- F142 -->',
+  '„Regitra“ (tv3.lt, 2026-10-13): regitra.lt ir eregitra.lt; mokestis už kai kurias paslaugas internetu (LRT, 2026-09-18). <!-- F298 F366 -->',
+  'reidasofficial.lt (2026-10-07): kelias per „Google“ paiešką. <!-- F365 -->',
+  '„Citadele“ saugumo puslapis: bankas užblokuos kortelę ir interneto banką. <!-- F220 -->',
+  '„Smart-ID“: PIN1 ir PIN2, „Atšaukti“. <!-- F165 F166 -->',
+];
+---
+<Page
+  title="Netikra „Regitros“, „Sodros“ ar E. sveikatos svetainė – Suktas"
+  description="„Regitros“, „Sodros“ ar E. sveikatos svetainę randi per „Google“ ir jungiesi per banką? Pirmoji nuoroda gali vesti į klastotę. Trys ženklai ir vienas ėjimas, kuris tai sustabdo."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{title}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-02</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Reikia įregistruoti motociklą, pažiūrėti receptą ar užeiti į „Sodros“ paskyrą, todėl „Google“ paieškoje surenki „Regitra“ ar „e. sveikata“ ir spaudi pirmą nuorodą. <!-- F363 F365 F276 --> Puslapis atrodo kaip įprasta valstybės svetainė ir siūlo prisijungti per banką. <!-- F217 F365 --> Įvedi banko prisijungimo duomenis, „Smart-ID“ paprašo PIN1, o tada dar ir PIN2. <!-- F320 F276 --> Netrukus iš tavo sąskaitos dingsta pinigai. <!-- F320 F363 --> Į klastotę atveda ir žinutės: „Sodros“ vardu siunčiama SMS „Jūsų asmens duomenys dar nėra atnaujinti“ su nuoroda, panašia į „Sodros“ adresą. <!-- F356 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <ol class="row__body signs" role="list">
+          {signs.map(([head, text]) => (
+            <li><p><strong set:html={nbHtml(head)} /> <Fragment set:html={nbHtml(text)} /></p></li>
+          ))}
+        </ol>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('Valstybės svetainę atsidaryk tik savo keliu: adresą įvesk ranka arba naudok išsaugotą nuorodą. Niekada nespausk paieškos rezultato, reklamos ar nuorodos iš žinutės.')} />
+        <p set:html={nbHtml('<!-- F358 F276 F356 M --> Jei vis tiek atsidūrei klastotėje, paskutinė sustabdymo vieta – PIN2: jei jungiantis prašoma PIN2, spausk „Atšaukti“. <!-- F359 F166 -->')} />
+        <p set:html={nbHtml('Išbandyk tai saugiai: <a href="/treniruote/smart-id/">treniruotėje</a> su išgalvota programėle pamatai, kuri patvirtinimo užklausa yra tavo, o kuri – sukčiaus, ir kas iššoka jungiantis per paieškos nuorodą. <!-- pažadas -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="padarei">
+        <h3 id="padarei">Jei jau įvedei duomenis</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: 2026 m. spalį Tauragės ir Šilutės rajonų gyventojai suklastotose „Regitros“, „Sodros“ ar E. sveikatos svetainėse neteko nuo 605 iki 6 900 eurų, o Šiaulių rajone vyras, norėjęs įregistruoti motociklą, – 2 940 eurų. <!-- F362 F363 -->')} />
+        <ol>
+          {steps.map((s) => <li set:html={nbHtml(s)} />)}
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#kodai">Jei tave apgavo: pasakiau ar įvedžiau kodą</a>, <a href="/jei-apgavo/#pinigai">išsiunčiau pinigus</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo banko prisijungimo duomenų ir tavo PIN2. Valstybės svetainė jam tik dingstis: prisijungti per banką čia įprasta, todėl banko langas nekelia įtarimo. <!-- F356 F320 M --> PIN2 tvirtina mokėjimus, todėl suvedus PIN2 patvirtinamas ne prisijungimas, o jo mokėjimas iš tavo sąskaitos. <!-- F276 F320 --> <strong class="stop">Sustabdymo vieta:</strong> PIN2 užklausa jungiantis. Atšauk ją. <!-- F359 F166 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Nieko, ir jam nereikia. <!-- M --> Jis nesitaiko į tave: nukopijuoja svetainę, kurios kas nors būtinai ieškos, ir laukia, kol ją kas nors ras paieškoje, arba siunčia nuorodą žinute daugybei žmonių. <!-- F217 F365 F356 M --> <strong class="stop">Sustabdymo vieta:</strong> valstybės paslaugos neieškok paieškoje, o adresą įvesk ranka. <!-- F358 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja vieną iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              {levers.map(([name, text]) => (
+                <li><strong>{name}</strong> <span set:html={nbHtml(text)} /></li>
+              ))}
+            </ul>
+            <p set:html={nbHtml('Vien 2026 m. spalio 27 d. policija pradėjo septynis ikiteisminius tyrimus dėl galimo sukčiavimo: žmonės banko prisijungimo duomenis suvedė netikrose „Regitros“, „Sodros“, E. sveikatos ar „Artea“ banko svetainėse. <!-- F217 --> Tauragės apskrities policija tą patį mėnesį pranešė, kad tokių atvejų daugėja. <!-- F362 -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> savo pasirinktas kelias į svetainę apsaugo ir tada, kai klastotės neatskiri. <!-- F358 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              {sides.map(([his, yours]) => (
+                <tr>
+                  <td data-label="Jo triukas" set:html={nbHtml(his)} />
+                  <td data-label="Tavo atsakymas" set:html={nbHtml(yours)} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li><strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">{nb('Nespausk nuorodos – atsidaryk programėlę ar svetainę')}</a>, <a href="/sustok/kodai-ir-pin/">{nb('Kodų ir PIN niekam nesakyk')}</a></li>
+          <li><strong>Temos:</strong> <a href="/temos/apgaule/">{nb('Apgaulė ir sukčiavimas')}</a></li>
+          <li><strong>Kiti scenarijai:</strong> <a href="/scenarijai/smart-id-patvirtinimas/">{nb('„Patvirtink per „Smart-ID““')}</a>, <a href="/scenarijai/netikra-banko-reklama/">{nb('Netikra banko reklama')}</a>, <a href="/scenarijai/sms-apie-bauda/">{nb('SMS apie baudą')}</a></li>
+          <li><strong>Žodynas:</strong> <a href="/zodynas/phishing/">{nb('Kas yra phishing')}</a></li>
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-02. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

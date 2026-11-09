@@ -1,0 +1,16 @@
+---
+/** "Kaip tai daro jis": his side, closed until the reader opens it (it needs no script). */
+import ArtBand from './ArtBand.astro';
+import { nbHtml } from '../lib/typo.js';
+const { note } = Astro.props;
+---
+<details class="stage">
+  <summary>
+    <h2 class="stage__title">Kaip tai daro jis</h2>
+  </summary>
+  <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 85vw, 120vw" />
+  <div class="stage__in wrap">
+    <p class="stage__note" set:html={nbHtml(note)} />
+    <slot />
+  </div>
+</details>

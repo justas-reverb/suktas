@@ -1,0 +1,49 @@
+---
+/**
+ * Treniruotė: the shelf of safe scam games. The copy is docs/copy/treniruote/index.md, word for word.
+ * Two games; the header has no item for them yet.
+ */
+import Page from '../../layouts/Page.astro';
+import ArtBand from '../../components/ArtBand.astro';
+import { nb, nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/treniruote.css';
+---
+<Page
+  title="Treniruotė: sukčių triukai, kuriuos išbandai saugiai – Suktas"
+  description="Netikri puslapiai su išgalvotais pavadinimais: spausk ten, kur sukčius tikisi, ir pamatyk, ką jis tuo metu daro bei kaip jį sustabdyti."
+  current=""
+>
+  <section class="shead" aria-labelledby="h1">
+    <ArtBand mood="day" class="shead__art" sizes="(min-width: 60rem) 115vw, 120vw" eager />
+    <div class="wrap shead__body">
+      <h1 id="h1">{nb('Treniruotė')}</h1>
+      <p class="shead__lead" set:html={nbHtml('Čia sukčių triukai suvaidinti saugiai: netikri puslapiai su išgalvotais pavadinimais, kuriuose spausti galima drąsiai. Kai paspaudi ten, kur sukčius tikisi, pamatai, ką jis tuo metu daro ir kaip jį sustabdyti.')} />
+      <p class="shead__for" set:html={nbHtml('Žaidimuose nieko neįmanoma įvesti, o tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
+      <div class="shead__actions">
+        <a class="btn" href="/treniruote/banko-paieska/">Pradėk treniruotę</a>
+        <a class="btn btn--second" href="/patikra/">Patikra</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="games wrap" aria-labelledby="zaidimai">
+    <h2 id="zaidimai">Žaidimai</h2>
+    <ul role="list">
+      <li class="game">
+        <div class="game__thumb" aria-hidden="true"><div><i class="game__q"></i><i class="game__ad"></i><i></i></div></div>
+        <div class="game__text">
+          <h3><a href="/treniruote/banko-paieska/">{nb('Ar atskirsi netikrą banko reklamą?')}</a></h3>
+          <p set:html={nbHtml('paieška, reklama „Remiama“ ir netikras prisijungimo puslapis.')} />
+        </div>
+      </li>
+      <li class="game">
+        <div class="game__thumb" aria-hidden="true"><div><i class="game__call"></i><i class="game__ad"></i><i></i></div></div>
+        <div class="game__text">
+          <h3><a href="/treniruote/smart-id/">{nb('Ką iš tikrųjų tvirtini per „Smart-ID“?')}</a></h3>
+          <p set:html={nbHtml('skambutis iš „banko“ ir trys patvirtinimo užklausos: prisijungimas, mokėjimas ir „pinigams gauti“.')} />
+        </div>
+      </li>
+    </ul>
+  </section>
+</Page>

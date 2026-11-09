@@ -1,0 +1,23 @@
+---
+/**
+ * The picture behind "Kaip jis galvoja" on the home page: his five steps in caller-ID dots, wine and rose. A painted
+ * still (an <img>) with a canvas over it, driven by the same engine as the hero (src/art/herofx.js, direction t); the
+ * section that holds it carries data-herofx="t". Below the fold, so the image lazy-loads and the art starts when it
+ * comes near the screen.
+ */
+const wide = [1280, 1920, 2880, 3840].map((w) => `/art/think-wide-${w}.webp ${w}w`).join(', ');
+const tall = [780, 1170, 1560, 1920].map((w) => `/art/think-tall-${w}.webp ${w}w`).join(', ');
+---
+<div class="art think__art" aria-hidden="true">
+  <picture>
+    <source media="(max-width: 59.99rem)" type="image/webp" srcset={tall} sizes="100vw" />
+    <img src="/art/think-wide-1920.webp" srcset={wide} sizes="(min-width: 60rem) 100vw" width="1920" height="800" alt="" decoding="async" loading="lazy" fetchpriority="low" />
+  </picture>
+  <canvas></canvas>
+</div>
+
+<script>
+  import { startHeroFx } from '../art/herofx.js';
+  import '../art/thinkroad.js';
+  document.querySelectorAll('.think[data-herofx]').forEach(startHeroFx);
+</script>

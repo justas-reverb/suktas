@@ -1,0 +1,49 @@
+---
+import { nb } from '../lib/typo.js';
+
+const h1 = nb('Būk suktesnis už tuos, kurie tave seka.');
+const lead = nb('Lietuviškas privatumo gidas paprastiems žmonėms: aiškūs žingsniai ir legalios programos, kai tik įmanoma – nemokamos.');
+---
+<section class="hero" id="top" data-hero aria-labelledby="hero-title">
+  <div class="hero__art" aria-hidden="true">
+    <picture>
+      <source
+        media="(max-aspect-ratio: 1/1)"
+        type="image/webp"
+        srcset="/art/hero-tall-540.webp 540w, /art/hero-tall-810.webp 810w, /art/hero-tall-1080.webp 1080w, /art/hero-tall-1440.webp 1440w"
+        sizes="max(100vw, 57svh)"
+      />
+      <img
+        src="/art/hero-wide-1440.webp"
+        srcset="/art/hero-wide-960.webp 960w, /art/hero-wide-1440.webp 1440w, /art/hero-wide-1920.webp 1920w, /art/hero-wide-2560.webp 2560w, /art/hero-wide-3840.webp 3840w"
+        sizes="max(100vw, 178svh)"
+        width="1920"
+        height="1080"
+        alt=""
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <canvas></canvas>
+  </div>
+
+  <div class="wrap hero__copy">
+    <h1 id="hero-title">{h1}</h1>
+  </div>
+  <div class="wrap hero__sub">
+    <div class="hero__sub-in">
+      <p class="hero__lead">{lead}</p>
+      <div class="hero__cta">
+        <a class="btn" href="#pradek">Pradėk čia</a>
+        <p class="hero__note">{nb('Penki žingsniai, apie 15 min., jokių naujų paskyrų.')}</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="hero__hint" aria-hidden="true">{nb('Perbrauk per pėdsakus – užmaskuok juos.')}</p>
+</section>
+
+<script>
+  import { startHero } from '../art/hero.js';
+  startHero(document.querySelector('[data-hero]'));
+</script>

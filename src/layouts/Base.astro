@@ -1,0 +1,81 @@
+---
+/**
+ * Every page's frame. The first lines of the head are the site's promise in markup.
+ *
+ * - The CSP allows only 'self' and nothing inline, except that the visit counter's
+ *   events may go to https://count.sudievu.lt (connect-src). It is written into production
+ *   builds only, because the dev server injects inline scripts of its own. The server's
+ *   own header (the vhost, not this repo) adds frame-ancestors 'none' and X-Frame-Options.
+ *   tools/check-privacy.mjs holds a copy of this policy and fails the build if they differ.
+ * - /count.js is the shared visit counter's script (Panel count/public/c.js, copied as is;
+ *   docs/copy/privatumo-pranesimas.md says what it counts). It sends nothing off suktas.lt.
+ * - No referrer is sent to anywhere a reader goes from here.
+ *
+ * tools/check-privacy.mjs fails the build if either line is missing. Keep the CSP
+ * meta before anything the head loads, because it only governs what comes after it.
+ */
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+
+const CSP = [
+  "default-src 'none'",
+  "script-src 'self'",
+  "style-src 'self'",
+  "img-src 'self'",
+  "font-src 'self'",
+  "media-src 'self'",
+  "connect-src 'self' https://count.sudievu.lt",
+  "manifest-src 'self'",
+  "base-uri 'none'",
+  "form-action 'none'",
+].join('; ');
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const share = new URL('/og-image.jpg', Astro.site).href;
+// Structured data for search engines: data, not script, so the CSP does not apply to it. `<` is escaped so no title can close the tag.
+const ld = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonical,
+  inLanguage: 'lt',
+  isPartOf: { '@type': 'WebSite', name: 'Suktas', url: new URL('/', Astro.site).href, inLanguage: 'lt' },
+}).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="lt">
+  <head>
+    <meta charset="utf-8" />
+    {import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={CSP} />}
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#f4f6fc" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Suktas" />
+    <meta property="og:locale" content="lt_LT" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={share} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Tamsiai mėlyname fone – šviesūs ratilai, tarsi bangos nuo skambančio telefono. Kairėje – šnypščianti juoda gyvatė, išsilenkusi į raidę S: ji pradeda žodį „Suktas“ ir šnypščia „ss“. Žemiau – šūkis „Gyvenk suktai.“ ir adresas suktas.lt" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline type="application/ld+json" set:html={ld} />
+    <script is:inline src="/count.js" data-site="suktas.lt" defer></script>
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,226 @@
+/* ------------------------------------------------------------------------------------
+   Topic pillars (/temos/kaip-veikia-atakos/, /apgaule/, /slaptazodziai/).
+   They borrow the shelf head, the scenario's move block and its closed stage; this file adds the
+   one pattern the spine needs: a step of his beside the place where you stop it ("Sustabdymo
+   vieta"), shown as beats on a rail, as lever cards, and as a chain. Colour keeps its meaning:
+   indigo is his step, mint is your stop.
+   ------------------------------------------------------------------------------------ */
+
+/* ---- The head: long names must fit at 320 ---- */
+
+.shead h1.pillar-h1 {
+  font-size: clamp(2.05rem, 0.7rem + 7.4vw, 4.8rem);
+  overflow-wrap: break-word;
+}
+.topic .shead__body > .shead__lead { max-width: 40rem; }
+
+/* ---- The one move today: a longer sentence than the scenarios', so a smaller size ---- */
+
+.topic .move__line {
+  max-width: 30ch;
+  font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3rem);
+}
+
+/* ---- Parts ---- */
+
+.topic .part { padding-top: var(--section); }
+.part__intro { max-width: 40rem; margin-top: 0.5rem; }
+.part__sub { margin-top: 2.75rem; }
+.part__more { max-width: 40rem; margin-top: 1.5rem; }
+.model-note {
+  max-width: 40rem;
+  margin: 0.5rem 0 0;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--line);
+  color: var(--ink-2);
+  font-size: var(--small);
+  font-style: italic;
+}
+
+/* ---- Sustabdymo vieta: the same strip everywhere ---- */
+
+.stopline {
+  margin: 0;
+  padding: 0.7rem 1rem 0.8rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+  font-size: var(--small);
+  line-height: 1.45;
+}
+.stopline strong { display: block; color: var(--mint); font-weight: 800; }
+
+/* ---- Beats: his steps on a rail, your stop beside each ---- */
+
+.beats { counter-reset: beat; margin-top: 1.25rem; }
+.beat {
+  counter-increment: beat;
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0 0 1.75rem 3.6rem;
+}
+.beat::before {
+  content: counter(beat);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--indigo);
+  color: #fff;
+  font: 400 1.25rem / 2.5rem var(--font-display);
+  text-align: center;
+}
+.beat::after {
+  content: '';
+  position: absolute;
+  left: 1.2rem;
+  top: 2.7rem;
+  bottom: 0.2rem;
+  width: 2px;
+  background: var(--line);
+}
+.beat:last-child { padding-bottom: 0; }
+.beat:last-child::after { display: none; }
+.beat__his { margin: 0; max-width: 40rem; }
+.beat__name {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--ink);
+  font: 400 clamp(1.35rem, 1.2rem + 0.7vw, 1.7rem) / 1.2 var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* the technical chain: same markup, rings instead of discs, a dashed rail */
+.beats--chain .beat::before {
+  background: var(--day);
+  color: var(--indigo);
+  box-shadow: inset 0 0 0 3px var(--indigo);
+}
+.beats--chain .beat::after { width: 0; background: none; border-left: 2px dashed var(--line); }
+
+@media (min-width: 52rem) {
+  .beat {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 23rem);
+    gap: 0 2.5rem;
+    align-items: start;
+    padding-left: 4rem;
+  }
+  .beat::before { width: 2.8rem; height: 2.8rem; font-size: 1.4rem; line-height: 2.8rem; }
+  .beat::after { left: 1.4rem; top: 3rem; }
+}
+
+/* ---- Levers: five cards, his lever above and your stop at the foot ---- */
+
+.lv { display: grid; gap: 1rem; margin-top: 1rem; }
+.lever {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.3rem clamp(1.1rem, 2.5vw, 1.4rem) 1.2rem;
+  border: 1px solid var(--line);
+  border-top: 0.4rem solid var(--indigo);
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #fff;
+}
+.lever > p { margin: 0; }
+.lever__name { color: var(--ink); font: 400 clamp(1.35rem, 1.2rem + 0.7vw, 1.7rem) / 1.2 var(--font-display); letter-spacing: -0.01em; }
+.lever .stopline { margin-top: auto; }
+.lever > p:not(.lever__name) + .stopline { margin-top: auto; }
+
+@media (min-width: 40rem) {
+  .lv { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lever:last-child { grid-column: 1 / -1; }
+}
+@media (min-width: 60rem) {
+  .lv { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .lever { grid-column: span 2; }
+  .lever:nth-child(n + 4) { grid-column: span 3; }
+}
+
+/* ---- Žemėlapis: a plain table that becomes cards on a phone ---- */
+
+.map { width: 100%; margin-top: 1rem; border-collapse: collapse; }
+.map thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.map tbody, .map tr, .map td { display: block; }
+.map tr { padding-block: 0.9rem; border-top: 1px solid var(--line); }
+.map tr:last-child { border-bottom: 1px solid var(--line); }
+.map td::before {
+  content: attr(data-label);
+  display: block;
+  color: var(--ink-2);
+  font-size: var(--small);
+  font-weight: 700;
+}
+.map td + td { margin-top: 0.5rem; }
+.map a { display: inline-block; padding-block: 0.5rem; margin-block: -0.5rem; }
+.map__soon { color: var(--ink-2); font-style: italic; }
+.map__soon::before { font-style: normal; }
+
+@media (min-width: 40rem) {
+  .map thead { position: static; width: auto; height: auto; overflow: visible; clip-path: none; display: table-header-group; }
+  .map tbody { display: table-row-group; }
+  .map tr { display: table-row; padding: 0; }
+  .map td, .map th { display: table-cell; width: 50%; padding: 0.9rem 1rem 0.9rem 0; vertical-align: top; }
+  .map tr + tr td, .map tbody tr:first-child td { border-top: 1px solid var(--line); }
+  .map tr:last-child td { border-bottom: 1px solid var(--line); }
+  .map td::before { display: none; }
+  .map td + td { margin: 0; }
+  .map th { padding-bottom: 0.6rem; text-align: left; color: var(--ink-2); font-size: var(--small); font-weight: 700; }
+}
+
+/* ---- Cards of his tricks: the shelf card, one heading level under the section ---- */
+
+.topic .cards { margin-top: 1.25rem; }
+.tcard h3 { margin: 0; font: 400 clamp(1.35rem, 1.2rem + 0.7vw, 1.7rem) / 1.2 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+.tcard h3 a { color: var(--ink); text-decoration: none; }
+.tcard h3 a::after { content: ''; position: absolute; inset: 0; }
+@media (min-width: 52rem) {
+  .topic .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 64rem) {
+  .topic .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* ---- What counts as good now: your moves, in mint ---- */
+
+.good { display: grid; gap: 0.75rem; margin-top: 1.25rem; }
+.good li {
+  padding: 0.9rem 1.1rem 1rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+}
+.good p, .ladder p { max-width: 38rem; }
+.good strong { display: block; margin-bottom: 0.15rem; color: var(--ink); font: 400 1.25rem / 1.25 var(--font-display); }
+@media (min-width: 52rem) {
+  .good { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .good li:last-child { grid-column: 1 / -1; }
+}
+
+.ladder { max-width: 52rem; margin-top: 1.25rem; }
+.ladder li p + p { margin-top: 0.6rem; }
+
+.topic .scn-foot .related { margin-top: 0; }
+@media (min-width: 60rem) {
+  .topic .scn-foot { grid-template-columns: minmax(0, 36rem) minmax(0, 1fr); }
+}
+
+/* ---- Print ---- */
+
+@media print {
+  .stopline, .good li { background: #fff; border: 1px solid #000; border-left-width: 6px; }
+  .stopline strong, .good strong { color: #000; }
+  .beat { break-inside: avoid; }
+  .beat::before { background: #fff !important; color: #000 !important; box-shadow: inset 0 0 0 2px #000 !important; }
+  .beat::after { border-color: #999; background: #999; }
+  .lever { break-inside: avoid; border: 1px solid #000; border-top-width: 4px; }
+  .lv { display: block; }
+  .lever { margin-bottom: 0.4cm; }
+  .beat { display: block; }
+  .map tr, .map td { border-color: #000 !important; }
+  .model-note { color: #000; }
+  .map__soon { color: #000; }
+}

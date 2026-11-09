@@ -1,0 +1,20 @@
+---
+/** The foot of a pillar page: what is related, and where the facts come from. */
+import { nb, nbHtml, sourceHtml } from '../lib/typo.js';
+const { related, intro, sources } = Astro.props;
+---
+<footer class="scn-foot wrap">
+  <section class="related" aria-labelledby="susije">
+    <h2 id="susije">Susiję</h2>
+    <ul>
+      {related.map(([label, html]) => <li><strong set:html={nbHtml(label)} /> <Fragment set:html={nbHtml(html)} /></li>)}
+    </ul>
+  </section>
+  <section class="sources" aria-labelledby="saltiniai">
+    <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+    <p set:html={nbHtml(intro)} />
+    <ul>
+      {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+    </ul>
+  </section>
+</footer>

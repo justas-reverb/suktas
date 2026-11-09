@@ -1,0 +1,261 @@
+/* ------------------------------------------------------------------------------------
+   The shelves: /scenarijai/, /sustok/, /temos/, /patikra/, /turinys/.
+   Places to find something, not places to read. One head (the page's name, one or two
+   sentences, the two moves), then the things on the shelf as cards, in the colours the home page
+   already taught: an indigo bar over a card is his trick, mint is your move, the stage is his
+   plan, coral is the emergency and nothing else.
+   ------------------------------------------------------------------------------------ */
+
+/* ---- The head: name, a few words, the two buttons; the day pool lit behind it ---- */
+
+.shead { position: relative; isolation: isolate; }
+.shead .shead__art { aspect-ratio: 3.2 / 1; margin-bottom: -1.5rem; }
+.shead .shead__art::after { background: linear-gradient(to top, var(--day) 0, rgb(243 242 251 / 0) 62%); }
+.shead__body { position: relative; padding-bottom: clamp(1.5rem, 4vw, 3rem); }
+.shead__body > * { max-width: 36rem; }
+.shead--plain { padding-top: clamp(1.5rem, 4vw, 3rem); }
+
+.shead h1 { max-width: none; font-size: clamp(2.8rem, 1.4rem + 5.2vw, 5.4rem); line-height: 1; letter-spacing: -0.02em; }
+.kicker { margin-top: 1rem; font-family: var(--font-text); letter-spacing: 0; color: var(--indigo); font-size: var(--small); font-weight: 800; line-height: 1.3; }
+.kicker--mint { color: var(--mint); }
+.shead__lead { margin-top: 0.6rem; font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem); line-height: 1.45; }
+.shead h2.shead__say { margin-top: 1rem; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.15; }
+
+.shead__actions { display: flex; flex-direction: column; gap: 0.75rem; max-width: none; margin-top: 1.5rem; }
+.shead .btn { min-height: 3.75rem; padding-inline: 2rem; font-size: 1.25rem; justify-content: center; text-align: center; }
+.shead .btn--sos { border-color: var(--coral-deep); background: transparent; color: var(--coral-deep); }
+.shead .btn--sos:hover { border-color: var(--coral-deep); background: var(--coral-deep); color: #fff; }
+
+@media (min-width: 40rem) {
+  .shead__actions { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
+}
+@media (min-width: 60rem) {
+  .shead { padding-top: clamp(0.5rem, 2vw, 1.5rem); }
+  .shead .shead__art { position: absolute; inset: 0 0 0 calc(50% - 4rem); aspect-ratio: auto; margin: 0; }
+  .shead .shead__art::after {
+    background:
+      linear-gradient(to right, var(--day) 0, rgb(243 242 251 / 0) 52%),
+      linear-gradient(to top, var(--day) 0, rgb(243 242 251 / 0) 34%);
+  }
+  .shead__body { padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem); }
+}
+
+/* ---- Cards ---- */
+
+.tcard {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 1.4rem clamp(1.1rem, 2.5vw, 1.5rem) 1.15rem;
+  border: 1px solid var(--line);
+  border-top: 0.4rem solid var(--indigo);
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #fff;
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+.tcard:hover { transform: translateY(-3px); box-shadow: 0 1rem 1.5rem -1rem rgb(25 19 79 / 0.35); }
+/* the moved card still covers the strip it left (its move plus its border, as ::after starts at the padding edge),
+   so a slow pointer on its edge does not flicker it */
+.tcard:hover::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 4px; }
+.tcard h4 { margin: 0; font: 400 clamp(1.35rem, 1.2rem + 0.7vw, 1.7rem) / 1.2 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+.tcard h4 a { color: var(--ink); text-decoration: none; }
+.tcard h4 a::after { content: ''; position: absolute; inset: 0; }
+.tcard:has(a:focus-visible) { outline: 3px solid var(--indigo-2); outline-offset: 3px; }
+.tcard a:focus-visible { outline: none; }
+.tcard__text::first-letter { text-transform: uppercase; }
+.tcard__time { margin-top: auto; padding-top: 0.35rem; color: var(--indigo); font-weight: 700; }
+
+/* ---- /scenarijai/: the attacks, by what reached you ---- */
+
+.finder { padding-top: clamp(1rem, 3vw, 2rem); }
+.finder > h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.15; max-width: 40rem; }
+.channels { display: grid; gap: 2.25rem 2.5rem; margin-top: 1.5rem; }
+.channel h3 { display: flex; align-items: center; gap: 1.1rem; }
+.channel h3::after { content: ''; flex: 1; height: 2px; background: var(--line); }
+.cards { display: grid; gap: 1rem; margin-top: 1rem; }
+@media (min-width: 52rem) {
+  .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.after {
+  margin-top: var(--section);
+  padding: 1.25rem clamp(1.1rem, 3vw, 1.75rem) 1.4rem;
+  border-left: 0.5rem solid var(--coral);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--coral-wash);
+}
+.after h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+.after p { margin-top: 0.4rem; font-size: 1.25rem; line-height: 1.45; }
+.after a { font-weight: 700; }
+
+.related { margin-top: 1.75rem; }
+.related a { display: inline-block; padding-block: 0.4rem; font-weight: 700; }
+
+/* ---- /sustok/: six moves, each with the moment it fires ---- */
+
+.hgrid { counter-reset: habit; display: grid; gap: 0.9rem; margin-top: 1.25rem; }
+.hcard {
+  counter-increment: habit;
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-content: start;
+  gap: 0.3rem 0.9rem;
+  padding: 1.15rem clamp(1rem, 2.5vw, 1.5rem) 1.3rem;
+  border-left: 0.4rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+  transition: transform 0.18s ease-out;
+}
+.hcard:hover { transform: translateX(3px); }
+.hcard:hover::after { content: ''; position: absolute; right: 100%; top: 0; bottom: 0; width: calc(0.4rem + 3px); }
+.hcard::before { content: counter(habit); grid-row: 1 / span 2; color: var(--mint); font: 400 2.9rem / 1 var(--font-display); }
+.hcard h3 { font-size: clamp(1.35rem, 1.2rem + 0.7vw, 1.7rem); line-height: 1.2; }
+.hcard h3 a { color: var(--ink); text-decoration: none; }
+.hcard h3 a::after { content: ''; position: absolute; inset: 0; }
+.hcard:has(a:focus-visible) { outline: 3px solid var(--indigo-2); outline-offset: 3px; }
+.hcard a:focus-visible { outline: none; }
+.hcard p { grid-column: 2; }
+@media (min-width: 52rem) { .hgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; } }
+
+.shelf h2.sec { margin-top: var(--section); font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.15; }
+.path { margin-top: 1rem; border-top: 2px solid var(--line); }
+.path li { display: grid; gap: 0.4rem 1.5rem; padding-block: 0.9rem; border-bottom: 1px solid var(--line); line-height: 1.5; }
+.path strong { align-self: start; justify-self: start; padding: 0.15rem 0.7rem 0.2rem; border-left: 0.3rem solid var(--mint); background: var(--mint-wash); }
+.path a { font-weight: 700; }
+@media (min-width: 44rem) { .path li { grid-template-columns: 17rem minmax(0, 1fr); } }
+
+.sec-text { max-width: 40rem; margin-top: 0.75rem; line-height: 1.55; }
+.sec-text a { font-weight: 700; }
+
+.print-note { margin-top: 1.75rem; color: var(--ink-2); font-size: var(--small); }
+
+/* ---- /temos/: the key, then what he is after ---- */
+
+.key {
+  position: relative;
+  isolation: isolate;
+  margin-top: clamp(0.5rem, 2vw, 1.5rem);
+  background: var(--stage);
+  color: var(--on-stage);
+  overflow: hidden;
+}
+.key .key__art { aspect-ratio: 3 / 1; margin-bottom: -2rem; }
+.key .key__art::after { background: linear-gradient(to top, var(--stage) 0, rgb(27 20 112 / 0) 68%); }
+.key__in { position: relative; padding-bottom: clamp(2rem, 5vw, 4rem); }
+.key__in > * { max-width: 38rem; }
+.key h2 { color: var(--mint-lt); font: 800 var(--small) / 1.3 var(--font-text); letter-spacing: 0.01em; }
+.key__title { margin-top: 0.5rem; font: 400 clamp(2.4rem, 1.5rem + 4vw, 4.4rem) / 1.02 var(--font-display); letter-spacing: -0.02em; }
+.key__title a { color: var(--on-stage); text-decoration: underline; text-decoration-color: var(--mint-lt); text-decoration-thickness: 0.05em; text-underline-offset: 0.15em; }
+.key__title a::after { content: '\00a0\2192'; color: var(--mint-lt); }
+.key__title a:hover { text-decoration-color: var(--on-stage); }
+.key :focus-visible { outline-color: var(--mint-lt); }
+.key__text::first-letter { text-transform: uppercase; }
+.key__text { margin-top: 0.9rem; color: var(--on-stage-2); font-size: var(--lead); line-height: 1.4; }
+@media (min-width: 60rem) {
+  .key .key__art { position: absolute; inset: 0 0 0 calc(50% - 2rem); aspect-ratio: auto; margin: 0; }
+  .key .key__art::after {
+    background:
+      linear-gradient(to right, var(--stage) 0, rgb(27 20 112 / 0) 50%),
+      linear-gradient(to top, var(--stage) 0, rgb(27 20 112 / 0) 30%);
+  }
+  .key__in { padding-block: clamp(3rem, 6vw, 5rem); }
+}
+
+.aims { padding-top: var(--section); }
+.aims > h2 { font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); }
+.targets { display: grid; gap: 2rem 2rem; margin-top: 1.25rem; }
+.target h3 { font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.3rem); }
+.target ul { display: grid; align-content: start; gap: 0.9rem; margin-top: 1rem; }
+.pillar { padding-block: 1.15rem 1rem; }
+.pillar h4 { font-size: clamp(1.3rem, 1.2rem + 0.5vw, 1.55rem); }
+.soon {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem clamp(1.1rem, 2.5vw, 1.5rem);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--ink-2);
+}
+.soon strong { color: var(--ink); font-weight: 700; }
+@media (min-width: 52rem) {
+  .targets { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto; row-gap: 0; }
+  .target { display: grid; grid-template-rows: subgrid; grid-row: span 2; }
+}
+
+/* ---- /patikra/: one audit, on paper ---- */
+
+.shead__for { margin-top: 1rem; line-height: 1.5; }
+.promises { display: grid; gap: 0.5rem; margin-top: 1rem; }
+.promises li { padding: 0.1rem 0 0.1rem 1rem; border-left: 0.35rem solid var(--mint); line-height: 1.5; }
+.pick { padding-top: clamp(1rem, 3vw, 2rem); }
+.pick > h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); }
+.audit {
+  position: relative;
+  display: grid;
+  gap: 0.6rem;
+  max-width: 44rem;
+  margin-top: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-left: 0.5rem solid var(--mint);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--mint-wash);
+  transition: transform 0.18s ease-out;
+}
+.audit:hover { transform: translateX(3px); }
+.audit:hover::after { content: ''; position: absolute; right: 100%; top: 0; bottom: 0; width: calc(0.5rem + 3px); }
+.audit h3 { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.5rem); line-height: 1.1; }
+.audit h3 a { color: var(--ink); text-decoration: none; }
+.audit h3 a::after { content: ''; position: absolute; inset: 0; }
+.audit:has(a:focus-visible) { outline: 3px solid var(--indigo-2); outline-offset: 3px; }
+.audit a:focus-visible { outline: none; }
+.audit__text::first-letter { text-transform: uppercase; }
+.audit__text { max-width: 36rem; }
+.audit__time { color: var(--mint); font-weight: 800; }
+/* five empty boxes to tick on paper, one for each step */
+.audit__boxes { counter-reset: box; display: flex; align-items: center; margin-top: 0.5rem; }
+.audit__boxes li {
+  counter-increment: box;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--mint);
+  color: #fff;
+  font: 700 0.9375rem / 1 var(--font-text);
+}
+.audit__boxes li + li { margin-left: 1.5rem; }
+.audit__boxes li + li::after { content: ''; position: absolute; right: 100%; top: 50%; width: 1.5rem; height: 2px; background: var(--mint); }
+.audit__boxes li::before { content: counter(box); }
+
+/* ---- /turinys/: the whole list ---- */
+
+.toc { columns: 3 17rem; column-gap: 3rem; padding-bottom: 1rem; }
+.toc__group { break-inside: avoid; margin-bottom: 1.75rem; }
+.toc__group h2 { padding-top: 0.8rem; border-top: 2px solid var(--line); font-size: clamp(1.45rem, 1.25rem + 0.7vw, 1.8rem); }
+.toc__group ul { margin-top: 0.4rem; }
+.toc__group li + li { margin-top: 0.4rem; }
+.toc__group li > a { display: flex; align-items: center; min-height: 2.75rem; padding-block: 0.3rem; font-weight: 700; }
+.toc__group .soon-line { padding-block: 0.6rem; color: var(--ink-2); line-height: 1.5; }
+.shelf-actions { margin-top: 1.25rem; }
+.shelf-actions .btn { min-height: 3.75rem; padding-inline: 2rem; font-size: 1.25rem; }
+
+/* ---- On paper ---- */
+
+@media print {
+  .shead__art, .key__art, .shead__actions, .shelf-actions { display: none !important; }
+  .shead { padding: 0; }
+  .shead h1 { font-size: 28pt; }
+  .tcard, .hcard, .audit, .soon, .after { background: #fff; border: 1px solid #000; border-radius: 0; break-inside: avoid; box-shadow: none; }
+  .hcard, .audit, .after { border-left-width: 5px; }
+  .key { background: #fff; color: #000; }
+  .key h2, .key__title a, .key__text { color: #000; }
+  .hcard::before, .audit__time { color: #000; }
+  .audit__boxes li { background: #000; }
+  .audit__boxes li + li::after { background: #000; }
+  .path strong { background: #fff; border-color: #000; }
+  .toc { columns: 2; }
+}
