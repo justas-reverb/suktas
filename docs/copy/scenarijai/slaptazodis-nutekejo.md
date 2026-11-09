@@ -72,7 +72,7 @@ Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Taip pat ne
 
 - **Tema:** [Slaptažodžiai ir prieigos raktai](/temos/slaptazodziai/), [Kaip veikia atakos](/temos/kaip-veikia-atakos/) (grandinės dalis)
 - **Patikra:** [Patikra per 15 minučių](/patikra/15-minuciu/)
-- **Kiti scenarijai:** [Žinutė su kodu](/scenarijai/zinute-su-kodu/), [Skambutis iš „banko“](/scenarijai/skambutis-is-banko/), [Paskola tavo vardu, kurios neėmei](/scenarijai/paskola-tavo-vardu/)
+- **Kiti scenarijai:** [Žinutė su kodu](/scenarijai/zinute-su-kodu/), [Skambutis iš „banko“](/scenarijai/skambutis-is-banko/), [Paskola tavo vardu, kurios neėmei](/scenarijai/paskola-tavo-vardu/), [Netikras DI įrankis](/scenarijai/netikras-di-irankis/)
 
 ## Šaltiniai ir patikrinta
 

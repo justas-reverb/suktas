@@ -92,7 +92,7 @@ Veikia penki kabliukai: skuba, autoritetas, baimė, gėda ir nauda; juos aprašo
 
 - **Kitos temos:** [Slaptažodžiai ir prieigos raktai](/temos/slaptazodziai/), [Kaip veikia atakos](/temos/kaip-veikia-atakos/), [Socialinė inžinerija](/temos/socialine-inzinerija/)
 - **Kortelės:** [Įpročiai](/sustok/)
-- **Žodynas:** [Sukčiavimas apsimetant](/zodynas/#sukciavimas-apsimetant), [Nuotolinis prisijungimas](/zodynas/#nuotolinis-prisijungimas), [Kas yra phishing](/zodynas/phishing/), [Kas yra pinigų mulas](/zodynas/pinigu-mulas/), [Kas yra nelegalus kazino](/zodynas/nelegalus-kazino/), [Kas yra finansinė piramidė](/zodynas/piramide/), [Kas yra mokamos lažybų prognozės](/zodynas/lazybu-prognozes/), [Kas yra greito uždarbio kursai](/zodynas/greito-uzdarbio-kursai/)
+- **Žodynas:** [Sukčiavimas apsimetant](/zodynas/#sukciavimas-apsimetant), [Nuotolinis prisijungimas](/zodynas/#nuotolinis-prisijungimas), [Kas yra phishing](/zodynas/phishing/), [Kas yra pinigų mulas](/zodynas/pinigu-mulas/), [Kas yra nelegalus kazino](/zodynas/nelegalus-kazino/), [Kas yra finansinė piramidė](/zodynas/piramide/), [Kas yra mokamos lažybų prognozės](/zodynas/lazybu-prognozes/), [Kas yra greito uždarbio kursai](/zodynas/greito-uzdarbio-kursai/), [Kas yra DI programėlės prenumerata](/zodynas/di-prenumerata/)
 
 ## Šaltiniai ir patikrinta
 

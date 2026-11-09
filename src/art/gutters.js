@@ -3,8 +3,8 @@
  *
  * Desktop (wide, a mouse, motion allowed): each `.band` is a panel inset from the window's edges. The panel's ground is
  * clipped by `clip-path: inset(0 var(--cut) round r)`; its text sits in a column with its own static gutter, so the words
- * never move sideways. Motion's `scroll()` owns --cut: the panel arrives wide (cut 0) and settles into its inset as it
- * rises, holds it while it is read, and lets go a little as it leaves. anime.js owns something else: once, as a band
+ * never move sideways. Motion's `scroll()` owns --cut: the panel arrives wide (cut 0), settles into its inset as it
+ * rises, and holds it, never past the cap, until it has gone. anime.js owns something else: once, as a band
  * reaches its hold, its blocks settle upward into place (opacity and translateY, never sideways). No `onScroll`.
  * Both are driven by scroll; after the scroll stops, nothing runs.
  *
@@ -36,13 +36,18 @@ function desktop() {
   const stops = [];
   const rm = [];
   for (const band of document.querySelectorAll('.band')) {
+    const hero = band.classList.contains('hfx');
     const G = () => Math.min(72, Math.max(12, innerWidth * 0.036));
+    let last = -1;
     const set = () => {
-      const r = band.getBoundingClientRect();
       const vh = innerHeight;
-      const a = clamp01((vh - r.top) / (0.5 * vh));
-      const b = clamp01((0.45 * vh - r.bottom) / (0.45 * vh));
-      band.style.setProperty('--cut', (G() * ease(a) * (1 + 0.7 * ease(b))).toFixed(2) + 'px');
+      // the hero is already on screen when the page arrives: it starts flush and takes its inset over the first third of a screen of scrolling
+      const a = hero ? clamp01(scrollY / (0.33 * vh)) : clamp01((vh - band.getBoundingClientRect().top) / (0.5 * vh));
+      // on the device-pixel grid, or the clip's edge shimmers between two pixels as it moves
+      const cut = Math.round(G() * ease(a) * devicePixelRatio) / devicePixelRatio;
+      if (cut === last) return;
+      last = cut;
+      band.style.setProperty('--cut', cut + 'px');
     };
     set();
     stops.push(scroll(set, { target: band, offset: ['start end', 'end start'] }));

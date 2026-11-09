@@ -1069,7 +1069,7 @@ col += H(46, 128, 96) * exp(-dot(ld2, ld2) * 1.4) * 0.16 * wide;
 vec3 lit = vec3(0.0);
 if (wide > 0.5) {
 lit += stepsRow(P, 0.91, 0.0100, 1.66, 2.0, 1.00, 0.00, 1.0, uPos, uFocus, uFade);
-lit += echoRow(P, 0.775, 0.0310, 2.21, 0.80, 3.0, uPos, uFade);
+lit += echoRow(P, 0.745, 0.0310, 2.115, 0.80, 3.0, uPos, uFade);
 col += H(70, 156, 168) * gridGround(P, 0.022) * 0.16;
 } else {
 lit += stepsRow(P, 0.72, 0.0360, 0.15, 2.0, 1.00, 0.00, 1.0, uPos, uFocus, uFade);

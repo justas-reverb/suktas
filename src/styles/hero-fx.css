@@ -112,27 +112,52 @@
 
 @media (max-width: 39.99rem) { .hfx .btn--big { align-self: stretch; justify-content: center; text-align: center; } }
 
+/* ---- A wide window: the hero is the first screen, composed to it ----
+   --u is the one unit of the first screen, the smaller of the window's width and its height (1.9 svh stands for 1 vw at the 1.9 : 1
+   windows people have), so type, spacing and the reel all grow and shrink with both. The panel is sized to the window under the
+   bar (--hh), flush to the bar and the window's edges at the top of the page (gutters.js lets it go to its inset as the page
+   is scrolled); the reel's width is worked out from the height left for it, so the whole reel and its caption are in the first
+   screen whatever the window. A window too short for all of it grows the panel instead of clipping anything. */
 @media (min-width: 60rem) {
-  .hfx__art { position: absolute; inset: 0 auto 2px 50%; width: 100%; max-width: 100rem; height: auto; aspect-ratio: auto; margin: 0; transform: translateX(-50%); }
-  .hfx__art::after { background: linear-gradient(to right, var(--hfx-ground) 0, transparent 14%), linear-gradient(to left, var(--hfx-ground) 0, transparent 14%), linear-gradient(to top, var(--hfx-ground) 0, transparent 14%); }
-  .hfx__body { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); padding-block: clamp(1.5rem, 2.6vw, 3rem) clamp(1.5rem, 2.6vw, 2.5rem); }
+  .hfx {
+    --u: min(1vw, 1.9svh);
+    --hh: calc(100svh - var(--head-h));
+    --sw: clamp(3.6rem, calc(var(--u) * 4.2), 9rem);
+    --bp: clamp(1rem, calc(var(--u) * 1.6), 3.4rem);
+    /* what is left for the reel (its height is 16/9 of its width), after the panel's padding, the snake's overhang and the box and caption around it */
+    --rw: clamp(9rem, calc((var(--hh) - 2 * var(--bp) - var(--sw) * 1.02 - 7.4rem) * 0.5625), 40rem);
+  }
+  .hfx__art { position: absolute; inset: 0 auto 2px 50%; width: 100%; max-width: none; height: auto; aspect-ratio: auto; margin: 0; transform: translateX(-50%); }
+  /* the art rises out of the ground under the bar (a top fade, so no digit row is cut at the bar) and leaves it at the sides and the foot; it spans the window, so no edge of it shows */
+  .hfx__art::after { background: linear-gradient(to bottom, var(--hfx-ground) 0, transparent 26%), linear-gradient(to right, var(--hfx-ground) 0, transparent 14%), linear-gradient(to left, var(--hfx-ground) 0, transparent 14%), linear-gradient(to top, var(--hfx-ground) 0, transparent 14%); }
+  .hfx .hfx__body {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: clamp(1.5rem, calc(var(--u) * 3.4), 6rem);
+    min-height: var(--hh);
+    max-width: max(calc(var(--wrap) + 2 * var(--pad)), calc(var(--u) * 84));
+    padding-block: var(--bp);
+  }
   /* the stage shares the card's foot; its top margin is the snake's overhang, so the head always has room under the panel's top */
-  .hfx__stage { justify-self: end; align-self: end; margin-top: calc(var(--sw) * 1.02 - 0.55rem + 0.75rem); width: clamp(13rem, 17vw, 16rem); }
-  .hfx__card { align-self: end; max-width: 44rem; }
-  .hero__cta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
-  .hfx .hero__sub { order: 2; flex: 1 0 100%; max-width: 28rem; margin: 0.5rem 0 0; padding-right: 0; }
+  .hfx__stage { justify-self: end; align-self: end; margin-top: calc(var(--sw) * 1.02 - 0.55rem + 0.75rem); width: calc(var(--rw) + 1.4rem + 2px); }
+  .hfx__card { align-self: end; max-width: clamp(34rem, calc(var(--u) * 58), 90rem); }
+  .hfx__q { padding: clamp(0.9rem, calc(var(--u) * 1.7), 3rem) clamp(1.2rem, calc(var(--u) * 2.4), 4rem) clamp(0.8rem, calc(var(--u) * 1.4), 2.4rem); }
+  .hfx__a { padding: clamp(0.8rem, calc(var(--u) * 1.5), 2.6rem) clamp(1.2rem, calc(var(--u) * 2.4), 4rem) clamp(0.9rem, calc(var(--u) * 1.6), 2.6rem); }
+  .hfx__a::before { left: clamp(1.2rem, calc(var(--u) * 2.4), 4rem); right: clamp(1.2rem, calc(var(--u) * 2.4), 4rem); }
+  .hfx .hfx__q h1 { font-size: clamp(2.6rem, calc(var(--u) * 5.3), 12rem); max-width: 11ch; }
+  .hfx .hero__lead { max-width: clamp(30rem, calc(var(--u) * 34), 80rem); margin-top: 0; font-size: clamp(1.2rem, calc(var(--u) * 1.85), 2.9rem); line-height: 1.38; }
+  .hero__cta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.1rem; margin-top: clamp(0.8rem, calc(var(--u) * 1.3), 2.4rem); }
+  .hfx .hero__sub { order: 2; flex: 1 0 100%; max-width: clamp(24rem, calc(var(--u) * 26), 56rem); margin: 0; padding-right: 0; font-size: clamp(1.0625rem, calc(var(--u) * 1.3), 1.7rem); line-height: 1.45; }
+  .hfx .hero__cta .btn--big { min-height: clamp(3.2rem, calc(var(--u) * 4.4), 5.4rem); font-size: clamp(1.15rem, calc(var(--u) * 1.6), 2.2rem); }
+  .hfx__line { margin-top: clamp(0.7rem, calc(var(--u) * 1.2), 2.2rem); padding-top: clamp(0.6rem, calc(var(--u) * 1), 1.7rem); font-size: clamp(1.0625rem, calc(var(--u) * 1.3), 1.7rem); line-height: 1.5; }
+  .hfx__reel figcaption { margin-top: 0.6rem; }
+  .hfx__cap { text-wrap: balance; }
+  .hfx__cap, .hfx__more { font-size: clamp(1.0625rem, calc(var(--u) * 1.25), 1.6rem); }
   .hfx + .ask { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
 }
-
-/* a very large window: the card, its type and the reel grow with it instead of floating in empty ground */
-@media (min-width: 100rem) {
-  .hfx .hfx__body { max-width: 100rem; padding-top: 3rem; }
-  .hfx__card { max-width: 60rem; }
-  .hfx h1 { font-size: 7.6rem; }
-  .hfx .hero__lead { font-size: 1.55rem; max-width: 40rem; }
-  .hfx .hero__sub, .hfx__line { font-size: 1.15rem; }
-  .hfx__stage { width: 23rem; }
-  .hfx { --sw: 7.4rem; }
+/* a window that is wide for its height: the sentence beside the button, so a row is saved for the headline */
+@media (min-width: 60rem) and (max-height: 52rem) {
+  .hfx .hero__sub { flex: 1 1 15rem; }
 }
 
 @media print { .hfx h1, .hfx__a, .hfx__stage { opacity: 1 !important; animation: none !important; } .hfx__art, .hfx__reel { display: none !important; } .hfx--dark { background: none; color: #000; } .hfx__ink, .hfx__snake { display: none !important; } .hfx--dark h1, .hfx--dark .hero__lead, .hfx--dark .hero__sub, .hfx--dark .hfx__line { color: #000; } }

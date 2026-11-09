@@ -56,6 +56,7 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 - [Netikra banko reklama](/scenarijai/netikra-banko-reklama/)
 - [Netikras QR kodas](/scenarijai/netikras-qr-kodas/)
 - [Programėlė iš nuorodos ar reklamos](/scenarijai/programele-is-nuorodos/)
+- [Netikras DI įrankis](/scenarijai/netikras-di-irankis/)
 - [Netikras konkursas](/scenarijai/netikras-konkursas/)
 - [„Padėsime susigrąžinti pinigus“](/scenarijai/susigrazinti-pinigus/)
 
@@ -103,6 +104,10 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 - [Mullvad VPN](/irankiai/mullvad/)
 - [Tailscale](/irankiai/tailscale/)
 - [GrapheneOS](/irankiai/grapheneos/)
+- [Spragos ir atnaujinimai](/pazeidziamumai/)
+- [Telefono ir kompiuterio atnaujinimai](/pazeidziamumai/telefonas-ir-kompiuteris/)
+- [Svetainės atnaujinimai](/pazeidziamumai/svetaine/)
+- [Serverio atnaujinimai](/pazeidziamumai/serveris/)
 
 ## Žodynas ir šaltiniai
 
@@ -113,6 +118,8 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 - [Kas yra finansinė piramidė](/zodynas/piramide/)
 - [Kas yra mokamos lažybų prognozės](/zodynas/lazybu-prognozes/)
 - [Kas yra greito uždarbio kursai](/zodynas/greito-uzdarbio-kursai/)
+- [Kas yra DI programėlės prenumerata](/zodynas/di-prenumerata/)
+- [Programėlė iš mažo pardavėjo](/zodynas/programele-su-di/)
 - [Šaltiniai](/saltiniai/)
 - [Kas pasikeitė](/kas-pasikeite/)
 

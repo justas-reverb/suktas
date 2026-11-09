@@ -1,0 +1,108 @@
+---
+/**
+ * Žodynas: programėlė iš mažo pardavėjo, a short glossary entry on the scenario template, with no attacker layer. The copy is docs/copy/zodynas/programele-su-di.md, word for word;
+ * the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'vibe-coded app'],
+  ['Skaitymo laikas', '2 min.'],
+];
+
+const sources = [
+  '„Your Europe“ (tikrinta 2026-10-05; be datos, skaityta 2026-11-09): garantija, 14 dienų. <!-- F1015 F1014 -->',
+  'Valstybinė duomenų apsaugos inspekcija (atnaujinta 2025-05-26) ir „Your Europe“ (tikrinta 2026-08-05): 72 valandos, pranešimas nukentėjusiems. <!-- F1021 -->',
+  'Europos vartotojų centras Lietuvoje (ecc.lt, be datos, skaityta 2026-11-09; „Your Europe“, tikrinta 2026-09-21): pagalba ir ko reikia. <!-- F1018 F717 -->',
+  'NKSC (be datos): VVTAT. <!-- F19 -->',
+  'VVTAT, per teise.pro (2021): pirkimas iš privataus asmens. <!-- F275 -->',
+  'Lietuvos bankas (atnaujinta 2026-07-30) ir policija (2026-02-05, atnaujinta 2026-04-23): bankas ir epolicija.lt. <!-- F252 F2 -->',
+];
+---
+<Page
+  title="Programėlė iš mažo pardavėjo: ką paklausti – Suktas"
+  description="Perki programėlę ar internetinį įrankį iš mažo pardavėjo, galbūt sukurtą su DI? Ką paklausti prieš mokant ir ką tau jau suteikia įstatymas."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Programėlė iš mažo pardavėjo')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Dabar programėlę su dirbtinio intelekto (DI) pagalba gali greitai sukurti ir vienas žmogus. <!-- M --> Tai savaime nei gerai, nei blogai, ir neradome šaltinio, kuris rodytų, kad tokios programėlės dažniau kenkia pirkėjams. <!-- M --> Kaip ir perkant iš bet kurio mažo pardavėjo, prieš mokant verta žinoti, kas saugo tavo duomenis ir kas atsakys, jei programėlė sustos. <!-- M -->')} />
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš mokant parašyk pardavėjui penkis klausimus. Jei į tau svarbų klausimą atsakymo nėra, nemokėk. <!-- M -->')} />
+        <ol>
+          <li set:html={nbHtml('<strong>Kas pardavėjas?</strong> Įmonės pavadinimas, kodas, šalis. Be to nežinosi, kam reikšti pretenziją ir ar turi vartotojo teises. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Kur saugomi mano duomenys ir kas juos gali matyti?</strong> <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Kas atsakys, jei programėlė neveiks, ir per kiek laiko?</strong> <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Ar bus atnaujinimų ir kiek laiko?</strong> <!-- F1015 M -->')} />
+          <li set:html={nbHtml('<strong>Kaip atgauti savo duomenis ir nutraukti sutartį?</strong> <!-- M -->')} />
+        </ol>
+        <p set:html={nbHtml('Atsakymus išsaugok raštu. <!-- M -->')} />
+      </section>
+
+      <div class="row">
+        <h2>Ką tau jau suteikia įstatymas</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>Garantija.</strong> Jei skaitmeninis turinys ar paslauga, įskaitant ir mobiliąsias programėles, turi trūkumų, nėra tokie, kokie buvo reklamuojami, arba veikia ne taip, kaip tikėtasi, ES taiko bent dvejų metų garantiją: teikėjas pirmiausia turi nemokamai pašalinti trūkumą per pagrįstą laiką; jei to padaryti nepavyksta, gali prašyti sumažinti kainą arba nutraukti sutartį. <!-- F1015 --> Jei paslauga teikiama nuolat, teikėjas už trūkumus atsako visą sutarties laiką. <!-- F1015 --> Teikėjai taip pat turėtų užtikrinti reikiamus atnaujinimus. <!-- F1015 -->')} />
+            <li set:html={nbHtml('<strong>14 dienų.</strong> Internetu sudarytą sutartį paprastai galima nutraukti per 14 dienų be paaiškinimo, bet yra išimčių. <!-- F1014 --> Plačiau: <a href="/zodynas/di-prenumerata/#atgauti-pinigus">DI programėlės prenumerata</a>.')} />
+            <li set:html={nbHtml('<strong>Jei nutekėjo duomenys.</strong> Už duomenis atsakinga įmonė, sužinojusi apie pažeidimą, keliantį pavojų žmonių teisėms, privalo per 72 valandas pranešti duomenų apsaugos institucijai (Lietuvoje – Valstybinei duomenų apsaugos inspekcijai). <!-- F1021 --> Jei pavojus didelis, ji privalo nedelsdama pranešti ir patiems žmonėms. <!-- F1021 -->')} />
+            <li set:html={nbHtml('<strong>Garantija ir 14 dienų galioja perkant iš verslo.</strong> Jei pardavėjas – privatus asmuo, kuris prekyba neužsiima, vartotojų teisės netaikomos: ginčas sprendžiamas susitarus, o nesutarus – teisme. <!-- F275 -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="jei-sumokejai">
+        <h2 id="jei-sumokejai">Jei jau sumokėjai ir kažkas negerai</h2>
+        <ol>
+          <li set:html={nbHtml('<strong>Išsaugok įrodymus:</strong> užsakymo patvirtinimą, sąskaitą, susirašinėjimą. <!-- F1018 -->')} />
+          <li set:html={nbHtml('<strong>Parašyk pardavėjui</strong> ir aiškiai pasakyk, ko prašai: pataisyti, sumažinti kainą ar nutraukti sutartį. <!-- F1015 M -->')} />
+          <li set:html={nbHtml('<strong>Pardavėjas – įmonė kitoje ES šalyje?</strong> Europos vartotojų centras padeda nemokamai. <!-- F1018 F717 --> Lietuvoje registruoto pardavėjo atveju vartotojų teises saugo VVTAT. <!-- F19 M -->')} />
+          <li set:html={nbHtml('<strong>Pardavėjas dingo ar tai atrodo kaip apgaulė?</strong> Susisiek su banku ir pranešk policijai per epolicija.lt: <a href="/jei-apgavo/">Jei tave apgavo</a>. <!-- F252 F2 -->')} />
+        </ol>
+      </section>
+    </section>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li set:html={nbHtml('<strong>Žodynas:</strong> <a href="/zodynas/di-prenumerata/">DI programėlės prenumerata</a>, <a href="/zodynas/greito-uzdarbio-kursai/">Kas yra greito uždarbio kursai</a>')} />
+          <li set:html={nbHtml('<strong>Scenarijai:</strong> <a href="/scenarijai/netikras-di-irankis/">Netikras DI įrankis</a>')} />
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Klausimai pardavėjui yra mūsų pačių: šaltinio, kuris duotų tokį sąrašą pirkėjams, neradome. <!-- M --> Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

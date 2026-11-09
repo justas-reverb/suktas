@@ -1,0 +1,196 @@
+---
+/**
+ * Vadovas: serverio atnaujinimai. The copy is docs/copy/pazeidziamumai/serveris.md, word for word;
+ * the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'server updates, unattended upgrades'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const sources = [
+  'NKSC, 2026-10-21 ir 2026-10-22: PHP įspėjimas, klausimai ir atsakymai. <!-- F1027 F1028 -->',
+  'NKSC, „Interneto svetainių apsauga“ (be datos, skaityta 2026-11-09). <!-- F1032 -->',
+  'NKSC, „Pranešti“ (be datos). <!-- F259 -->',
+  'Valstybinė duomenų apsaugos inspekcija (atnaujinta 2025-05-26) ir „Your Europe“ (tikrinta 2026-08-05): 72 valandos. <!-- F1021 -->',
+  'Europos Komisija, bendras pareiškimas dėl PHP (2026-10-21). <!-- F1030 -->',
+  'CISA (JAV; peržiūrėta 2026-10-26): PHP įspėjimas. <!-- F1029 -->',
+  '„Mandiant“ (JAV, „Google“ dalis), 2024-10-16, apie 2023 m. paskelbtas spragas: kaip greitai panaudojamos žinomos spragos. <!-- F1031 -->',
+  '„Ubuntu Server“ dokumentacija (angliškai; be datos, skaityta 2026-11-09). <!-- F1040 -->',
+];
+---
+<Page
+  title="Serverio atnaujinimai: ką įjungti ir patikrinti – Suktas"
+  description="Prižiūri serverį? Ką įjungti, kad saugumo atnaujinimai būtų diegiami automatiškai, ką jie aplenkia ir ką daryti, jei kurios nors programos atnaujinti negali."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/pazeidziamumai/">Spragos ir atnaujinimai</a></p>
+        <h1>{nb('Serverio atnaujinimai')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Pasenusi ar nebepalaikoma programinė įranga, pasak NKSC, išlieka viena dažniausių sėkmingų kibernetinių atakų priežasčių. <!-- F1032 --> Įjunk automatinius saugumo atnaujinimus, surašyk, kas serveryje pasiekiama internetu, ir išjunk tai, ko nereikia. <!-- F1032 F1028 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Automatiniai atnaujinimai apima ne viską. <!-- M --> Per 2026 m. spalio PHP įspėjimą NKSC atskirai priminė, kad kitų gamintojų programas reikia atnaujinti pagal gamintojo rekomendacijas. <!-- F1027 --> JAV agentūra CISA rašė, kad PHP dažnai yra kitos programinės įrangos dalis ir iš pažiūros to gali nesimatyti. <!-- F1029 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti, kad vėluoji</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>Nėra sąrašo, kas pasiekiama internetu.</strong> NKSC tokią inventorizaciją pataria padaryti pirmiausia. <!-- F1028 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Programa įdiegta iš papildomos saugyklos.</strong> „Ubuntu“ dokumentacija įspėja: vien pridėjus saugyklą automatiniai atnaujinimai į ją neatsižvelgs. <!-- F1040 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Veikia versija, kuri nebegauna saugumo atnaujinimų.</strong> <!-- F1028 M -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Atsarginė kopija niekada nebuvo atkurta.</strong> NKSC pataria periodiškai tikrinti, ar kopijos gali būti sėkmingai atkurtos. <!-- F1032 -->')} /></li>
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Įjunk automatinius saugumo atnaujinimus ir surašyk, kas serveryje pasiekiama internetu. <!-- F1032 F1028 -->')} />
+      </section>
+
+      <div class="row">
+        <h2 id="ka-padaryti">Ką padaryti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>„Ubuntu“ serveryje</strong> saugumo atnaujinimai diegiami automatiškai, be naudotojo veiksmų, per paketą „unattended-upgrades“, kuris įdiegtas pagal nutylėjimą; patikrink <a href="https://documentation.ubuntu.com/server/how-to/software/automatic-updates/">pagal „Ubuntu“ dokumentaciją</a>, ar paketas neišjungtas. <!-- F1040 M --> Paketas gali paleisti sistemą iš naujo, bet pagal nutylėjimą to nedaro: toks atnaujinimas iki galo veiks tik paleidus serverį iš naujo. <!-- F1040 --> Kitoms sistemoms skaityk jų gamintojo dokumentaciją. <!-- M -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Kitų gamintojų programos.</strong> Atnaujink jas pagal gamintojo rekomendacijas. <!-- F1027 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Inventorizacija.</strong> Surašyk valdomus išteklius ir programinę įrangą, prieinamą internetu. <!-- F1028 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Mažink tai, kas matoma.</strong> Uždaryk nenaudojamus tinklo prievadus, išjunk nereikalingas paslaugas, neviešink vidinių sistemų internete be poreikio. <!-- F1032 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Apribok prisijungimą.</strong> Įjunk <a href="/zodynas/#antras-prisijungimo-zingsnis">antrą prisijungimo žingsnį</a>, pašalink arba išjunk numatytąsias paskyras. <!-- F1032 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Registruok ir tikrink.</strong> Registruok svarbiausius sistemos įvykius, prisijungimus ir administravimo veiksmus, o atsargines kopijas periodiškai bandyk atkurti. <!-- F1032 -->')} /></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>Viskuo, kas tame serveryje.</strong> Svetainėmis, duomenimis, paštu. <!-- M -->')} />
+            <li set:html={nbHtml('<strong>Žmonių duomenimis.</strong> Jei nutekės asmens duomenys, gali tekti pranešti Valstybinei duomenų apsaugos inspekcijai per 72 valandas. <!-- F1021 -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="jei-veluoji">
+        <h2 id="jei-veluoji">Jei jau vėluoji</h2>
+        <ol>
+          <li set:html={nbHtml('<strong>Negali atnaujinti iš karto?</strong> ES institucijų ir agentūrų pareiškime dėl PHP spragų patariama svarstyti galimybę izoliuoti paveiktas programas nuo viešųjų tinklų, kol pataisymus bus galima pritaikyti. <!-- F1030 -->')} />
+          <li set:html={nbHtml('<strong>PHP versijai saugumo atnaujinimų nebėra?</strong> Pereik prie palaikomos versijos. <!-- M --> Per 2026 m. spalio PHP spragas NKSC rašė, kad tokią versiją reikia izoliuoti nuo interneto, o JAV agentūra CISA patarė tokias sistemas atjungti, kol bus atnaujintos. <!-- F1028 F1029 --> Atjungtos programos lankytojams neveiks. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Įtari įsilaužimą?</strong> Pranešk NKSC: cert@nksc.lt. <!-- F259 -->')} />
+          <li set:html={nbHtml('<strong>Galėjo nutekėti asmens duomenys?</strong> Jei pažeidimas kelia pavojų žmonių teisėms, apie jį reikia pranešti Valstybinei duomenų apsaugos inspekcijai per 72 valandas nuo sužinojimo. <!-- F1021 --> Jei pavojus didelis, nedelsiant reikia pranešti ir patiems žmonėms. <!-- F1021 -->')} />
+        </ol>
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/pazeidziamumai/">Spragos ir atnaujinimai</a>
+        <a class="btn btn--second" href="/pazeidziamumai/svetaine/">Svetainė</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta; nė žodžio apie tai, kaip spragomis naudojamasi. „Jis“ čia – tas, kuris naudojasi neatnaujintais serveriais. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Serverio, kuriame spraga žinoma, o pataisa neįdiegta: duomenų, prieigos prie to, kas ten veikia, ir vietos, iš kurios galima pulti kitus. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> automatiniai saugumo atnaujinimai. <!-- F1032 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Serveris, kurio niekas nežiūri, neatnaujintas gali veikti metus. <!-- M --> O laiko nedaug. JAV bendrovė „Mandiant“ išnagrinėjo 2023 m. paskelbtas spragas: iš 41, kuriomis imta naudotis jau po pataisos, 12 % panaudotos per vieną dieną, 56 % per mėnesį. <!-- F1031 --> <strong class="stop">Sustabdymo vieta:</strong> sąrašas, kas veikia, ir atnaujinimai, kurie diegiami be tavo įsikišimo. <!-- F1028 F1032 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Naudojasi tuo, kad pataisa dar neįdiegta')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Automatiniai saugumo atnaujinimai. <!-- F1032 -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Pamiršta paslauga, atvira internetui')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Uždaryk nenaudojamus prievadus, išjunk nereikalingas paslaugas. <!-- F1032 -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('PHP versija, kuri nebetaisoma')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Pereik prie palaikomos; kol negali, atjunk nuo interneto. <!-- F1028 F1029 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Numatytoji paskyra')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Pašalink arba išjunk. <!-- F1032 -->')} />
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių spragų veikimo aprašymų, jokių nurodymų, kaip jomis pasinaudoti, ir jokių būdų surasti neatnaujintus serverius. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li set:html={nbHtml('<strong>Vadovai:</strong> <a href="/pazeidziamumai/">Spragos ir atnaujinimai</a>, <a href="/pazeidziamumai/svetaine/">Svetainė</a>, <a href="/pazeidziamumai/telefonas-ir-kompiuteris/">Telefonas ir kompiuteris</a>')} />
+          <li set:html={nbHtml('<strong>Žodynas:</strong> <a href="/zodynas/#pazeidziamumas">Pažeidžiamumas</a>, <a href="/zodynas/#pataisa">Pataisa</a>, <a href="/zodynas/#nulines-dienos-spraga">Nulinės dienos spraga</a>, <a href="/zodynas/#cve">CVE</a>')} />
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

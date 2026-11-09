@@ -61,7 +61,7 @@ Abejoji, ar žinutė tikra? Susisiek su įstaiga pagal kontaktus jos oficialioje
 
 ## Dar trys dalykai tavo įrenginiui {#dar-trys}
 
-- **Atnaujinimai.** Įjunk automatinius: daugelis atnaujinimų sukurti saugumo spragoms taisyti. <!-- F77 -->
+- **Atnaujinimai.** Įjunk automatinius: daugelis atnaujinimų sukurti saugumo spragoms taisyti. <!-- F77 --> Plačiau: [Spragos ir atnaujinimai](/pazeidziamumai/).
 - **Ekrano užraktas.** PIN kodas, piešinys ar slaptažodis saugo telefoną nuo svetimų rankų. <!-- F78 -->
 - **Namų maršrutizatorius.** Pakeisk jo prisijungimo slaptažodį, atnaujink jo programinę įrangą ir išjunk WPS. <!-- F74 -->
 
@@ -72,6 +72,7 @@ Pirmus du rasi [Patikroje per 15 minučių](/patikra/15-minuciu/). <!-- pažadas
 - [Reklama su žinomu veidu](/scenarijai/reklama-su-zinomu-veidu/) – netikra investavimo reklama, kurią blokatorius paslepia. <!-- F50 F125 -->
 - [Netikra banko reklama](/scenarijai/netikra-banko-reklama/) – paieškos reklama banko vardu, kurią blokatorius paslepia. <!-- F213 F125 -->
 - [Programėlė iš nuorodos ar reklamos](/scenarijai/programele-is-nuorodos/) – netikra programėlė, kuri perima telefoną ir prieigą prie banko. <!-- F224 -->
+- [Netikras DI įrankis](/scenarijai/netikras-di-irankis/) – nemokamas DI įrankis, o atsisiunti programą, kuri vagia prisijungimus. <!-- F1005 -->
 - [Žinutė su nuoroda](/scenarijai/zinute-su-nuoroda/) – „siuntinys“, „mokestis“ ir nuoroda į netikrą formą. <!-- F39 -->
 
 ## Kaip tai daro jis
@@ -117,6 +118,7 @@ Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų 
 - **Kortelės:** [Nespausk nuorodos – atsidaryk programėlę ar svetainę](/sustok/nuoroda-ne-is-zinutes/), [Sustok dešimčiai sekundžių](/sustok/desimt-sekundziu/)
 - **Patikra:** [Patikra per 15 minučių](/patikra/15-minuciu/)
 - **Įrankiai:** [Mullvad VPN](/irankiai/mullvad/), [Tailscale](/irankiai/tailscale/), [GrapheneOS](/irankiai/grapheneos/)
+- **Vadovai:** [Telefono ir kompiuterio atnaujinimai](/pazeidziamumai/telefonas-ir-kompiuteris/), [Svetainės atnaujinimai](/pazeidziamumai/svetaine/), [Serverio atnaujinimai](/pazeidziamumai/serveris/)
 - **Jei jau įsidiegei:** [Jei tave apgavo: įdiegiau programą ar leidau valdyti telefoną](/jei-apgavo/#nuotolinis)
 
 ## Šaltiniai ir patikrinta

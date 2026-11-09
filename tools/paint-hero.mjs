@@ -17,7 +17,7 @@ import { generate } from './paint-shaders.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css', '.json': 'application/json' };
-const SIZES = [['wide', 1280, 2.4], ['wide', 1920, 2.4], ['wide', 2880, 2.4], ['tall', 780, 1.5], ['tall', 1170, 1.5]];
+const SIZES = [['wide', 1280, 1.9], ['wide', 1920, 1.9], ['wide', 2880, 1.9], ['wide', 3840, 1.9], ['tall', 780, 1.5], ['tall', 1170, 1.5]];
 export const JOBS = [];
 for (const dir of ['a', 'b', 'c']) for (const [shape, w, asp] of SIZES) JOBS.push({ dir, w, h: Math.round(w / asp), webp: path.join(ROOT, `public/art/hero-${dir}-${shape}-${w}.webp`), quality: 86 });
 // the home page's "Kaip jis galvoja" band (direction t): a band 2.2:1 on a phone, a wide picture beside the text above 60rem

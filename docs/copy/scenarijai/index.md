@@ -65,6 +65,7 @@ Kiekvienas puslapis rodo vieną apgaulę iš sukčiaus pusės: kaip ji atrodo, k
 - **[Prekybos kursai ir signalai už pinigus](/scenarijai/prekybos-kursai-ir-signalai/)** – „mentorius“ socialiniuose tinkluose parduoda kursą ar signalus ir žada greitą pelną. <!-- F713 F712 --> · 4 min.
 - **[Netikra banko reklama](/scenarijai/netikra-banko-reklama/)** – ieškai banko paieškoje, o reklama „Remiama“ veda į netikrą jo svetainę. <!-- F213 F218 --> · 3 min.
 - **[Programėlė iš nuorodos ar reklamos](/scenarijai/programele-is-nuorodos/)** – reklama ar žinutė siūlo programėlę ne iš „Google Play“, o ji perima telefoną. <!-- F224 F225 --> · 3 min.
+- **[Netikras DI įrankis](/scenarijai/netikras-di-irankis/)** – reklama ar grupė siūlo nemokamą DI įrankį, o vietoj rezultato atsisiunti programą, kuri vagia prisijungimus. <!-- F1005 --> · 3 min.
 - **[Netikras konkursas](/scenarijai/netikras-konkursas/)** – „Iki“ ar „Maximos“ vardu „Facebook“ tinkle žadamas prizas, o jam atsiimti prašoma kortelės duomenų. <!-- F367 F368 --> · 3 min.
 - **[„Padėsime susigrąžinti pinigus“](/scenarijai/susigrazinti-pinigus/)** – po apgaulės „teisininkas“ ar „Interpolas“ žada susigrąžinti pinigus už mokestį. <!-- F14 F185 --> · 3 min.
 

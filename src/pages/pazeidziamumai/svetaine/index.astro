@@ -1,0 +1,198 @@
+---
+/**
+ * Vadovas: svetainės atnaujinimai. The copy is docs/copy/pazeidziamumai/svetaine.md, word for word;
+ * the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'website updates, plugins, hosting'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const sources = [
+  'NKSC, 2026-10-21 ir 2026-10-22: PHP įspėjimas, klausimai ir atsakymai. <!-- F1027 F1028 -->',
+  'NKSC, „Interneto svetainių apsauga“ (be datos, skaityta 2026-11-09). <!-- F1032 -->',
+  'NKSC, „Pranešti“ (be datos). <!-- F259 -->',
+  'Valstybinė duomenų apsaugos inspekcija (atnaujinta 2025-05-26) ir „Your Europe“ (tikrinta 2026-08-05): 72 valandos. <!-- F1021 -->',
+  'Europos Komisija, bendras pareiškimas dėl PHP (2026-10-21). <!-- F1030 -->',
+  'CISA (JAV; peržiūrėta 2026-10-26): PHP įspėjimas. <!-- F1029 -->',
+  '„Mandiant“ (JAV, „Google“ dalis), 2024-10-16, apie 2023 m. paskelbtas spragas: kaip greitai panaudojamos žinomos spragos. <!-- F1031 -->',
+  '„WordPress“ dokumentacija (angliškai): automatiniai atnaujinimai (be datos), įskiepiai ir šablonai (be datos), nulaužta svetainė (atnaujinta 2026-07-26). <!-- F1037 F1038 F1039 -->',
+];
+---
+<Page
+  title="Svetainės saugumas: atnaujinimai ir įskiepiai – Suktas"
+  description="Turi svetainę ir nežinai, kas ją atnaujina? Ką paklausti prieglobos tiekėjo, ką įjungti „WordPress“, ką daryti su sena PHP versija ir nulaužta svetaine."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/pazeidziamumai/">Spragos ir atnaujinimai</a></p>
+        <h1>{nb('Svetainės atnaujinimai')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Pasenusi ar nebepalaikoma programinė įranga, pasak NKSC, išlieka viena dažniausių sėkmingų kibernetinių atakų priežasčių. <!-- F1032 --> Jei turi svetainę, pirmiausia sužinok, kas ją atnaujina, ir, kur įmanoma, įjunk automatinius saugumo atnaujinimus. <!-- F1032 M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('2026 m. spalio 21 d. NKSC įspėjo dėl kritinių spragų PHP programavimo kalboje ir rekomendavo nedelsiant įdiegti pataisymus. <!-- F1027 --> Pasak NKSC, PHP naudoja apie 80 % Lietuvos interneto svetainių. <!-- F1028 --> Tačiau svetainės savininkas dažnai nežino, nei kokia programinė įranga ją sudaro, nei kas turi ją atnaujinti. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti, kad svetainė jau nulaužta</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('„WordPress“ dokumentacijoje (angliškai) vardijami tokie ženklai: <!-- F1039 -->')} />
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>Paieškos sistemos ar kiti įspėja dėl tavo svetainės.</strong> Ji įtraukta į „Google“ ar „Bing“ juoduosius sąrašus arba pažymėta kaip platinanti kenkėjišką programinę įrangą. <!-- F1039 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Prieglobos tiekėjas išjungė svetainę.</strong> <!-- F1039 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Kas nors praneša, kad iš tavo svetainės puolamos kitos.</strong> <!-- F1039 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Matai pakeitimų, kurių niekas neleido daryti.</strong> <!-- F1039 -->')} /></li>
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Sužinok, kas atnaujina tavo svetainę, ir, kur įmanoma, įjunk automatinius saugumo atnaujinimus. <!-- F1032 M -->')} />
+      </section>
+
+      <div class="row">
+        <h2 id="ka-padaryti">Ką padaryti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>Surašyk, kas sudaro svetainę ir kas iš to pasiekiama internetu.</strong> NKSC tai vadina inventorizacija. <!-- F1028 --> Turinio valdymo sistema, įskiepiai, šablonai, serverio programinė įranga. <!-- F1032 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Jei svetainė veikia su „WordPress“.</strong> Daugumoje svetainių automatiniai „WordPress“ atnaujinimai įjungti pagal nutylėjimą; patikrink, ar tavo svetainėje jie neišjungti. <!-- F1037 M --> Įskiepius ir šablonus laikyk naujausios versijos. <!-- F1038 --> Prieš įjungiant jų automatinius atnaujinimus įsitikink, kad galėsi grįžti prie ankstesnės versijos, jei kas nors suges. <!-- F1038 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Paklausk prieglobos tiekėjo</strong> (įmonės, kurios serveryje laikoma svetainė): kokia PHP versija veikia, ar ji dar gauna saugumo atnaujinimus ir kas ją atnaujina. <!-- F1028 F1030 M --> 2026 m. spalį NKSC rašė, kad keli didžiausi Lietuvos prieglobos tiekėjai bendros prieglobos klientams jau pritaikė bendrus technologinius sprendimus. Visiškai panaikinti riziką, pasak NKSC, galima tik įdiegus saugumo atnaujinimą. <!-- F1028 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Apribok prisijungimą.</strong> Administravimo sąsajos turėtų būti prieinamos tik įgaliotiems naudotojams; įjunk <a href="/zodynas/#antras-prisijungimo-zingsnis">antrą prisijungimo žingsnį</a>, pašalink arba išjunk numatytąsias paskyras. <!-- F1032 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Turėk kopijų ir tikrink, ar iš jų pavyksta atkurti svetainę.</strong> <!-- F1032 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Svetainę prižiūri kas nors kitas?</strong> Sutartyje numatyk, kad nustatyti saugumo pažeidžiamumai pašalinami per sutartą terminą. <!-- F1032 -->')} /></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>Svetaine.</strong> Ją gali išjungti prieglobos tiekėjas, o paieškos sistemos gali įspėti jos lankytojus. <!-- F1039 -->')} />
+            <li set:html={nbHtml('<strong>Klientų duomenimis.</strong> Asmens duomenų saugumo pažeidimą gali tekti pranešti inspekcijai per 72 valandas. <!-- F1021 -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="jei-veluoji">
+        <h2 id="jei-veluoji">Jei jau vėluoji</h2>
+        <ol>
+          <li set:html={nbHtml('<strong>PHP versijai saugumo atnaujinimų nebėra?</strong> Pirmiausia paklausk prieglobos tiekėjo, ar galima pereiti prie palaikomos versijos. <!-- M --> Per 2026 m. spalio PHP spragas NKSC rašė, kad tokią versiją reikia izoliuoti nuo interneto, o JAV agentūra CISA patarė tokias sistemas atjungti, kol bus atnaujintos. <!-- F1028 F1029 --> Atjungta svetainė lankytojams neveiks. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Svetainė nulaužta?</strong> „WordPress“ dokumentacijoje patariama susisiekti su prieglobos tiekėju, priverstinai pakeisti visų naudotojų, ypač administratorių, slaptažodžius ir pasidaryti kopiją, o išvalius svetainę ją atnaujinti ir slaptažodžius pakeisti dar kartą. <!-- F1039 --> Jei nežinai, kaip išvalyti, kreipkis į prieglobos tiekėją ar svetainės kūrėją. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Pranešk NKSC:</strong> cert@nksc.lt. <!-- F259 -->')} />
+          <li set:html={nbHtml('<strong>Galėjo nutekėti asmens duomenys?</strong> Jei pažeidimas kelia pavojų žmonių teisėms, apie jį reikia pranešti Valstybinei duomenų apsaugos inspekcijai per 72 valandas nuo sužinojimo. <!-- F1021 --> Jei pavojus didelis, nedelsiant reikia pranešti ir patiems žmonėms. <!-- F1021 -->')} />
+        </ol>
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/pazeidziamumai/">Spragos ir atnaujinimai</a>
+        <a class="btn btn--second" href="/pazeidziamumai/serveris/">Serveris</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta; nė žodžio apie tai, kaip spragomis naudojamasi. „Jis“ čia – tas, kuris naudojasi neatnaujintomis svetainėmis. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo svetainės kaip įrankio: kad per ją platintų kenkėjišką programinę įrangą arba pultų kitus, ir tavo klientų duomenų. <!-- F1039 M --> Tai, kad svetainė maža, jos neapsaugo: ji jam gali būti vertinga ne dėl to, kas ji tokia, o dėl to, kad neatnaujinta. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> automatiniai saugumo atnaujinimai. <!-- F1032 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Svetainės savininkas dažnai nežino, kokia programinė įranga ją sudaro. <!-- M --> JAV agentūra CISA rašo, kad PHP dažnai yra kitos programinės įrangos dalis ir iš pažiūros to gali nesimatyti. <!-- F1029 --> O jam padeda laikas. JAV bendrovė „Mandiant“ išnagrinėjo 2023 m. paskelbtas spragas: iš 41, kuriomis imta naudotis jau po pataisos, 12 % panaudotos per vieną dieną, 56 % per mėnesį. <!-- F1031 --> Šie skaičiai nerodo, kaip greitai tai nutinka būtent mažoms svetainėms. <!-- F1031 --> <strong class="stop">Sustabdymo vieta:</strong> sąrašas, kas sudaro svetainę, ir žmogus, atsakingas už jos atnaujinimą. <!-- F1028 M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Pasenęs įskiepis ar šablonas')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Laikyk naujausios versijos. <!-- F1038 -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('PHP versija, kuri nebegauna atnaujinimų')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Pereik prie palaikomos; kol negali, atjunk (svetainė tuo metu neveiks). <!-- F1028 F1029 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Numatytoji paskyra ar vienas slaptažodis')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Pašalink numatytąsias, įjunk antrą prisijungimo žingsnį. <!-- F1032 -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Niekas neatsako už atnaujinimus')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Susitark, kas tai daro, ir įrašyk į sutartį. <!-- F1032 M -->')} />
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių spragų veikimo aprašymų, jokių nurodymų, kaip jomis pasinaudoti, ir jokių būdų surasti neatnaujintas svetaines. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li set:html={nbHtml('<strong>Vadovai:</strong> <a href="/pazeidziamumai/">Spragos ir atnaujinimai</a>, <a href="/pazeidziamumai/telefonas-ir-kompiuteris/">Telefonas ir kompiuteris</a>, <a href="/pazeidziamumai/serveris/">Serveris</a>')} />
+          <li set:html={nbHtml('<strong>Temos:</strong> <a href="/temos/irenginiai/">Įrenginiai ir tinklas</a>')} />
+          <li set:html={nbHtml('<strong>Žodynas:</strong> <a href="/zodynas/#pazeidziamumas">Pažeidžiamumas</a>, <a href="/zodynas/#pataisa">Pataisa</a>, <a href="/zodynas/#cve">CVE</a>')} />
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

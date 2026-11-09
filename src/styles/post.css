@@ -44,8 +44,8 @@
   .shead .post-head__text { grid-column: 1; grid-row: 1; }
 }
 
-/* the head of a letter sits in the sheet's column; the stamp is the sheet's (triukai.css) */
-.shead.post-head--col .post-head__body { max-width: calc(44rem + 2 * var(--pad)); padding-bottom: 0.25rem; }
+/* the head of a letter sits in the sheet's column; the stamp is the sheet's (triukai.css); it has no art, so no --readout column */
+.shead.post-head--col .post-head__body { max-width: calc(44rem + 2 * var(--pad)); padding-right: var(--pad); padding-bottom: 0.25rem; }
 @media (min-width: 46rem) {
   .shead.post-head--col .post-head__body { grid-template-columns: minmax(0, 1fr); }
 }

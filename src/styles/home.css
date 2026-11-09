@@ -167,6 +167,8 @@
   .beats li.is-go::after { transform: scaleX(1); }
   .think__in { padding-top: clamp(3rem, 6vw, 5rem); }
   .beats { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 1.25rem; margin-top: 4.5rem; }
+  /* the last step's name has to fit a fifth of a narrow desktop */
+  .beats strong { font-size: clamp(1.1rem, 1.85vw, 1.45rem); }
   .beats li {
     margin: 0;
     padding: 2.4rem 0 0;
@@ -263,8 +265,10 @@
 @media screen and (min-width: 60rem) and (hover: hover) {
   main { --band-g: clamp(0.75rem, 3.6vw, 4.5rem); }
   /* one pixel in from top and bottom: a panel's edge then never shows a layer's rounding step */
-  .band { --band-r: 1.5rem; --cut: var(--band-g); clip-path: inset(1px var(--cut) 1px round var(--band-r)); }
-  .hfx.band { margin-top: 0.5rem; }
+  /* the glide keeps a wheel notch from jumping the edge 20 px in one frame; it runs only while gutters.js moves --cut */
+  .band { --band-r: 1.5rem; --cut: var(--band-g); clip-path: inset(1px var(--cut) 1px round var(--band-r)); transition: --cut 0.16s ease-out; }
+  /* the hero is the first screen: flush to the bar and the window's edges until the page is scrolled (gutters.js moves --cut), square while it is flush */
+  .hfx.band { margin-top: 0; --cut: 0px; clip-path: inset(0 var(--cut) 1px round min(var(--cut), var(--band-r))); }
   main .wrap { padding-inline: calc(var(--pad) + var(--band-g)); }
   .ask .chooser, .ask .chooser * { min-width: 0; }
 }

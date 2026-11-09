@@ -1,0 +1,183 @@
+---
+/**
+ * Scenarijus: netikras DI įrankis, „nemokamas“ įrankis, kuris vagia. The copy is docs/copy/scenarijai/netikras-di-irankis.md, word for word;
+ * the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Kanalas', 'reklama ar grupė socialiniame tinkle'],
+  ['Ko jis nori', 'tavo slaptažodžių, kortelės ir paskyrų'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const sources = [
+  '„Mandiant“ (anglų k., 2025-05-27) ir „Morphisec“ (anglų k., 2025-05-08): netikros DI vaizdo kūrimo svetainės, kaip atkeliauja failas ir ką jis vagia. <!-- F1005 F1006 F1007 -->',
+  '„Meta“ (anglų k., 2023-05-03): kenkėjiškos programos, apsimetančios „ChatGPT“. <!-- F1008 -->',
+  'Nacionalinis kibernetinio saugumo centras (2025-12-19): pratybos su „ChatGPT Plus“ masalu. <!-- F1004 -->',
+  '„Luminor“ (2026-07): programėlės tik iš oficialių parduotuvių. <!-- F225 -->',
+  'Lietuvos bankas: banką pasiek per oficialią svetainę; SEB ir bankai: kortelės blokavimas. <!-- F13 F6 F7 -->',
+  '„Luminor“ (alkas.lt, 2026-10-28): ryšio išjungimas, kitas įrenginys, programos pašalinimas; parašyta apie nuotolinio valdymo programas, tokiam failui taikome patys. <!-- F305 -->',
+  '„Samsung“ pagalba (2025-09-16): slaptažodžius keisti kitame įrenginyje; parašyta telefonams. <!-- F231 -->',
+  'NCSC (JK, anglų k.): išsami antivirusinės programos patikra. <!-- F117 -->',
+  'Policija: pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="Netikras DI įrankis: „nemokamas ChatGPT“, kuris vagia – Suktas"
+  description="Reklama siūlo nemokamą DI įrankį, o vietoj vaizdo įrašo atsisiunti programą, kuri vagia slaptažodžius ir kortelės duomenis. Trys ženklai ir vienas ėjimas."
+  current="scenarijai"
+>
+  <article class="scn">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <h1>{nb('Netikras DI įrankis')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap" aria-labelledby="trumpai">
+      <h2 id="trumpai" class="layer__title">Trumpai</h2>
+
+      <div class="row">
+        <h3>Kaip tai atrodo</h3>
+        <div class="row__body">
+          <p set:html={nbHtml('Socialinio tinklo reklama ar grupė siūlo nemokamą dirbtinio intelekto (DI) įrankį vaizdo įrašams ar paveikslėliams kurti. <!-- F1005 F1006 --> Svetainė paprašo įkelti nuotrauką ar vaizdo įrašą, apsimeta, kad kuria vaizdo įrašą, ir parodo mygtuką „Atsisiųsti“. <!-- F1006 F1007 --> Vietoj vaizdo įrašo gauni suspaustą (ZIP) failą, o jame – programą, kuri apsimeta vaizdo įrašu. <!-- F1007 --> Ją paleidus, gali būti pavogti prisijungimo duomenys, kortelės duomenys ir socialinio tinklo paskyros informacija. <!-- F1005 --> Panašiai apsimetama ir „ChatGPT“: 2023 m. „Meta“ rado kenkėjiškų naršyklės plėtinių, siūlančių „ChatGPT“ įrankius, net oficialiose plėtinių parduotuvėse. <!-- F1008 -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Trys ženklai</h3>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>Nemokamą įrankį siūlo reklama ar grupė.</strong> Žinomu įrankio vardu gali prisidengti bet kas. <!-- F1005 M -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Vietoj vaizdo įrašo gauni suspaustą (ZIP) failą ar programą.</strong> Sustok ir jo neatidaryk. <!-- F1007 M -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Įrankis prašo įdiegti programą ar naršyklės plėtinį.</strong> Tai, kad plėtinys iš tiesų kažką daro, nieko neįrodo: kai kurie kenkėjiški plėtiniai turėjo ir veikiančią „ChatGPT“ funkciją. <!-- F1008 M -->')} /></li>
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h3 id="ejimas">Tavo ėjimas</h3>
+        <p class="move__line" set:html={nbHtml('DI įrankio adresą įvesk naršyklėje arba susirask programėlę oficialioje parduotuvėje. Per reklamą ar grupės nuorodą – niekada. Failo, kuris turėjo būti vaizdo įrašas, neatidaryk. <!-- F225 F1007 M -->')} />
+        <p set:html={nbHtml('Parduotuvė – ne garantija: „Meta“ kenkėjiškų plėtinių rado ir oficialiose parduotuvėse. <!-- F1008 -->')} />
+      </section>
+
+      <section class="box" aria-labelledby="jei-atidarei">
+        <h3 id="jei-atidarei">Jei jau atidarei failą</h3>
+        <p set:html={nbHtml('Tai gali nutikti bet kam: failas atrodo kaip tas vaizdo įrašas, kurio laukei. <!-- F1007 M -->')} />
+        <ol>
+          <li set:html={nbHtml('<strong>Atjunk kompiuterį nuo interneto (išjunk „Wi-Fi“, ištrauk laidą) ir skambink bankui iš kito įrenginio</strong>, numeriu iš oficialios banko svetainės. Pasakyk, kad atidarei failą, kuriame buvo programa, ir paprašyk užblokuoti kortelę ir interneto banką. <!-- F305 F13 F6 F7 F1006 M -->')} />
+          <li set:html={nbHtml('<strong>Pakeisk slaptažodžius kitame įrenginyje</strong>: pirmiausia el. pašto, banko ir socialinių tinklų, ypač tuos, kuriuos saugojo naršyklė. <!-- F231 F1006 M --> Paskyrų nustatymuose atjunk visus kitus įrenginius, jei tai įmanoma. <!-- F1005 M -->')} />
+          <li set:html={nbHtml('<strong>Ištrink failą, bet vien to neužtenka:</strong> programa galėjo palikti kitų. <!-- F1005 F1006 M --> Jei turi antivirusinę programą, paleisk išsamią patikrą. <!-- F117 --> Prie banko ir paskyrų iš to kompiuterio nesijunk, kol jo nepatikrins specialistas. <!-- F305 M -->')} />
+          <li set:html={nbHtml('<strong>Pranešk policijai</strong> per epolicija.lt, net jei pinigai dar nedingo: duomenimis gali pasinaudoti vėliau. <!-- F2 F305 -->')} />
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/#nuotolinis">Jei tave apgavo: įdiegiau programą</a>, <a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/nuoroda-ne-is-zinutes/">Atidaryk kortelę</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Ne tavo vaizdo įrašo, o to, kas tavo kompiuteryje. <!-- M --> Užsienio saugumo įmonių aprašytos programos rinko prisijungimo duomenis, naršyklės slapukus, kortelės duomenis ir kriptovaliutų piniginių informaciją. <!-- F1005 F1006 --> <strong class="stop">Sustabdymo vieta:</strong> failas, kurio neatidarai. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tiek, kad domiesi DI įrankiais. <!-- M --> 2023 m. „Meta“ rašė, kad kenkėjiškų programų platintojai labai atidžiai seka, kas tuo metu populiaru. <!-- F1008 --> Užsienyje tokias svetaines ir reklamas 2025 m. aprašė saugumo įmonė „Mandiant“, bet aukų skaičiaus nepateikia ir pabrėžia, kad reklamos pasiekiamumas jo nerodo. <!-- F1005 --> Ieškodami 2026-11-09, Lietuvoje tokio atvejo neradome. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> tu renkiesi, iš kur atsidaryti įrankį. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              <li><strong>Nauda.</strong> <span set:html={nbHtml('Mokamo įrankio galimybės už dyką. <!-- F1006 M -->')} /></li>
+              <li><strong>Autoritetas.</strong> <span set:html={nbHtml('Žinomo įrankio vardas ir svetainė, kuri atrodo veikianti. <!-- F1005 F1006 M -->')} /></li>
+            </ul>
+            <p set:html={nbHtml('Nacionalinio kibernetinio saugumo centro pratybose 2025 m. organizacijų darbuotojams siųstas laiškas su nemokama „ChatGPT Plus“ prieiga buvo mažiausiai sėkmingas scenarijus. <!-- F1004 --> Tai buvo pratybos, o ne tikra ataka, bet centras atkreipia dėmesį, kad netikri domenai ir fiktyvūs naršyklės langai vis dar gali būti pavojingi mažiau patyrusiems naudotojams. <!-- F1004 -->')} />
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> „nemokama“ dar nereiškia „be kainos“. Kaina gali būti tavo paskyros. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Reklama ar grupė siūlo nemokamą DI įrankį')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Nespausk; adresą įvesk naršyklėje. <!-- F1005 F1006 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Svetainė „sukūrė“ vaizdo įrašą ir siūlo jį atsisiųsti')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Neatsisiųsk, jei tai suspaustas (ZIP) failas ar programa. <!-- F1007 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Atsisiųstame faile – programa')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Neatidaryk ir ištrink. <!-- F1007 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Įrankis prašo įdiegti naršyklės plėtinį')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Iš reklamos ar grupės nediek; parduotuvėje irgi diek tik tą, kurio tikrai reikia. <!-- F1008 M -->')} />
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li set:html={nbHtml('<strong>Kortelės:</strong> <a href="/sustok/nuoroda-ne-is-zinutes/">Nespausk nuorodos – atsidaryk programėlę ar svetainę</a>')} />
+          <li set:html={nbHtml('<strong>Temos:</strong> <a href="/temos/irenginiai/">Įrenginiai ir tinklas</a>')} />
+          <li set:html={nbHtml('<strong>Kiti scenarijai:</strong> <a href="/scenarijai/programele-is-nuorodos/">Programėlė iš nuorodos ar reklamos</a>, <a href="/scenarijai/slaptazodis-nutekejo/">Tavo slaptažodis nutekėjo</a>, <a href="/scenarijai/reklama-su-zinomu-veidu/">Reklama su žinomu veidu</a>')} />
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

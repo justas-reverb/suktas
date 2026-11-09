@@ -12,14 +12,17 @@
 import { catalogue, protect, family, understand, about, inside } from '../lib/nav.js';
 import { channels } from '../lib/catalogue.js';
 
+interface Props { top?: 'day' | 'stage'; }
+// what the page's own top is: a page that opens on a stage-indigo band says so, and the bar starts as that colour (src/lib/head.js turns it to day once the page is scrolled)
+const { top = 'day' } = Astro.props;
 const path = Astro.url.pathname;
 const here = (g) => (inside(g, path) ? 'true' : undefined);
 const page = (href) => (path === href ? 'page' : undefined);
 ---
-<header class="head">
+<header class="head" data-top={top}>
   <div class="head__in">
     <a class="emergency" href="/jei-apgavo/"><span class="emergency__a">Jei tave</span>{" "}<span class="emergency__a">apgavo</span></a>
-    <a class="mark" href="/" aria-label="Suktas, į pradžią"><picture><source media="(min-width: 64rem)" srcset="/brand/logo-wide-1x.png 1x, /brand/logo-wide-2x.png 2x, /brand/logo-wide-3x.png 3x" width="146" height="56" /><img src="/brand/logo-1x.png" srcset="/brand/logo-1x.png 1x, /brand/logo-2x.png 2x, /brand/logo-3x.png 3x" width="115" height="44" alt="" /></picture></a>
+    <a class="mark" href="/" aria-label="Suktas, į pradžią"><picture class="mark__day"><source media="(min-width: 64rem)" srcset="/brand/logo-wide-1x.png 1x, /brand/logo-wide-2x.png 2x, /brand/logo-wide-3x.png 3x" width="146" height="56" /><img src="/brand/logo-1x.png" srcset="/brand/logo-1x.png 1x, /brand/logo-2x.png 2x, /brand/logo-3x.png 3x" width="115" height="44" alt="" /></picture>{top === 'stage' && <picture class="mark__stage" aria-hidden="true"><source media="(min-width: 64rem)" srcset="/brand/logo-stage-wide-1x.png 1x, /brand/logo-stage-wide-2x.png 2x, /brand/logo-stage-wide-3x.png 3x" width="146" height="56" /><img src="/brand/logo-stage-1x.png" srcset="/brand/logo-stage-1x.png 1x, /brand/logo-stage-2x.png 2x, /brand/logo-stage-3x.png 3x" width="115" height="44" alt="" /></picture>}</a>
     <nav class="nav" aria-label="Pagrindinė">
       <a href={catalogue.href} aria-current={path === catalogue.href ? 'page' : here(catalogue)} data-here={here(catalogue)}>{catalogue.label}<span class="nav__n">{catalogue.count}</span></a>
       {[protect, understand].map((g) => (

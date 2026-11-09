@@ -60,7 +60,12 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: 1rem;
+  /* the bar's height before script measures it: the wordmark is 44 px high under 64rem and 56 px from it */
+  --head-h: 4.3rem;
 }
+/* --u is the first screen's one unit (the smaller of the window's width and its height); the home page's bar and hero are both sized by it */
+@media (min-width: 60rem) { html { --u: min(1vw, 1.9svh); } }
+@media (min-width: 64rem) { html { --head-h: clamp(4.6rem, calc(var(--u) * 4.3), 7.5rem); } }
 
 body {
   margin: 0;
@@ -243,11 +248,33 @@ a:hover { text-decoration-color: currentColor; }
 /* ---- Header ---- */
 
 .head {
+  /* the bar's inks, so a page that opens on indigo changes them in one place (the stage state below) */
+  --hd-bg: var(--day);
+  --hd-fg: var(--ink);
+  --hd-line: var(--line);
+  --hd-edge: var(--line);
+  --hd-chip: var(--day-3);
+  --hd-hover: var(--day-3);
+  --hd-here: var(--mint);
+  --hd-focus: var(--indigo-2);
   position: relative;
   z-index: 20;
-  background: var(--day);
-  border-bottom: 1px solid var(--line);
+  background: var(--hd-bg);
+  border-bottom: 1px solid var(--hd-line);
 }
+/* A page that opens on a stage-indigo band: the bar is that indigo until the page is scrolled (src/lib/head.js adds .is-scrolled).
+   Every ink is measured on both grounds (design/header-frame-1109/NOTES.md); the focus ring is the mint of the dark bands. */
+.head[data-top='stage']:not(.is-scrolled) {
+  --hd-bg: var(--stage);
+  --hd-fg: var(--on-stage);
+  --hd-line: var(--stage);
+  --hd-edge: rgb(238 235 255 / 0.5);
+  --hd-chip: rgb(238 235 255 / 0.16);
+  --hd-hover: var(--on-stage-2);
+  --hd-here: var(--mint-lt);
+  --hd-focus: var(--mint-lt);
+}
+.head :is(.mark, .emergency, .nav > a, .drop > summary, .menu > summary, .find):focus-visible { outline-color: var(--hd-focus); }
 /* wraps only when the reader's system text size is large (an app's in-app browser at 1.5x); fits on one row at 1x */
 .head__in {
   display: flex;
@@ -290,7 +317,12 @@ a:hover { text-decoration-color: currentColor; }
   align-items: center;
   min-height: 2.75rem;
 }
+.mark { position: relative; }
 .mark img { display: block; width: 115px; height: 44px; }
+/* the light lockup is painted on its own (tools/paint, logo-stage-*.png) and lies exactly over the day one; one fades out as the other fades in */
+.mark__stage { position: absolute; inset: 0; display: flex; align-items: center; opacity: 0; }
+.head[data-top='stage']:not(.is-scrolled) .mark__stage { opacity: 1; }
+.head[data-top='stage']:not(.is-scrolled) .mark__day { opacity: 0; }
 
 .nav { display: none; }
 
@@ -302,7 +334,7 @@ a:hover { text-decoration-color: currentColor; }
   gap: 0.45rem;
   min-height: 2.75rem;
   padding: 0.25rem 0.15rem;
-  color: var(--ink);
+  color: var(--hd-fg);
   font-weight: 700;
   text-decoration: none;
   border-bottom: 3px solid transparent;
@@ -321,13 +353,13 @@ a:hover { text-decoration-color: currentColor; }
   transform: rotate(45deg);
 }
 .nav > a:hover,
-.drop > summary:hover { border-bottom-color: var(--day-3); }
-.nav [data-here] { border-bottom-color: var(--mint); }
-.drop[open] > summary { border-bottom-color: var(--ink); }
+.drop > summary:hover { border-bottom-color: var(--hd-hover); }
+.nav [data-here] { border-bottom-color: var(--hd-here); }
+.drop[open] > summary { border-bottom-color: var(--hd-fg); }
 .nav__n {
   padding: 0 0.5rem;
   border-radius: 999px;
-  background: var(--day-3);
+  background: var(--hd-chip);
   font-size: 1.0625rem;
   line-height: 1.5;
 }
@@ -366,15 +398,15 @@ a:hover { text-decoration-color: currentColor; }
   align-items: center;
   min-height: 2.75rem;
   padding: 0.25rem 0.8rem;
-  border: 2px solid var(--ink);
+  border: 2px solid var(--hd-fg);
   border-radius: var(--radius);
-  color: var(--ink);
+  color: var(--hd-fg);
   font-weight: 700;
   list-style: none;
   user-select: none;
 }
 .menu > summary::-webkit-details-marker { display: none; }
-.menu[open] > summary { background: var(--ink); color: var(--day); }
+.menu[open] > summary { background: var(--hd-fg); color: var(--hd-bg); }
 
 /* The phone menu is the whole map on one sheet; it scrolls inside itself when it is taller than the screen. */
 .menu__list {
@@ -464,15 +496,15 @@ a:hover { text-decoration-color: currentColor; }
   gap: 0.35rem;
   min-width: 2.75rem;
   min-height: 2.75rem;
-  border: 2px solid var(--line);
+  border: 2px solid var(--hd-edge);
   border-radius: var(--radius);
-  color: var(--ink);
+  color: var(--hd-fg);
   font-weight: 700;
   text-decoration: none;
   transition: background-color 0.15s ease-out, border-color 0.15s ease-out, transform 0.12s ease-out;
 }
 .find:active, .find__x:active, .find__try button:active { transform: scale(0.97); }
-@media (hover: hover) and (pointer: fine) { .find:hover { background: var(--day-2); border-color: var(--ink-2); } }
+@media (hover: hover) and (pointer: fine) { .find:hover { background: var(--hd-chip); border-color: var(--hd-hover); } }
 .find__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 /* Under 30rem the header row (wordmark, red button, Meniu) is full: the search heads the Meniu sheet instead. */
 .menu__find {
@@ -641,6 +673,30 @@ a:hover { text-decoration-color: currentColor; }
   .emergency__a { display: inline; }
   .menu { display: none; }
 }
+/* From 60rem, once script has the bar (head-live), it sticks, and its colour change is a short fade off a threshold:
+   200 ms, ease-out, so no scroll position ever rests on a half-mixed colour. Under 60rem, and in print, it scrolls away with the page. */
+/* The home page's bar lines up with its hero: the same outer width and side padding as the hero's body, so the wordmark stands on the card's left
+   edge and the red button on the reel box's right edge at every window; its type and height grow with --u (the wordmark is a native raster and does not). */
+@media (min-width: 60rem) {
+  .head[data-top='stage'] .head__in { max-width: max(calc(var(--wrap) + 2 * var(--pad)), calc(var(--u) * 84)); min-height: calc(var(--head-h) - 1px); }
+  .head[data-top='stage'] :is(.nav > a, .drop > summary) { font-size: clamp(1.0625rem, calc(var(--u) * 1.3), 2.2rem); }
+  .head[data-top='stage'] .nav__n { font-size: clamp(1.0625rem, calc(var(--u) * 1.3), 2.2rem); }
+  .head[data-top='stage'] .emergency { font-size: clamp(1.0625rem, calc(var(--u) * 1.35), 2.3rem); min-height: clamp(2.75rem, calc(var(--u) * 3.3), 5rem); }
+  .head[data-top='stage'] .find { min-height: clamp(2.75rem, calc(var(--u) * 3.3), 5rem); min-width: clamp(2.75rem, calc(var(--u) * 3.3), 5rem); }
+  .head[data-top='stage'] .nav { gap: 0.5rem clamp(1.1rem, calc(var(--u) * 1.5), 4rem); }
+  .head[data-top='stage'] .head__in { column-gap: clamp(1rem, calc(var(--u) * 1.8), 3rem); }
+}
+@media (min-width: 60rem) and (hover: hover) {
+  .head[data-top='stage'] .head__in { padding-inline: calc(var(--pad) + clamp(0.75rem, 3.6vw, 4.5rem)); }
+}
+html.head-live .head,
+html.head-live .head :is(.nav > a, .drop > summary, .nav__n, .menu > summary, .find),
+html.head-live .mark :is(.mark__day, .mark__stage) { transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, opacity 0.2s ease-out, transform 0.12s ease-out; }
+@media screen and (min-width: 60rem) {
+  html.head-live .head { position: sticky; top: 0; }
+  html.head-live { scroll-padding-top: calc(var(--head-h) + 1rem); }
+}
+.head__probe { position: absolute; top: 0; left: 0; width: 1px; height: 2.5rem; pointer-events: none; visibility: hidden; }
 /* The word beside the glass only where the row has room for it (measured: 1024 wraps with it). */
 @media (min-width: 72rem) {
   .find { padding-inline: 0.8rem; }
@@ -738,7 +794,9 @@ a:hover { text-decoration-color: currentColor; }
   @page { margin: 1.6cm; }
   body { font-size: 11.5pt; line-height: 1.45; background: #fff; color: #000; }
   .skip, .nav, .menu, .emergency, .art, .foot__cols, .foot__sos, .btn, .noprint { display: none !important; }
-  .head { border-bottom: 1px solid #000; }
+  .head, .head[data-top] { --hd-bg: #fff !important; --hd-fg: #000 !important; --hd-line: #000 !important; --hd-edge: #000 !important; --hd-chip: #fff !important; border-bottom: 1px solid #000; }
+  .mark__stage { display: none !important; }
+  .mark__day { opacity: 1 !important; }
   .head__in { min-height: 0; padding: 0 0 0.3cm; }
   .foot { background: #fff; border-top: 1px solid #000; margin-top: 1cm; }
   a { color: #000; text-decoration: underline; }

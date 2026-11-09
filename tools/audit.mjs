@@ -165,6 +165,10 @@ try {
       if (mode === 'live') { const ok = await waitLive(page); if (!ok) console.log(`contrast ${c.w}: the art never went live`); await page.waitForTimeout(1500); }
       // scrollShot scrolls the page; a sticky heading would move under its measured box
       await page.evaluate(() => { for (const el of document.querySelectorAll('body *')) if (getComputedStyle(el).position === 'sticky') el.style.setProperty('position', 'static', 'important'); });
+      // the site bar changes colour over 200 ms when the page scrolls; a read or a shot inside that fade pairs one state's ink with the other's ground
+      await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important}' });
+      await page.evaluate(() => scrollTo(0, 0));
+      await page.waitForTimeout(300);
       const lines = await page.evaluate(new Function(`${SEL} return (() => {
         const out = [], tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
         while (tw.nextNode()) {

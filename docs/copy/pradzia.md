@@ -27,7 +27,7 @@ Pasirink, kas tavęs neramina. Parodysime, kaip tai atrodo iš sukčiaus pusės 
 
 <!-- Aštuoni kanalai (Man paskambino, Gavau žinutę, Gavau laišką, Svetainė prašo prisijungti, Mačiau QR kodą, Paskyra ar pažintis, Mačiau reklamą, Perku ar parduodu) ir „Jau apgavo“ → /jei-apgavo/. Skaičiai ir kanalai imami iš katalogo (`src/lib/catalogue.js`). -->
 
-[Visos apgaulės (37)](/scenarijai/)
+[Visos apgaulės (38)](/scenarijai/)
 
 ## 3. Kaip jis galvoja
 

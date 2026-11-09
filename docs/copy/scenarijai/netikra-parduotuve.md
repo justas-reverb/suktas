@@ -90,6 +90,7 @@ Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų 
 - **Kortelės:** [Sustok dešimčiai sekundžių](/sustok/desimt-sekundziu/)
 - **Tema:** [Apgaulė ir sukčiavimas](/temos/apgaule/)
 - **Kiti scenarijai:** [„Pirkėjas“ skelbime](/scenarijai/pirkejas-skelbime/), [„Pardavėjas“ prašo avanso](/scenarijai/netikras-pardavejas/), [Reklama su žinomu veidu](/scenarijai/reklama-su-zinomu-veidu/), [Netikras konkursas](/scenarijai/netikras-konkursas/), [Užduotys už pinigus](/scenarijai/uzduotys-uz-pinigus/)
+- **Žodynas:** [Kas yra DI programėlės prenumerata](/zodynas/di-prenumerata/)
 
 ## Šaltiniai ir patikrinta
 

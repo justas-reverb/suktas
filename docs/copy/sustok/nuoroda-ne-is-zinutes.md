@@ -27,6 +27,7 @@ Kai SMS, laiškas ar pokalbių žinutė su nuoroda sako, kad reikia sumokėti �
 - [„Pirkėjas“ skelbime](/scenarijai/pirkejas-skelbime/)
 - [Netikra banko reklama](/scenarijai/netikra-banko-reklama/)
 - [Programėlė iš nuorodos ar reklamos](/scenarijai/programele-is-nuorodos/)
+- [Netikras DI įrankis](/scenarijai/netikras-di-irankis/)
 - [Netikras konkursas](/scenarijai/netikras-konkursas/)
 - [SMS apie baudą](/scenarijai/sms-apie-bauda/)
 - [Netikras laiškas iš „Sodros“, banko ar „Telia“](/scenarijai/netikras-laiskas/)

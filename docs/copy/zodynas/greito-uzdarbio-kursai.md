@@ -115,7 +115,7 @@ Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų 
 - **Kortelės:** [Sustok dešimčiai sekundžių](/sustok/desimt-sekundziu/)
 - **Temos:** [Apgaulė ir sukčiavimas](/temos/apgaule/), [Kaip veikia atakos](/temos/kaip-veikia-atakos/)
 - **Scenarijai:** [Prekybos kursai ir signalai už pinigus](/scenarijai/prekybos-kursai-ir-signalai/), [Užduotys už pinigus](/scenarijai/uzduotys-uz-pinigus/), [„Padėsime susigrąžinti pinigus“](/scenarijai/susigrazinti-pinigus/)
-- **Žodynas:** [Kas yra finansinė piramidė](/zodynas/piramide/), [Kas yra mokamos lažybų prognozės](/zodynas/lazybu-prognozes/)
+- **Žodynas:** [Kas yra finansinė piramidė](/zodynas/piramide/), [Kas yra mokamos lažybų prognozės](/zodynas/lazybu-prognozes/), [Programėlė iš mažo pardavėjo](/zodynas/programele-su-di/)
 
 ## Šaltiniai ir patikrinta
 

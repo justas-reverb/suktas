@@ -23,8 +23,9 @@ interface Props {
   title: string;
   description: string;
   current?: 'scenarijai' | 'sustok' | 'temos' | 'patikra' | '';
+  top?: 'day' | 'stage';
 }
-const { title, description, current = '' } = Astro.props;
+const { title, description, current = '', top = 'day' } = Astro.props;
 const spot = locate(Astro.url.pathname);
 ---
 <Base title={title} description={description}>
@@ -36,7 +37,7 @@ const spot = locate(Astro.url.pathname);
   </Fragment>
   <slot name="head" slot="head" />
   <a class="skip" href="#main">Pereiti prie turinio</a>
-  <SiteHeader />
+  <SiteHeader top={top} />
   <main id="main">
     {spot && <ScenarioWay spot={spot} />}
     <slot />
@@ -47,8 +48,10 @@ const spot = locate(Astro.url.pathname);
     import { startHeroFx } from '../art/herofx.js';
     import { wireMenu } from '../lib/menu.js';
     import { wireFind } from '../lib/find.js';
+    import { wireHead } from '../lib/head.js';
     wireMenu();
     wireFind();
+    wireHead();
     document.querySelectorAll('.art[data-herofx]').forEach(startHeroFx);
   </script>
 </Base>

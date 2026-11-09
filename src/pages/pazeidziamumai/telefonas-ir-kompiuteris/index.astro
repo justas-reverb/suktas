@@ -1,0 +1,187 @@
+---
+/**
+ * Vadovas: telefono ir kompiuterio atnaujinimai. The copy is docs/copy/pazeidziamumai/telefonas-ir-kompiuteris.md, word for word;
+ * the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'security updates, automatic updates'],
+  ['Skaitymo laikas', '3 min.'],
+];
+
+const sources = [
+  '„Google“, „Android“ pagalba (be datos, skaityta 2026-11-09): sistemos naujiniai, kelias nustatymuose, senesni įrenginiai. <!-- F1033 -->',
+  '„Apple“ pagalba (be datos, skaityta 2026-11-09): „iPhone“ automatiniai naujinimai. <!-- F1034 -->',
+  '„Microsoft“, „Windows Update“ DUK (be datos, skaityta 2026-11-09). <!-- F1035 -->',
+  '„Google“, „Chrome“ pagalba (be datos, skaityta 2026-11-09). <!-- F1036 -->',
+  'CISA (JAV; be datos): automatiniai atnaujinimai; namų maršrutizatorius. <!-- F1041 F74 -->',
+  '„Mandiant“ (JAV, „Google“ dalis), 2024-10-16, apie 2023 m. paskelbtas spragas: kaip greitai panaudojamos žinomos spragos. <!-- F1031 -->',
+  'NIST (JAV) žodynas: pataisa. <!-- F1023 -->',
+  '„Luminor“, SEB, „Citadele“ ir Lietuvos bankas: ką daryti įdiegus svetimą programą. <!-- F225 F7 F220 F13 -->',
+];
+---
+<Page
+  title="Kaip įjungti automatinius atnaujinimus telefone – Suktas"
+  description="Kur telefone, „Windows“ kompiuteryje ir „Chrome“ naršyklėje įjungti automatinius atnaujinimus, kaip patikrinti, ar jie veikia, ir ką daryti su senu telefonu."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/pazeidziamumai/">Spragos ir atnaujinimai</a></p>
+        <h1>{nb('Telefono ir kompiuterio atnaujinimai')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Daugelis atnaujinimų sukurti saugumo spragoms taisyti. <!-- F1041 --> Įjunk automatinius atnaujinimus telefone, kompiuteryje, naršyklėje ir programėlėse. <!-- F1041 M --> Atnaujinimą leisk tik iš įrenginio ar naršyklės nustatymų, ne iš žinutės ar interneto puslapio. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2 id="kur-ijungti">Kur tai įjungti ir patikrinti</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>„Android“ telefonas.</strong> Dauguma sistemos naujinių ir saugos pataisų įdiegiama automatiškai. <!-- F1033 --> Patikrinti galima taip: Nustatymai → Sistema → Programinės įrangos naujiniai. <!-- F1033 --> Kai kuriuose telefonuose meniu gali vadintis kitaip. <!-- M -->')} />
+            <li set:html={nbHtml('<strong>„iPhone“.</strong> Nuostatos → „General“ → „Software Update“ → „Automatic Updates“, tada įjunk „Automatically Install“. <!-- F1034 --> Telefonas atnaujinimą atsisiųs ir įdiegs naktį, kai kraunasi ir yra prijungtas prie „Wi-Fi“. <!-- F1034 -->')} />
+            <li set:html={nbHtml('<strong>„Windows“ kompiuteris.</strong> „Windows 11“ naujinimus atsisiunčia ir įdiegia automatiškai. <!-- F1035 --> Patikrinti galima taip: Pradžia → Parametrai → „Windows Update“. <!-- F1035 -->')} />
+            <li set:html={nbHtml('<strong>„Chrome“ naršyklė.</strong> Atnaujinimai paprastai pritaikomi, kai uždarai ir vėl atidarai naršyklę. <!-- F1036 --> Jei ilgai jos neuždarei, gali būti rodomas laukiantis atnaujinimas: spausk „Paleisti iš naujo“, ir atidaryti skirtukai bei langai išliks, neatsidarys tik inkognito langai. <!-- F1036 --> Jei tokios parinkties nėra, naudoji naujausią versiją. <!-- F1036 -->')} />
+            <li set:html={nbHtml('<strong>Programėlės.</strong> Įjunk automatinius atnaujinimus ir jose, kur tokia parinktis yra. <!-- F1041 M -->')} />
+            <li set:html={nbHtml('<strong>Namų maršrutizatorius.</strong> Patikrink, ar yra naujos jo programinės įrangos; taip pataria JAV agentūra CISA. <!-- F74 --> Lietuviško šaltinio apie tai neradome. <!-- F76 -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2 id="kaip-atpazinti">Kaip atpažinti, kad vėluoji</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>Nustatymuose laukia atnaujinimas.</strong> Įrenginio nustatymuose matyti, koks atnaujinimas įdiegtas ir ar yra naujesnis. <!-- F1033 F1034 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Naršyklė ilgai nebuvo uždaryta.</strong> Tada atnaujinimas gali laukti, kol ją paleisi iš naujo. <!-- F1036 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Telefonas labai senas.</strong> Senesniuose įrenginiuose ne visada veikia naujesnės „Android“ versijos. <!-- F1033 -->')} /></li>
+          </ol>
+          <p set:html={nbHtml('<strong>Atnaujinti ragina žinutė ar interneto puslapis?</strong> Tai ne vėlavimo ženklas, o galima apgaulė. Uždaryk ir patikrink nustatymuose. <!-- M --> Plačiau: <a href="/scenarijai/programele-is-nuorodos/">Programėlė iš nuorodos</a>.')} />
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Šiandien vieną kartą įjunk arba patikrink automatinius atnaujinimus, o atnaujinimą leisk tik iš įrenginio ar naršyklės nustatymų, ne iš žinutės ar interneto puslapio. <!-- F1041 M -->')} />
+        <p set:html={nbHtml('Patikra: <a href="/patikra/15-minuciu/">Patikra per 15 minučių</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>Atvira spraga.</strong> Pataisa, kuri neįdiegta, neapsaugo. <!-- F1023 M -->')} />
+            <li set:html={nbHtml('<strong>Netikras atnaujinimas.</strong> Programa iš nuorodos gali būti visai ne ta, kuo apsimeta. <!-- M -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="jei-veluoji">
+        <h2 id="jei-veluoji">Jei jau vėluoji</h2>
+        <ol>
+          <li set:html={nbHtml('<strong>Įdiek dabar ir paleisk įrenginį iš naujo.</strong> „Pixel“ telefonuose įdiegti atnaujinimai tampa aktyvūs kitą kartą paleidus įrenginį iš naujo. <!-- F1033 M -->')} />
+          <li set:html={nbHtml('<strong>Atnaujinimų nebėra?</strong> Pirmiausia įsitikink, kad telefone yra naujausia jam pasiekiama „Android“ versija. <!-- F1033 --> Jei naujesnių nebėra, banką ir kitus svarbius reikalus tvarkyk įrenginyje, kuris atnaujinimus dar gauna. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Įdiegei „atnaujinimą“ iš žinutės ar puslapio?</strong> Iškart skambink savo bankui numeriu iš oficialios banko svetainės ir pasakyk, ką įdiegei: bankas gali užblokuoti kortelę ir interneto banką. <!-- F225 F7 F13 F220 --> Toliau: <a href="/jei-apgavo/#nuotolinis">Jei tave apgavo: įdiegiau programą ar leidau valdyti telefoną</a>.')} />
+        </ol>
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/patikra/15-minuciu/">Patikra per 15 minučių</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta; nė žodžio apie tai, kaip spragomis naudojamasi. „Jis“ čia – tas, kuris naudojasi neįdiegtomis pataisomis. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Įrenginio, kuriame spraga jau žinoma, o pataisa dar neįdiegta: paskyrų, duomenų ir pinigų. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> automatiniai atnaujinimai. <!-- F1041 -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jam padeda laikas. <!-- M --> JAV bendrovė „Mandiant“ išnagrinėjo 2023 m. paskelbtas spragas: iš 41, kuriomis imta naudotis jau po to, kai buvo išleista pataisa, 12 % panaudotos per vieną dieną, 29 % per savaitę, 56 % per mėnesį. <!-- F1031 --> Šie skaičiai nerodo, kaip greitai tai nutinka būtent telefonams. <!-- F1031 --> Mūsų išvada: atnaujinimą atidėti brangiau, negu atrodo. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> kai atnaujinimai diegiami automatiškai, nieko atidėti nereikia. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Laukia, kol atidėsi atnaujinimą')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Automatiniai atnaujinimai. <!-- F1041 -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('„Atnaujink“ žinutėje ar interneto puslapyje')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Uždaryk. Atnaujinimą paleisk iš nustatymų. <!-- M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Senas telefonas, kurio niekas nebetaiso')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Svarbius reikalus tvarkyk įrenginyje, kuris atnaujinimus dar gauna. <!-- M -->')} />
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių spragų veikimo aprašymų, jokių nurodymų, kaip jomis pasinaudoti, ir jokių būdų surasti neatnaujintus įrenginius. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li set:html={nbHtml('<strong>Vadovai:</strong> <a href="/pazeidziamumai/">Spragos ir atnaujinimai</a>, <a href="/pazeidziamumai/svetaine/">Svetainė</a>, <a href="/pazeidziamumai/serveris/">Serveris</a>')} />
+          <li set:html={nbHtml('<strong>Temos:</strong> <a href="/temos/irenginiai/">Įrenginiai ir tinklas</a>')} />
+          <li set:html={nbHtml('<strong>Scenarijai:</strong> <a href="/scenarijai/programele-is-nuorodos/">Programėlė iš nuorodos</a>')} />
+          <li set:html={nbHtml('<strong>Žodynas:</strong> <a href="/zodynas/#pazeidziamumas">Pažeidžiamumas</a>, <a href="/zodynas/#pataisa">Pataisa</a>, <a href="/zodynas/#nulines-dienos-spraga">Nulinės dienos spraga</a>')} />
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

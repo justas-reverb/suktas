@@ -1,6 +1,6 @@
 ---
 /**
- * Žodynas: the six terms the launch pages use. The copy is docs/copy/zodynas.md, word for word;
+ * Žodynas: the terms the site uses. The copy is docs/copy/zodynas.md, word for word;
  * the source tags stay as comments in the strings and the build strips them. Each entry's heading
  * carries the anchor the other pages link to (#antras-prisijungimo-zingsnis and the rest), so the
  * ids below are the copy's {#...} ids exactly. The labels (Terminas, Paprastai, ...) are the copy's
@@ -26,6 +26,26 @@ const terms = [
     source: 'CISA, NKSC; 2026-10-24. <!-- F64 F66 F68 -->',
   },
   {
+    id: 'cve',
+    name: 'CVE',
+    letter: 'C',
+    term: 'CVE (angl. Common Vulnerabilities and Exposures). <!-- F1025 -->',
+    plain: 'viešai žinomų spragų sąrašas: kiekviena turi numerį, aprašymą ir bent vieną nuorodą į šaltinį. <!-- F1025 --> Numeris atrodo taip: CVE, metai ir eilės numeris. <!-- F1025 -->',
+    where: 'gamintojų ir NKSC įspėjimuose. <!-- F1027 M --> <a href="/pazeidziamumai/">Spragos ir atnaujinimai</a>.',
+    move: 'numerio suprasti nereikia: patikrink, ar tavo programa atnaujinta. <!-- M -->',
+    source: 'NIST (JAV), 2026-11-09. <!-- F1025 -->',
+  },
+  {
+    id: 'nulines-dienos-spraga',
+    name: 'Nulinės dienos spraga',
+    letter: 'N',
+    term: 'nulinės dienos spraga (angl. zero-day). <!-- F1024 -->',
+    plain: 'spraga, kuria imama naudotis anksčiau, nei gamintojas išleidžia pataisą. <!-- F1024 -->',
+    where: 'gamintojų įspėjimuose, dažnai angliškai („zero-day“). <!-- M --> <a href="/pazeidziamumai/">Spragos ir atnaujinimai</a>.',
+    move: 'kol pataisos nėra, laikykis gamintojo nurodymų, o kai ji pasirodo, įdiek iš karto. <!-- M --> Automatiniai atnaujinimai dažnai tai padarys už tave. <!-- F1041 M -->',
+    source: 'NIST (JAV), „Mandiant“ (JAV); 2026-11-09. <!-- F1024 -->',
+  },
+  {
     id: 'nuotolinis-prisijungimas',
     name: 'Nuotolinis prisijungimas',
     letter: 'N',
@@ -34,6 +54,26 @@ const terms = [
     where: '<a href="/scenarijai/skambutis-is-banko/">Skambutis iš „banko“</a>, <a href="/scenarijai/skambutis-is-policijos/">Skambutis iš „policijos“</a>.',
     move: 'neįdiek programos, kurios prašo skambinantis, ir neprisijunk prie bankininkystės „kartu“. <!-- F51 F27 --> <a href="/sustok/padek-ragely/">Padėk ragelį ir skambink oficialiu numeriu</a>.',
     source: 'Bankų asociacija, 2022-10-27; 2026-10-24. <!-- F51 -->',
+  },
+  {
+    id: 'pataisa',
+    name: 'Pataisa',
+    letter: 'P',
+    term: 'pataisa (angl. patch); NKSC rašo „pataisymai“, „Google“ – „saugos pataisos“. <!-- F1023 -->',
+    plain: 'gamintojo išleistas sprendimas nustatytai problemai, dažniausiai atkeliaujantis su programos atnaujinimu. <!-- F1023 M --> Saugo tik tada, kai yra įdiegta. <!-- M -->',
+    where: '<a href="/pazeidziamumai/telefonas-ir-kompiuteris/">Telefono ir kompiuterio atnaujinimai</a>, <a href="/pazeidziamumai/svetaine/">Svetainės atnaujinimai</a>.',
+    move: 'įjunk automatinius atnaujinimus. <!-- F1041 -->',
+    source: 'NIST (JAV), NKSC, „Google“; 2026-11-09. <!-- F1023 -->',
+  },
+  {
+    id: 'pazeidziamumas',
+    name: 'Pažeidžiamumas',
+    letter: 'P',
+    term: 'pažeidžiamumas, dar vadinamas spraga (angl. vulnerability). <!-- F1022 -->',
+    plain: 'silpna programos ar sistemos vieta, kuria kas nors gali pasinaudoti. <!-- F1022 --> NKSC vartoja abu žodžius; oficialaus lietuviško apibrėžimo neradome. <!-- F1022 -->',
+    where: '<a href="/pazeidziamumai/">Spragos ir atnaujinimai</a>, <a href="/pazeidziamumai/svetaine/">Svetainės atnaujinimai</a>, <a href="/pazeidziamumai/serveris/">Serverio atnaujinimai</a>.',
+    move: 'įjunk automatinius atnaujinimus. <!-- F1041 --> <a href="/pazeidziamumai/telefonas-ir-kompiuteris/">Telefono ir kompiuterio atnaujinimai</a>.',
+    source: 'NIST (JAV), NKSC; 2026-11-09. <!-- F1022 -->',
   },
   {
     id: 'prieigos-raktas',
@@ -81,18 +121,32 @@ const terms = [
   },
 ];
 
-// Finansinė piramidė, Greito uždarbio kursai, Lažybų prognozės, Nelegalus kazino, Phishing and Pinigų mulas have pages of their own, Socialinė inžinerija is a topic; the index lists them in their places among the terms.
-const index = terms.map((t) => [t.name, `#${t.id}`, t.letter]);
-index.splice(2, 0, ['Phishing', '/zodynas/phishing/', 'P'], ['Pinigų mulas', '/zodynas/pinigu-mulas/', 'P']);
-index.splice(7, 0, ['Socialinė inžinerija', '/temos/socialine-inzinerija/', 'S']);
-index.splice(1, 0, ['Nelegalus kazino', '/zodynas/nelegalus-kazino/', 'N']);
-index.splice(1, 0, ['Finansinė piramidė', '/zodynas/piramide/', 'F']);
-index.splice(2, 0, ['Lažybų prognozės', '/zodynas/lazybu-prognozes/', 'L']);
-index.splice(2, 0, ['Greito uždarbio kursai', '/zodynas/greito-uzdarbio-kursai/', 'G']);
+// The index lists the terms here and the ones with a page or topic of their own, in Lithuanian order.
+const index = [
+  ['Antras prisijungimo žingsnis', '#antras-prisijungimo-zingsnis', 'A'],
+  ['CVE', '#cve', 'C'],
+  ['DI programėlės prenumerata', '/zodynas/di-prenumerata/', 'D'],
+  ['Finansinė piramidė', '/zodynas/piramide/', 'F'],
+  ['Greito uždarbio kursai', '/zodynas/greito-uzdarbio-kursai/', 'G'],
+  ['Lažybų prognozės', '/zodynas/lazybu-prognozes/', 'L'],
+  ['Nelegalus kazino', '/zodynas/nelegalus-kazino/', 'N'],
+  ['Nulinės dienos spraga', '#nulines-dienos-spraga', 'N'],
+  ['Nuotolinis prisijungimas', '#nuotolinis-prisijungimas', 'N'],
+  ['Pataisa', '#pataisa', 'P'],
+  ['Pažeidžiamumas', '#pazeidziamumas', 'P'],
+  ['Phishing', '/zodynas/phishing/', 'P'],
+  ['Pinigų mulas', '/zodynas/pinigu-mulas/', 'P'],
+  ['Prieigos raktas', '#prieigos-raktas', 'P'],
+  ['Programėlė iš mažo pardavėjo', '/zodynas/programele-su-di/', 'P'],
+  ['SIM kortelės pakeitimas', '#sim-korteles-pakeitimas', 'S'],
+  ['Slaptažodžių tvarkyklė', '#slaptazodziu-tvarkykle', 'S'],
+  ['Socialinė inžinerija', '/temos/socialine-inzinerija/', 'S'],
+  ['Sukčiavimas apsimetant', '#sukciavimas-apsimetant', 'S'],
+];
 ---
 <Page
   title="Sukčiavimo terminai paprastais žodžiais – Suktas"
-  description="Šeši terminai, kuriuos naudoja svetainė: kas tai paprastais žodžiais ir ką daryti."
+  description="Terminai, kuriuos naudoja svetainė: kas tai paprastais žodžiais ir ką daryti."
 >
   <DocHead
     title="Žodynas"

@@ -1,27 +1,34 @@
-Page: /zodynas/ (Žodynas), phase 1; the index and the six launch entries.
-Purpose: define only the terms the launch pages use, in plain Lithuanian, each with the page where the reader meets it and the move. The index sorts in Lithuanian order (Antras, Finansinė piramidė, Greito uždarbio kursai, Lažybų prognozės, Nelegalus kazino, Nuotolinis, Phishing, Pinigų mulas, Prieigos, SIM, Slaptažodžių, Socialinė inžinerija, Sukčiavimas); Finansinė piramidė, Greito uždarbio kursai, Lažybų prognozės, Nelegalus kazino, Phishing and Pinigų mulas are pages of their own (`/zodynas/piramide/`, `/zodynas/greito-uzdarbio-kursai/`, `/zodynas/lazybu-prognozes/`, `/zodynas/nelegalus-kazino/`, `/zodynas/phishing/`, `/zodynas/pinigu-mulas/`), and Socialinė inžinerija links its topic, `/temos/socialine-inzinerija/` (a word page from the morning of 2026-11-06, a topic since that afternoon); Phishing's entry here, Sukčiavimas apsimetant, points to it. Entries sit on one page at launch, each with an anchor; separate entry pages come when there are enough terms.
-FACTS used: F51, F59, F60, F61, F62, F64, F65, F66, F67, F68, F71, F72, F79 (a gap, stated as "we found none"). `M` rests on our editorial model. Not stated: any Apple or Bitwarden Lithuanian term (F63, F73 GAP).
+Page: /zodynas/ (Žodynas), phase 1; the index and its entries (six at launch; Pažeidžiamumas, Pataisa, Nulinės dienos spraga and CVE added 2026-11-09).
+Purpose: define only the terms the launch pages use, in plain Lithuanian, each with the page where the reader meets it and the move. The index sorts in Lithuanian order; the entries linked to a /zodynas/ address in the list below are pages of their own, and Socialinė inžinerija links its topic, `/temos/socialine-inzinerija/` (a word page from the morning of 2026-11-06, a topic since that afternoon); Phishing's entry here, Sukčiavimas apsimetant, points to it. Entries sit on one page at launch, each with an anchor; separate entry pages come when there are enough terms.
+FACTS used: F1022–F1025, F1029, F1041, F51, F59, F60, F61, F62, F64, F65, F66, F67, F68, F71, F72, F79 (a gap, stated as "we found none"). `M` rests on our editorial model. Not stated: any Apple or Bitwarden Lithuanian term (F63, F73 GAP).
+Review: second reader (Opus, 2026-11-09) on the four entries added that day: a live CVE number removed (§6), wording fixes applied.
 
 Source tags: `<!-- Fnn -->` FACTS entry; `<!-- M -->` our model; `<!-- pažadas -->` the site's promise. The build strips every comment.
 
 ---
 
 **Puslapio pavadinimas:** Sukčiavimo terminai paprastais žodžiais – Suktas
-**Aprašas (meta):** Šeši terminai, kuriuos naudoja svetainė: kas tai paprastais žodžiais ir ką daryti.
+**Aprašas (meta):** Terminai, kuriuos naudoja svetainė: kas tai paprastais žodžiais ir ką daryti.
 
 # Žodynas
 
 Tik tie terminai, kuriuos naudoja svetainė. <!-- pažadas -->
 
 - [Antras prisijungimo žingsnis](#antras-prisijungimo-zingsnis)
+- [CVE](#cve)
+- [DI programėlės prenumerata](/zodynas/di-prenumerata/)
 - [Finansinė piramidė](/zodynas/piramide/)
 - [Greito uždarbio kursai](/zodynas/greito-uzdarbio-kursai/)
 - [Lažybų prognozės](/zodynas/lazybu-prognozes/)
 - [Nelegalus kazino](/zodynas/nelegalus-kazino/)
+- [Nulinės dienos spraga](#nulines-dienos-spraga)
 - [Nuotolinis prisijungimas](#nuotolinis-prisijungimas)
+- [Pataisa](#pataisa)
+- [Pažeidžiamumas](#pazeidziamumas)
 - [Phishing](/zodynas/phishing/)
 - [Pinigų mulas](/zodynas/pinigu-mulas/)
 - [Prieigos raktas](#prieigos-raktas)
+- [Programėlė iš mažo pardavėjo](/zodynas/programele-su-di/)
 - [SIM kortelės pakeitimas](#sim-korteles-pakeitimas)
 - [Slaptažodžių tvarkyklė](#slaptazodziu-tvarkykle)
 - [Socialinė inžinerija](/temos/socialine-inzinerija/)
@@ -49,6 +56,34 @@ Tik tie terminai, kuriuos naudoja svetainė. <!-- pažadas -->
 
 ---
 
+## CVE {#cve}
+
+**Terminas:** CVE (angl. Common Vulnerabilities and Exposures). <!-- F1025 -->
+
+**Paprastai tariant:** viešai žinomų spragų sąrašas: kiekviena turi numerį, aprašymą ir bent vieną nuorodą į šaltinį. <!-- F1025 --> Numeris atrodo taip: CVE, metai ir eilės numeris. <!-- F1025 -->
+
+**Kur susidursi:** gamintojų ir NKSC įspėjimuose. <!-- F1027 M --> [Spragos ir atnaujinimai](/pazeidziamumai/).
+
+**Tavo ėjimas:** numerio suprasti nereikia: patikrink, ar tavo programa atnaujinta. <!-- M -->
+
+**Šaltinis ir patikrinta:** NIST (JAV), 2026-11-09. <!-- F1025 -->
+
+---
+
+## Nulinės dienos spraga {#nulines-dienos-spraga}
+
+**Terminas:** nulinės dienos spraga (angl. zero-day). <!-- F1024 -->
+
+**Paprastai tariant:** spraga, kuria imama naudotis anksčiau, nei gamintojas išleidžia pataisą. <!-- F1024 -->
+
+**Kur susidursi:** gamintojų įspėjimuose, dažnai angliškai („zero-day“). <!-- M --> [Spragos ir atnaujinimai](/pazeidziamumai/).
+
+**Tavo ėjimas:** kol pataisos nėra, laikykis gamintojo nurodymų, o kai ji pasirodo, įdiek iš karto. <!-- M --> Automatiniai atnaujinimai dažnai tai padarys už tave. <!-- F1041 M -->
+
+**Šaltinis ir patikrinta:** NIST (JAV), „Mandiant“ (JAV); 2026-11-09. <!-- F1024 -->
+
+---
+
 ## Nuotolinis prisijungimas {#nuotolinis-prisijungimas}
 
 **Terminas:** nuotolinis prisijungimas (prie kito kompiuterio; angl. remote access). <!-- F51 -->
@@ -60,6 +95,34 @@ Tik tie terminai, kuriuos naudoja svetainė. <!-- pažadas -->
 **Tavo ėjimas:** neįdiek programos, kurios prašo skambinantis, ir neprisijunk prie bankininkystės „kartu“. <!-- F51 F27 --> [Padėk ragelį ir skambink oficialiu numeriu](/sustok/padek-ragely/).
 
 **Šaltinis ir patikrinta:** Bankų asociacija, 2022-10-27; 2026-10-24. <!-- F51 -->
+
+---
+
+## Pataisa {#pataisa}
+
+**Terminas:** pataisa (angl. patch); NKSC rašo „pataisymai“, „Google“ – „saugos pataisos“. <!-- F1023 -->
+
+**Paprastai tariant:** gamintojo išleistas sprendimas nustatytai problemai, dažniausiai atkeliaujantis su programos atnaujinimu. <!-- F1023 M --> Saugo tik tada, kai yra įdiegta. <!-- M -->
+
+**Kur susidursi:** [Telefono ir kompiuterio atnaujinimai](/pazeidziamumai/telefonas-ir-kompiuteris/), [Svetainės atnaujinimai](/pazeidziamumai/svetaine/).
+
+**Tavo ėjimas:** įjunk automatinius atnaujinimus. <!-- F1041 -->
+
+**Šaltinis ir patikrinta:** NIST (JAV), NKSC, „Google“; 2026-11-09. <!-- F1023 -->
+
+---
+
+## Pažeidžiamumas {#pazeidziamumas}
+
+**Terminas:** pažeidžiamumas, dar vadinamas spraga (angl. vulnerability). <!-- F1022 -->
+
+**Paprastai tariant:** silpna programos ar sistemos vieta, kuria kas nors gali pasinaudoti. <!-- F1022 --> NKSC vartoja abu žodžius; oficialaus lietuviško apibrėžimo neradome. <!-- F1022 -->
+
+**Kur susidursi:** [Spragos ir atnaujinimai](/pazeidziamumai/), [Svetainės atnaujinimai](/pazeidziamumai/svetaine/), [Serverio atnaujinimai](/pazeidziamumai/serveris/).
+
+**Tavo ėjimas:** įjunk automatinius atnaujinimus. <!-- F1041 --> [Telefono ir kompiuterio atnaujinimai](/pazeidziamumai/telefonas-ir-kompiuteris/).
+
+**Šaltinis ir patikrinta:** NIST (JAV), NKSC; 2026-11-09. <!-- F1022 -->
 
 ---
 

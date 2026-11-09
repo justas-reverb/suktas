@@ -1,0 +1,227 @@
+---
+/**
+ * Žodynas: DI programėlės prenumerata, a glossary entry with a page of its own, on the scenario template. The copy is docs/copy/zodynas/di-prenumerata.md, word for word;
+ * the source tags stay as comments and the build strips them.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import { nb, nbHtml, sourceHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import Share from '../../../components/Share.astro';
+
+const meta = [
+  ['Angliškai', 'subscription trap, fleeceware'],
+  ['Skaitymo laikas', '4 min.'],
+];
+
+const sources = [
+  '„Google Play“ pagalba (be datos, skaityta 2026-11-09): prenumeratos, atšaukimas, grąžinimas, 14 dienų EEE. <!-- F1009 F1012 F1013 -->',
+  '„Apple“ pagalba (2026-09-29, 2026-10-01): atšaukimas, grąžinimas. <!-- F1010 F1011 -->',
+  '„Your Europe“ (be datos, skaityta 2026-11-09; tikrinta 2026-10-05; anglų k., tikrinta 2026-04-28): 14 dienų, garantija, nesąžiningos sąlygos, klaidinanti veikla. <!-- F1014 F1015 F1016 F1017 -->',
+  'Europos vartotojų centras Lietuvoje (ecc.lt, be datos, skaityta 2026-11-09; „Your Europe“, tikrinta 2026-09-21): pagalba, ko reikia, kam negali padėti. <!-- F1018 F717 -->',
+  'Vokietijos vartotojų centras (Žemutinė Saksonija, vokiečių k., be datos, skaityta 2026-11-09): DI įrankiai ir prenumeratos. <!-- F1019 -->',
+  '„Help Net Security“ (anglų k., 2023-05-17), remiantis „Sophos“: netikros „ChatGPT“ programėlės parduotuvėse. <!-- F1020 -->',
+  '„Swedbank“ (be datos, skaityta 2026-10-31) ir Europos vartotojų centras, per alkas.lt (2023-03-19): kortele atlikto mokėjimo užginčijimas. <!-- F206 F207 -->',
+  'NKSC (be datos): VVTAT. Tikslaus VVTAT kelio dėl prenumeratų jos puslapiuose neradome. <!-- F19 M -->',
+  'Lietuvos bankas (atnaujinta 2026-07-30): nedelsiant kreiptis į banką. <!-- F252 -->',
+  'Policija (2026-02-05, atnaujinta 2026-04-23): pranešti per epolicija.lt. <!-- F2 -->',
+];
+---
+<Page
+  title="DI programėlės prenumerata: kaip atšaukti – Suktas"
+  description="„Nemokamas“ DI įrankis, o iš kortelės nuskaičiuoja pinigus? Kaip atšaukti prenumeratą telefone, kada galima atgauti pinigus ir kaip nepakliūti kitą kartą."
+>
+  <article class="scn card">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/zodynas/">Žodynas</a></p>
+        <h1>{nb('Kas yra DI programėlės prenumerata')}</h1>
+        <dl class="meta">
+          {meta.map(([k, v]) => <div><dt>{k}</dt><dd set:html={nbHtml(v)} /></div>)}
+          <div><dt>Patikrinta</dt><dd><span class="nw">2026-11-09</span> (<a href="/saltiniai/">Šaltiniai</a>)</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="layer wrap">
+
+      <div class="row">
+        <h2>Trumpai</h2>
+        <div class="row__body">
+          <p class="lead" set:html={nbHtml('Kai kurios dirbtinio intelekto (DI) programėlės ar svetainės siūlo „nemokamą“ bandymą ar žemą kainą, o iš tiesų pradedi prenumeratą, už kurią moki, kol ją atšauki. <!-- F1019 F1009 --> Prenumerata pati savaime nėra apgaulė. <!-- M --> Dažnai tai nėra nusikaltimas, o tik nesąžininga: kainuoja brangiau, nei atrodė. <!-- F1020 M --> Ištrinti programėlę neužtenka: prenumeratą reikia atšaukti ten, kur už ją moki. <!-- F1009 F1020 --> Prieš įvedant kortelės duomenis ar spaudžiant „Prenumeruoti“, surask tris dalykus: kiek kainuos, kas kiek laiko kartosis ir kur atšaukti. <!-- F1019 M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip tai atrodo</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Vokietijos Žemutinės Saksonijos vartotojų centras įspėja apie pigius DI paveikslėlių kūrimo ir kitus internetinius įrankius, už kurių dažnai slepiasi prenumerata: „nemokamas bandymas“ pats virsta mokama prenumerata, tikroji kaina parašyta smulkiu šriftu, o atšaukti sunku. <!-- F1019 --> Dažniausiai tai pastebima tik tada, kai pinigai jau nuskaičiuoti. <!-- F1019 -->')} />
+          <p set:html={nbHtml('2023 m. užsienio saugumo įmonė „Sophos“, kaip rašė „Help Net Security“, aprašė oficialiose programėlių parduotuvėse rastas netikras „ChatGPT“ programėles. Nemokama jų versija beveik nieko nedarė, jos nuolat rodė reklamas, o prenumerata kainavo, pavyzdžiui, 10 dolerių per mėnesį, 70 dolerių per metus, o viena – 6 dolerius per savaitę, nors pagrindinės „ChatGPT“ galimybės internete buvo nemokamos. <!-- F1020 -->')} />
+          <p set:html={nbHtml('Ieškodami 2026-11-09, Lietuvoje tokio atvejo neradome. <!-- M -->')} />
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kaip atpažinti</h2>
+        <div class="row__body">
+          <ol class="signs" role="list">
+            <li><p set:html={nbHtml('<strong>„Nemokamas bandymas“, bet iš karto prašo kortelės.</strong> <!-- F1019 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Kaina parašyta smulkiu šriftu.</strong> Kartais prenumeratai pradėti užtenka susikurti paskyrą ar įvesti mokėjimo duomenis. <!-- F1019 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Nemokama versija beveik neveikia,</strong> o reklamos ir langai vis ragina užsisakyti. <!-- F1020 -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Neaišku, kur atšaukti.</strong> <!-- F1019 M -->')} /></li>
+            <li><p set:html={nbHtml('<strong>Už pinigus siūlo tai, ką gamintojas duoda nemokamai.</strong> Patikrink oficialioje įrankio svetainėje: jos adresą įvesk naršyklėje. <!-- F1020 M -->')} /></li>
+          </ol>
+        </div>
+      </div>
+
+      <section class="move" aria-labelledby="ejimas">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('Prieš įvedant kortelės duomenis ar spaudžiant „Prenumeruoti“, surask tris dalykus: kiek kainuos, kas kiek laiko kartosis ir kur atšaukti. Neradai bent vieno – nemokėk. <!-- F1019 M -->')} />
+        <p set:html={nbHtml('Kortelė: <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>.')} />
+      </section>
+
+      <div class="row">
+        <h2 id="kaip-atsaukti">Kaip atšaukti</h2>
+        <div class="row__body">
+          <p set:html={nbHtml('Tai gali nutikti bet kam. <!-- M --> Programėlės ištrynimas prenumeratos neatšaukia. <!-- F1009 F1020 --> Atšaukimas sustabdo kitus mokėjimus, bet jau sumokėtų pinigų negrąžina. <!-- F1009 F1013 -->')} />
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>„Android“ telefone:</strong> „Google Play“ prenumeratos, pasirink norimą, spausk „Atšaukti prenumeratą“. Iki apmokėto laikotarpio pabaigos ja dar galėsi naudotis. <!-- F1009 -->')} />
+            <li set:html={nbHtml('<strong>„iPhone“:</strong> „Settings“, tavo vardas, „Subscriptions“, prenumerata, „Cancel Subscription“. Jei tai bandomasis laikotarpis, „Apple“ siūlo atšaukti likus bent 24 valandoms iki jo pabaigos. <!-- F1010 -->')} />
+            <li set:html={nbHtml('<strong>Prenumeratos sąraše nėra?</strong> Patikrink, ar prisijungta prie paskyros, kuria pirkta („Apple“ kvitą rasi el. pašte). <!-- F1009 F1010 --> Neradai – banko išraše pažiūrėk, kas nuskaičiuoja, ir kreipkis į tą įmonę. <!-- F1010 -->')} />
+            <li set:html={nbHtml('<strong>Mokėjai svetainėje kortele:</strong> atšauk paskyros nustatymuose ir išsaugok patvirtinimą. <!-- M --> Neradai – parašyk pardavėjui, kad nutrauki, išsaugok laišką ir paklausk banko, ar gali sustabdyti mokėjimus. <!-- M -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Kuo rizikuoji</h2>
+        <div class="row__body">
+          <ul class="row-list">
+            <li set:html={nbHtml('<strong>Kartojamais mokėjimais.</strong> Prenumerata tęsiasi, kol ją atšauki. <!-- F1009 -->')} />
+            <li set:html={nbHtml('<strong>Mokėjimo ir asmens duomenimis.</strong> Vokietijos vartotojų centras įspėja, kad duomenimis gali būti piktnaudžiaujama. <!-- F1019 -->')} />
+            <li set:html={nbHtml('<strong>Netikru įrankiu.</strong> Jei vietoj prenumeratos siūlo atsisiųsti failą ar programą ne iš oficialios parduotuvės, tai gali būti visai kas kita: <a href="/scenarijai/netikras-di-irankis/">Netikras DI įrankis</a>. <!-- M -->')} />
+          </ul>
+        </div>
+      </div>
+
+      <section class="box" aria-labelledby="atgauti-pinigus">
+        <h2 id="atgauti-pinigus">Jei nori atgauti pinigus</h2>
+        <ol>
+          <li set:html={nbHtml('<strong>Atrodo, kad tai sukčiai?</strong> Kuo skubiau susisiek su banku, <!-- F252 --> tada pranešk policijai per epolicija.lt. <!-- F2 --> Abejoji – vis tiek pranešk. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Išsaugok įrodymus:</strong> užsakymo patvirtinimą, sąskaitą ar mokėjimo išrašą, susirašinėjimą su pardavėju. <!-- F1018 --> Pasidaryk sąlygų ir kainos ekrano nuotraukas. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Parašyk pardavėjui ar programėlės kūrėjui.</strong> „Google“ rašo, kad dažnai tai greičiausias būdas. <!-- F1012 -->')} />
+          <li set:html={nbHtml('<strong>Patikrink, ar dar galioja 14 dienų.</strong> Pagal ES taisykles internetu su verslu sudarytą paslaugų sutartį paprastai galima nutraukti per 14 dienų nuo jos sudarymo, be paaiškinimo. <!-- F1014 --> Skaitmeninio turinio atveju šios teisės netenki, jei aiškiai sutikai ją prarasti. <!-- F1014 --> „Google Play“ rašo, kad perkant skaitmeninį turinį su tuo sutinkama, o už skaitmenines paslaugas per 14 dienų grąžina visas lėšas. <!-- F1013 --> Kuriai grupei priklauso DI programėlė ir ar dienos skaičiuojamos nuo bandymo pradžios, mūsų rasti šaltiniai nesako: prašyk kuo greičiau. <!-- M -->')} />
+          <li set:html={nbHtml('<strong>Neveikia taip, kaip reklamavo?</strong> Skaitmeniniam turiniui ir paslaugoms, įskaitant ir programėles, ES taiko bent dvejų metų garantiją: teikėjas pirmiausia turi nemokamai pašalinti trūkumą per pagrįstą laiką; jei to padaryti nepavyksta, gali prašyti sumažinti kainą arba nutraukti sutartį. <!-- F1015 --> Jei paslauga teikiama nuolat, teikėjas už trūkumus atsako visą sutarties laiką. <!-- F1015 -->')} />
+          <li set:html={nbHtml('<strong>Kreipkis į parduotuvę.</strong> „Apple“: reportaproblem.apple.com, atsakymo gali tekti laukti 24–48 valandas, grąžinami pinigai tik už kai kuriuos pirkinius. <!-- F1011 --> „Google“ irgi gali grąžinti tik už kai kuriuos pirkinius, o apie mokėjimą, kurio neatlikai nei tu, nei tavo pažįstamas, reikia pranešti per 120 dienų. <!-- F1012 -->')} />
+          <li set:html={nbHtml('<strong>Mokėjai kortele?</strong> Kreipkis į banką: jei paslauga nesuteikta ar suteikta su trūkumais, kredito kortele atliktą mokėjimą kartais galima užginčyti, bet reikės įrodyti, kad bandei spręsti su pardavėju. <!-- F206 F207 --> Dėl debeto kortelės mūsų šaltiniai nieko nesako: paklausk banko. <!-- F207 M --> Terminai skiriasi; „Swedbank“ kredito kortelei nurodo 90 dienų nuo pirkimo ar pristatymo datos. <!-- F206 -->')} />
+          <li set:html={nbHtml('<strong>Pardavėjas – įmonė kitoje ES šalyje?</strong> Europos vartotojų centras padeda nemokamai, taip pat dėl nesąžiningų sutarties sąlygų. Lietuvoje registruotų pardavėjų atvejais centras padėti negali. <!-- F1018 F717 --> Tada kreipkis į VVTAT (vvtat.lrv.lt). <!-- F19 --> Pardavėjas už ES ribų? Kreipkis į parduotuvę ir banką; daugiau mūsų šaltiniai nesako. <!-- M -->')} />
+        </ol>
+        <p set:html={nbHtml('Žingsniai: <a href="/jei-apgavo/">Jei tave apgavo</a>.')} />
+      </section>
+
+      <div class="cta">
+        <a class="btn" href="/sustok/desimt-sekundziu/">Atidaryk kortelę</a>
+        <a class="btn btn--second" href="/jei-apgavo/">Jei tave apgavo</a>
+      </div>
+    </section>
+
+    <details class="stage" open>
+      <summary>
+        <h2 class="stage__title">Kaip tai daro jis</h2>
+      </summary>
+      <ArtBand mood="stage" class="stage__art" sizes="(min-width: 60rem) 70vw, 120vw" />
+      <div class="stage__in wrap">
+        <p class="stage__note">Šis sluoksnis jau atvertas. Jame – tik tai, ko jis nori ir kodėl jam pavyksta. „Jis“ čia – pardavėjas, kuris slepia tikrąją kainą. Paaiškinimas yra mūsų pačių modelis, o faktai pažymėti šaltiniais.</p>
+
+        <div class="row">
+          <h3>Ko jis nori</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tavo kartojamo mokėjimo. Kad nepastebėtum kainos arba pamirštum, jog prenumeruoji: taip tokias programėles 2023 m. apibūdino „Sophos“. <!-- F1020 --> <strong class="stop">Sustabdymo vieta:</strong> kaina, kurią surandi prieš pirmą mokėjimą. <!-- M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Ką jis apie tave žino</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Tik tiek, kad ieškai DI įrankio ir nori jo pigiai. <!-- M --> <strong class="stop">Sustabdymo vieta:</strong> oficiali įrankio svetainė, kurioje matysi, kas nemokama. <!-- F1020 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Kodėl tai veikia</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jis naudoja du iš penkių kabliukų, kuriuos aprašome <a href="/temos/kaip-veikia-atakos/">vienoje vietoje</a>: <!-- M -->')} />
+            <ul class="levers" role="list">
+              <li><strong>Nauda.</strong> <span set:html={nbHtml('„Nemokama“ ar „tik keli eurai“. <!-- F1019 M -->')} /></li>
+              <li><strong>Autoritetas.</strong> <span set:html={nbHtml('Žinomo įrankio vardas ir vieta oficialioje parduotuvėje. <!-- F1020 M -->')} /></li>
+            </ul>
+            <p set:html={nbHtml('<strong class="stop">Sustabdymo vieta:</strong> žodis „nemokama“, kai kartu prašoma kortelės: už tokio pasiūlymo dažnai slypi prenumerata. <!-- F1019 M -->')} />
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>O tas, kuris tik parduoda prenumeratą?</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Daug naudingų paslaugų veikia būtent taip. <!-- M --> Bet ES teisė klaidinančia laiko ir tokią veiklą, kai nutylima svarbi informacija, o sutarties sąlyga, pagal kurią apie nepratęsimą reikia pranešti nepagrįstai anksti, gali būti nesąžininga. <!-- F1017 F1016 --> <strong class="stop">Sustabdymo vieta:</strong> kaina ir atšaukimo kelias, kuriuos matai prieš mokant. <!-- M -->')} />
+          </div>
+        </div>
+
+        <section class="sides" aria-labelledby="sustoti">
+          <h3 id="sustoti">Kur jį sustabdyti</h3>
+          <table>
+            <thead>
+              <tr><th scope="col">Jo triukas</th><th scope="col">Tavo atsakymas</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('„Nemokamas bandymas“, bet reikia kortelės')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Surask kainą ir datą, nuo kada ji galios. <!-- F1019 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Kaina smulkiu šriftu')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Kainos neradai – nemokėk. <!-- F1019 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Reklamos ragina užsisakyti')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Uždaryk ir patikrink oficialioje svetainėje. <!-- F1020 M -->')} />
+              </tr>
+              <tr>
+                <td data-label="Jo triukas" set:html={nbHtml('Tikisi, kad ištrinsi programėlę ir nepastebėsi mokėjimo')} />
+                <td data-label="Tavo atsakymas" set:html={nbHtml('Ištrynimas neatšaukia: atšauk ten, kur moki. <!-- F1009 F1020 -->')} />
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="row row--last">
+          <h3>Ko čia nerasi</h3>
+          <div class="row__body">
+            <p set:html={nbHtml('Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <footer class="scn-foot wrap">
+      <section class="related" aria-labelledby="susije">
+        <h2 id="susije">Susiję</h2>
+        <ul>
+          <li set:html={nbHtml('<strong>Kortelės:</strong> <a href="/sustok/desimt-sekundziu/">Sustok dešimčiai sekundžių</a>')} />
+          <li set:html={nbHtml('<strong>Temos:</strong> <a href="/temos/apgaule/">Apgaulė ir sukčiavimas</a>')} />
+          <li set:html={nbHtml('<strong>Scenarijai:</strong> <a href="/scenarijai/netikras-di-irankis/">Netikras DI įrankis</a>, <a href="/scenarijai/netikra-parduotuve/">Netikra internetinė parduotuvė</a>')} />
+        </ul>
+      </section>
+
+      <section class="sources" aria-labelledby="saltiniai">
+        <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Lietuviškų šaltinių apie DI prenumeratas neradome, todėl dalis puslapio remiasi kitų šalių šaltiniais ir kiekvieną jų įvardija. <!-- M --> Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          {sources.map((s) => <li set:html={sourceHtml(s)} />)}
+        </ul>
+      </section>
+
+      <Share />
+    </footer>
+  </article>
+</Page>

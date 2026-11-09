@@ -88,7 +88,8 @@ Jokių įrankių, paruošto teksto ar žingsnių, kaip tai padaryti. Tai mūsų 
 
 - **Kortelės:** [Nespausk nuorodos – atsidaryk programėlę ar svetainę](/sustok/nuoroda-ne-is-zinutes/), [Kodų ir PIN niekam nesakyk](/sustok/kodai-ir-pin/)
 - **Temos:** [Įrenginiai ir tinklas](/temos/irenginiai/), [Apgaulė ir sukčiavimas](/temos/apgaule/)
-- **Kiti scenarijai:** [Skambutis iš „banko“](/scenarijai/skambutis-is-banko/), [Netikra banko reklama](/scenarijai/netikra-banko-reklama/), [„Patvirtink per „Smart-ID““](/scenarijai/smart-id-patvirtinimas/)
+- **Kiti scenarijai:** [Skambutis iš „banko“](/scenarijai/skambutis-is-banko/), [Netikra banko reklama](/scenarijai/netikra-banko-reklama/), [„Patvirtink per „Smart-ID““](/scenarijai/smart-id-patvirtinimas/), [Netikras DI įrankis](/scenarijai/netikras-di-irankis/)
+- **Vadovai:** [Telefono ir kompiuterio atnaujinimai](/pazeidziamumai/telefonas-ir-kompiuteris/)
 - **Žodynas:** [Kas yra phishing](/zodynas/phishing/)
 
 ## Šaltiniai ir patikrinta

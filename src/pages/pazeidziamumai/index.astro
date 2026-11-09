@@ -1,0 +1,93 @@
+---
+/**
+ * Spragos ir atnaujinimai: the hub of the three update guides. The copy is docs/copy/pazeidziamumai/index.md, word for word.
+ */
+import Page from '../../layouts/Page.astro';
+import DocHead from '../../components/DocHead.astro';
+import { nbHtml } from '../../lib/typo.js';
+import '../../styles/shelf.css';
+import '../../styles/doc.css';
+
+const L_vadovai = [
+  '<a href="/pazeidziamumai/telefonas-ir-kompiuteris/">Telefonas ir kompiuteris</a>: kur įjungti automatinius atnaujinimus ir ką daryti su senu telefonu. <!-- M -->',
+  '<a href="/pazeidziamumai/svetaine/">Svetainė</a>: jei turi svetainę, net ir mažą, ir nežinai, kas ją atnaujina. <!-- M -->',
+  '<a href="/pazeidziamumai/serveris/">Serveris</a>: jei serverį prižiūri tu. <!-- M -->',
+];
+
+const L_dabar = [
+  '<strong>Nacionalinis kibernetinio saugumo centras (NKSC).</strong> Svetainėje <a href="https://www.nksc.lt/">nksc.lt</a> yra skiltis „Naujienos ir saugumo pranešimai“. <!-- F1042 --> Ten 2026 m. spalio 21 d. buvo paskelbtas įspėjimas dėl PHP programavimo kalbos. <!-- F1027 --> Nuolat pildomo spragų sąrašo NKSC svetainėje neradome. <!-- F1042 -->',
+  '<strong>Tavo programos gamintojas.</strong> Gamintojas geriausiai žino, kurioje versijoje spraga pataisyta. <!-- M -->',
+  '<strong>JAV agentūros CISA <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">sąrašas</a></strong> spragų, kuriomis tikrai naudojamasi. <!-- F1026 --> Sąrašas angliškas, skirtas organizacijoms ir nepasako, ką naudoji tu. <!-- F1026 -->',
+];
+
+const L_zodziai = [
+  '<a href="/zodynas/#pazeidziamumas">Pažeidžiamumas</a>',
+  '<a href="/zodynas/#pataisa">Pataisa</a>',
+  '<a href="/zodynas/#nulines-dienos-spraga">Nulinės dienos spraga</a>',
+  '<a href="/zodynas/#cve">CVE</a>',
+];
+
+const L_saltiniai = [
+  'NKSC, 2026-10-21 ir svetainės pradžios puslapis (skaityta 2026-11-09): PHP įspėjimas, „Naujienos ir saugumo pranešimai“. <!-- F1027 F1042 -->',
+  'NKSC, „Interneto svetainių apsauga“ (be datos, skaityta 2026-11-09): automatiniai saugumo atnaujinimai. <!-- F1032 -->',
+  'NIST (JAV) žodynas (be datos, skaityta 2026-11-09): pažeidžiamumas, pataisa. <!-- F1022 F1023 -->',
+  'CISA (JAV; be datos, skaityta 2026-11-09): sąrašas, automatiniai atnaujinimai. <!-- F1026 F1041 -->',
+];
+
+---
+<Page
+  title="Ką atnaujinti: telefonas, svetainė, serveris – Suktas"
+  description="Programose randama spragų, o gamintojai jas taiso. Ką atnaujinti telefone, svetainėje ir serveryje, kaip tai įjungti automatiškai ir kur skaityti oficialius įspėjimus."
+>
+  <DocHead
+    title="Spragos ir atnaujinimai"
+    lead="Programose pasitaiko silpnų vietų, kuriomis kas nors gali pasinaudoti. Tokia silpna vieta vadinama pažeidžiamumu arba spraga. <!-- F1022 --> Gamintojas išleidžia pataisą, bet ji saugo tik tada, kai yra įdiegta. <!-- F1023 M --> Telefone ir kompiuteryje dažniausiai užtenka vieną kartą įjungti automatinius atnaujinimus. <!-- F1032 F1041 M -->"
+  />
+
+  <article class="wrap doc">
+    <section class="doc-sec" aria-labelledby="vadovai">
+      <h2 id="vadovai">Kas tau aktualu</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {L_vadovai.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="dabar">
+      <h2 id="dabar">Kas pavojinga dabar</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Nuolat atnaujinamo pavojingų spragų sąrašo čia nelaikome: jei toks sąrašas pasentų ir savo programos jame nerastum, galėtum be reikalo nurimti. <!-- M --> Oficialūs įspėjimai skelbiami šiose vietose:')} />
+        <ul class="doc-list doc-list--rule">
+          {L_dabar.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="zodziai">
+      <h2 id="zodziai">Žodžiai</h2>
+      <div class="doc-sec__body">
+        <ul class="doc-list doc-list--rule">
+          {L_zodziai.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="ko-nerasi">
+      <h2 id="ko-nerasi">Ko čia nerasi</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Jokių spragų veikimo aprašymų, jokių nurodymų, kaip jomis pasinaudoti, ir jokių būdų surasti neatnaujintus įrenginius ar svetaines. Tai mūsų <a href="/misija/#riba">riba</a>. <!-- pažadas -->')} />
+      </div>
+    </section>
+
+    <section class="doc-sec" aria-labelledby="saltiniai">
+      <h2 id="saltiniai">Šaltiniai ir patikrinta</h2>
+      <div class="doc-sec__body">
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Oficialaus lietuviško šių žodžių apibrėžimo neradome. <!-- F1022 --> Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul class="doc-list doc-list--rule">
+          {L_saltiniai.map((t) => <li set:html={nbHtml(t)} />)}
+        </ul>
+      </div>
+    </section>
+  </article>
+</Page>
