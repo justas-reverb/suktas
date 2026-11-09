@@ -13,7 +13,15 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 
 Naujausi viršuje. Čia užrašome kiekvieną pataisymą ir naują puslapį, kad matytum, kas ir kodėl pakeista. <!-- pažadas --> Kiekvienas įrašas turi datą, trumpą pavadinimą, ką pakeitėme, kodėl ir kuriuos puslapius palietė. <!-- pažadas --> Radai klaidą ar pasenusį faktą? Kaip mums parašyti, rasi puslapyje [Apie](/apie/#kaip-pataisyti-mus). <!-- pažadas -->
 
-## 2026-11-09 – trečiasis žaidimas Treniruotėje {#naujausias}
+## 2026-11-09 – visi žaidimai – per visą ekraną {#naujausias}
+
+**Kas pasikeitė.** „Ar atskirsi netikrą banko reklamą?“ ir „Ką iš tikrųjų tvirtini per „Smart-ID“?“ dabar žaidžiami per visą ekraną, kaip ir „Viena diena su telefonu“, o rezultatas – kiek pinigų tau liko. Treniruotėje kiekvienas žaidimas turi savo paveikslėlį.
+
+**Kodėl.** Visi trys žaidimai dabar veikia vienodai, todėl kito žaidimo nereikia mokytis iš naujo. <!-- M -->
+
+**Puslapiai:** [Ar atskirsi netikrą banko reklamą?](/treniruote/banko-paieska/), [Ką iš tikrųjų tvirtini per „Smart-ID“?](/treniruote/smart-id/), [Treniruotė](/treniruote/).
+
+## 2026-11-09 – trečiasis žaidimas Treniruotėje
 
 **Kas pasikeitė.** Naujas žaidimas „Viena diena su telefonu: kur laukia sukčius?“: rytas, pietūs, popietė ir vakaras, keturios apgaulės iš eilės. Žaidi per visą ekraną, o rezultatas – kiek pinigų tau liko. Į jį veda Treniruotė ir Turinys.
 

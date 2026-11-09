@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>paint thumbs</title>
+<style>
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  /* The paint page for the /treniruote/ game thumbnails: tools/paint-thumbs.mjs opens it in the installed Chrome, calls
+     window.paint(job) and photographs the canvas from outside. The shipped site never loads it. Same 5x7 dot face and the
+     same dot (core, halo, pore) as the page bands (src/art/hero/dots.glsl); the colours are the bands' families
+     (src/art/bands.js): the day ink is the phone's deep body, the stage ink the lit dots. Canvas 2D, because a phone is a
+     shape, not a shader. Laid out in "card px" (the card picture is 208 CSS px wide) and scaled by w/208, so each width is
+     painted natively. */
+  import { FAMILIES } from '/src/art/bands.js';
+
+  // 5x7 columns, bit 0 = top. Digits and signs are dots.glsl's; the letters are the usual 5x7 set.
+  const F = {
+    '0': [0x3E, 0x51, 0x49, 0x45, 0x3E], '1': [0x00, 0x42, 0x7F, 0x40, 0x00], '2': [0x42, 0x61, 0x51, 0x49, 0x46],
+    '3': [0x21, 0x41, 0x45, 0x4B, 0x31], '4': [0x18, 0x14, 0x12, 0x7F, 0x10], '5': [0x27, 0x45, 0x45, 0x45, 0x39],
+    '6': [0x3C, 0x4A, 0x49, 0x49, 0x30], '7': [0x01, 0x71, 0x09, 0x05, 0x03], '8': [0x36, 0x49, 0x49, 0x49, 0x36],
+    '9': [0x06, 0x49, 0x49, 0x29, 0x1E], '+': [0x08, 0x08, 0x3E, 0x08, 0x08], ':': [0x00, 0x00, 0x14, 0x00, 0x00],
+    '-': [0x08, 0x08, 0x08, 0x08, 0x08], ' ': [0, 0, 0, 0, 0],
+    A: [0x7E, 0x11, 0x11, 0x11, 0x7E], E: [0x7F, 0x49, 0x49, 0x49, 0x41], I: [0x00, 0x41, 0x7F, 0x41, 0x00],
+    M: [0x7F, 0x02, 0x0C, 0x02, 0x7F], N: [0x7F, 0x04, 0x08, 0x10, 0x7F], P: [0x7F, 0x09, 0x09, 0x09, 0x06],
+    R: [0x7F, 0x09, 0x19, 0x29, 0x46],
+  };
+  // a handset in dots, 11 x 11: earpiece top left, mouthpiece bottom right
+  const HANDSET = ['XXXX.........', 'XXXXX........', 'XXXXX........', '.XXX.........', '.X...........', '.X...........', '.X...........', '.X...........', '..X..........', '...X.....XXX.', '...X....XXXXX', '....X...XXXXX', '.....XXXXXXX.'];
+
+  const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const rgba = (c, a) => `rgba(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])},${a})`;
+  const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+
+  // the three games: family, the phone's screen and the one readout (every one invented)
+  const GAMES = {
+    'banko-paieska': { family: 'shops', text: 'REMIAMA', pitch: 3.5, screen: 'ad' },
+    'smart-id': { family: 'codes', text: 'PIN2', pitch: 5.4, screen: 'card', lift: 0.3, core: 0.85, panel: 0.1 },
+    'diena-su-telefonu': { family: 'calls', text: '+000', pitch: 4.6, screen: 'call' },
+  };
+
+  window.paint = (job) => {
+    const c = document.getElementById('c');
+    c.width = job.w;
+    c.height = job.h;
+    const g = GAMES[job.slug];
+    const day = FAMILIES[g.family].day, stage = FAMILIES[g.family].stage;
+    const body = rgb(day.ink), lampD = rgb(day.lamp), lit = rgb(stage.ink), lampS = rgb(stage.lamp);
+    const deep = mix(body, [4, 6, 24], 0.55); // the screen's dark
+    const ctx = c.getContext('2d', { willReadFrequently: true });
+    const s = job.w / 208; // device px per card px
+    ctx.setTransform(s, 0, 0, s, 0, 0);
+    const W = 208, H = job.h / s;
+    const rr = (x, y, w, h, r) => { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); };
+
+    // ground: the family's lamp colour at real saturation, lighter behind the phone, deeper at the edges
+    let gr = ctx.createRadialGradient(W * 0.5, H * 0.35, 6, W * 0.5, H * 0.45, W * 0.78);
+    gr.addColorStop(0, rgba(mix(lampD, [255, 255, 255], 0.42), 1)); gr.addColorStop(0.6, rgba(lampD, 1)); gr.addColorStop(1, rgba(mix(lampD, body, 0.55), 1));
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+    // the dot face reaches the ground too: a faint lattice that thins away from the phone
+    for (let y = 1.5; y < H; y += 3) for (let x = 1.5; x < W; x += 3) {
+      const f = Math.min(1, Math.abs(x - W / 2) / (W * 0.5));
+      ctx.fillStyle = `rgba(255,255,255,${0.16 * f * f})`; ctx.beginPath(); ctx.arc(x, y, 0.55, 0, 6.2832); ctx.fill();
+    }
+
+    // the phone: a solid body, cropped by the picture's foot
+    const PW = 176, PX = (W - PW) / 2, PY = 8, PH = 280, R = 24, BZ = 5;
+    // shadow on the ground, down and to the right (the light is upper left)
+    ctx.save(); ctx.filter = 'blur(7px)'; ctx.fillStyle = rgba(mix(body, [0, 0, 20], 0.6), 0.5); rr(PX + 4, PY + 8, PW, PH, R); ctx.fill(); ctx.restore();
+    gr = ctx.createLinearGradient(PX, PY, PX + PW, PY + 160);
+    gr.addColorStop(0, rgba(mix(body, [255, 255, 255], 0.2), 1)); gr.addColorStop(1, rgba(mix(body, [0, 0, 30], 0.35), 1));
+    ctx.fillStyle = gr; rr(PX, PY, PW, PH, R); ctx.fill();
+    // rim light: a plain 1 px edge, bright on the upper left and gone at the lower right
+    gr = ctx.createLinearGradient(PX, PY, PX + PW, PY + 120);
+    gr.addColorStop(0, rgba(mix(lit, [255, 255, 255], 0.5), 0.95)); gr.addColorStop(0.55, rgba(lit, 0.35)); gr.addColorStop(1, rgba(lit, 0));
+    ctx.strokeStyle = gr; ctx.lineWidth = 1.1; rr(PX + 0.55, PY + 0.55, PW - 1.1, PH - 1.1, R - 0.5); ctx.stroke();
+
+    // the glass: dark, with the lit content's glow pooling in it
+    const SX = PX + BZ, SY = PY + BZ, SW = PW - 2 * BZ, SR = R - BZ + 1;
+    ctx.save(); rr(SX, SY, SW, PH, SR); ctx.clip();
+    ctx.fillStyle = rgba(deep, 1); ctx.fillRect(SX, SY, SW, PH);
+    const gy = g.screen === 'call' ? 70 : 56;
+    gr = ctx.createRadialGradient(W / 2, gy, 4, W / 2, gy, 120);
+    gr.addColorStop(0, rgba(mix(deep, lampS, 0.5), 1)); gr.addColorStop(0.5, rgba(mix(deep, lampS, 0.16), 1)); gr.addColorStop(1, rgba(deep, 1));
+    ctx.fillStyle = gr; ctx.fillRect(SX, SY, SW, PH);
+
+    // dots: a pore lattice over the glass, then lit dots with a halo and a hot core
+    const P = 3;
+    ctx.fillStyle = rgba(lampS, 0.2);
+    for (let y = SY + 2; y < H + P; y += P) for (let x = SX + 2; x < SX + SW; x += P) { ctx.beginPath(); ctx.arc(x, y, 0.4, 0, 6.2832); ctx.fill(); }
+    const dot = (x, y, r, a = 1) => {
+      const lift = g.lift ?? 0, core = g.core ?? 0.55;
+      ctx.globalCompositeOperation = 'lighter';
+      const h = ctx.createRadialGradient(x, y, 0, x, y, r * 3.6);
+      h.addColorStop(0, rgba(lampS, 0.55 * a)); h.addColorStop(1, rgba(lampS, 0));
+      ctx.fillStyle = h; ctx.beginPath(); ctx.arc(x, y, r * 3.6, 0, 6.2832); ctx.fill();
+      ctx.globalCompositeOperation = 'source-over';
+      const b = ctx.createRadialGradient(x, y, 0, x, y, r * 1.1);
+      const body = mix(lit, [255, 255, 255], lift); b.addColorStop(0, rgba(mix(lit, [255, 255, 255], core), a)); b.addColorStop(0.6, rgba(body, a)); b.addColorStop(0.85, rgba(body, a)); b.addColorStop(1, rgba(lit, 0));
+      ctx.fillStyle = b; ctx.beginPath(); ctx.arc(x, y, r * 1.1, 0, 6.2832); ctx.fill();
+    };
+    const word = (str, cx, cy, pitch) => {
+      let ox = cx - (str.length * 6 - 1) * pitch / 2 + pitch / 2;
+      for (const ch of str) {
+        const cols = F[ch];
+        for (let u = 0; u < 5; u++) for (let v = 0; v < 7; v++) if ((cols[u] >> v) & 1) dot(ox + u * pitch, cy - 3 * pitch + v * pitch, pitch * 0.4);
+        ox += 6 * pitch;
+      }
+    };
+    const bar = (x, y, wd, a = 0.45, r = 0.9) => { for (let x1 = x; x1 <= x + wd; x1 += P) dot(x1, y, r, a); };
+    // a panel of light: a lit rectangle on the glass, no outline
+    const panel = (x, y, w, h, a) => {
+      gr = ctx.createLinearGradient(x, y, x, y + h);
+      gr.addColorStop(0, rgba(lampS, a)); gr.addColorStop(1, rgba(lampS, a * 0.55));
+      ctx.fillStyle = gr; rr(x, y, w, h, 3); ctx.fill();
+    };
+    const cx = W / 2, sx = SX + 9, sw = SW - 18, top = SY + 9;
+    dot(cx, SY + 4.2, 1.3, 0.7); // camera
+
+    if (g.screen === 'ad') {
+      panel(sx, top + 2, sw, 11, 0.22); bar(sx + 5, top + 7.5, 40, 0.5, 0.8);
+      const ay = top + 22, ah = 40;
+      panel(sx, ay, sw, ah, 0.26);
+      word(g.text, cx, ay + ah / 2, g.pitch);
+      bar(sx + 2, ay + ah + 13, 80); bar(sx + 2, ay + ah + 20, 118, 0.3, 0.8);
+      bar(sx + 2, ay + ah + 33, 62); bar(sx + 2, ay + ah + 40, 104, 0.3, 0.8);
+    } else if (g.screen === 'card') {
+      panel(sx, top + 1, 11, 11, 0.5); bar(sx + 18, top + 6.5, 40, 0.5, 0.8);
+      const ay = top + 22, ah = 54;
+      panel(sx, ay, sw, ah, g.panel);
+      bar(sx + 8, ay + 6, 26, 0.7, 0.8);
+      word(g.text, cx, ay + ah / 2 + 6, g.pitch);
+      panel(sx, ay + ah + 10, sw, 12, 0.3); panel(sx, ay + ah + 28, sw, 12, 0.18);
+    } else {
+      // a missed call on the lock screen: the handset in a ring of dots, the number's foreign start, the rest unknown
+      const rcx = cx, rcy = top + 26, rad = 25;
+      for (let k = 0; k < 44; k++) { const t = k / 44 * 6.2832; dot(rcx + Math.cos(t) * rad, rcy + Math.sin(t) * rad, 1.0, 0.85); }
+      HANDSET.forEach((row, v) => [...row].forEach((ch, u) => { if (ch === 'X') dot(rcx + (u - 6) * 2.5, rcy + (v - 6) * 2.5, 0.8); }));
+      word(g.text, cx, top + 78, g.pitch);
+      bar(cx - 38, top + 100, 76, 0.5, 0.9);
+    }
+    ctx.restore();
+
+    // a soft specular sheet across the glass, upper right to lower left, and the glass's own edge
+    ctx.save(); rr(SX, SY, SW, PH, SR); ctx.clip();
+    gr = ctx.createLinearGradient(SX + SW * 0.9, SY, SX + SW * 0.1, SY + 110);
+    gr.addColorStop(0, 'rgba(255,255,255,0.13)'); gr.addColorStop(0.6, 'rgba(255,255,255,0.04)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(SX + SW * 0.35, SY); ctx.lineTo(SX + SW, SY); ctx.lineTo(SX + SW, SY + 40); ctx.lineTo(SX, SY + 150); ctx.lineTo(SX, SY + 90); ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    // grain, the same on every size in card px
+    const img = ctx.getImageData(0, 0, job.w, job.h), d = img.data;
+    let seed = 1234567;
+    const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+    for (let i = 0; i < d.length; i += 4) { const n = (rnd() - 0.5) * 4; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.putImageData(img, 0, 0);
+    return {};
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

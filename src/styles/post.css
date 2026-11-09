@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------------------
    The post pages: /pranesk/, /triukai/ and a weekly letter (triukai.css). Pages about writing to us and
    being written to, so the one image is mail: a painted stamp and postmark (tools/paint-post.mjs) and an
-   airmail-striped envelope, in the site's colours. Colour keeps its meaning: mint is the reader's move,
+   envelope with a plain edge, in the site's colours. Colour keeps its meaning: mint is the reader's move,
    indigo is the page's own ink, the stage is his plan (letters only), and coral is the emergency and
    nothing else: here it is the line sending someone already caught to /jei-apgavo/. Classes start with
    post-, pk- (the report box) or tl-/tk- (triukai.css), so none meets another page's.
@@ -76,15 +76,13 @@
 
 .shead .btn--sos { border-width: 2px; }
 
-/* ---- The envelope: where to write. An airmail border of the site's two inks, the address large ---- */
+/* ---- The envelope: where to write. A plain indigo edge, the address large ---- */
 
 .post-env {
   padding: 1.35rem clamp(1rem, 2.5vw, 1.6rem) 1.5rem;
-  border: 7px solid transparent;
+  border: 2px solid var(--indigo);
   border-radius: 0.5rem;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    repeating-linear-gradient(-45deg, var(--indigo) 0 12px, #fff 12px 20px, var(--mint) 20px 32px, #fff 32px 40px) border-box;
+  background: #fff;
   font-size: var(--text);
   line-height: 1.55;
 }

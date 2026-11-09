@@ -289,6 +289,10 @@ try {
       ['the page scrolls behind it', cssAll('html:has(.gs[open]){overflow:visible!important}'), 'does not scroll'],
       ['motion under reduced motion', cssAll('@media (prefers-reduced-motion:reduce){.gs__side[data-live]{animation:gs-rise 5s!important}}'), 'reduced motion: the sheet'],
       ['the move below the sheet', cssAll('@media (max-width:49rem){.gs__sidebody{max-height:6rem}}'), 'the move is in sight'],
+      ['every press shows the first answer', gsub(/document\.getElementById\((\w)\.getAttribute\(`popovertarget`\)\)/, 'document.querySelector(`.pop[popover]`)'), 'shows its own answer'],
+      ["an older game's sums changed", sub(/data-cost="2000"/g, 'data-cost="1000"', () => 'treniruote/banko-paieska/index.html'), 'every trap ends on 200'],
+      ['an empty dock drawn', cssAll('.gs__dock:empty{display:block!important}'), 'draws no empty dock'],
+      ['marked words dark on the dark panel', cssAll('.gs__side .tk{color:#3b3590!important}'), 'drawn light'],
     ];
     const findRoot = path.join(TMP, 'find');
     const runE2E = (dir, script) => new Promise((ok) => {

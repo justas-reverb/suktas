@@ -13,10 +13,10 @@
 .gs-open {
   position: relative;
   min-height: 3.25rem;
-  padding: 0.6rem 1.5rem 0.6rem 2.1rem;
+  padding: 0.6rem 1.5rem;
   border: 2px solid var(--indigo);
   border-radius: var(--radius);
-  background: var(--indigo) repeating-linear-gradient(135deg, rgb(255 255 255 / 0.3) 0 0.28rem, transparent 0.28rem 0.56rem) left / 0.9rem 100% no-repeat;
+  background: var(--indigo);
   color: #fff;
   font: 700 1.0625rem / 1.2 var(--font-text);
   cursor: pointer;
@@ -96,7 +96,6 @@ html:has(.gs[open]) { overflow: hidden; }
 .gs__ticks { grid-area: ticks; display: flex; gap: 0.3rem; height: 0.5rem; margin-top: 0.35rem; }
 .gs__ticks i { flex: 1; border-radius: 0.1rem; background: var(--day-3); }
 .gs__ticks i.is-done { background: var(--indigo); }
-.gs__ticks i.is-now { background: repeating-linear-gradient(135deg, var(--indigo) 0 0.28rem, var(--day-3) 0.28rem 0.56rem); }
 
 /* ---- The body: question and mock-up, the choices, his side ---- */
 .gs__body { flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; }
@@ -123,11 +122,12 @@ html:has(.gs[open]) { overflow: hidden; }
   border-top: 1px solid var(--line);
   background: var(--day-2);
 }
+.gs__dock:empty { display: none; }
 .gs .opt {
   position: relative;
   display: block;
   min-height: 3.25rem;
-  padding: 0.55rem 0.9rem 0.55rem 1.75rem;
+  padding: 0.55rem 0.9rem;
   border: 2px solid var(--indigo);
   border-radius: 0.5rem;
   background: #fff;
@@ -138,16 +138,7 @@ html:has(.gs[open]) { overflow: hidden; }
   text-align: left;
   transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
 }
-.gs .opt::before {
-  content: '';
-  position: absolute;
-  inset: 0.4rem auto 0.4rem 0.4rem;
-  width: 0.65rem;
-  border-radius: 0.1rem;
-  background: repeating-linear-gradient(135deg, var(--indigo) 0 0.25rem, var(--day-3) 0.25rem 0.5rem);
-}
-.gs .opt[aria-current] { box-shadow: 0 0 0 3px var(--indigo-2); }
-.gs .opt[aria-current]::before { background: var(--indigo); }
+.gs [data-cost][aria-current] { box-shadow: 0 0 0 3px var(--indigo-2); }
 
 /* ---- His side ---- */
 .gs__side {
@@ -165,12 +156,6 @@ html:has(.gs[open]) { overflow: hidden; }
   overflow: hidden;
 }
 .gs__side[data-live] { display: flex; animation: gs-rise 0.24s cubic-bezier(0.23, 1, 0.32, 1); }
-.gs__side::before {
-  content: '';
-  flex: none;
-  height: 0.45rem;
-  background: repeating-linear-gradient(135deg, rgb(238 235 255 / 0.55) 0 0.28rem, transparent 0.28rem 0.56rem);
-}
 .gs__sideh { flex: none; font: inherit; }
 .gs__handle {
   position: relative;
@@ -254,9 +239,9 @@ html:has(.gs[open]) { overflow: hidden; }
 .gs__endsum {
   margin: 0;
   padding: 0.1em 0.5em;
-  border: 0.45rem solid transparent;
+  border: 2px solid var(--indigo);
   border-radius: 0.5rem;
-  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(135deg, var(--indigo) 0 0.55rem, var(--day-3) 0.55rem 1.1rem) border-box;
+  background: #fff;
   font: 400 clamp(3rem, 1.8rem + 6vw, 6rem) / 1.1 var(--font-display);
   font-variant-numeric: tabular-nums;
   color: var(--indigo);

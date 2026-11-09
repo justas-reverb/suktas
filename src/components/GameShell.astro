@@ -1,19 +1,20 @@
 ---
 /**
  * The full-screen frame for a Treniruotė game: a native <dialog> opened with showModal() from a button.
- * Game-agnostic: it reads the page's own steps (section[data-step] with h2, .tr-say, figure.mock, .opts .opt and
- * the .answers .pop cards, in the same order) and plays them with gameScore.js. Every word of the frame stands here as
+ * Game-agnostic: it reads the page's own steps ([data-step] with figure.mock, a title (data-title or its h2), the words
+ * (.tr-say or [data-say]), and every choice as a [data-cost] button whose popovertarget is its answer). A choice inside the
+ * mock-up plays where it stands; .opts .opt and .tr-choice go to the dock. Every word of the frame stands here as
  * text, in the closed dialog; script only writes numbers and moves these words around. Without JavaScript, or
  * without showModal, the opener stays hidden and the page is the popover version. Nothing is stored; the one
- * history entry is pushed on open and popped on close. Words: the last block of the game's copy file
- * (docs/copy/treniruote/diena-su-telefonu.md). Look: design/games-round-1/NOTES.md.
+ * history entry is pushed on open and popped on close. Words: the last block of each game's copy file
+ * (docs/copy/treniruote/). Look: design/games-round-1/NOTES.md.
  */
-import { nb } from '../lib/typo.js';
+import { nb, nbHtml } from '../lib/typo.js';
 import { euros } from '../lib/gameScore.js';
 import '../styles/game-shell.css';
 
-interface Props { name: string; start: number; nextHref: string; }
-const { name, start, nextHref } = Astro.props;
+interface Props { name: string; start: number; nextHref: string; nextName: string; endHeading: string; }
+const { name, start, nextHref, nextName, endHeading } = Astro.props;
 ---
 <div class="gs-start" data-game-start hidden>
   <button type="button" class="gs-open" data-game-open hidden>Žaisk per visą ekraną</button>
@@ -46,7 +47,7 @@ const { name, start, nextHref } = Astro.props;
         <div class="gs__ans" data-gs-ans hidden>
           <p class="gs__taken" data-gs-taken-lost hidden><span data-gs-amt></span></p>
           <p class="gs__taken gs__taken--none" data-gs-taken-none hidden>Sąskaita nepaliesta.</p>
-          <p class="gs__risk" data-gs-risk hidden>{nb('Jis dar nieko negavo, bet už riziką žaidimas atima 100 €.')}</p>
+          <p class="gs__risk" data-gs-risk hidden set:html={nbHtml('Jis dar nieko negavo, bet už riziką žaidimas atima <span data-gs-riskamt>100 €</span>.')} />
           <p class="gs__again" data-gs-nochange hidden>{nb('Šis pasirinkimas jau nieko nekeičia: skaičiuojamas pirmas.')}</p>
           <div class="gs__text" data-gs-text></div>
         </div>
@@ -54,13 +55,14 @@ const { name, start, nextHref } = Astro.props;
       <div class="gs__next" data-gs-nextbar hidden>
         <button type="button" class="gs-go" data-gs-next></button>
         <span data-gs-final hidden>Žiūrėk, kiek liko</span>
+        <span data-gs-onward hidden>Toliau</span>
       </div>
     </aside>
   </div>
 
   <section class="gs__end" data-gs-end hidden aria-labelledby="gs-end-h">
     <div class="gs__endin">
-      <h2 id="gs-end-h" tabindex="-1" data-gs-endh>Vakare sąskaitoje liko</h2>
+      <h2 id="gs-end-h" tabindex="-1" data-gs-endh>{nb(endHeading)}</h2>
       <p class="gs__endsum" data-gs-endsum></p>
       <p class="gs__verdict" data-verdict="all" hidden>Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.</p>
       <p class="gs__verdict" data-verdict="some" hidden>Sukčiui pavyko ne viskas. Pažiūrėk, kur dingo pinigai: ten jis lauks ir kitą kartą.</p>
@@ -72,7 +74,7 @@ const { name, start, nextHref } = Astro.props;
       <a class="gs__scn" data-gs-scn hidden>Visas scenarijus <span class="vh" data-gs-newtab>(atsidaro naujame lange)</span></a>
       <div class="gs__endact">
         <button type="button" class="gs-go" data-gs-again>Žaisk dar kartą</button>
-        <a class="gs__nextgame" href={nextHref}>{nb('Kitas žaidimas: Ar atskirsi netikrą banko reklamą?')}</a>
+        <a class="gs__nextgame" href={nextHref}>{nb(`Kitas žaidimas: ${nextName}`)}</a>
       </div>
     </div>
   </section>
@@ -85,7 +87,7 @@ const { name, start, nextHref } = Astro.props;
 
   const dlg = document.querySelector<HTMLDialogElement>('dialog[data-game-shell]');
   const opener = document.querySelector<HTMLButtonElement>('[data-game-open]');
-  const steps = [...document.querySelectorAll<HTMLElement>('section[data-step]')];
+  const steps = [...document.querySelectorAll<HTMLElement>('[data-step]')];
   if (dlg && opener && typeof dlg.showModal === 'function' && steps.length) init(dlg, opener);
 
   function init(dlg: HTMLDialogElement, opener: HTMLButtonElement) {
@@ -101,8 +103,8 @@ const { name, start, nextHref } = Astro.props;
     const side = $('data-gs-side'), handle = $<HTMLButtonElement>('data-gs-handle'), sidebody = $('data-gs-sidebody');
     const empty = $('data-gs-empty'), ans = $('data-gs-ans'), text = $('data-gs-text');
     const lost = $('data-gs-taken-lost'), amt = $('data-gs-amt'), none = $('data-gs-taken-none');
-    const risk = $('data-gs-risk'), nochange = $('data-gs-nochange');
-    const nextBar = $('data-gs-nextbar'), nextBtn = $<HTMLButtonElement>('data-gs-next'), finalLbl = $('data-gs-final');
+    const risk = $('data-gs-risk'), riskAmt = $('data-gs-riskamt'), nochange = $('data-gs-nochange');
+    const nextBar = $('data-gs-nextbar'), nextBtn = $<HTMLButtonElement>('data-gs-next'), finalLbl = $('data-gs-final'), onward = $('data-gs-onward');
     const sum = $('data-gs-sum'), acctl = $('data-gs-acctl'), live = $('data-gs-live');
     const ticks = $('data-gs-ticks');
     const newTab = $('data-gs-newtab'); // the hidden words that say a link opens a new tab, cloned onto each such link
@@ -133,6 +135,8 @@ const { name, start, nextHref } = Astro.props;
       return el;
     };
 
+    const titleOf = (s: HTMLElement) => s.dataset.title ?? s.querySelector('h2')!.textContent!;
+
     const setSum = (n: number, flash = false) => {
       sum.textContent = euros(n);
       if (flash) { sum.classList.remove('is-new'); void sum.offsetWidth; sum.classList.add('is-new'); }
@@ -142,7 +146,7 @@ const { name, start, nextHref } = Astro.props;
       ticks.textContent = '';
       for (let i = 0; i < N; i++) {
         const t = document.createElement('i');
-        t.className = i < idx ? 'is-done' : i === idx ? 'is-now' : '';
+        t.className = i <= idx ? 'is-done' : '';
         ticks.append(t);
       }
     };
@@ -150,20 +154,26 @@ const { name, start, nextHref } = Astro.props;
     function showStep(i: number) {
       idx = i;
       const s = steps[i];
-      const stepId = s.dataset.step!;
       end.hidden = true; body.hidden = false;
       $('data-gs-n').textContent = String(i + 1);
       renderTicks();
-      title.innerHTML = s.querySelector('h2')!.innerHTML;
-      say.innerHTML = s.querySelector('.tr-say')!.innerHTML;
-      const fig = clean(s.querySelector<HTMLElement>('figure.mock')!.cloneNode(true) as HTMLElement);
-      fig.querySelectorAll('.opts').forEach((o) => o.remove());
-      mock.replaceChildren(fig);
+      title.textContent = titleOf(s);
+      say.innerHTML = s.querySelector('.tr-say, [data-say]')!.innerHTML;
+      // Read the answer from popovertarget before clean() takes it off the copy.
+      const wire = (b: HTMLElement) => {
+        const pop = document.getElementById(b.getAttribute('popovertarget')!)!;
+        b.addEventListener('click', () => pick(b, pop));
+      };
+      const fig = s.querySelector<HTMLElement>('figure.mock')!.cloneNode(true) as HTMLElement;
+      fig.querySelectorAll('.opts, .rq-ctx').forEach((o) => o.remove());
+      fig.querySelectorAll<HTMLElement>('[data-cost]').forEach(wire);
+      mock.replaceChildren(clean(fig));
       dock.replaceChildren();
-      s.querySelectorAll<HTMLElement>('.opts .opt').forEach((b, k) => {
-        const c = clean(b.cloneNode(true) as HTMLButtonElement);
-        c.addEventListener('click', () => pick(k, c));
-        dock.append(c);
+      s.querySelectorAll<HTMLElement>('.opts .opt, .tr-choice').forEach((b) => {
+        const c = b.cloneNode(true) as HTMLElement;
+        wire(c);
+        if (c.classList.contains('tr-choice')) c.className = 'opt';
+        dock.append(clean(c));
       });
       // The panel starts empty; on a phone it is not drawn until the first choice.
       side.removeAttribute('data-live'); dlg.classList.remove('is-folded');
@@ -175,19 +185,18 @@ const { name, start, nextHref } = Astro.props;
       title.focus({ preventScroll: true });
     }
 
-    function pick(k: number, btn: HTMLElement) {
+    function pick(btn: HTMLElement, pop: HTMLElement) {
       const s = steps[idx];
       const stepId = s.dataset.step!;
       const cost = Number(btn.dataset.cost);
       const first = choose(run, stepId, cost);
-      const pop = s.querySelectorAll<HTMLElement>('.answers .pop')[k];
-      dock.querySelectorAll('.opt').forEach((o, j) => { if (j === k) o.setAttribute('aria-current', 'true'); else o.removeAttribute('aria-current'); });
+      dlg.querySelectorAll('[data-cost]').forEach((o) => { if (o === btn) o.setAttribute('aria-current', 'true'); else o.removeAttribute('aria-current'); });
 
       // The sum taken (a true minus) or the untouched account, and the note when this was not the counted choice.
       lost.hidden = none.hidden = risk.hidden = nochange.hidden = true;
       if (first) {
         if (cost > 0) { lost.hidden = false; amt.textContent = `−${euros(cost)}`; } else none.hidden = false;
-        if (btn.hasAttribute('data-risky')) risk.hidden = false;
+        if (btn.hasAttribute('data-risky')) { risk.hidden = false; riskAmt.textContent = euros(cost); }
         setSum(run.left, cost > 0);
         live.textContent = `${acctl.textContent} ${euros(run.left)}`;
       } else {
@@ -196,7 +205,7 @@ const { name, start, nextHref } = Astro.props;
       text.replaceChildren(...[...pop.children].filter((c) => !c.classList.contains('pop__actions')).map((c) => {
         const copy = clean(c.cloneNode(true) as HTMLElement);
         if (copy.tagName === 'H3') { const h = document.createElement('h4'); h.className = copy.className; h.innerHTML = copy.innerHTML; h.tabIndex = -1; h.dataset.gsAnsh = ''; return h; }
-        copy.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => { a.target = '_blank'; a.rel = 'noopener'; a.append(' ', newTab.cloneNode(true)); });
+        copy.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => { a.target = '_blank'; a.rel = 'noopener'; a.append(newTab.cloneNode(true)); });
         return copy;
       }));
       empty.hidden = true; ans.hidden = false;
@@ -209,7 +218,7 @@ const { name, start, nextHref } = Astro.props;
       // The next button appears only once the step has been answered, with the step's own label.
       const link = pop.querySelector<HTMLAnchorElement>('.pop__actions a[href^="#"]') ?? s.querySelector<HTMLAnchorElement>('.pop__actions a[href^="#"]');
       const last = idx === N - 1;
-      nextBtn.textContent = last ? finalLbl.textContent : link?.textContent ?? finalLbl.textContent;
+      nextBtn.textContent = last ? finalLbl.textContent : link?.textContent ?? onward.textContent;
       nextBar.hidden = !run.picks.has(stepId);
 
       sidebody.scrollTop = 0;
@@ -233,7 +242,7 @@ const { name, start, nextHref } = Astro.props;
         const cost = run.picks.get(s.dataset.step!) ?? 0;
         if (cost <= 0) continue;
         const li = document.createElement('li');
-        const t = document.createElement('span'); t.className = 'gs__lt'; t.textContent = s.querySelector('h2')!.textContent;
+        const t = document.createElement('span'); t.className = 'gs__lt'; t.textContent = titleOf(s);
         const m = document.createElement('strong'); m.className = 'gs__lm'; m.textContent = `−${euros(cost)}`;
         const a = proto.cloneNode(true) as HTMLAnchorElement;
         a.removeAttribute('data-gs-scn'); a.hidden = false; a.href = s.dataset.scenario!; a.target = '_blank'; a.rel = 'noopener';

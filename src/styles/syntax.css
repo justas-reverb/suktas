@@ -9,7 +9,7 @@
 
    Ink only: no chips. Colour, weight and a different mark per kind. Colours are custom properties
    set on :root (the day page, the mint and coral washes) and re-set on the dark bands (.stage, the
-   attacker's side; .think on the home page and .key on /temos/, painted the same), and back to day
+   attacker's side; .think on the home page, .key on /temos/ and the game frame's .gs__side, painted the same), and back to day
    on the table's answer cell inside .stage. Every colour reaches 4.5:1 on the
    background it sits on; the numbers are in the designer's report.
 
@@ -33,7 +33,8 @@
 }
 .stage,
 .think,
-.key {
+.key,
+.gs__side {
   --tk-money: #ffa6e3; --tk-money-hl: rgb(255 111 208 / 0.3);
   --tk-num:   #8fd6ff;
   --tk-date:  #d8ea84;

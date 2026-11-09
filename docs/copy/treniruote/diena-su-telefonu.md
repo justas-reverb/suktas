@@ -165,6 +165,7 @@ Patikrinta: 2026-10-30–2026-11-01. Faktai – iš keturių scenarijų, visi su
 - Jis dar nieko negavo, bet už riziką žaidimas atima 100 €.
 - Šis pasirinkimas jau nieko nekeičia: skaičiuojamas pirmas.
 - Žiūrėk, kiek liko
+- Toliau
 - Vakare sąskaitoje liko
 - Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.
 - Sukčiui pavyko ne viskas. Pažiūrėk, kur dingo pinigai: ten jis lauks ir kitą kartą.

@@ -4,10 +4,12 @@
  * word for word. Everything on the two mock-ups is invented (bank, search, addresses) and stamped as a
  * training example. Nothing can be typed: the "fields" are buttons, there is no form, nothing is sent
  * or stored. The answers are native popovers (no script); a browser without them shows them in place.
+ * With JavaScript, GameShell plays these steps full-screen; data-cost is the invented sum.
  */
 import Page from '../../../layouts/Page.astro';
 import ArtBand from '../../../components/ArtBand.astro';
 import TrainScore from '../../../components/TrainScore.astro';
+import GameShell from '../../../components/GameShell.astro';
 import { nb, nbHtml } from '../../../lib/typo.js';
 import '../../../styles/scenario.css';
 import '../../../styles/treniruote.css';
@@ -28,10 +30,11 @@ const fieldNote = 'mokomasis mygtukas, nieko nepriima';
         <p class="tr-lead" set:html={nbHtml('Trys keliai į banką ir vienas puslapis už reklamos. Spausk, kur spaustum iš tikrųjų: iššoks paaiškinimas, ką tuo metu daro sukčius ir kaip jį sustabdyti.')} />
         <p class="tr-promise" set:html={nbHtml('<strong>Tai mokomasis pavyzdys.</strong> Bankas, paieška ir adresai išgalvoti, o laukeliai nieko nepriima: tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma. Skaitiklis sužino tik tiek, kad puslapis atidarytas ir jame kas nors paspausta (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
         <p class="tr-rule" data-score-hint hidden set:html={nbHtml('Skaičiuojamas pirmas pasirinkimas kiekviename žingsnyje. Visur rinkis saugų kelią – ir laimėsi.')} />
+        <GameShell name="Ar atskirsi netikrą banko reklamą?" start={2400} nextHref="/treniruote/smart-id/" nextName="Ką iš tikrųjų tvirtini per „Smart-ID“?" endHeading="Sąskaitoje liko" />
       </div>
     </header>
 
-    <section class="wrap tr-scene" aria-labelledby="situacija">
+    <section class="wrap tr-scene" aria-labelledby="situacija" data-step="paieska" data-title="Banko paieška" data-scenario="/scenarijai/netikra-banko-reklama/">
       <h2 id="situacija">Situacija</h2>
       <p class="tr-say" set:html={nbHtml('Reikia sumokėti sąskaitą, todėl paieškoje surenki „pavyzdžio bankas prisijungti“. Kurį kelią rinktumeisi?')} />
 
@@ -43,7 +46,7 @@ const fieldNote = 'mokomasis mygtukas, nieko nepriima';
             <p class="srch__q">pavyzdžio bankas prisijungti</p>
             <ul class="srch__list" role="list">
               <li>
-                <button type="button" class="res" popovertarget="p-reklama" data-round="1">
+                <button type="button" class="res" popovertarget="p-reklama" data-round="1" data-cost="200" data-risky>
                   <span class="res__tag">Remiama</span>
                   <span class="res__url">pavyzdziobankas-prisijungimas.com</span>
                   <span class="res__title" set:html={nbHtml('Pavyzdžio bankas – prisijunk prie sąskaitos')} />
@@ -51,7 +54,7 @@ const fieldNote = 'mokomasis mygtukas, nieko nepriima';
                 </button>
               </li>
               <li>
-                <button type="button" class="res" popovertarget="p-bankas" data-round="1">
+                <button type="button" class="res" popovertarget="p-bankas" data-round="1" data-cost="100" data-risky>
                   <span class="res__url">pavyzdziobankas.lt</span>
                   <span class="res__title">Pavyzdžio bankas</span>
                   <span class="res__desc">Kasdienės paslaugos, paskolos ir taupymas.</span>
@@ -62,7 +65,7 @@ const fieldNote = 'mokomasis mygtukas, nieko nepriima';
         </div>
       </figure>
 
-      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-programele" data-round="1" data-safe>Neieškau: atsidarau banko programėlę</button></p>
+      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-programele" data-round="1" data-safe data-cost="0">Neieškau: atsidarau banko programėlę</button></p>
 
       <div class="answers">
         <section class="pop" id="p-reklama" popover aria-labelledby="h-reklama">
@@ -89,7 +92,7 @@ const fieldNote = 'mokomasis mygtukas, nieko nepriima';
       </div>
     </section>
 
-    <section class="wrap tr-scene" id="klastote" aria-labelledby="h-klastote">
+    <section class="wrap tr-scene" id="klastote" aria-labelledby="h-klastote" data-step="klastote" data-scenario="/scenarijai/netikra-banko-reklama/">
       <h2 id="h-klastote">Kur veda reklama</h2>
       <p class="tr-say" set:html={nbHtml('Taip galėtų atrodyti puslapis už reklamos: kone tobula banko kopija su spynele prie adreso. Ką darytum? Spausk laukelį ar mygtuką arba rinkis kelią po maketu.')} />
 
@@ -102,22 +105,22 @@ const fieldNote = 'mokomasis mygtukas, nieko nepriima';
             <div class="pg">
               <p class="pg__brand"><span class="pg__mark" aria-hidden="true"></span><span class="pg__name">Pavyzdžio bankas</span></p>
               <p class="pg__title">Prisijungimas prie interneto banko</p>
-              <div class="tabs"><button type="button" class="tab" popovertarget="p-pagavau" data-round="2">Smart-ID</button></div>
+              <div class="tabs"><button type="button" class="tab" popovertarget="p-pagavau" data-round="2" data-cost="2000">Smart-ID</button></div>
               <div class="fld">
                 <p class="fld__lbl" aria-hidden="true">Naudotojo ID</p>
-                <button type="button" class="fld__box" popovertarget="p-pagavau" data-round="2" aria-label={`Naudotojo ID: ${fieldNote}`}></button>
+                <button type="button" class="fld__box" popovertarget="p-pagavau" data-round="2" data-cost="2000" aria-label={`Naudotojo ID: ${fieldNote}`}></button>
               </div>
               <div class="fld">
                 <p class="fld__lbl" aria-hidden="true">Asmens kodas</p>
-                <button type="button" class="fld__box" popovertarget="p-pagavau" data-round="2" aria-label={`Asmens kodas: ${fieldNote}`}></button>
+                <button type="button" class="fld__box" popovertarget="p-pagavau" data-round="2" data-cost="2000" aria-label={`Asmens kodas: ${fieldNote}`}></button>
               </div>
-              <button type="button" class="pg__go" popovertarget="p-pagavau" data-round="2">Prisijungti</button>
+              <button type="button" class="pg__go" popovertarget="p-pagavau" data-round="2" data-cost="2000">Prisijungti</button>
             </div>
           </div>
         </div>
       </figure>
 
-      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-uzdarau" data-round="2" data-safe>{nb('Nieko nespaudžiu: uždarau šį puslapį')}</button></p>
+      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-uzdarau" data-round="2" data-safe data-cost="0">{nb('Nieko nespaudžiu: uždarau šį puslapį')}</button></p>
 
       <section class="pop" id="p-uzdarau" popover aria-labelledby="h-uzdarau">
         <h3 id="h-uzdarau" class="pop__h">{nb('Taip ir daryk.')}</h3>

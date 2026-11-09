@@ -76,6 +76,10 @@ await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const BASE = `http://127.0.0.1:${server.address().port}`;
 const GAME = '/treniruote/diena-su-telefonu/';
 const HUB = '/treniruote/';
+const OLDER = [
+  { path: '/treniruote/banko-paieska/', startText: '2 400', steps: 2, worst: '200', lost: 2, endHeading: 'Sąskaitoje liko', next: '/treniruote/smart-id/' },
+  { path: '/treniruote/smart-id/', startText: '5 000', steps: 4, worst: '20', lost: 3, endHeading: 'Sąskaitoje liko', next: '/treniruote/diena-su-telefonu/' },
+];
 
 let failures = 0;
 const say = (ok, name, why = '') => { if (!ok) failures++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${name}${ok || !why ? '' : `: ${why}`}`); };
@@ -100,9 +104,9 @@ const opener = (page) => page.locator('[data-game-open]');
 const nextBtn = (page) => page.locator('[data-gs-next]');
 async function start(page) { await page.goto(BASE + GAME); await opener(page).click(); await page.waitForTimeout(260); }
 async function pick(page, want) {
-  const costs = await page.locator('.gs .opt').evaluateAll((o) => o.map((b) => Number(b.dataset.cost)));
+  const costs = await page.locator('.gs [data-cost]').evaluateAll((o) => o.map((b) => Number(b.dataset.cost)));
   const k = want === 'trap' ? costs.indexOf(Math.max(...costs)) : want === 'safe' ? costs.indexOf(0) : want;
-  await page.locator('.gs .opt').nth(k).click();
+  await page.locator('.gs [data-cost]').nth(k).click();
 }
 async function play(page, wants) { for (const w of wants) { await pick(page, w); await nextBtn(page).click(); } }
 const verdict = (page) => page.locator('[data-verdict]:not([hidden])').getAttribute('data-verdict');
@@ -243,7 +247,7 @@ try {
     await page.locator('[data-gs-handle]').click();
     await page.waitForTimeout(120);
     say(await page.locator('[data-gs-handle]').getAttribute('aria-expanded') === 'false' && await page.locator('[data-gs-sidebody]').isHidden(), `${w}x${h}: the sheet folds`);
-    const reach = await page.evaluate(() => [...document.querySelectorAll('.gs .opt')].map((o) => { o.scrollIntoView({ block: 'nearest' }); const r = o.getBoundingClientRect(); const e = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return o === e || o.contains(e); }));
+    const reach = await page.evaluate(() => [...document.querySelectorAll('.gs [data-cost]')].map((o) => { o.scrollIntoView({ block: 'nearest' }); const r = o.getBoundingClientRect(); const e = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return o === e || o.contains(e); }));
     say(reach.every(Boolean), `${w}x${h}: folded, every choice can be pressed`, JSON.stringify(reach));
     await page.locator('[data-gs-handle]').click();
     await page.waitForTimeout(120);
@@ -261,6 +265,136 @@ try {
     await page.waitForTimeout(280);
     const b = await wide();
     say(!a.length && !b.length, `nothing runs sideways at ${w}x${h}`, [...a, ...b].join('; '));
+    await ctx.close();
+  }
+
+  // The two older games: the same frame, their mock-ups played in place
+  for (const g of OLDER) {
+    const G = g.path;
+    const here = (page) => page.goto(BASE + G).then(() => opener(page).click()).then(() => page.waitForTimeout(240));
+    const n = async (page) => Number(await page.locator('[data-gs-n]').textContent());
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      say(await page.evaluate(() => document.querySelector('dialog[data-game-shell]').matches(':modal')), `${G}: the opener opens the frame`);
+      say(await sumOf(page) === `${g.startText} €`, `${G}: it starts on the whole sum`, await sumOf(page));
+      say(await page.locator('.gs :is(input,textarea,select,form,[contenteditable])').count() === 0, `${G}: nothing typed`);
+      say(await page.locator('.gs [data-round]').count() === 0, `${G}: the page's score does not count the frame's presses`);
+      const bad = [], ids = [], wrong = [], unwired = [], marks = [];
+      for (let i = 1; i <= g.steps; i++) {
+        const st = await page.evaluate(() => [...document.querySelectorAll('.gs .mock')].map((m) => { const t = m.querySelector('.stamp'); const r = t?.getBoundingClientRect(); return !!t && t.textContent.includes('MOKOMASIS PAVYZDYS') && r.width > 0 && r.height > 0; }));
+        if (!st.length || !st.every(Boolean)) bad.push(i);
+        if (await page.locator('.gs .mock :is([id],[popovertarget])').count()) ids.push(i);
+        if (!(await page.locator('.gs [data-cost]').count())) unwired.push(i);
+        // the answer shown must be the one the page's own button opens
+        const label = await page.locator('.gs [data-cost]').first().evaluate((b) => b.textContent.trim());
+        const want = await page.evaluate(([l, stepAt]) => {
+          const s = [...document.querySelectorAll('[data-step]')][stepAt];
+          const b = [...s.querySelectorAll('[data-cost]')].find((x) => x.textContent.trim() === l);
+          return document.getElementById(b.getAttribute('popovertarget')).querySelector('h2,h3').textContent.trim();
+        }, [label, i - 1]);
+        await page.locator('.gs [data-cost]').first().click();
+        await page.waitForTimeout(40);
+        if ((await page.locator('[data-gs-ansh]').textContent()).trim() !== want) wrong.push(i);
+        if (await page.locator('.gs [data-cost][aria-current]').count() !== 1) wrong.push(`${i}:current`);
+        marks.push(...await page.evaluate(() => [...document.querySelectorAll('.gs__side .tk')].map((e) => getComputedStyle(e).color)));
+        const before = await sumOf(page);
+        await page.locator('.gs [data-cost]').last().click();
+        await page.waitForTimeout(40);
+        if (await sumOf(page) !== before) wrong.push(`${i}:second`);
+        await nextBtn(page).click();
+        await page.waitForTimeout(40);
+      }
+      say(!bad.length, `${G}: every mock-up is stamped`, `steps ${bad}`);
+      say(!ids.length, `${G}: the copy in the frame carries no id or popover`, `steps ${ids}`);
+      say(!unwired.length, `${G}: every step has choices`, `steps ${unwired}`);
+      say(!wrong.length, `${G}: each press shows its own answer, marks it, and a second costs nothing`, wrong.join());
+      const dim = marks.filter((c) => Math.max(...c.match(/[\d.]+/g).slice(0, 3).map(Number)) < 170);
+      say(marks.length && !dim.length, `${G}: marked words in the dark panel are drawn light`, `${marks.length} marks, dim: ${dim[0]}`);
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      await play(page, Array(g.steps).fill('trap'));
+      await page.waitForTimeout(60);
+      say((await page.locator('[data-gs-endsum]').textContent()).replace(/\s/g, ' ') === `${g.worst} €`, `${G}: every trap ends on ${g.worst} €`, await page.locator('[data-gs-endsum]').textContent());
+      say(await verdict(page) === 'little', `${G}: the last ending`, await verdict(page));
+      say(await lostRows(page) === g.lost, `${G}: ${g.lost} losses listed`, String(await lostRows(page)));
+      say(await page.locator('[data-gs-endh]').textContent() === g.endHeading.replace(/ /g, ' ') || (await page.locator('[data-gs-endh]').textContent()).replace(/\s/g, ' ') === g.endHeading, `${G}: its own end heading`);
+      say(await page.evaluate(() => [...document.querySelectorAll('[data-gs-lostlist] a')].every((a) => a.getAttribute('href').startsWith('/scenarijai/'))), `${G}: each loss links to its scenario`);
+      say(await page.locator('.gs__end a[href^="/treniruote/"]').first().getAttribute('href') === g.next, `${G}: the next game is ${g.next}`);
+      await page.locator('[data-gs-again]').click();
+      await page.waitForTimeout(40);
+      await play(page, Array(g.steps).fill('safe'));
+      await page.waitForTimeout(40);
+      say(await verdict(page) === 'all', `${G}: every safe move is the first ending`, await verdict(page));
+      say(await page.locator('[data-gs-lost]').isHidden(), `${G}: and no list of losses`);
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      const pressed = [];
+      for (let i = 0; i < g.steps; i++) {
+        pressed.push(...await page.evaluate(() => [...document.querySelectorAll('.gs [data-cost]')].flatMap((e) => { const c = getComputedStyle(e); return [c.color, c.backgroundColor, c.borderTopColor]; })));
+        await pick(page, 'safe');
+        pressed.push(...await page.evaluate(() => [...document.querySelectorAll('.gs [data-cost][aria-current]')].flatMap((e) => getComputedStyle(e).boxShadow.match(/rgba?\([^)]*\)/g) ?? [])));
+        await nextBtn(page).click();
+      }
+      say(!pressed.map(hue).some(redOrGreen), `${G}: no red or green on the choices`, pressed.find((c) => redOrGreen(hue(c))));
+      await ctx.close();
+    }
+    for (const [w, h] of [[320, 640], [390, 844], [844, 390], [2560, 1440]]) {
+      const { ctx, page } = await open({ width: w, height: h });
+      await here(page);
+      const wide = () => page.evaluate(() => [...document.querySelectorAll('.gs, .gs__play, .gs__main, .gs__dock, .gs__sidebody, .gs__end, .gs__bar, .gs .mock')].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => `${e.className} ${e.scrollWidth}>${e.clientWidth}`));
+      const out = [];
+      for (let i = 0; i < g.steps; i++) { out.push(...await wide()); await pick(page, 'trap'); await page.waitForTimeout(260); out.push(...await wide()); await nextBtn(page).click(); await page.waitForTimeout(30); }
+      say(!out.length, `${G}: nothing runs sideways at ${w}x${h}`, out.slice(0, 3).join('; '));
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open({ width: 360, height: 740 }, { deviceScaleFactor: 2, hasTouch: true, isMobile: true });
+      await here(page);
+      const miss = [];
+      for (let i = 0; i < g.steps; i++) {
+        const reach = () => page.evaluate(() => [...document.querySelectorAll('.gs [data-cost]')].map((o) => { o.scrollIntoView({ block: 'nearest' }); const r = o.getBoundingClientRect(); const e = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return o === e || o.contains(e); }));
+        const before = await reach();
+        if (!before.length || !before.every(Boolean)) miss.push(`${i + 1}:${JSON.stringify(before)}`);
+        await pick(page, 'safe');
+        await page.waitForTimeout(300);
+        await page.locator('[data-gs-handle]').click();
+        await page.waitForTimeout(100);
+        const folded = await reach();
+        if (!folded.every(Boolean)) miss.push(`${i + 1}:folded:${JSON.stringify(folded)}`);
+        await page.locator('[data-gs-handle]').click();
+        await page.waitForTimeout(100);
+        await nextBtn(page).click();
+        await page.waitForTimeout(60);
+      }
+      say(!miss.length, `${G}: on a phone every choice can be pressed`, miss.join(' '));
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open({ width: 1280, height: 800 }, { javaScriptEnabled: false });
+      await page.goto(BASE + G);
+      say(!(await opener(page).isVisible()), `${G}: JavaScript off, no opener`);
+      await page.locator('[data-step] [data-cost]').first().click();
+      await page.waitForTimeout(150);
+      say(await page.locator('.pop:popover-open').count() === 1, `${G}: JavaScript off, a choice opens its answer`);
+      await ctx.close();
+    }
+  }
+  {
+    const { ctx, page } = await open();
+    await page.goto(BASE + '/treniruote/smart-id/');
+    await opener(page).click();
+    await page.waitForTimeout(200);
+    await pick(page, 'safe');
+    await nextBtn(page).click();
+    await page.waitForTimeout(40);
+    say(await page.locator('.gs__dock').isHidden(), 'a step whose choices are all inside the mock-up draws no empty dock');
     await ctx.close();
   }
 

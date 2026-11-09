@@ -8,6 +8,17 @@ import ArtBand from '../../components/ArtBand.astro';
 import { nb, nbHtml } from '../../lib/typo.js';
 import '../../styles/shelf.css';
 import '../../styles/treniruote.css';
+
+const thumb = (slug) => ({
+  src: `/art/game-${slug}-640.webp`,
+  srcset: [640, 960, 1280].map((w) => `/art/game-${slug}-${w}.webp ${w}w`).join(', '),
+  sizes: '(min-width: 40rem) 13rem, calc(100vw - 4rem)',
+  width: 1280,
+  height: 800,
+  alt: '',
+  loading: 'lazy',
+  decoding: 'async',
+});
 ---
 <Page
   title="Treniruotė: sukčių triukai, kuriuos išbandai saugiai – Suktas"
@@ -31,21 +42,21 @@ import '../../styles/treniruote.css';
     <h2 id="zaidimai">Žaidimai</h2>
     <ul role="list">
       <li class="game">
-        <div class="game__thumb" aria-hidden="true"><div><i class="game__q"></i><i class="game__ad"></i><i></i></div></div>
+        <div class="game__thumb"><img {...thumb('banko-paieska')} /></div>
         <div class="game__text">
           <h3><a href="/treniruote/banko-paieska/">{nb('Ar atskirsi netikrą banko reklamą?')}</a></h3>
           <p set:html={nbHtml('paieška, reklama „Remiama“ ir netikras prisijungimo puslapis.')} />
         </div>
       </li>
       <li class="game">
-        <div class="game__thumb" aria-hidden="true"><div><i class="game__call"></i><i class="game__ad"></i><i></i></div></div>
+        <div class="game__thumb"><img {...thumb('smart-id')} /></div>
         <div class="game__text">
           <h3><a href="/treniruote/smart-id/">{nb('Ką iš tikrųjų tvirtini per „Smart-ID“?')}</a></h3>
           <p set:html={nbHtml('skambutis iš „banko“ ir trys patvirtinimo užklausos: prisijungimas, mokėjimas ir „pinigams gauti“.')} />
         </div>
       </li>
       <li class="game">
-        <div class="game__thumb" aria-hidden="true"><div><i class="game__call"></i><i></i><i class="game__q"></i></div></div>
+        <div class="game__thumb"><img {...thumb('diena-su-telefonu')} /></div>
         <div class="game__text">
           <h3><a href="/treniruote/diena-su-telefonu/">{nb('Viena diena su telefonu: kur laukia sukčius?')}</a></h3>
           <p set:html={nbHtml('rytas, pietūs, popietė ir vakaras: praleistas skambutis, draugės žinutė, SMS apie stovėjimą ir QR lipdukas.')} />

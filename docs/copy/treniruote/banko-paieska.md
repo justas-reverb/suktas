@@ -87,3 +87,27 @@ Jei duomenis jau įvedei tikroje sukčių svetainėje, nieko netvirtink ir iška
 ## Šaltiniai ir patikrinta
 
 Patikrinta: 2026-10-31. Faktai – iš scenarijaus [Netikra banko reklama paieškoje](/scenarijai/netikra-banko-reklama/), visi su datomis [Šaltiniuose](/saltiniai/).
+
+<!-- The full-screen frame (components/GameShell.astro) and its score, with JavaScript only; these words stand in its closed dialog, as on diena-su-telefonu. All M. The account and the sums are invented and marked so. Start 2 400 €; the ad 200 € and the bank's own result 100 € (both risky: nothing is taken yet); anything pressed on the fake login page 2 000 €; the safe ways 0. The risk line shows the sum of the choice pressed; 100 € is only its text before script. The first step's title in the frame is „Banko paieška" (data-title on the section); the second keeps its heading. -->
+
+- Žaisk per visą ekraną
+- Sąskaita ir sumos išgalvotos. Pradedi su 2 400 €, o sukčius kiekviename žingsnyje bando dalį pasiimti.
+- Išgalvotoje sąskaitoje
+- Žingsnis
+- Uždaryk
+- Ką tuo metu daro jis
+- Rinkis, ką darytum iš tikrųjų, ir čia pamatysi, ką tuo metu daro sukčius.
+- Sąskaita nepaliesta.
+- Jis dar nieko negavo, bet už riziką žaidimas atima 100 €.
+- Šis pasirinkimas jau nieko nekeičia: skaičiuojamas pirmas.
+- Žiūrėk, kiek liko
+- Toliau
+- Sąskaitoje liko
+- Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.
+- Sukčiui pavyko ne viskas. Pažiūrėk, kur dingo pinigai: ten jis lauks ir kitą kartą.
+- Šiandien sukčiui sekėsi. Taip nutinka bet kam, todėl ir treniruojamės čia, kur pinigai išgalvoti.
+- Kur dingo pinigai
+- Visas scenarijus
+- Žaisk dar kartą
+- Kitas žaidimas: Ką iš tikrųjų tvirtini per „Smart-ID“?
+- (atsidaro naujame lange)

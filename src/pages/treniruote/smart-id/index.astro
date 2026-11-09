@@ -4,19 +4,21 @@
  * The confirmation app is invented ("Pavyzdžio ID") and looks like no real one: a plain slate card with an
  * invented tile, no PIN pad. Nothing can be typed: every control is a button, there is no form, nothing is
  * sent or stored. The answers are native popovers (no script needed); a browser without them shows them in place.
+ * With JavaScript, GameShell plays these steps full-screen; data-cost is the invented sum, the one the mock-up shows.
  */
 import Page from '../../../layouts/Page.astro';
 import ArtBand from '../../../components/ArtBand.astro';
 import TrainScore from '../../../components/TrainScore.astro';
+import GameShell from '../../../components/GameShell.astro';
 import { nb, nbHtml } from '../../../lib/typo.js';
 import '../../../styles/scenario.css';
 import '../../../styles/treniruote.css';
 
 const catch_ = '<span class="pop__catch">Pagavau!</span><span class="pop__dash"> –</span><span class="pop__sub"> taip dabar pagalvotų sukčius.</span>';
 const cards = [
-  { id: 'login', lead: 'Jungiesi prie banko.', rest: 'Adresą įvedei ranka, o banko puslapyje rodomas saugos kodas 4821.', what: 'Prisijungimas', code: true, pin: 'PIN1' },
-  { id: 'search', lead: 'Banką radai paieškoje.', rest: 'Įvedei prisijungimo duomenis ir patvirtinai prisijungimą PIN1, o puslapis vis kraunasi.', what: 'Mokėjimas', amt: '2 350,00 €', pin: 'PIN2' },
-  { id: 'buyer', lead: 'Parduodi dviratį skelbimų portale.', rest: '„Pirkėjas“ atsiuntė nuorodą: pinigams gauti reikia patvirtinti.', what: 'Mokėjimas', amt: '1 150,00 €', pin: 'PIN2' },
+  { id: 'login', lead: 'Jungiesi prie banko.', rest: 'Adresą įvedei ranka, o banko puslapyje rodomas saugos kodas 4821.', what: 'Prisijungimas', code: true, pin: 'PIN1', cost: 0 },
+  { id: 'search', lead: 'Banką radai paieškoje.', rest: 'Įvedei prisijungimo duomenis ir patvirtinai prisijungimą PIN1, o puslapis vis kraunasi.', what: 'Mokėjimas', amt: '2 350,00 €', pin: 'PIN2', cost: 2350 },
+  { id: 'buyer', lead: 'Parduodi dviratį skelbimų portale.', rest: '„Pirkėjas“ atsiuntė nuorodą: pinigams gauti reikia patvirtinti.', what: 'Mokėjimas', amt: '1 150,00 €', pin: 'PIN2', cost: 1150 },
 ];
 ---
 <Page
@@ -33,10 +35,11 @@ const cards = [
         <p class="tr-lead" set:html={nbHtml('Skambutis iš „banko“ ir trys užklausos telefone. Spausk, ką spaustum iš tikrųjų: iššoks paaiškinimas, ką tuo metu daro sukčius ir kaip jį sustabdyti. Tikrąją „Smart-ID“ programėlę čia pakeičia išgalvota „Pavyzdžio ID“, bet kaip ir tikrojoje, užklausos lange parašyta, ką tvirtini.')} />
         <p class="tr-promise" set:html={nbHtml('<strong>Tai mokomasis pavyzdys.</strong> Bankas, programėlė, vardai ir sumos išgalvoti, o mygtukai nieko nepriima: tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma. Skaitiklis sužino tik tiek, kad puslapis atidarytas ir jame kas nors paspausta (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
         <p class="tr-rule" data-score-hint hidden set:html={nbHtml('Skaičiuojamas pirmas pasirinkimas kiekviename žingsnyje. Visur rinkis saugų kelią – ir laimėsi.')} />
+        <GameShell name="Ką iš tikrųjų tvirtini per „Smart-ID“?" start={5000} nextHref="/treniruote/diena-su-telefonu/" nextName="Viena diena su telefonu" endHeading="Sąskaitoje liko" />
       </div>
     </header>
 
-    <section class="wrap tr-scene" aria-labelledby="situacija">
+    <section class="wrap tr-scene" aria-labelledby="situacija" data-step="call" data-title={nb('Skambutis iš „banko“')} data-scenario="/scenarijai/smart-id-patvirtinimas/">
       <h2 id="situacija">Situacija</h2>
       <p class="tr-say" set:html={nbHtml('Skambina „Pavyzdžio banko saugos tarnyba“: iš tavo sąskaitos esą bandoma pervesti pinigus, ir kad mokėjimą atšauktų, reikia patvirtinti užklausą. Telefone ji jau pasirodė. Ką darai?')} />
 
@@ -54,8 +57,8 @@ const cards = [
                 <p class="rq__amt">{nb('1 480,00 €')}</p>
                 <p class="rq__to"><span class="rq__k">Gavėjas:</span> J. Pavyzdys</p>
                 <div class="rq__btns">
-                  <button type="button" class="rq__b rq__b--go" popovertarget="p-pin2-skambutis" data-round="call">Įvesti PIN2</button>
-                  <button type="button" class="rq__b" popovertarget="p-atsaukti-skambutis" data-round="call" data-safe>Atšaukti</button>
+                  <button type="button" class="rq__b rq__b--go" popovertarget="p-pin2-skambutis" data-round="call" data-cost="1480">Įvesti PIN2</button>
+                  <button type="button" class="rq__b" popovertarget="p-atsaukti-skambutis" data-round="call" data-safe data-cost="100" data-risky>Atšaukti</button>
                 </div>
               </div>
             </div>
@@ -63,7 +66,7 @@ const cards = [
         </div>
       </figure>
 
-      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-baigiu" data-round="call" data-safe>Baigiu pokalbį ir skambinu bankui</button></p>
+      <p class="tr-third"><button type="button" class="btn btn--second tr-choice" popovertarget="p-baigiu" data-round="call" data-safe data-cost="0">Baigiu pokalbį ir skambinu bankui</button></p>
 
       <div class="answers">
         <section class="pop" id="p-pin2-skambutis" popover aria-labelledby="h-pin2-skambutis">
@@ -98,9 +101,9 @@ const cards = [
       <p class="mock__cap rq-cap">Užklausų maketas</p>
       <div class="rq-grid">
         {cards.map((c) => (
-          <div class="rq-item">
+          <div class="rq-item" data-step={c.id} data-title={nb(c.lead)} data-scenario="/scenarijai/smart-id-patvirtinimas/">
             <figure class="mock">
-              <figcaption class="rq-ctx"><strong set:html={nbHtml(c.lead)} /> <Fragment set:html={nbHtml(c.rest)} /></figcaption>
+              <figcaption class="rq-ctx"><strong set:html={nbHtml(c.lead)} /> <span data-say set:html={nbHtml(c.rest)} /></figcaption>
               <div class="mock__frame">
                 <div class="mock__inner">
                   <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>Tai ne tikra programėlė</span></p>
@@ -112,8 +115,8 @@ const cards = [
                       {c.amt && <p class="rq__to"><span class="rq__k">Gavėjas:</span> J. Pavyzdys</p>}
                       {c.code && <p class="rq__to"><span class="rq__k">Saugos kodas</span> <strong class="rq__code">4821</strong></p>}
                       <div class="rq__btns">
-                        <button type="button" class="rq__b rq__b--go" popovertarget={`p-${c.id}`} data-round={c.id} data-safe={c.id === 'login' || undefined}>Įvesti {c.pin}</button>
-                        <button type="button" class="rq__b" popovertarget="p-atsaukti" data-round={c.id} data-safe>Atšaukti</button>
+                        <button type="button" class="rq__b rq__b--go" popovertarget={`p-${c.id}`} data-round={c.id} data-safe={c.id === 'login' || undefined} data-cost={c.cost}>Įvesti {c.pin}</button>
+                        <button type="button" class="rq__b" popovertarget="p-atsaukti" data-round={c.id} data-safe data-cost="0">Atšaukti</button>
                       </div>
                     </div>
                   </div>

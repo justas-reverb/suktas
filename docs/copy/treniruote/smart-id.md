@@ -94,3 +94,27 @@ Trys užklausos, kiekviena atėjusi kitu metu. Prie kiekvienos parašyta, ką tu
 ## Šaltiniai ir patikrinta
 
 Patikrinta: 2026-10-31. Faktai – iš scenarijaus [„Patvirtink per „Smart-ID““](/scenarijai/smart-id-patvirtinimas/), visi su datomis [Šaltiniuose](/saltiniai/).
+
+<!-- The full-screen frame (components/GameShell.astro) and its score, with JavaScript only; these words stand in its closed dialog, as on diena-su-telefonu. All M. The account and the sums are invented and marked so. Start 5 000 €; PIN2 on the call 1 480 €, on the search request 2 350 €, for the buyer 1 150 € (the sums the mock-ups show); Atšaukti while the caller is still on the line 100 € (risky: hanging up is better); hanging up and every other Atšaukti 0. The risk line shows the sum of the choice pressed; 100 € is only its text before script. In the frame the call's title is „Skambutis iš „banko““ (data-title), and each request is its own step, titled by its bold line above the mock-up, the rest of that line as its words. -->
+
+- Žaisk per visą ekraną
+- Sąskaita ir sumos išgalvotos. Pradedi su 5 000 €, o sukčius kiekviename žingsnyje bando dalį pasiimti.
+- Išgalvotoje sąskaitoje
+- Žingsnis
+- Uždaryk
+- Ką tuo metu daro jis
+- Rinkis, ką darytum iš tikrųjų, ir čia pamatysi, ką tuo metu daro sukčius.
+- Sąskaita nepaliesta.
+- Jis dar nieko negavo, bet už riziką žaidimas atima 100 €.
+- Šis pasirinkimas jau nieko nekeičia: skaičiuojamas pirmas.
+- Žiūrėk, kiek liko
+- Toliau
+- Sąskaitoje liko
+- Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.
+- Sukčiui pavyko ne viskas. Pažiūrėk, kur dingo pinigai: ten jis lauks ir kitą kartą.
+- Šiandien sukčiui sekėsi. Taip nutinka bet kam, todėl ir treniruojamės čia, kur pinigai išgalvoti.
+- Kur dingo pinigai
+- Visas scenarijus
+- Žaisk dar kartą
+- Kitas žaidimas: Viena diena su telefonu
+- (atsidaro naujame lange)
