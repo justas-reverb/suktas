@@ -293,6 +293,10 @@ try {
       ["an older game's sums changed", sub(/data-cost="2000"/g, 'data-cost="1000"', () => 'treniruote/banko-paieska/index.html'), 'every trap ends on 200'],
       ['an empty dock drawn', cssAll('.gs__dock:empty{display:block!important}'), 'draws no empty dock'],
       ['marked words dark on the dark panel', cssAll('.gs__side .tk{color:#3b3590!important}'), 'drawn light'],
+      ['a hang-up does not end the game', gsub(/(\w)&&\(\w=!0\),(\w\.querySelectorAll\(`\[data-cost\]`\)\.forEach)/, '$2'), 'a hang-up ends the game'],
+      ['a hang-up lost from the page', sub(/ data-end="true"/g, '', () => 'treniruote/skambutis/index.html'), 'a hang-up ends the game'],
+      ['playing again remembers the hang-up', gsub(/(function \w\(\)\{\w=\w\(\w\),)\w=!1,/, '$1'), 'playing again forgets the hang-up'],
+      ['a hang-up told it changes nothing', gsub(/:\w\|\|\((\w)\.hidden=!1\),/, ':($1.hidden=!1),'), 'never says it changes nothing'],
     ];
     const findRoot = path.join(TMP, 'find');
     const runE2E = (dir, script) => new Promise((ok) => {

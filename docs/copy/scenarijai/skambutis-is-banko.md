@@ -26,6 +26,8 @@ Skamba telefonas. Ekrane gali rodytis banko pavadinimas ar žinomas numeris, bet
 
 **Padėk ragelį ir skambink oficialiu numeriu.** Atsidaryk savo banko programėlę ar svetainę ir skambink iš jų paimtu numeriu, o ne tuo, kurį tau davė skambinęs žmogus. <!-- F13 --> Jei skambutis kelia šoką, spaudimą ar skubą, baik pokalbį; o jei įtari sukčiavimą ar jau nukentėjai, iškart skambink 112. <!-- F96 --> Kortelė: [Padėk ragelį ir skambink oficialiu numeriu](/sustok/padek-ragely/).
 
+Išbandyk tai saugiai: [treniruotėje](/treniruote/skambutis/) balsas prašo vis daugiau, o ragelį gali padėti bet kada: kuo anksčiau, tuo daugiau išgalvotų pinigų liks. <!-- pažadas -->
+
 ### Jei jau prisigavai
 
 Jei jau išsiuntei pinigus ar atskleidei duomenis, pirmiausia skambink bankui. Žingsniai: [Jei tave apgavo: išsiunčiau pinigus](/jei-apgavo/#pinigai).

@@ -13,7 +13,15 @@ Source tags: `<!-- pažadas -->` the site's promise. The build strips every comm
 
 Naujausi viršuje. Čia užrašome kiekvieną pataisymą ir naują puslapį, kad matytum, kas ir kodėl pakeista. <!-- pažadas --> Kiekvienas įrašas turi datą, trumpą pavadinimą, ką pakeitėme, kodėl ir kuriuos puslapius palietė. <!-- pažadas --> Radai klaidą ar pasenusį faktą? Kaip mums parašyti, rasi puslapyje [Apie](/apie/#kaip-pataisyti-mus). <!-- pažadas -->
 
-## 2026-11-09 – visi žaidimai – per visą ekraną {#naujausias}
+## 2026-11-09 – ketvirtasis žaidimas Treniruotėje {#naujausias}
+
+**Kas pasikeitė.** Naujas žaidimas „Skambina „bankas“: kada padėsi ragelį?“: vienas skambutis, penki žingsniai, o balsas prašo vis daugiau. Ragelį gali padėti bet kada: kuo anksčiau, tuo daugiau išgalvotų pinigų liks. Į jį veda Treniruotė, šio skambučio scenarijus ir Turinys.
+
+**Kodėl.** Padėti ragelį – svarbiausias ėjimas per tokį skambutį, o išbandyti jį geriausia ten, kur pinigai išgalvoti. <!-- M -->
+
+**Puslapiai:** [Skambina „bankas“: kada padėsi ragelį?](/treniruote/skambutis/), [Skambina „bankas“](/scenarijai/skambutis-is-banko/), [Treniruotė](/treniruote/), [Turinys](/turinys/).
+
+## 2026-11-09 – visi žaidimai – per visą ekraną
 
 **Kas pasikeitė.** „Ar atskirsi netikrą banko reklamą?“ ir „Ką iš tikrųjų tvirtini per „Smart-ID“?“ dabar žaidžiami per visą ekraną, kaip ir „Viena diena su telefonu“, o rezultatas – kiek pinigų tau liko. Treniruotėje kiekvienas žaidimas turi savo paveikslėlį.
 

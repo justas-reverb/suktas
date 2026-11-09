@@ -116,5 +116,5 @@ Patikrinta: 2026-10-31. Faktai – iš scenarijaus [„Patvirtink per „Smart-I
 - Kur dingo pinigai
 - Visas scenarijus
 - Žaisk dar kartą
-- Kitas žaidimas: Viena diena su telefonu
+- Kitas žaidimas: Skambina „bankas“: kada padėsi ragelį?
 - (atsidaro naujame lange)

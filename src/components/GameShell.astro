@@ -4,7 +4,8 @@
  * Game-agnostic: it reads the page's own steps ([data-step] with figure.mock, a title (data-title or its h2), the words
  * (.tr-say or [data-say]), and every choice as a [data-cost] button whose popovertarget is its answer). A choice inside the
  * mock-up plays where it stands; .opts .opt and .tr-choice go to the dock. Every word of the frame stands here as
- * text, in the closed dialog; script only writes numbers and moves these words around. Without JavaScript, or
+ * text, in the closed dialog; script only writes numbers and moves these words around. A choice with data-end ends the
+ * game when its answer is read (Skambutis's hang-up). Without JavaScript, or
  * without showModal, the opener stays hidden and the page is the popover version. Nothing is stored; the one
  * history entry is pushed on open and popped on close. Words: the last block of each game's copy file
  * (docs/copy/treniruote/). Look: design/games-round-1/NOTES.md.
@@ -13,12 +14,18 @@ import { nb, nbHtml } from '../lib/typo.js';
 import { euros } from '../lib/gameScore.js';
 import '../styles/game-shell.css';
 
-interface Props { name: string; start: number; nextHref: string; nextName: string; endHeading: string; }
-const { name, start, nextHref, nextName, endHeading } = Astro.props;
+interface Props { name: string; start: number; nextHref: string; nextName: string; endHeading: string; startNote?: string; noneLine?: string; allVerdict?: string; allMore?: string; }
+const {
+  name, start, nextHref, nextName, endHeading,
+  startNote = nb(`Sąskaita ir sumos išgalvotos. Pradedi su ${euros(start)}, o sukčius kiekviename žingsnyje bando dalį pasiimti.`),
+  noneLine = 'Sąskaita nepaliesta.',
+  allVerdict = 'Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.',
+  allMore,
+} = Astro.props;
 ---
 <div class="gs-start" data-game-start hidden>
   <button type="button" class="gs-open" data-game-open hidden>Žaisk per visą ekraną</button>
-  <p class="gs-start__note" set:html={nb(`Sąskaita ir sumos išgalvotos. Pradedi su ${euros(start)}, o sukčius kiekviename žingsnyje bando dalį pasiimti.`)} />
+  <p class="gs-start__note" set:html={startNote} />
 </div>
 
 <dialog class="gs" data-game-shell data-start={start} aria-labelledby="gs-name">
@@ -46,7 +53,7 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
         <p class="gs__empty" data-gs-empty>{nb('Rinkis, ką darytum iš tikrųjų, ir čia pamatysi, ką tuo metu daro sukčius.')}</p>
         <div class="gs__ans" data-gs-ans hidden>
           <p class="gs__taken" data-gs-taken-lost hidden><span data-gs-amt></span></p>
-          <p class="gs__taken gs__taken--none" data-gs-taken-none hidden>Sąskaita nepaliesta.</p>
+          <p class="gs__taken gs__taken--none" data-gs-taken-none hidden>{noneLine}</p>
           <p class="gs__risk" data-gs-risk hidden set:html={nbHtml('Jis dar nieko negavo, bet už riziką žaidimas atima <span data-gs-riskamt>100 €</span>.')} />
           <p class="gs__again" data-gs-nochange hidden>{nb('Šis pasirinkimas jau nieko nekeičia: skaičiuojamas pirmas.')}</p>
           <div class="gs__text" data-gs-text></div>
@@ -64,7 +71,8 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
     <div class="gs__endin">
       <h2 id="gs-end-h" tabindex="-1" data-gs-endh>{nb(endHeading)}</h2>
       <p class="gs__endsum" data-gs-endsum></p>
-      <p class="gs__verdict" data-verdict="all" hidden>Laimėjai! Sukčius liko tuščiomis: visur pasirinkai saugų kelią.</p>
+      <p class="gs__verdict" data-verdict="all" hidden>{allVerdict}</p>
+      {allMore && <p class="gs__more" data-verdict="all" hidden>{allMore}</p>}
       <p class="gs__verdict" data-verdict="some" hidden>Sukčiui pavyko ne viskas. Pažiūrėk, kur dingo pinigai: ten jis lauks ir kitą kartą.</p>
       <p class="gs__verdict" data-verdict="little" hidden>{nb('Šiandien sukčiui sekėsi. Taip nutinka bet kam, todėl ir treniruojamės čia, kur pinigai išgalvoti.')}</p>
       <div class="gs__lost" data-gs-lost hidden>
@@ -96,6 +104,7 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
     const N = steps.length;
     let run = newRun(start);
     let idx = 0;
+    let ended = false; // a data-end choice was pressed on this run
     let pushed = false;
 
     const body = $('data-gs-body'), end = $('data-gs-end');
@@ -190,6 +199,8 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
       const stepId = s.dataset.step!;
       const cost = Number(btn.dataset.cost);
       const first = choose(run, stepId, cost);
+      const hangUp = btn.hasAttribute('data-end');
+      if (hangUp) ended = true;
       dlg.querySelectorAll('[data-cost]').forEach((o) => { if (o === btn) o.setAttribute('aria-current', 'true'); else o.removeAttribute('aria-current'); });
 
       // The sum taken (a true minus) or the untouched account, and the note when this was not the counted choice.
@@ -199,8 +210,8 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
         if (btn.hasAttribute('data-risky')) { risk.hidden = false; riskAmt.textContent = euros(cost); }
         setSum(run.left, cost > 0);
         live.textContent = `${acctl.textContent} ${euros(run.left)}`;
-      } else {
-        nochange.hidden = false;
+      } else if (!hangUp) {
+        nochange.hidden = false; // a hang-up after a paid choice still ends the game, so it never says it changes nothing
       }
       text.replaceChildren(...[...pop.children].filter((c) => !c.classList.contains('pop__actions')).map((c) => {
         const copy = clean(c.cloneNode(true) as HTMLElement);
@@ -218,7 +229,7 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
       // The next button appears only once the step has been answered, with the step's own label.
       const link = pop.querySelector<HTMLAnchorElement>('.pop__actions a[href^="#"]') ?? s.querySelector<HTMLAnchorElement>('.pop__actions a[href^="#"]');
       const last = idx === N - 1;
-      nextBtn.textContent = last ? finalLbl.textContent : link?.textContent ?? onward.textContent;
+      nextBtn.textContent = last || ended ? finalLbl.textContent : link?.textContent ?? onward.textContent;
       nextBar.hidden = !run.picks.has(stepId);
 
       sidebody.scrollTop = 0;
@@ -227,7 +238,7 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
 
     function next() {
       if (!run.picks.has(steps[idx].dataset.step!)) return;
-      if (idx < N - 1) showStep(idx + 1); else showEnd();
+      if (idx < N - 1 && !ended) showStep(idx + 1); else showEnd();
     }
 
     function showEnd() {
@@ -256,6 +267,7 @@ const { name, start, nextHref, nextName, endHeading } = Astro.props;
 
     function again() {
       run = newRun(start);
+      ended = false;
       setSum(start);
       showStep(0);
     }

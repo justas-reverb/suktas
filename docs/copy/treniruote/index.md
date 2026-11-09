@@ -21,6 +21,7 @@ Source tags: `<!-- M -->` our model; `<!-- pažadas -->` the site's promise. The
 
 - [Ar atskirsi netikrą banko reklamą?](/treniruote/banko-paieska/) – paieška, reklama „Remiama“ ir netikras prisijungimo puslapis.
 - [Ką iš tikrųjų tvirtini per „Smart-ID“?](/treniruote/smart-id/) – skambutis iš „banko“ ir trys patvirtinimo užklausos: prisijungimas, mokėjimas ir „pinigams gauti“.
+- [Skambina „bankas“: kada padėsi ragelį?](/treniruote/skambutis/) – vienas skambutis ir penki žingsniai: balsas prašo vis daugiau, o ragelį gali padėti bet kada.
 - [Viena diena su telefonu: kur laukia sukčius?](/treniruote/diena-su-telefonu/) – rytas, pietūs, popietė ir vakaras: praleistas skambutis, draugės žinutė, SMS apie stovėjimą ir QR lipdukas.
 
 <!-- ## Rezultatas -->

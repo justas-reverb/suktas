@@ -1,0 +1,171 @@
+---
+/**
+ * Treniruotė: Skambutis. The copy is docs/copy/treniruote/skambutis.md, word for word.
+ * Five steps of one call, and „Padedu ragelį" on every one: with JavaScript, GameShell plays them and a data-end choice
+ * ends the game, so the earlier the hang-up the more of the invented sum is left. Without JavaScript this page is the whole
+ * game in native popovers. The bank and the sums are invented, the message has no address and no link, nothing can be typed.
+ */
+import Page from '../../../layouts/Page.astro';
+import ArtBand from '../../../components/ArtBand.astro';
+import TrainScore from '../../../components/TrainScore.astro';
+import GameShell from '../../../components/GameShell.astro';
+import { nb, nbHtml } from '../../../lib/typo.js';
+import '../../../styles/scenario.css';
+import '../../../styles/treniruote.css';
+
+const catch_ = '<span class="pop__catch">Pagavau!</span><span class="pop__dash"> –</span><span class="pop__sub"> taip dabar pagalvotų sukčius.</span>';
+const SAFE = 'Taip ir daryk.';
+const SCN = '/scenarijai/skambutis-is-banko/';
+const HANG = 'Padedu ragelį';
+const steps = [
+  {
+    id: 'operacijos', title: 'Įtartinos operacijos', time: '0:09', cap: 'Skambučio maketas',
+    say: 'Skamba telefonas. Ekrane rodomas banko pavadinimas, todėl atsiliepi. Balsas mandagus, lietuvių kalba taisyklinga. Ką darai?',
+    line: '„Įtartinos operacijos iš jūsų sąskaitos.“', next: ['Jis kalba toliau', '#patvirtinti'],
+    choices: [
+      { label: HANG, cost: 0, safe: true, end: true, head: SAFE, text: 'Padėjai ragelį, kol jis dar nieko negavo. Be pokalbio jis nebeturi kuo tavęs gąsdinti ir skubinti. Jei skambino tikras bankas, tiesiog paskambinsi į banką numeriu iš programėlės: banko darbuotojai neverčia skubėti.', move: 'atsidaryk savo banko programėlę ar svetainę ir skambink iš jų paimtu numeriu, o ne tuo, kuris rodėsi ekrane. Jei skambina dar kartą, neatsiliepk ir užblokuok numerį.' },
+      { label: 'Klausau toliau', cost: 100, risky: true, head: 'Pinigų dar nepalietė, bet jau turi tavo dėmesį, o to jam ir reikėjo.', text: 'Banko pavadinimas ar žinomas numeris ekrane nieko neįrodo. Gera lietuvių kalba irgi: Bankų asociacija sako, kad sukčiai kalba taisyklingai ir be akcento.', move: 'ragelį gali padėti bet kada. Jei skambino tikras bankas, tiesiog paskambinsi į banką numeriu iš programėlės.' },
+      { label: 'Klausiu, ar tikrai skambina bankas', cost: 100, risky: true, head: 'Abejoti teisinga, bet atsakys „taip“: jam tai nieko nekainuoja.', text: 'Pokalbyje to nepatikrinsi: Bankų asociacija sako, kad nei garsas, nei vaizdas nebėra tikrovės įrodymas.', move: 'baik pokalbį ir skambink numeriu iš banko programėlės. Taip ir patikrinsi.' },
+    ],
+  },
+  {
+    id: 'patvirtinti', title: 'Būtina patvirtinti', time: '1:12', cap: 'Skambučio maketas',
+    say: 'Balsas skuba: jei dabar nieko nedarysi, esą nebegalėsi naudotis savo pinigais. Ką darai?',
+    line: '„Paskyra bus užblokuota. Būtina patvirtinti.“', next: ['Jis kalba toliau', '#nuoroda'],
+    choices: [
+      { label: HANG, cost: 0, safe: true, end: true, head: SAFE, text: 'Jis spaudė, o tu vis tiek padėjai. „Paskyra bus užblokuota“ ir „būtina patvirtinti“ – sukčių frazės, kurias cituoja kampanija „Padėk ragelį“. Kai skambutis kelia šoką, spaudimą ar skubą, baik pokalbį.', move: 'ar paskyra veikia, pamatysi savo banko programėlėje. Reikia pasikalbėti – skambink numeriu iš jos.' },
+      { label: 'Patvirtinu: taip, sąskaita šiame banke', cost: 200, head: catch_, text: 'Skambindamas jis net nežinojo, ar tavo sąskaita yra tame banke: jam pakanka kartais pataikyti. Dabar jau žino, o kuo daugiau išgirsta, tuo tikresnis atrodo. Taip nutinka bet kam: baimė dėl pinigų ir skuba atima laiko pagalvoti. Pinigų jis dar negavo, bet žaidimas už atsakymą atima 200 €.', move: 'nieko jam nepasakyk ir padėk ragelį. Tikras bankas neskubina.' },
+    ],
+  },
+  {
+    id: 'nuoroda', title: 'Nuoroda', time: '3:40', cap: 'Skambučio ir žinutės maketas',
+    say: 'Telefonas suvirpa: atėjo žinutė su nuoroda. Balsas liepia ją paspausti, kol dar kalbatės. Ką darai?',
+    line: '„…atsisiųsti ataskaitą… paspausti ant siunčiamos nuorodos…“', sms: 'Žinutė su nuoroda (mokomajame pavyzdyje adreso nėra)', next: ['Jis kalba toliau', '#kodas'],
+    choices: [
+      { label: HANG, cost: 0, safe: true, end: true, head: SAFE, text: 'Padėjai ragelį: be pokalbio jam lieka tik žinutė telefone. Banko darbuotojai nuorodų nesiunčia.', move: 'nuorodos nespausk ir skambink bankui numeriu iš banko programėlės. Jei pokalbyje jau ką nors pasakei, pasakyk ir bankui.' },
+      { label: 'Spaudžiu nuorodą', cost: 400, head: catch_, text: 'Banko darbuotojai nuorodų nesiunčia. Lietuvos bankas pataria nepaisyti skubių skambučių ir žinučių, kuriose prašoma „atsisiųsti ataskaitą“ ar „paspausti ant siunčiamos nuorodos“. Taip nutinka bet kam: sunku galvoti, kai kažkas tuo metu kalba į ausį.', move: 'padėk ragelį. Oficialioje programėlėje daryk tik tas operacijas, kurias pradėjai tu. Jei tai nutiko iš tikrųjų ir nuorodoje ką nors įvedei ar atsisiuntei: <a href="/jei-apgavo/#kas-nutiko">ką daryti pirmiausia</a>.' },
+    ],
+  },
+  {
+    id: 'kodas', title: 'Kodas', time: '6:05', cap: 'Skambučio maketas',
+    say: 'Balsas prašo PIN. Visko jam esą nereikia. Ką darai?',
+    line: '„Užtenka tik paskutinių dviejų skaitmenų.“', next: ['Jis kalba toliau', '#programa'],
+    choices: [
+      { label: HANG, cost: 0, safe: true, end: true, head: SAFE, text: 'Net po šešių minučių pokalbio padėti ragelį nevėlu. PIN kodo prašymas – ženklas, kuris pasako viską: „Smart-ID“ sako, kad PIN kodų niekada neprašo.', move: 'skambink bankui numeriu iš banko programėlės ir papasakok, kas buvo paprašyta ir ką jau spėjai pasakyti ar paspausti. Jei tai nutiko iš tikrųjų: <a href="/jei-apgavo/#kas-nutiko">ką daryti pirmiausia</a>.' },
+      { label: 'Pasakau PIN', cost: 700, head: catch_, text: 'Mokėjimo paslaugų teikėjai prisijungimo duomenų neprašo, o „Smart-ID“ sako, kad niekada neprašo PIN kodų. Jam reikia, kad veiksmą atliktum tu, ir tu ką tik atlikai. Taip nutinka bet kam: po šešių minučių pokalbio atsisakyti sunkiau nei pirmą minutę.', move: 'padėk ragelį ir nedelsk: skambink bankui numeriu iš banko programėlės. Jei tai nutiko iš tikrųjų: <a href="/jei-apgavo/#kodai">ką daryti pirmiausia</a>.' },
+      { label: 'Pasakau tik du skaitmenis', cost: 700, head: catch_, text: '„Tik du skaitmenys“ skamba kaip nedaug, ir todėl taip sakoma: „Smart-ID“ įspėja būtent apie tokį prašymą ir sako, kad PIN kodų niekada neprašo. Taip nutinka bet kam: mažą prašymą sunkiau atmesti nei didelį.', move: 'padėk ragelį ir skambink bankui numeriu iš banko programėlės. Jei tai nutiko iš tikrųjų: <a href="/jei-apgavo/#kodai">ką daryti pirmiausia</a>.' },
+    ],
+  },
+  {
+    id: 'programa', title: 'Programa', time: '9:31', cap: 'Skambučio maketas',
+    say: 'Balsas prašo įdiegti programą ir prie banko prisijungti „kartu“. Ką darai?',
+    line: '„…prisijungti kartu…“', next: ['Žiūrėk, kiek liko', '#rezultatas'],
+    choices: [
+      { label: HANG, cost: 0, safe: true, end: true, head: SAFE, text: 'Beveik dešimt minučių spaudimo, ir vis tiek padėjai. Prašymas įdiegti programą ar prisijungti „kartu“ – dar vienas aiškus ženklas, ir tu jo paisei.', move: 'nieko neįdiek ir skambink bankui numeriu iš banko programėlės. Papasakok, ką jau spėjai pasakyti ar paspausti. Jei tai nutiko iš tikrųjų: <a href="/jei-apgavo/#kas-nutiko">ką daryti pirmiausia</a>.' },
+      { label: 'Įdiegiu ir jungiuosi kartu', cost: 1000, head: catch_, text: 'Bankų asociacija sako, kad tokios programos dažnai skirtos nuotoliniam prisijungimui prie kito žmogaus kompiuterio ir kad sukčiai gali prašyti prie bankininkystės prisijungti „kartu“. Taip nutinka bet kam: kuo ilgiau kalbi, tuo labiau norisi, kad tai pagaliau baigtųsi.', move: 'padėti ragelį nevėlu net dabar. Jei programai leidai valdyti telefoną ar kompiuterį, išjunk „Wi-Fi“ ir mobiliuosius duomenis, o bankui skambink iš kito, saugaus įrenginio. Jei įtari sukčiavimą ar jau nukentėjai, iškart skambink 112. Visi žingsniai: <a href="/jei-apgavo/#nuotolinis">įdiegiau programą</a>.' },
+    ],
+  },
+];
+---
+<Page
+  title="Skambina „bankas“: kada padėsi ragelį? Treniruotė – Suktas"
+  description="Saugi treniruotė: „banko“ skambutis, kuriame balsas prašo vis daugiau. Ragelį gali padėti bet kada: kuo anksčiau, tuo daugiau pinigų liks."
+  current=""
+>
+  <article class="scn tr">
+    <header class="scn-head">
+      <ArtBand mood="day" class="scn-head__art" sizes="(min-width: 60rem) 70vw, 120vw" eager />
+      <div class="wrap scn-head__body">
+        <p class="crumb"><a href="/treniruote/">Treniruotė</a></p>
+        <h1>{nb('Skambina „bankas“: kada padėsi ragelį?')}</h1>
+        <p class="tr-lead" set:html={nbHtml('Ekrane – banko pavadinimas. Balsas skubina ir su kiekvienu sakiniu prašo daugiau. Ragelį gali padėti bet kada: kuo anksčiau, tuo daugiau pinigų liks.')} />
+        <p class="tr-promise" set:html={nbHtml('<strong>Tai mokomasis pavyzdys.</strong> Bankas, vardai ir sumos išgalvoti, o mygtukai nieko nepriima: tai, kurį atsakymą renkiesi, niekur neišsiunčiama ir neišsaugoma. Skaitiklis sužino tik tiek, kad puslapis atidarytas ir jame kas nors paspausta (<a href="/privatumo-pranesimas/#ka-skaiciuojame">ką skaičiuojame</a>).')} />
+        <p class="tr-rule" data-score-hint hidden set:html={nbHtml('Skaičiuojamas pirmas pasirinkimas kiekviename žingsnyje. Padėjus ragelį, skambutis baigiasi.')} />
+        <GameShell
+          name="Skambutis" start={2400} nextHref="/treniruote/diena-su-telefonu/" nextName="Viena diena su telefonu" endHeading="Skambutis baigtas"
+          startNote={nb('Sąskaita ir sumos išgalvotos. Pradedi su 2 400 €. Ragelį gali padėti bet kada: kuo anksčiau, tuo daugiau liks.')}
+          noneLine="Šiame žingsnyje nieko neprarasta."
+          allVerdict={nb('Laimėjai! Padėjai ragelį, kol jis dar nieko negavo.')}
+          allMore={nb('Nori pamatyti, ką jis būtų daręs toliau? Žaisk dar kartą ir ragelį padėk vėliau: čia pinigai išgalvoti.')}
+        />
+      </div>
+    </header>
+
+    {steps.map((s) => (
+      <section class="wrap tr-scene" id={s.id} aria-labelledby={`h-${s.id}`} data-step={s.id} data-scenario={SCN}>
+        <h2 id={`h-${s.id}`}>{nb(s.title)}</h2>
+        <p class="tr-say" set:html={nbHtml(s.say)} />
+        <figure class="mock">
+          <figcaption class="mock__cap">{s.cap}</figcaption>
+          <div class="mock__frame">
+            <div class="mock__inner">
+              <p class="stamp"><strong>MOKOMASIS PAVYZDYS</strong> · <span>Tai ne tikras telefonas</span></p>
+              <div class="ph">
+                <p class="call"><span class="call__st">Vyksta pokalbis ·</span> <span class="call__who">Pavyzdžio bankas ·</span> <span class="call__st">{s.time}</span></p>
+                <p class="say" set:html={nbHtml(s.line)} />
+                {s.sms && <p class="say" set:html={nbHtml(s.sms)} />}
+                <div class="opts">
+                  {s.choices.map((c, i) => (
+                    <button type="button" class="rq__b opt" popovertarget={`p-${s.id}-${i}`} data-round={s.id} data-safe={c.safe || undefined} data-risky={c.risky || undefined} data-end={c.end || undefined} data-cost={c.cost}>{nb(c.label)}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </figure>
+
+        <div class="answers">
+          {s.choices.map((c, i) => (
+            <section class="pop" id={`p-${s.id}-${i}`} popover aria-labelledby={`h-${s.id}-${i}`}>
+              <h3 id={`h-${s.id}-${i}`} class:list={['pop__h', { 'pop__h--catch': c.head === catch_ }]} set:html={nbHtml(c.head)} />
+              <p set:html={nbHtml(c.text)} />
+              {c.move && <p class="pop__move" set:html={nbHtml(`<strong>Tavo ėjimas:</strong> ${c.move}`)} />}
+              <div class="pop__actions">
+                {c.end && <a class="btn" href={s.next[1]}>{nb(s.next[0])}</a>}
+                <button type="button" class="btn btn--second pop__close" popovertarget={`p-${s.id}-${i}`} popovertargetaction="hide" autofocus>Uždaryti</button>
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="wrap tr-end" id="rezultatas" aria-labelledby="ejimas">
+      <TrainScore rounds={5} />
+      <div class="move">
+        <h2 id="ejimas">Tavo ėjimas</h2>
+        <p class="move__line" set:html={nbHtml('<strong>Padėk ragelį ir skambink oficialiu numeriu.</strong> Numerį imk iš savo banko programėlės ar svetainės, o ne iš to, kas skambino. Tai padaryti gali bet kurią pokalbio minutę, ir kuo anksčiau, tuo geriau.')} />
+        <div class="cta">
+          <a class="btn" href="/sustok/padek-ragely/">Atidaryk kortelę</a>
+          <a class="btn btn--second" href="/scenarijai/skambutis-is-banko/">Visas scenarijus</a>
+        </div>
+      </div>
+
+      <div class="tr-nope">
+        <h3>Ko čia nerasi</h3>
+        <p set:html={nbHtml('Šis puslapis – ne šablonas: bankas ir sumos išgalvoti, balsas sako tik kelias frazes, kurias viešai cituoja kampanijos ir institucijos, o mygtukai nieko nepriima, todėl įvesti čia nieko neįmanoma. Tai mūsų <a href="/misija/#riba">riba</a>.')} />
+      </div>
+
+      <div class="tr-src">
+        <h2>Šaltiniai ir patikrinta</h2>
+        <p set:html={nbHtml('Patikrinta: 2026-11-09. Šiame puslapyje naudoti faktai (visi su datomis <a href="/saltiniai/">Šaltiniuose</a>):')} />
+        <ul>
+          <li>{nb('Kampanija „Padėk ragelį“: frazės ir patarimai.')}</li>
+          <li>{nb('Lietuvos bankas, 2021-07-09: kreiptis į banką oficialiais kanalais; prisijungimo duomenų neprašoma; skubių nuorodų nepaisyti.')}</li>
+          <li>{nb('„Smart-ID“: PIN kodų neprašo.')}</li>
+          <li>{nb('NKSC, 2024-10-07: pažįstamas numeris nieko neįrodo.')}</li>
+          <li>{nb('RRT, 2026-08-10: kaip sukčiai skambina dabar.')}</li>
+          <li>{nb('Bankų asociacija, 2022-10-27 ir 2026-03-16: nuotolinio prisijungimo programos; taisyklinga kalba; nei garsas, nei vaizdas nėra įrodymas.')}</li>
+          <li>{nb('Lietuvos bankas su kampanijos partneriais, 2025-12-15: šokas, spaudimas, skuba – baik pokalbį; įtarus sukčiavimą ar nukentėjus – iškart 112.')}</li>
+        </ul>
+      </div>
+    </section>
+  </article>
+</Page>
+
+<script>
+  // Without this the link jumps to the next step and leaves the open answer card over it; with it the card closes first.
+  document.querySelectorAll<HTMLAnchorElement>('.pop a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', () => a.closest<HTMLElement>('.pop')?.hidePopover());
+  });
+</script>

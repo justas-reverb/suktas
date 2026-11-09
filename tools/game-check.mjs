@@ -78,7 +78,7 @@ const GAME = '/treniruote/diena-su-telefonu/';
 const HUB = '/treniruote/';
 const OLDER = [
   { path: '/treniruote/banko-paieska/', startText: '2 400', steps: 2, worst: '200', lost: 2, endHeading: 'Sąskaitoje liko', next: '/treniruote/smart-id/' },
-  { path: '/treniruote/smart-id/', startText: '5 000', steps: 4, worst: '20', lost: 3, endHeading: 'Sąskaitoje liko', next: '/treniruote/diena-su-telefonu/' },
+  { path: '/treniruote/smart-id/', startText: '5 000', steps: 4, worst: '20', lost: 3, endHeading: 'Sąskaitoje liko', next: '/treniruote/skambutis/' },
 ];
 
 let failures = 0;
@@ -109,7 +109,7 @@ async function pick(page, want) {
   await page.locator('.gs [data-cost]').nth(k).click();
 }
 async function play(page, wants) { for (const w of wants) { await pick(page, w); await nextBtn(page).click(); } }
-const verdict = (page) => page.locator('[data-verdict]:not([hidden])').getAttribute('data-verdict');
+const verdict = (page) => page.locator('[data-verdict]:not([hidden])').first().getAttribute('data-verdict');
 const lostRows = (page) => page.locator('[data-gs-lostlist] li').count();
 const hue = (c) => {
   const [r, g, b, a = 1] = c.match(/[\d.]+/g).map(Number);
@@ -396,6 +396,132 @@ try {
     await page.waitForTimeout(40);
     say(await page.locator('.gs__dock').isHidden(), 'a step whose choices are all inside the mock-up draws no empty dock');
     await ctx.close();
+  }
+
+  // Skambutis: a hang-up (data-end) ends the game, on any step
+  {
+    const G = '/treniruote/skambutis/';
+    const here = (page) => page.goto(BASE + G).then(() => opener(page).click()).then(() => page.waitForTimeout(240));
+    const endSum = async (page) => (await page.locator('[data-gs-endsum]').textContent()).replace(/\s/g, ' ');
+    const ended = (page) => page.locator('[data-gs-end]').isVisible();
+    const nextIs = async (page, t) => (await nextBtn(page).textContent()).replace(/\s/g, ' ') === t;
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      say(await sumOf(page) === '2 400 €', `${G}: it starts on the whole sum`, await sumOf(page));
+      say(await page.locator('.gs :is(input,textarea,select,form,[contenteditable])').count() === 0, `${G}: nothing typed`);
+      await pick(page, 'safe');
+      await page.waitForTimeout(60);
+      say((await page.locator('[data-gs-taken-none]').textContent()) === 'Šiame žingsnyje nieko neprarasta.' && await page.locator('[data-gs-taken-none]').isVisible(), `${G}: a first hang-up says nothing was lost on this step`);
+      say(await nextIs(page, 'Žiūrėk, kiek liko'), `${G}: a hang-up's next button goes to the end`, await nextBtn(page).textContent());
+      await nextBtn(page).click();
+      await page.waitForTimeout(60);
+      say(await ended(page), `${G}: a hang-up ends the game`);
+      say(await endSum(page) === '2 400 €' && await verdict(page) === 'all' && await lostRows(page) === 0, `${G}: hanging up at once keeps it all, the first ending, no losses`, `${await endSum(page)} ${await verdict(page)}`);
+      say(await page.locator('[data-verdict="all"]:not([hidden])').count() === 2, `${G}: the first ending has its second line`);
+      say((await page.locator('[data-gs-endh]').textContent()).replace(/\s/g, ' ') === 'Skambutis baigtas', `${G}: its own end heading`);
+      say(await page.locator('.gs__end a[href^="/treniruote/"]').first().getAttribute('href') === '/treniruote/diena-su-telefonu/', `${G}: the next game is Diena su telefonu`);
+      await page.locator('[data-gs-again]').click();
+      await page.waitForTimeout(60);
+      await pick(page, 'trap');
+      say(await nextIs(page, 'Jis kalba toliau'), `${G}: staying on the line, the next button says he goes on`, await nextBtn(page).textContent());
+      await nextBtn(page).click();
+      await page.waitForTimeout(60);
+      say(await sumOf(page) === '2 300 €' && (await page.locator('[data-gs-n]').textContent()) === '2' && !(await ended(page)), `${G}: playing again forgets the hang-up`, await sumOf(page));
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      const bad = [];
+      for (let i = 1; i <= 5; i++) {
+        const st = await page.evaluate(() => [...document.querySelectorAll('.gs .mock')].map((m) => { const t = m.querySelector('.stamp'); const r = t?.getBoundingClientRect(); return !!t && t.textContent.includes('MOKOMASIS PAVYZDYS') && r.width > 0 && r.height > 0; }));
+        if (!st.length || !st.every(Boolean)) bad.push(i);
+        if (!(await page.locator('.gs [data-cost][data-end]').count())) bad.push(`${i}:no hang-up`);
+        await pick(page, 'trap');
+        await nextBtn(page).click();
+        await page.waitForTimeout(40);
+      }
+      say(!bad.length, `${G}: every step is stamped and has a hang-up`, bad.join());
+      say(await endSum(page) === '0 €' && await verdict(page) === 'little' && await lostRows(page) === 5, `${G}: staying to the end leaves 0 €, the last ending, five losses`, `${await endSum(page)} ${await verdict(page)}`);
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      await play(page, ['trap', 'trap', 'safe']);
+      await page.waitForTimeout(60);
+      say(await ended(page) && await endSum(page) === '2 100 €' && await verdict(page) === 'some' && await lostRows(page) === 2, `${G}: a later hang-up keeps what is left, the middle ending, two losses`, `${await endSum(page)} ${await verdict(page)}`);
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      await play(page, ['trap']);
+      await pick(page, 'trap');
+      await pick(page, 'safe');
+      await page.waitForTimeout(60);
+      say(await page.locator('[data-gs-nochange]').isHidden(), `${G}: a hang-up after a paid choice never says it changes nothing`);
+      say(await page.locator('[data-gs-taken-none]').isHidden(), `${G}: and does not claim nothing was lost on this step`);
+      say(await sumOf(page) === '2 100 €' && await nextIs(page, 'Žiūrėk, kiek liko'), `${G}: the paid choice stays paid and the next button goes to the end`, await sumOf(page));
+      await nextBtn(page).click();
+      await page.waitForTimeout(60);
+      say(await ended(page) && await endSum(page) === '2 100 €', `${G}: and it still ends the game`, await endSum(page));
+      await page.locator('[data-gs-again]').click();
+      await pick(page, 'safe');
+      await pick(page, 'trap');
+      await page.waitForTimeout(60);
+      say(await page.locator('[data-gs-nochange]').isVisible() && await sumOf(page) === '2 400 €' && await nextIs(page, 'Žiūrėk, kiek liko'), `${G}: a trap pressed after a hang-up costs nothing and the call stays over`, await sumOf(page));
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open();
+      await here(page);
+      const pressed = [];
+      for (let i = 0; i < 5; i++) {
+        pressed.push(...await page.evaluate(() => [...document.querySelectorAll('.gs [data-cost]')].flatMap((e) => { const c = getComputedStyle(e); return [c.color, c.backgroundColor, c.borderTopColor]; })));
+        await pick(page, 'trap');
+        await nextBtn(page).click();
+      }
+      say(!pressed.map(hue).some(redOrGreen), `${G}: no red or green on the choices`, pressed.find((c) => redOrGreen(hue(c))));
+      await ctx.close();
+    }
+    for (const [w, h] of [[320, 640], [390, 844], [844, 390], [2560, 1440]]) {
+      const { ctx, page } = await open({ width: w, height: h });
+      await here(page);
+      const wide = () => page.evaluate(() => [...document.querySelectorAll('.gs, .gs__play, .gs__main, .gs__dock, .gs__sidebody, .gs__end, .gs__bar, .gs .mock')].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => `${e.className} ${e.scrollWidth}>${e.clientWidth}`));
+      const out = [];
+      for (let i = 0; i < 5; i++) { out.push(...await wide()); await pick(page, 'trap'); await page.waitForTimeout(260); out.push(...await wide()); await nextBtn(page).click(); await page.waitForTimeout(30); }
+      say(!out.length, `${G}: nothing runs sideways at ${w}x${h}`, out.slice(0, 3).join('; '));
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open({ width: 360, height: 740 }, { deviceScaleFactor: 2, hasTouch: true, isMobile: true });
+      await here(page);
+      const miss = [];
+      for (let i = 0; i < 5; i++) {
+        const reach = await page.evaluate(() => [...document.querySelectorAll('.gs [data-cost]')].map((o) => { o.scrollIntoView({ block: 'nearest' }); const r = o.getBoundingClientRect(); const e = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return o === e || o.contains(e); }));
+        if (!reach.length || !reach.every(Boolean)) miss.push(`${i + 1}:${JSON.stringify(reach)}`);
+        await pick(page, 'trap');
+        await page.waitForTimeout(300);
+        await nextBtn(page).click();
+        await page.waitForTimeout(60);
+      }
+      say(!miss.length, `${G}: on a phone every choice can be pressed`, miss.join(' '));
+      await ctx.close();
+    }
+    {
+      const { ctx, page } = await open({ width: 1280, height: 800 }, { javaScriptEnabled: false });
+      await page.goto(BASE + G);
+      say(!(await opener(page).isVisible()), `${G}: JavaScript off, no opener`);
+      const n = { steps: await page.locator('section[data-step]').count(), opts: await page.locator('section[data-step] .opt[popovertarget]').count(), pops: await page.locator('.answers .pop[popover]').count() };
+      say(n.steps === 5 && n.opts === 12 && n.pops === 12, `${G}: JavaScript off, the page is whole`, JSON.stringify(n));
+      say(await page.locator('.mock a').count() === 0, `${G}: the mock-ups carry no link`);
+      await page.locator('[data-step] [data-end]').first().click();
+      await page.waitForTimeout(150);
+      say(await page.locator('.pop:popover-open a[href="#patvirtinti"]').count() === 1, `${G}: JavaScript off, a hang-up opens its answer and the way on`);
+      await ctx.close();
+    }
   }
 
   // Reduced motion

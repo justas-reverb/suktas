@@ -14,7 +14,7 @@ import { chromium } from 'playwright-core';
 import sharp from 'sharp';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const GAMES = ['banko-paieska', 'smart-id', 'diena-su-telefonu'];
+const GAMES = ['banko-paieska', 'smart-id', 'skambutis', 'diena-su-telefonu'];
 const WIDTHS = [640, 960, 1280];
 const ASPECT = 1.6;
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css', '.webp': 'image/webp', '.png': 'image/png' };
